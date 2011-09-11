@@ -1,0 +1,31 @@
+Guide:
+
+Compileing
+	Simple run the shell file compile-doc.sh
+	Or LazyMansCompiler.bat
+
+Abbreviation:
+	To add a new abbreviation go to: 
+	\Repport\Plugins\AbbreviationControl
+	And edit abbreviations.tex
+	
+	Example:
+	\acronym{abbim}{instant messaging}{IM}
+		1. \acronym{abbim} states that \abbit is that you write in the report when you want 
+			instant messaging or IM to appear.
+		2. {instant messaging} is the full length version of the word.
+		3. {IM} is the abbreviation
+
+Add a chapter.
+	Pleace make a ned folder in \Repport\Documents\defaultdoc\Chapters with the name of the chapter.
+	And make a index.tex file, that includes all the different parts of the chapter.
+	Like \input{\ChapterDocsPath/ExampleChapter/index}
+	and in index.tex \input{\ChapterDocsPath/ExampleChapter/section1}
+	
+Need to add or edit a chapter?
+	All the chapters are found under \Repport\Documents\defaultdoc\Chapters
+	And they are included in index.tex
+	
+To add a picture
+	\insertmarginfigure{height=6in}{path/tofile.png}
+	{Small text under the picture}{fig:howtoref}{-3in}

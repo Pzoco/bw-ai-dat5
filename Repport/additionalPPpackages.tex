@@ -1,0 +1,38 @@
+%[LABEL] Additional packages
+%[REQUIRE] core
+% File: additionalpackages.tex
+% Include additional packages
+
+% Package includes goes beyound this line
+	%[BEGIN] Font packages
+  	   %\usepackage[scaled=0.90]{helvet}
+  		% Make Computer Modern font scabable even if we do not need to adjust the font size
+    	% the packages makes text clearer in pdf-readers
+  	   \usepackage{type1cm}
+   %[END]
+	
+   %[BEGIN] Math packages
+      \usepackage{amssymb}
+	   \usepackage{amsmath}
+	   \usepackage{multirow}
+	   \usepackage{amsthm}
+      \usepackage{nicefrac}
+	%[END]
+	
+  %[BEGIN] Document encoding
+    \usepackage[utf8x]{inputenc} % Sets the document encoding to UFT8 standard
+  %[END]
+     
+  %[BEGIN] Sourcecode environment requirements
+    \usepackage{listings}
+  %[END]
+  
+  %[BEGIN] Hyperref package
+    \usepackage{hyperref}
+  %[END]
+  
+  %[BEGIN] subfigure package
+    \usepackage{graphicx}
+    %\usepackage{subfig}
+  %[END]
+   
