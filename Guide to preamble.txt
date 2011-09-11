@@ -3,6 +3,7 @@ Guide:
 Compileing
 	Simple run the shell file compile-doc.sh
 	Or LazyMansCompiler.bat
+	NB: you need to have latex installed
 
 Abbreviation:
 	To add a new abbreviation go to: 
