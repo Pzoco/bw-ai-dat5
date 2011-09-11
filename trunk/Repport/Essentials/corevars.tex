@@ -1,0 +1,224 @@
+%[LABEL] core variables
+% File: corevars.tex
+% Contains the essential document variables
+
+%[BEGIN] Document class variables
+  %[BEGIN] Document class options getter/setter
+    \newcommand{\GetDocClassOptions}{a4paper,twoside,10pt,openright} % Default value
+    \newcommand{\SetDocClassOptions}[1]{%
+      \renewcommand{%
+        \GetDocClassOptions}{#1}%
+      }
+  %[END]
+%[END]
+
+  %[BEGIN] Document class getter/setter
+    \newcommand{\GetDocClass}{report} % Default value
+    \newcommand{\SetDocClass}[1]{%
+      \renewcommand{%
+        \GetDocClass}{#1}%
+      }
+  %[END]
+%[END]
+
+%[BEGIN] Layout variables
+  %[BEGIN] Document layout getter/setter
+    \newcommand{\GetDocLayout}{default} % Default value
+    \newcommand{\SetDocLayout}[1]{%
+      \renewcommand{%
+        \GetDocLayout}{#1}%
+      }
+  %[END]
+
+  %[BEGIN] Colour scheme variables
+    %[BEGIN] Colour scheme getter/setter
+      \newcommand{\GetDocColourScheme}{default}
+      \newcommand{\SetDocColourScheme}[1]{%
+        \renewcommand{%
+          \GetDocColourScheme}{#1}%
+        }
+    %[END]
+    
+    %[BEGIN] Table colouring getters/setters
+      \newcommand{\GetTableOddRowColour}{white}
+      \newcommand{\SetTableOddRowColour}[1]{%
+        \renewcommand{%
+          \GetTableOddRowColour}{#1}%
+        }
+
+      \newcommand{\GetTableEvenRowColour}{white}
+      \newcommand{\SetTableEvenRowColour}[1]{%
+        \renewcommand{%
+          \GetTableEvenRowColour}{#1}%
+        }
+    %[END]
+  %[END]
+%[END]
+
+%[BEGIN] Document language variables
+  %[BEGIN] Document language getter/setter
+    \newcommand{\GetDocLanguage}{english}
+    \newcommand{\SetDocLanguage}[1]{%
+      \renewcommand{%
+        \GetDocLanguage}{#1}%
+      }
+  %[END]
+%[END]
+
+%[BEGIN] Numbering variables
+  %[BEGIN] Chapter numbering getter/setter
+    \newcommand{\SetChapterNumbering}[1]{%
+      \renewcommand{%
+        \thechapter}{#1}%
+      }
+  %[END]
+  
+  %[BEGIN] Section numbering getters/setters
+    %[BEGIN] Section numbering getter/setter
+      \newcommand{\SetSectionNumbering}[1]{%
+        \renewcommand{%
+          \thesection}{#1}%
+        }
+    %[END]
+
+    %[BEGIN] Subsection numbering getter/setter
+      \newcommand{\SetSubsectionNumbering}[1]{%
+        \renewcommand{%
+          \thesubsection}{#1}%
+        }
+    %[END]
+    
+    %[BEGIN] Subsubsection numbering getter/setter
+      \newcommand{\SetSubsubsectionNumbering}[1]{%
+        \renewcommand{%
+          \thesubsubsection}{#1}%
+        }
+    %[END]
+  %[END]
+
+  %[BEGIN] Equation numbering getter/setter
+    \newcommand{\SetEquationNumbering}[1]{%
+      \renewcommand{%
+        \theequation}{#1}%
+      }
+  %[END]
+  
+  %[BEGIN] Figure numbering getter/setter
+    \newcommand{\SetFigureNumbering}[1]{%
+      \renewcommand{%
+        \thefigure}{#1}%
+      }
+  %[END]
+
+  %[BEGIN] Table numbering getter/setter
+    \newcommand{\SetTableNumbering}[1]{%
+      \renewcommand{%
+        \thetable}{#1}%
+      }
+  %[END]
+  
+  %[BEGIN] Page numbering setter
+    \newcommand{\SetPageNumbering}[1]{%
+      \pagenumbering{#1}
+    }
+  %[END]
+%[END]
+
+%[BEGIN] Layout modificators
+  %[BEGIN] front-, main- and backmatter numbering
+    %[BEGIN] Front numbering
+      \newcommand{\FrontMatter}{}
+      \newcommand{\SetFrontMatter}[1]{\renewcommand{\FrontMatter}{#1}}
+    %[END]
+
+    %[BEGIN] Main numbering
+      \newcommand{\MainMatter}{}
+      \newcommand{\SetMainMatter}[1]{\renewcommand{\MainMatter}{#1}}
+    %[END]
+
+    %[BEGIN] Main numbering
+      \newcommand{\BackMatter}{}
+      \newcommand{\SetBackMatter}[1]{\renewcommand{\BackMatter}{#1}}
+    %[END]
+  %[END]
+%[END]
+
+%[BEGIN] Document information variables
+  \newcommand{\GetDocAuthor}{author}
+  \newcommand{\SetDocAuthor}[1]{\renewcommand{\GetDocAuthor}{#1}}
+  
+  \newcommand{\GetDocTitle}{title}
+  \newcommand{\SetDocTitle}[1]{\renewcommand{\GetDocTitle}{#1}}
+  
+  \newcommand{\GetDocSubject}{subject}
+  \newcommand{\SetDocSubject}[1]{\renewcommand{\GetDocSubject}{#1}}
+
+  \newcommand{\GetDocCreator}{compile-doc}
+  \newcommand{\SetDocCreator}[1]{\renewcommand{\GetDocCreator}{#1}}
+
+  \newcommand{\GetDocProducer}{producer}
+  \newcommand{\SetDocProducer}[1]{\renewcommand{\GetDocProducer}{#1}}
+
+  \newcommand{\GetDocKeywords}{keywords}
+  \newcommand{\SetDocKeywords}[1]{\renewcommand{\GetDocKeywords}{#1}}
+%[END]
+
+%[BEGIN] Sourcecode custom environments variables
+  %[BEGIN] Backgroundcolour getter/setter
+    \newcommand{\GetSourcecodeBackgroundColour}{sand}
+    \newcommand{\SetSourcecodeBackgroundColour}[1]{\renewcommand{\GetSourcecodeBackgroundColour}{#1}}
+  %[END]
+  
+  %[BEGIN] Sourcecode highlight modifiers
+    \newcommand{\GetSourcecodeKeywordsColour}{blue}
+    \newcommand{\SetSourcecodeKeywordsColour}[1]{\renewcommand{\GetSourcecodeKeywordsColour}{#1}}
+
+    \newcommand{\GetSourcecodeCommentColour}{forestgreen}
+    \newcommand{\SetSourcecodeCommentColour}[1]{\renewcommand{\GetSourcecodeCommentColour}{#1}}
+    
+    \newcommand{\GetSourcecodeStringColour}{red}
+    \newcommand{\SetSourcecodeStringColour}[1]{\renewcommand{\GetSourcecodeStringColour}{#1}}
+  %[END]
+  
+  %[BEGIN] Sourcecode Style modifiers
+    \newcommand{\GetSourcecodeKeywordsStyle}{}
+    \newcommand{\SetSourcecodeKeywordsStyle}[1]{\renewcommand{\GetSourcecodeKeywordsStyle}{#1}}
+
+    \newcommand{\GetSourcecodeCommentStyle}{}
+    \newcommand{\SetSourcecodeCommentStyle}[1]{\renewcommand{\GetSourcecodeCommentStyle}{#1}}
+    
+    \newcommand{\GetSourcecodeStringStyle}{}
+    \newcommand{\SetSourcecodeStringStyle}[1]{\renewcommand{\GetSourcecodeStringStyle}{#1}}
+    
+    \newcommand{\GetSourcecodeBasicStyle}{\ttfamily\small}
+    \newcommand{\SetSourcecodeBasicStyle}[1]{\renewcommand{\GetSourcecodeBasicStyle}{#1}}
+    
+    \newcommand{\GetSourcecodeNumberStyle}{}
+    \newcommand{\SetSourcecodeNumberStyle}[1]{\renewcommand{\GetSourcecodeNumberStyle}{#1}}
+  %[END]  
+  
+  %[BEGIN] Misc vars
+    \newcommand{\GetSourcecodeCapitionPretext}{Sourcecode}
+    \newcommand{\SetSourcecodeCapitionPretext}[1]{\renewcommand{\GetSourcecodeCapitionPretext}{#1}}
+  %[END]
+%[END]
+
+%[BEGIN] DoLoadPlugins getter/setter
+  \newcommand{\GetDoLoadPlugins}{true}
+  \newcommand{\DoLoadPlugins}[1]{\renewcommand{\GetDoLoadPlugins}{#1}}
+%[END]
+
+%[BEGIN] Plugins getter/setter
+  \newcommand{\GetPluginsFile}{\PluginsFile}
+  \newcommand{\SetPluginsFile}[1]{\renewcommand{\PluginsFile}{#1}}
+%[END]
+
+%[BEGIN] UseTheme getter/setter
+  \newcommand{\GetTheme}{default}
+  \newcommand{\SetTheme}[1]{\renewcommand{\GetTheme}{#1}}
+%[END]
+
+%[BEGIN] ThemeColor getter/setter
+  \newcommand{\GetThemeColour}{default}
+  \newcommand{\SetThemeColour}[1]{\renewcommand{\GetThemeColour}{#1}}
+%[END]

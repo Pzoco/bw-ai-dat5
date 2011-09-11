@@ -1,0 +1,19 @@
+% File: layout.tex
+% The main file of the "default"-layout. 
+% Compatible with DHTEXDOCv1
+% This Layout contains:
+%   - Document class definition
+%   - Colour scheme
+
+%[BEGIN] Define document class
+  \SetDocClass{memoir}
+  \SetDocClassOptions{a4paper,twoside,10pt,openright}
+%[END]
+
+%[BEGIN] Choose colour scheme
+  \SetDocColourScheme{defaultscheme} % Relative path from this file
+%[END]
+
+%[BEGIN] Load Colour scheme
+  \input{\DocLayoutPath/\GetDocColourScheme}
+%[END]

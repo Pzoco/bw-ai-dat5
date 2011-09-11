@@ -1,0 +1,39 @@
+%[LABEL] Insert centered figure plugin
+%[VERSION] 1.0
+% File: insertcenteredfigure.tex
+% Inserts a centered figure into the document
+
+%[BEGIN] Insert centered figure
+  % Parameters
+  % 1. Options
+  % 2. Relative path from Figures/
+  % 3. Caption text
+  % 4. Label (for referencing)
+  \newcommand{\insertfigure}[4]{%
+    \begin{figure}[h!] %
+      \centering %
+        \includegraphics[#1]{\FiguresPath/#2} %
+        \caption{#3} %
+        \label{#4} %
+    \end{figure} %
+  } 
+%[END]
+
+%[BEGIN] Insert centered figure with new margins
+  % Parameters
+  % 1. Options
+  % 2. Relative path from Figures/
+  % 3. Caption text
+  % 4. Label (for referencing)
+  \newcommand{\insertmarginfigure}[5]{%
+    \begin{figure}[h!] %
+      \begin{adjustwidth}{#5}{#5}
+        \centering %
+        \includegraphics[#1]{\FiguresPath/#2} %
+      \end{adjustwidth}       
+      \caption{#3} %
+      \label{#4} %
+    \end{figure} %
+  } 
+%[END]
+
