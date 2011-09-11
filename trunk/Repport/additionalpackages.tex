@@ -1,0 +1,69 @@
+%[LABEL] Additional packages
+%[REQUIRE] core
+% File: additionalpackages.tex
+% Include additional packages
+
+% Package includes goes beyound this line
+	%[BEGIN] Font packages
+  	   %\usepackage[scaled=0.90]{helvet}
+  		% Make Computer Modern font scabable even if we do not need to adjust the font size
+    	% the packages makes text clearer in pdf-readers
+  	   \usepackage{type1cm}
+   %[END]
+	
+   %[BEGIN] Math packages
+      \usepackage{amssymb}
+	   \usepackage{amsmath}
+	   \usepackage{multirow}
+	   \usepackage{amsthm}
+      \usepackage{nicefrac}
+	%[END]
+	
+	%[BEGIN] Document encoding
+      \usepackage[utf8x]{inputenc} % Sets the document encoding to UFT8 standard
+   %[END]
+    
+ 	%[BEGIN] Last Page package
+  	   \usepackage{lastpage}
+	%[END]
+	
+	%[BEGIN] Float control 
+      \usepackage{float}
+   %[END]
+  
+   %[BEGIN] Appendix package
+      \usepackage{appendix}
+   %[END]
+  
+   %[BEGIN] Sourcecode environment requirements
+      \usepackage{listings}
+      %\usepackage{libertine}
+   %[END]
+  
+   %[BEGIN] Caption package
+      \usepackage{caption}
+   %[END]
+  
+   %[BEGIN] Initialize colour packages
+	   \usepackage{color}
+	   \usepackage[table]{xcolor}
+	   \usepackage{colortbl}
+   %[END]
+  
+   %[BEGIN] Section title manipulation package
+      %\usepackage{titlesec}
+   %[END]
+
+   %[BEGIN] Figure packages
+      \usepackage{float}  
+      \usepackage[pdftex]{graphicx}
+   %[END] Figure packages
+  
+   %[BEGIN] UML diagram package
+	   \usepackage{tikz}
+      \usepackage{textcomp}
+   %[END] UML diagram package
+   
+   %[BEGIN] margin package: geometry
+    \usepackage[total={5in,8.75in},top=1in,left=1.5in,bottom=1.0in]{geometry}
+   %[END]
