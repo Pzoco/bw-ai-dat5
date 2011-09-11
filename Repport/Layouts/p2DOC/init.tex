@@ -1,0 +1,19 @@
+% File: init.tex
+% The main file of the "p2DOC"-layout. 
+% Compatible with DHTEXDOCv1
+% This Layout contains:
+%   - Document class definition
+%   - Colour scheme
+
+%[BEGIN] Define document class
+  \SetDocClass{report}
+  \SetDocClassOptions{a4paper,twoside,9pt}
+%[END]
+
+%[BEGIN] Choose colour scheme
+  \SetDocColourScheme{defaultscheme} % Relative path from this file
+%[END]
+
+%[BEGIN] Load Colour scheme
+  \input{\DocLayoutPath/\GetDocColourScheme}
+%[END]

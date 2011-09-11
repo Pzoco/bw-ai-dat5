@@ -1,0 +1,13 @@
+% New commands for source code listing comments [START]
+  % \scccomment{linenum1}{linenum2} - Comment on specific lines in source code
+  \newcommand{\sccomment}[2]{\textbf{Linje #1\--#2}}
+  
+  %\newcommand{\scfunc}[1]{{\fontfamily{phv}\selectfont#1}} 
+  \newcommand{\scfunc}[1]{{\footnotesize\sffamily\bfseries#1}}
+  \newcommand{\scvar}[1]{{\footnotesize\sffamily\itshape#1}}
+
+  \newcommand{\scdtype}[1]{{\footnotesize\sffamily\bfseries#1}}
+  \newcommand{\sctagn}[1]{{\footnotesize\sffamily\bfseries#1}}
+  \newcommand{\sctag}[1]{{\sctagn{\textless{}#1\textgreater}}}
+  \newcommand{\scatt}[1]{{\footnotesize\sffamily\slshape{#1}}}
+% New commands for source code listing comments [END]
