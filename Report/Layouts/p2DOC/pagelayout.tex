@@ -1,0 +1,35 @@
+%[LABEL] pagelayout
+% File: pagelayout.tex
+% Sets the page layout
+
+%[BEGIN] Define page headers and footers
+  %[BEGIN] Load fancy headers package
+    \usepackage{fancyhdr}
+  %[END]
+  
+  % Document visual header definition
+	\setlength{\headheight}{15pt}
+ 	
+ 	\pagestyle{fancy}
+	\renewcommand{\chaptermark}[1]{\markboth{\small{\scshape{#1}}\ \scshape{\small{\thechapter}}}{}}
+	\renewcommand{\sectionmark}[1]{\markright{\scshape{\small{\thesection}}\ \small{\scshape{#1}}}}
+
+	\fancyhf{}
+	\fancyhead[LE,RO]{\thepage}
+	\fancyhead[LO]{\rightmark}
+	\fancyhead[RE]{\leftmark}
+	
+	\renewcommand{\headrule}{{\color{black}%
+  \hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+	\renewcommand{\headrulewidth}{0.3pt}
+	\renewcommand{\footrulewidth}{0pt}
+
+	\addtolength{\headheight}{0.5pt}
+	\setlength{\footskip}{0in}
+	\renewcommand{\footruleskip}{0pt}
+	\fancypagestyle{plain}{%
+		\fancyhead{}
+		\renewcommand{\headrulewidth}{0pt}
+	}
+
+%[END]

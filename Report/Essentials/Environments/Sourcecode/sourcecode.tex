@@ -1,0 +1,82 @@
+% Source: http://zuttobenkyou.wordpress.com/2010/12/05/latex-saner-source-code-listings-no-starch-press-style/
+%\newcommand{\numold}[1]{{\addfontfeature{Numbers=OldStyle}#1}}
+\usepackage{\CustomEnvironmentsPath/Sourcecode/libertine} % for the pretty dark-circle-enclosed numbers
+%[REQUIRE] [PACKAGE]libertine [PACKAGE]lstlisting
+% Allow "No Starch Press"-like custom line numbers (essentially, bulleted line numbers for only those lines the author will address)
+\newcounter{lstNoteCounter}
+\newcommand{\lnnum}[1]
+	    {{\ifthenelse{#1=1}{\libertineGlyph{uni2776}}%
+	    {\ifthenelse{#1=2}{\libertineGlyph{uni2777}}%
+ 	    {\ifthenelse{#1=3}{\libertineGlyph{uni2778}}%
+	    {\ifthenelse{#1=4}{\libertineGlyph{uni2779}}%
+	    {\ifthenelse{#1=5}{\libertineGlyph{uni277A}}%
+	    {\ifthenelse{#1=6}{\libertineGlyph{uni277B}}%
+	    {\ifthenelse{#1=7}{\libertineGlyph{uni277C}}%
+	    {\ifthenelse{#1=8}{\libertineGlyph{uni277D}}%
+	    {\ifthenelse{#1=9}{\libertineGlyph{uni277E}}%
+	    {\ifthenelse{#1=10}{\libertineGlyph{uni277F}}%
+	    {\ifthenelse{#1=11}{\libertineGlyph{uni24EB}}%
+	    {\ifthenelse{#1=12}{\libertineGlyph{uni24EC}}%
+	    {\ifthenelse{#1=13}{\libertineGlyph{uni24ED}}%
+	    {\ifthenelse{#1=14}{\libertineGlyph{uni24EE}}%
+	    {\ifthenelse{#1=15}{\libertineGlyph{uni24EF}}%
+	    {\ifthenelse{#1=16}{\libertineGlyph{uni24F0}}%
+	    {\ifthenelse{#1=17}{\libertineGlyph{uni24F1}}%
+	    {\ifthenelse{#1=18}{\libertineGlyph{uni24F2}}%
+	    {\ifthenelse{#1=19}{\libertineGlyph{uni24F3}}%
+	    {\ifthenelse{#1=20}{\libertineGlyph{uni24F4}}%
+      {NUM TOO HIGH}}}}}}}}}}}}}}}}}}}}}}
+	\newcommand*{\lnote}{\stepcounter{lstNoteCounter}\vbox{\llap{{\lnnum{\thelstNoteCounter}}\hskip 1.6em}}}
+	
+%	\newcommand{\lnnum}[1]
+%	    {{\ifthenelse{#1=1}{1}%
+%	    {\ifthenelse{#1=2}{2}%
+%	    {\ifthenelse{#1=3}{3}%
+%	    {\ifthenelse{#1=4}{4}%
+%	    {\ifthenelse{#1=5}{5}%
+%	    {\ifthenelse{#1=6}{6}%
+%	    {\ifthenelse{#1=7}{7}%
+%	    {\ifthenelse{#1=8}{8}%
+%	    {\ifthenelse{#1=9}{9}%
+%	    {\ifthenelse{#1=10}{10}%
+%	    {\ifthenelse{#1=11}{11}%
+%	    {\ifthenelse{#1=12}{12}%
+%	    {\ifthenelse{#1=13}{13}%
+%	    {\ifthenelse{#1=14}{14}%
+%	    {\ifthenelse{#1=15}{15}%
+%	    {\ifthenelse{#1=16}{16}%
+%	    {\ifthenelse{#1=17}{17}%
+%	    {\ifthenelse{#1=18}{18}%
+%	    {\ifthenelse{#1=19}{19}%
+%	    {\ifthenelse{#1=20}{20}%
+%      {NUM TOO HIGH}}}}}}}}}}}}}}}}}}}}}}
+%\newcommand*{\lnote}{\stepcounter{lstNoteCounter}\vbox{\llap{{\lnnum{\thelstNoteCounter}}\hskip 1.6em}}}
+	
+	\lstnewenvironment{Sourcecode}[1][]
+	{%
+      \lstset{%
+        basicstyle=\GetSourcecodeBasicStyle,%
+        language=C++,%
+        captionpos=b,%
+        tabsize=1,%
+        breaklines=true,%
+        rulesepcolor=\color{\GetSourcecodeBackgroundColour},%
+        numberstyle=\GetSourcecodeNumberStyle,%
+        numbers=left,%
+        numbersep=0.1em,%
+        keywordstyle=\GetSourcecodeKeywordsStyle\color{\GetSourcecodeKeywordsColour},%
+        commentstyle=\GetSourcecodeCommentStyle\color{\GetSourcecodeCommentColour},%
+        stringstyle=\GetSourcecodeStringStyle\color{\GetSourcecodeStringColour},%
+        frame=lines,%
+        framexleftmargin=0.1em,%
+        framexrightmargin=0.5em,%
+        backgroundcolor=\color{\GetSourcecodeBackgroundColour},%
+        showstringspaces=false,%
+        morekeywords={string},%
+        escapeinside={(*@}{@*)},#1 }} %
+        {\setcounter{lstNoteCounter}{0}} % Reset glyph counter
+        
+    % Caption
+    %\DeclareCaptionFormat{sourcecodecap}{\GetSourcecodeCapitionPretext{} \arabic{chapter}.\arabic{lstlisting}: #3}
+    %\captionsetup[Sourcecode]{format=sourcecodecap,textfont=black}
+
