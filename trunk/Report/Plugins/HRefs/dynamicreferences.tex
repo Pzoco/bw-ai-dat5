@@ -1,0 +1,25 @@
+%[LABEL] Hyperref plugin
+%[VERSION] 1.0
+% File: dynamicreferences.tex
+% Makes the references inside the document clickable in a PDF viewer
+
+% hyperref package - NOTE: This MUST be the last initialized package!
+	  % options used:
+	    % internal link activated
+	    % internal link colour set to black
+	    % internal cite-link colour set to black
+	    % internal url-link colour set to black
+	    % Activated page back references inside bibliography
+	\usepackage[colorlinks=true,%
+	           linkcolor=black,%
+	           citecolor=black,%
+	           filecolor=black,%
+	           urlcolor=black,%
+	           pagebackref=true,%
+	           pdfauthor={\GetDocAuthor},%
+	           pdftitle={\GetDocTitle},%
+	           pdfsubject={\GetDocSubject},%
+	           unicode=true,%
+	           pdfcreator={\GetDocCreator},%
+	           pdfproducer={\GetDocProducer},%
+	           pdfkeywords={\GetDocKeywords}]{hyperref}

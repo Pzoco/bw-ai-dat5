@@ -1,0 +1,42 @@
+%[LABEL] Layout numbering
+% File: numbering.tex
+% Customizes the equation, section, figure and much, much more numberings - virtually anything with a number
+
+%[BEGIN] Main matter numbering
+  \SetFrontMatter{%
+    \setcounter{page}{0}%
+    \SetPageNumbering{Roman}%
+    \SetChapterNumbering{\Roman{chapter}}
+    \SetSectionNumbering{\arabic{section}}%
+    \SetSubsectionNumbering{\arabic{section}.\arabic{subsection}}%
+    \SetSubsubsectionNumbering{\arabic{subsection}.\arabic{subsubsection}}%
+    \SetFigureNumbering{F\arabic{chapter}-\arabic{figure}}
+    \SetTableNumbering{T\arabic{chapter}-\arabic{table}}%
+  }
+%[END]
+
+%[BEGIN] Main matter numbering
+  \SetMainMatter{%
+    %\setcounter{page}{0}%
+    \SetPageNumbering{arabic}%
+    \SetChapterNumbering{\arabic{chapter}}%
+    \SetSectionNumbering{\arabic{chapter}.\arabic{section}}%
+    \SetSubsectionNumbering{\arabic{chapter}.\arabic{section}.\arabic{subsection}}%
+    \SetSubsubsectionNumbering{\arabic{subsection}.\arabic{subsubsection}}%
+    \SetFigureNumbering{F\arabic{chapter}-\arabic{figure}}
+    \SetTableNumbering{T\arabic{chapter}-\arabic{table}}
+  }
+%[END]
+
+%[BEGIN] Main matter numbering
+  \SetBackMatter{%
+    %\setcounter{page}{0}%
+    \SetPageNumbering{arabic}%
+    \SetChapterNumbering{\Alph{chapter}}%
+    \SetSectionNumbering{\Alph{chapter}-\Alph{section}}%
+    \SetSubsectionNumbering{}%
+    \SetSubsubsectionNumbering{}%
+    \SetFigureNumbering{F\Alph{chapter}-\arabic{figure}}
+    \SetTableNumbering{T\Alph{chapter}-\arabic{table}}
+  }
+%[END]
