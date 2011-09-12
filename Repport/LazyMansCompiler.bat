@@ -36,11 +36,11 @@ goto ENDWITHPAUSE
 ::Compiling
 :COMPILING
 IF NOT EXIST doc.tex goto ERRORMASTER
-pdflatex.exe doc.tex
-pdflatex.exe doc.tex
-bibtex.exe doc.aux
-pdflatex.exe doc.tex
-pdflatex.exe doc.tex
+pdflatex.exe doc.tex -quiet
+pdflatex.exe doc.tex -quiet
+bibtex.exe doc.aux -quiet
+pdflatex.exe doc.tex -quiet
+pdflatex.exe doc.tex -quiet
 del doc.aux
 del doc.log
 del doc.out
