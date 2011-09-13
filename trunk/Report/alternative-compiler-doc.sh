@@ -27,7 +27,7 @@ ext='.tex'
 # Determine whether a document name was passed from CLI
 if [ -z "$arg" ] 
 then
-  doc='p2DOC'
+  doc='doc'
   echo "** NOTICE: No document name argument was passed from CLI, assuming $doc"
 else
   doc=$arg
