@@ -1,0 +1,395 @@
+class starcraft_terran_tree
+{
+    inputs = ();
+    outputs = ();
+    node_size = (80 40);
+    HR_Desc = "";
+    HR_OOBN_CheckConsistency = "1";
+    HR_OOBN_FitExpand = "1";
+    HR_Zoom_ZoomFactor = "100";
+    HR_Groups_GroupColors = "";
+    HR_Groups_GroupNames = "";
+    HR_Groups_UserGroupsNo = "0";
+    HR_Color_Interface = "21";
+    HR_Color_Instance = "0";
+    HR_Color_Function = "4";
+    HR_Color_Utility = "36";
+    HR_Color_Decision = "17";
+    HR_Color_ContinuousChance = "48";
+    HR_Color_DiscreteChance = "16";
+    HR_Monitor_InitSD = "2";
+    HR_Monitor_Utility_Arrange = "0";
+    HR_Monitor_Mean_Variance = "1";
+    HR_Monitor_Chance_Utility = "1";
+    HR_Monitor_InitStates = "5";
+    HR_Monitor_OpenGraph = "0";
+    HR_Monitor_GraphPrecision = "100";
+    HR_Monitor_AutoUpdGraph = "0";
+    HR_Compile_MaxMinimalSeparators = "100000";
+    HR_Compile_ApproxEpsilon = "1.0E-5";
+    HR_Compile_Approximate = "0";
+    HR_Compile_SaveToMemory = "0";
+    HR_Compile_Compress = "0";
+    HR_Compile_TriangMethod = "0";
+    HR_Propagate_AutoNormal = "1";
+    HR_Propagate_AutoSum = "1";
+    HR_Propagate_Auto = "1";
+    HR_Font_Italic = "0";
+    HR_Font_Weight = "400";
+    HR_Font_Size = "-12";
+    HR_Font_Name = "javax.swing.plaf.FontUIResource[family=Tahoma,name=Tahoma,style=plain,size=11]";
+    HR_Grid_GridShow = "0";
+    HR_Grid_GridSnap = "0";
+    HR_Grid_Y = "40";
+    HR_Grid_X = "40";
+
+    node nuclearsilo
+    {
+	label = "Nuclear Silo";
+	position = (608 41);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[covertops:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node covertops
+    {
+	label = "Covert Ops";
+	position = (489 92);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[sciencefacility:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node physicslab
+    {
+	label = "Physics Lab";
+	position = (341 94);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[sciencefacility:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node sciencefacility
+    {
+	label = "Science Facility";
+	position = (403 162);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[starport:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node controltower
+    {
+	label = "Control Tower";
+	position = (247 167);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[starport:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node comsatstation
+    {
+	label = "Comsat Station";
+	position = (704 263);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[acadamy:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node machineshop
+    {
+	label = "Machine Shop";
+	position = (588 254);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[factory:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node armory
+    {
+	label = "Armory\n";
+	position = (450 250);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[factory:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node starport
+    {
+	label = "Starport";
+	position = (331 249);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[factory:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node factory
+    {
+	label = "Factory";
+	position = (407 320);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[barraks:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node bunker
+    {
+	label = "Bunker";
+	position = (549 322);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[barraks:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node missleturret
+    {
+	label = "Missile Turret";
+	position = (844 340);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[enginerringbay:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node enginerringbay
+    {
+	label = "Engineering Bay";
+	position = (730 400);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[commandcenter:0]";
+	HR_NodeSize = "(147, 44)";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node supplydepot
+    {
+	label = "Supply Depot";
+	position = (487 493);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node refinery
+    {
+	label = "Refinery";
+	position = (742 499);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node acadamy
+    {
+	label = "Acadamy";
+	position = (655 333);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[barraks:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node barraks
+    {
+	label = "Barraks";
+	position = (554 399);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_LinkMode = "[cc:0]";
+	HR_NodeSize = "(104, 43)";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node commandcenter
+    {
+	label = "Command Center";
+	position = (619 491);
+	states = ("false" "true");
+	subtype = boolean;
+	HR_NodeSize = "(123, 61)";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    potential (nuclearsilo)
+    {
+	data = ( 0.01 0.99 );
+    }
+
+    potential (covertops | nuclearsilo)
+    {
+	data = (( 0.8 0.2 )	%  nuclearsilo=false
+		( 0.99 0.01 ));	%  nuclearsilo=true
+    }
+
+    potential (physicslab)
+    {
+	data = ( 0.95 0.05 );
+    }
+
+    potential (sciencefacility | physicslab covertops)
+    {
+	data = ((( 0.8 0.2 )	%  physicslab=false  covertops=false
+		 ( 0.01 0.99 ))	%  physicslab=false  covertops=true
+		(( 0.01 0.99 )	%  physicslab=true  covertops=false
+		 ( 0.001 0.999 )));	%  physicslab=true  covertops=true
+    }
+
+    potential (controltower)
+    {
+	data = ( 0.05 0.95 );
+    }
+
+    potential (comsatstation)
+    {
+	data = ( 0.3 0.7 );
+    }
+
+    potential (machineshop)
+    {
+	data = ( 0.1 0.9 );
+    }
+
+    potential (armory)
+    {
+	data = ( 0.1 0.9 );
+    }
+
+    potential (starport | sciencefacility controltower)
+    {
+	data = ((( 0.9 0.1 )	%  sciencefacility=false  controltower=false
+		 ( 0.05 0.95 ))	%  sciencefacility=false  controltower=true
+		(( 0.05 0.95 )	%  sciencefacility=true  controltower=false
+		 ( 0.99 0.01 )));	%  sciencefacility=true  controltower=true
+    }
+
+    potential (factory | machineshop starport armory)
+    {
+	data = (((( 0.5 0.5 )	%  machineshop=false  starport=false  armory=false
+		  ( 0.05 0.95 ))	%  machineshop=false  starport=false  armory=true
+		 (( 0.05 0.95 )	%  machineshop=false  starport=true  armory=false
+		  ( 0.05 0.95 )))	%  machineshop=false  starport=true  armory=true
+		((( 0.05 0.95 )	%  machineshop=true  starport=false  armory=false
+		  ( 0.01 0.99 ))	%  machineshop=true  starport=false  armory=true
+		 (( 0.01 0.99 )	%  machineshop=true  starport=true  armory=false
+		  ( 0.001 0.999 ))));	%  machineshop=true  starport=true  armory=true
+    }
+
+    potential (bunker)
+    {
+	data = ( 1 1 );
+    }
+
+    potential (missleturret)
+    {
+	data = ( 1 1 );
+    }
+
+    potential (enginerringbay | missleturret)
+    {
+	data = (( 0.3 0.7 )	%  missleturret=false
+		( 0.01 0.99 ));	%  missleturret=true
+    }
+
+    potential (supplydepot)
+    {
+	data = ( 0.001 0.999 );
+    }
+
+    potential (refinery)
+    {
+	data = ( 0.001 0.999 );
+    }
+
+    potential (acadamy | comsatstation)
+    {
+	data = (( 0.5 0.5 )	%  comsatstation=false
+		( 0.01 0.99 ));	%  comsatstation=true
+    }
+
+    potential (barraks | factory bunker acadamy)
+    {
+	data = (((( 0.01 0.99 )	%  factory=false  bunker=false  acadamy=false
+		  ( 0.01 0.99 ))	%  factory=false  bunker=false  acadamy=true
+		 (( 0.01 0.99 )	%  factory=false  bunker=true  acadamy=false
+		  ( 0.01 0.99 )))	%  factory=false  bunker=true  acadamy=true
+		((( 0.01 0.99 )	%  factory=true  bunker=false  acadamy=false
+		  ( 0.01 0.99 ))	%  factory=true  bunker=false  acadamy=true
+		 (( 0.01 0.99 )	%  factory=true  bunker=true  acadamy=false
+		  ( 0.01 0.99 ))));	%  factory=true  bunker=true  acadamy=true
+    }
+
+    potential (commandcenter | enginerringbay barraks)
+    {
+	data = ((( 0.001 0.999 )	%  enginerringbay=false  barraks=false
+		 ( 0.001 0.999 ))	%  enginerringbay=false  barraks=true
+		(( 0.001 0.999 )	%  enginerringbay=true  barraks=false
+		 ( 0.001 0.999 )));	%  enginerringbay=true  barraks=true
+    }
+} % class starcraft_terran_tree
