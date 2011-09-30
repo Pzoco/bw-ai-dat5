@@ -1,0 +1,19 @@
+\section{Potential fields}
+	Potential fields can be used to representing an area of the game using vectors.  The vectors is calculated based on all the objects in the area, and then used to calculate a path trough the area.
+
+	Objects can have two types of influence on form of the potential field an seek behavior or an avoid behavior.
+	
+	If we begin by assuming the out world is empty, and we then introduce a single enemy unit we want to attack, this would result in the entire area begin flooded with vectors pointing toward this point, as seen in figure \ref{fig:seekbehavior}. This is called the seek behavior, because it makes our own units want to reach this point in order to attack it.
+	
+	\insertmarginfigure{height=3in}{Potentialfields/seek.png}
+		{Seek behavior\cite{pft}}{fig:seekbehavior}{-3in}
+	
+	Likewise if we assume there is only a single obstacles in the area, this could be a unit we did not want to attack, it would generate a repulsive field around it, see figure \ref{fig:avoidbehavior}. This is called the avoid behavior because it causes our own units to try and move away from it.
+
+	\insertmarginfigure{height=3in}{Potentialfields/avoid.png}
+		{Avoid behavior\cite{pft}}{fig:avoidbehavior}{-3in}
+		
+	These two kind of behaviours can then be combined to make a map that can tell our unit how to move around enemy units and reach a specific target as seen in figure \ref{fig:combinedbehavior}.
+	
+	\insertmarginfigure{height=3in}{Potentialfields/combined.png}
+		{Combined behavior\cite{pft}}{fig:combinedbehavior}{-3in}
