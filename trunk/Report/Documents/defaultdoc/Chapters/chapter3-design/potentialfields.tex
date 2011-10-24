@@ -23,7 +23,7 @@
 		
 		$f =$ force\\
 		$d =$ distance from unit to object\\
-		$s =$ size of the potientialfield\\
+		$s =$ size of the potential field\\
 		$c =$ fade of constant\\
 	
 		Seek = \begin{cases}
@@ -39,9 +39,48 @@
 		
 		But we want to have more then just these to simple cases.
 		
-	 \subsection{Scenarioes}
-		Individual units avoid field, recharging avoid field, collective goal seek, enamy army avoid.
+	 \subsection{Scenarios}
+		In this subsection we will discuss the different kinds of potential fields we are going to use.
 		
+		\subsubsection{Individual units field}
+		All of the individual units in our army should have a variable sized avoid field. This potential field is use to spread the units out if they encounter an enemy with splash damage.
+		
+		TODO = \begin{cases}
+				a & \text{if}\\
+				b & \text{else}
+			\end{cases}		
+		
+		\subsubsection{Army seek field}
+		In contrast to the \textit{individual units} field, the army seek, is a seeking potential field used to insure that the army doesn't split up into smaller groups by makes the seek to stick together. The two field thus work together to make the army stick together but not close enough to sustain heavy splash damage.
+		
+		TODO = \begin{cases}
+				a & \text{if}\\
+				b & \text{else}
+			\end{cases}	
+		
+		\subsubsection{Recharging avoid field} 
+		This field is used to make the units flee while recharging, as to substain the least amount of damage.
+		
+		TODO = \begin{cases}
+				a & \text{if}\\
+				b & \text{else}
+			\end{cases}	
+			
+		\subsubsection{Target goal seek} 
+		Is used to single out a single unit for a collective attack, if desired.
+		
+		TODO = \begin{cases}
+				a & \text{if}\\
+				b & \text{else}
+			\end{cases}	
+			
+		\subsubsection{Enemy army avoid}
+		Is used to keep a safe distance to the enemy's army, as to not receive to much damage.
+		
+		TODO = \begin{cases}
+				a & \text{if}\\
+				b & \text{else}
+			\end{cases}	
 		
 		
 		
