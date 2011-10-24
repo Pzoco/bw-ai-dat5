@@ -17,3 +17,32 @@
 	
 	\insertmarginfigure{height=3in}{Potentialfields/combined.png}
 		{Combined behavior\cite{pft}}{fig:combinedbehavior}{-3in}
+		
+	\subsection{The math behind potential fields}
+		A simple potential field can be described as below.
+		
+		$f =$ force\\
+		$d =$ distance from unit to object\\
+		$s =$ size of the potientialfield\\
+		$c =$ fade of constant\\
+	
+		Seek = \begin{cases}
+				f & \text{if $d < s$}\\
+				0 & \text{else}
+			\end{cases}		
+
+
+		Avoid = \begin{cases}
+				0 & \text{if $d > s$}\\
+				-f * (c * d) & \text{else}
+			\end{cases}		
+		
+		But we want to have more then just these to simple cases.
+		
+	 \subsection{Scenarioes}
+		Individual units avoid field, recharging avoid field, collective goal seek, enamy army avoid.
+		
+		
+		
+		
+		
