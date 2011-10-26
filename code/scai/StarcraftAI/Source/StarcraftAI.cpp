@@ -2,18 +2,23 @@
 using namespace BWAPI;
 
 
+std::list<BWAPI::Unit*> _allUnits;
+//std::set<UnitAgent::UnitAgent*> _allUnitAgents;
+
+
 void StarcraftAI::onStart()
 {
-  
+	//_allUnits.push_front(Broodwar->self()->getUnits());
 }
 
 void StarcraftAI::onEnd(bool isWinner)
 {
-
+	
 }
 
 void StarcraftAI::onFrame()
 {
+	
 }
 
 void StarcraftAI::onSendText(std::string text)

@@ -4,7 +4,6 @@
 #include <BWTA.h>
 #include <windows.h>
 
-
 class StarcraftAI : public BWAPI::AIModule
 {
 public:
