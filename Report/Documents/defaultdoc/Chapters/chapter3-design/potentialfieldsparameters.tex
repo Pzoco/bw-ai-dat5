@@ -2,13 +2,22 @@
 	This section will contain the parameters, which will be tweaked in order to give the vulture an optimal behaviour. Because we are tweaking 
 	potential fields the parameters will either be repulsive or attractive.
 	
+	Variables:\\
+	$f =$ force.\\
+	$da =$ distance to closed ally unit.\\
+	$ds =$ distance from center of army to unit.\\
+	$sv =$ units maximum shooting range.\\
+	$de =$ distance to enamy.\\
+	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
+	$dc =$ distance to cliff or edge.
+	
 	\subsection*{Squad center (Attractive)}
 		A vulture is more likely to survive if it sticks together with it's squad. It will both give a better damage output and also spread out the 
 		damage taken.
 		\begin{displaymath}
-			TODO = \begin{cases}
-					a & \text{if}\\
-					b & \text{else}
+			SquadCenter  = \begin{cases}
+					f \times ds & \text{if } ds > c\\
+					0 & \text{if } ds \leq c
 				\end{cases}		
 		\end{displaymath}
 		
@@ -17,33 +26,34 @@
 		The vultures have to utilize the range they have and therefore they will be attracted to the position which gives them the maximum distance 
 		to the enemies.
 		\begin{displaymath}
-			TODO = \begin{cases}
-					a & \text{if}\\
-					b & \text{else}
+			MaximumDistancePositioning = \begin{cases}
+					fm \times de & \text{if } de \geq sr\\
+					- \frac{fm}{de} & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Ally units (Repulsive)}
 		Because the vultures are not supposed to clump up, we will add some repulsion to ally units.
 		\begin{displaymath}
-			TODO = \begin{cases}
-					a & \text{if}\\
-					b & \text{else}
+			AllyUnits = \begin{cases}
+					0 & \text{if } d > c\\
+					\frac{-f}{da} & \text{if } d \leq c\\
+					-f & \text{if } d = 0
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Weapon cool down (Repulsive)}
 		The vultures is only needed in range of the enemies if they can shoot, so some repulsion is added when attack cool down is present.
 		\begin{displaymath}
-			TODO = \begin{cases}
-					a & \text{if}\\
-					b & \text{else}
+			WeaponCoolDown = \begin{cases}
+					0 & \text{if } wr\\
+					-f & \text{else}
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Edges and cliffs (Repulsive)}
 		As with the ally units, we do not want the vultures to clump up against the wall so cliffs and edges will be repulsive.
 		\begin{displaymath}
-			TODO = \begin{cases}
-					a & \text{if}\\
-					b & \text{else}
+			EdgesAndCliffs = \begin{cases}
+					\frac{-f}{de} & \text{if } de \leq c\\
+					0 & \text{if } de > c
 				\end{cases}		
 		\end{displaymath}
 	
