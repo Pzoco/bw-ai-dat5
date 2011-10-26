@@ -30,3 +30,4 @@ Need to add or edit a chapter?
 To add a picture
 	\insertmarginfigure{height=6in}{path/tofile.png}
 	{Small text under the picture}{fig:howtoref}{-3in} 
+ 
