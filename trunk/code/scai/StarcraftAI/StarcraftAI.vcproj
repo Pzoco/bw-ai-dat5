@@ -183,6 +183,26 @@
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
+			<Filter
+				Name="Units"
+				>
+				<File
+					RelativePath=".\UnitAgent.cpp"
+					>
+				</File>
+				<Filter
+					Name="TerranUnits"
+					>
+					<File
+						RelativePath=".\Vulture.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Managers"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -191,6 +211,14 @@
 			>
 			<File
 				RelativePath=".\Source\StarcraftAI.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitAgent.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Vulture.h"
 				>
 			</File>
 		</Filter>
