@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MathHelper.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
@@ -209,6 +213,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\MathHelper.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Source\StarcraftAI.h"
 				>

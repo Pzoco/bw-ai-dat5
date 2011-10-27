@@ -5,11 +5,13 @@ class UnitAgent
 {
 public:
 	UnitAgent(BWAPI::Unit* unit);
-	virtual double CalculateAllyPotential();
-	virtual double CalculateEnemyPotential();
-	virtual double UnitAgent::CalculateSquadCenterPotential();
-	virtual double UnitAgent::CalculateMaximumDistancePotential();
-	virtual double UnitAgent::CalculateWeaponCoolDownPotential();
-	virtual double UnitAgent::CalculateEdgesPotential();
-	virtual double UnitAgent::CalculatePotentialField();
+	virtual struct PotentialField;
+	virtual void CalculateAllyPotential(PotentialField &field);
+	virtual void CalculateEnemyPotential();
+	virtual void UnitAgent::CalculateSquadCenterPotential();
+	virtual void UnitAgent::CalculateMaximumDistancePotential();
+	virtual void UnitAgent::CalculateWeaponCoolDownPotential();
+	virtual void UnitAgent::CalculateEdgesPotential();
+	virtual void UnitAgent::CalculatePotentialField();
+	virtual void UnitAgent::Initialize(PotentialField &field);
 };
