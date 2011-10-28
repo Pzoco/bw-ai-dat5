@@ -34,6 +34,7 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int
 void MathHelper::GetNearestEnemy(int x, int y)
 {
 	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();
+	//BWAPI::Broodwar->enemy()
 
 }
 int MathHelper::GetNearestAlly(int x, int y)
