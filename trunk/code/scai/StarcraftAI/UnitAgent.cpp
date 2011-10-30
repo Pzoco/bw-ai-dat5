@@ -6,92 +6,154 @@
 
 using namespace BWAPI;
 BWAPI::Unit* _unit;
+BWAPI::Position _currentGoal;
+
 
 UnitAgent::UnitAgent(BWAPI::Unit* unit)
 {
 	_unit = unit;
 }
+#pragma region PF parameters
 
-
-#pragma region CalculatePotential functions
-#define FORCE 25
-struct UnitAgent::PotentialField
+const int FORCE = 25;
+const int SQUADDISTANCE_CONSTANT = 30;
+const int ALLYDISTANCE_CONSTANT = 30;
+const int EDGESDISTANCE_CONSTANT = 30;
+struct UnitAgent::PotentialFieldParameters
 {
-	int Matrix[8];
-	BWAPI::Position SurroundingTiles[8];
 	int f;//force.
 	int da;//distance to closed ally unit.
 	int ds;//distance from center of army to unit.
 	int sv;//units maximum shooting range.
-	int de;//distance to enamy.
+	int de;//distance to enemy.
 	bool wr;//boolean denoting whether or not the weapons are ready to fire.
 	int dc;//distance to cliff or edge.
 };
-
-void UnitAgent::CalculateAllyPotential(PotentialField &field)
+void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 {
-	
-}
-void UnitAgent::CalculateEnemyPotential()
-{
-	
-}
-void UnitAgent::CalculateSquadCenterPotential()
-{
-	
-}
-void UnitAgent::CalculateMaximumDistancePotential()
-{
-	
-}
-void UnitAgent::CalculateWeaponCoolDownPotential()
-{
-	
-}
-void UnitAgent::CalculateEdgesPotential()
-{
-	
-}
-
-void UnitAgent::Initialize(PotentialField &field)
-{
-
 	// finding unit position and setting it to the center of the matrix.
 	Position centerPos = _unit->getPosition();
 	
-	//Calculation surround walking tiles.
-	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
-	std::list<BWAPI::Position> positions = MathHelper::GetSurroundingPositions(centerPos.x(),centerPos.y(),48);
-
-
 	//force.
-	field.f = FORCE;
-	//distance to closed ally unit.
-	field.da = MathHelper::GetNearestAlly(centerPos.x(),centerPos.y());
-	//distance from center of army to unit.
-	field.ds = 0;
-	//units maximum shooting range.
-	field.sv = 0;
-	//distance to enamy.
-	field.de = 0;
+	parameters.f = FORCE;
+	//distance to nearest ally unit.
+	parameters.da = MathHelper::GetNearestAlly(centerPos.x(),centerPos.y());
+	//distance to center of this unit's squad.
+	parameters.ds = 0;
+	//unit's maximum shooting range.
+	parameters.sv = 0;
+	//distance to enemy.
+	parameters.de = 0;
 	//boolean denoting whether or not the weapons are ready to fire.
 	if(_unit->getAirWeaponCooldown() == 0 && _unit->getGroundWeaponCooldown() == 0)
 	{
-		field.wr = true;
+		parameters.wr = true;
 	}
 	else
 	{
-		field.wr = false;
+		parameters.wr = false;
 	}
 	//distance to cliff or edge.
-	field.dc = 0;
+	parameters.dc = 0;
+}
+UnitAgent::PotentialFieldParameters _parameters;
+#pragma endregion PF parameters
+#pragma region CalculatePotential functions
+double UnitAgent::CalculateAllyPotential()
+{
+	if(_parameters.da > ALLYDISTANCE_CONSTANT)
+	{
+		return 0.0;
+	}
+	else if(_parameters.da == ALLYDISTANCE_CONSTANT)
+	{
+		return (-1*FORCE)/_parameters.da;
+	}
+	else
+	{
+		return (-1*FORCE);
+	}
+}
+double UnitAgent::CalculateEnemyPotential()
+{
+	//Not written
+	return 0.0;
+}
+double UnitAgent::CalculateSquadCenterPotential()
+{
+	if(_parameters.ds > SQUADDISTANCE_CONSTANT)
+	{
+		return FORCE*_parameters.ds;
+	}
+	else
+	{
+		return 0.0;
+	}
+}
+double UnitAgent::CalculateMaximumDistancePotential()
+{
+	//Needs fixing in the report
+	return 0.0;
+}
+double UnitAgent::CalculateWeaponCoolDownPotential()
+{
+	if(_parameters.wr)
+	{
+		return 0.0;
+	}
+	else
+	{
+		return (-1*FORCE);
+	}
+}
+double UnitAgent::CalculateEdgesPotential()
+{
+	if(_parameters.dc <= EDGESDISTANCE_CONSTANT)
+	{
+		return (-1*FORCE)/_parameters.dc;
+	}
+	else
+	{
+		return 0.0;
+	}
 }
 
-void UnitAgent::CalculatePotentialField()
+double UnitAgent::CalculatePotentialField(BWAPI::Position)
 {
-	
-	UnitAgent::PotentialField field;
-	UnitAgent::Initialize(field);
-	UnitAgent::CalculateAllyPotential(field);	
+	double potentialOfField = 0.0;
+	potentialOfField = UnitAgent::CalculateAllyPotential();
+	potentialOfField = UnitAgent::CalculateEnemyPotential();
+	potentialOfField = UnitAgent::CalculateSquadCenterPotential();
+	potentialOfField = UnitAgent::CalculateMaximumDistancePotential();
+	potentialOfField = UnitAgent::CalculateWeaponCoolDownPotential();
+	potentialOfField = UnitAgent::CalculateEdgesPotential();
+
+	return potentialOfField;
+}
+BWAPI::Position UnitAgent::GetPotentialBestField()
+{
+	UnitAgent::InitializeParameters(_parameters);
+	Position centerPosition = _unit->getPosition();
+	//Calculation surround walking tiles.
+	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
+	std::list<BWAPI::Position> positions = MathHelper::GetSurroundingPositions(centerPosition.x(),centerPosition.y(),48);
+	BWAPI::Position bestPosition;
+	double bestPotential = -1000.0;
+	for each(BWAPI::Position position in positions)
+	{
+		double currentPotential = CalculatePotentialField(position);
+		if(bestPotential < currentPotential)
+		{
+			bestPosition = position;
+			bestPotential = currentPotential;
+		}
+	}
+	return bestPosition;
 }
 #pragma endregion CalculatePotential functions
+
+void UnitAgent::FindAndSetNewGoal()
+{
+	_currentGoal = GetPotentialBestField();
+	_unit->rightClick(_currentGoal);
+}
