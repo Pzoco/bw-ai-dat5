@@ -43,7 +43,18 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 	//distance to nearest ally unit.
 	parameters.da = MathHelper::GetNearestAlly(centerPos.x(),centerPos.y());
 	//distance to center of this unit's squad.
-	parameters.ds = 0;
+	
+	/* just need to add the squad.. its not defined yet
+	int squadX = 0;
+	int squady = 0;
+	MathHelper::GetSquadCenter(squad,squadX,squady);
+	BWAPI::Position squadPos;
+	squadPos.x = squadX;
+	squadPos.y = squadY;
+	parameters.ds = _unit->getDistance(squadPos);
+	*/
+
+
 	//unit's maximum shooting range. -1 if no wepaon for this type.
 	if(_unit->getType().groundWeapon() != BWAPI::WeaponTypes::None)
 	{

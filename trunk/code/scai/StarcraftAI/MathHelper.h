@@ -8,5 +8,5 @@ public:
 	static BWAPI::Position GetPositionFromAngle(int x, int y, int angle, int length);
 	static int GetNearestEnemy(int x, int y);
 	static int GetNearestAlly(int x, int y);
-	static void GetSquadCenter(std::list<BWAPI::Unit*>, int &x, int &y);
+	static void GetSquadCenter(std::set<BWAPI::Unit*> listOfUnits, int &x, int &y);
 };

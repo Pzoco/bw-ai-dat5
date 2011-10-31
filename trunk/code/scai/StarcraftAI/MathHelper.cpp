@@ -85,9 +85,36 @@ int MathHelper::GetNearestAlly(int x, int y)
 	}
 	return distance;
 }
+
 //This function takes int &x, int &y not to use it as input but to allow to return to values ;)
-void MathHelper::GetSquadCenter(std::list<BWAPI::Unit*>, int &x, int &y)
+void MathHelper::GetSquadCenter(std::set<BWAPI::Unit*> listOfUnits, int &x, int &y)
 {
-	
+	/*
+		Center of mass from http://klassewiki.dk/OTG3B/index.php/1._September,_Fysik
+		xG = (m1*x1 + m2*x2 .. mi*xi)/(m1+m2+...mi)
+
+		yG = (m1*y1 + m2*y2 .. mi*yi)/(m1+m2+...mi)
+
+		for now all units have the same mass (equaly importent).
+	*/
+	int mass = 1;
+	int n = 0;
+	for(std::set<BWAPI::Unit*>::const_iterator i = listOfUnits.begin(); i != listOfUnits.end(); i++)
+	{
+		n++;
+		BWAPI::Position unitPos = (*i)->getPosition();
+		x += (mass*unitPos.x());
+	}
+	x = x/(n*mass);
+
+	for(std::set<BWAPI::Unit*>::const_iterator j = listOfUnits.begin(); j != listOfUnits.end(); j++)
+	{
+		BWAPI::Position unitPos = (*j)->getPosition();
+		y += (mass*unitPos.y());
+	}
+	y = y/(n*mass);
+
+	//Center is now calculated
+
 	return;
 }
