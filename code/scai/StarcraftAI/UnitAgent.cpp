@@ -8,7 +8,9 @@ using namespace BWAPI;
 BWAPI::Unit* _unit;
 BWAPI::Position _currentGoal;
 
-
+UnitAgent::UnitAgent()
+{
+}
 UnitAgent::UnitAgent(BWAPI::Unit* unit)
 {
 	_unit = unit;

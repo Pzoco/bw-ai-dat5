@@ -4,6 +4,7 @@
 class UnitAgent
 {
 public:
+	UnitAgent();
 	UnitAgent(BWAPI::Unit* unit);
 	virtual struct PotentialFieldParameters;
 	virtual double UnitAgent::CalculateAllyPotential();
