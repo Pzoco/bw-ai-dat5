@@ -14,21 +14,25 @@ UnitAgent::UnitAgent(BWAPI::Unit* unit)
 	_unit = unit;
 }
 #pragma region PF parameters
-
+#pragma region PF constants
 const int FORCE = 25;
 const int SQUADDISTANCE_CONSTANT = 30;
 const int ALLYDISTANCE_CONSTANT = 30;
 const int EDGESDISTANCE_CONSTANT = 30;
+#pragma endregion PF constants
+#pragma region PF struct1
 struct UnitAgent::PotentialFieldParameters
 {
 	int f;//force.
 	int da;//distance to closed ally unit.
 	int ds;//distance from center of army to unit.
-	int sv;//units maximum shooting range.
+	int sv;//units maximum shooting range. -1 if no wepaon for this type.
+	int sva;//units maximum shooting range for air. -1 if no wepaon for this type.
 	int de;//distance to enemy.
 	bool wr;//boolean denoting whether or not the weapons are ready to fire.
 	int dc;//distance to cliff or edge.
 };
+#pragma endregion PF struct1
 void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 {
 	// finding unit position and setting it to the center of the matrix.
@@ -40,10 +44,26 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 	parameters.da = MathHelper::GetNearestAlly(centerPos.x(),centerPos.y());
 	//distance to center of this unit's squad.
 	parameters.ds = 0;
-	//unit's maximum shooting range.
-	parameters.sv = 0;
+	//unit's maximum shooting range. -1 if no wepaon for this type.
+	if(_unit->getType().groundWeapon() != BWAPI::WeaponTypes::None)
+	{
+		parameters.sv = _unit->getType().groundWeapon().maxRange();
+	}
+	else
+	{
+		parameters.sv = -1;
+	}
+	//unit's maximum shooting range for air. -1 if no wepaon for this type.
+	if(_unit->getType().airWeapon() != BWAPI::WeaponTypes::None)
+	{
+		parameters.sv = _unit->getType().airWeapon().maxRange();
+	}
+	else
+	{
+		parameters.sv = -1;
+	}
 	//distance to enemy.
-	parameters.de = 0;
+	parameters.de = MathHelper::GetNearestEnemy(centerPos.x(),centerPos.y());
 	//boolean denoting whether or not the weapons are ready to fire.
 	if(_unit->getAirWeaponCooldown() == 0 && _unit->getGroundWeaponCooldown() == 0)
 	{
