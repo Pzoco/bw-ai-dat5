@@ -6,7 +6,7 @@
 	$f =$ force.\\
 	$da =$ distance to closed ally unit.\\
 	$ds =$ distance from center of army to unit.\\
-	$sv =$ units maximum shooting range.\\
+	$sr =$ units maximum shooting range.\\
 	$de =$ distance to enamy.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
 	$dc =$ distance to cliff or edge.
@@ -27,8 +27,8 @@
 		to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
-					fm \times de & \text{if } de \geq sr\\
-					- \frac{fm}{de} & \text{if } de < sr
+					f \times de & \text{if } de \geq sr\\
+					- \frac{f}{de} & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Ally units (Repulsive)}
