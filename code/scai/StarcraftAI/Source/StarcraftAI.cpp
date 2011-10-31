@@ -1,5 +1,5 @@
 #include "StarcraftAI.h"
-#include "K:\uni\StarcraftMI\code\scai\StarcraftAI\UnitAgent.h"
+#include "../UnitAgent.h"
 using namespace BWAPI;
 
 std::list<BWAPI::Unit*> _allUnits;
