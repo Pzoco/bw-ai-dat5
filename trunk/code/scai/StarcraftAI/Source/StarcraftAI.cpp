@@ -1,11 +1,11 @@
 #include "StarcraftAI.h"
-#include "UnitAgent.h"
+#include "K:\uni\StarcraftMI\code\scai\StarcraftAI\UnitAgent.h"
 using namespace BWAPI;
 
 std::list<BWAPI::Unit*> _allUnits;
-std::list<UnitAgent::UnitAgent> _agents;
-//std::set<UnitAgent::UnitAgent*> _allUnitAgents;
-
+//std::list<UnitAgent::UnitAgent*> _agents;
+//std::list<UnitAgent::UnitAgent*> _allUnitAgents;
+std::list<UnitAgent> _allUnitAgents;
 
 void StarcraftAI::onStart()
 {
@@ -15,9 +15,10 @@ void StarcraftAI::onStart()
 	{
 		if((*k)->getType() == BWAPI::UnitTypes::Terran_SCV)
 		{
-			_agents.push_front(UnitAgent::UnitAgent((*k)));
+			_allUnitAgents.push_back(UnitAgent::UnitAgent((*k)));
 		}
 	}
+
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -27,7 +28,7 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	for each(UnitAgent::UnitAgent agent in _agents)
+	for each(UnitAgent agent in _allUnitAgents)
 	{
 		
 	}
