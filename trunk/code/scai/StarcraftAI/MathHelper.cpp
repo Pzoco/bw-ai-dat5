@@ -1,19 +1,32 @@
 #include "MathHelper.h"
 #include "math.h"
+#define PI 3.14159265
 
 BWAPI::Position MathHelper::GetPositionFromAngle(int x, int y, int angle, int length)
 {
 	int xPos, yPos;
-	xPos = x+((int)cos((float)angle))*length;
-	yPos = y+((int)sin((float)angle))*length;
+	//xPos = x+((int)cos((float)angle))*length;
+	//yPos = y+((int)sin((float)angle))*length;
+	double trueAngle = (double)angle*PI/180;
 	
-	return BWAPI::Position(xPos,yPos);
+	double xCos = cos(trueAngle);
+	double ySin = sin(trueAngle);
+	xPos = x+(int)(xCos*(double)length);
+	yPos = y+(int)(ySin*(double)length);
+
+	BWAPI::Position newPos = BWAPI::Position(xPos,yPos);
+	BWAPI::Broodwar->printf("pos %d,%d - tile %d,%d",x,y,newPos.x(),newPos.y());
+	//BWAPI::Broodwar->printf("input: pos=%d,%d - a = %d - l = %d",x,y,angle,length);
+	//BWAPI::Broodwar->printf("GetPositionFromAngle: pos=%d,%d - tile=%d,%d",xPos,yPos,newPos.x(),newPos.y());
+	
+	return newPos;
 }
 std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int tileSize)
 {
 	std::list<BWAPI::Position> positions;
 	int angle = 0;
-	double diagnonalLength = sqrt(double(tileSize^2+tileSize^2));
+	//sqrt(double(tileSize^2+tileSize^2))
+	int diagnonalLength = 68;
 
 	for(int i = 0;i<8;i++)
 	{	
@@ -23,7 +36,7 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int
 		}
 		else
 		{
-			positions.push_front(MathHelper::GetPositionFromAngle(x, y, angle, (int)diagnonalLength));
+			positions.push_front(MathHelper::GetPositionFromAngle(x, y, angle, diagnonalLength));
 		}
 		
 		angle+=45;

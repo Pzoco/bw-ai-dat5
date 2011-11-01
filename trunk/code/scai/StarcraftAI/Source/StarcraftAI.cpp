@@ -3,22 +3,31 @@
 using namespace BWAPI;
 
 std::list<BWAPI::Unit*> _allUnits;
-//std::list<UnitAgent::UnitAgent*> _agents;
-//std::list<UnitAgent::UnitAgent*> _allUnitAgents;
 std::list<UnitAgent> _allUnitAgents;
 
 void StarcraftAI::onStart()
 {
-	//_allUnits.push_front(Broodwar->self()->getUnits());
 	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
+	bool sdf = false;
 	for(std::set<BWAPI::Unit*>::iterator k = myUnits.begin(); k != myUnits.end(); k++)
 	{
-		if((*k)->getType() == BWAPI::UnitTypes::Terran_SCV)
+		if((*k)->getType() == BWAPI::UnitTypes::Terran_SCV && sdf == false)
 		{
+			sdf = true;
 			_allUnitAgents.push_back(UnitAgent::UnitAgent((*k)));
 		}
+		
 	}
-
+	for each(UnitAgent agent in _allUnitAgents)
+	{
+		BWAPI::Broodwar->printf("------------");
+		agent.FindAndSetNewGoal();
+	}
+	/*for each(UnitAgent agent in _allUnitAgents)
+	{
+		BWAPI::Broodwar->printf("%s",agent.GetUnit()->getType().getName().c_str());
+	}*/
+	
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -28,10 +37,7 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	for each(UnitAgent agent in _allUnitAgents)
-	{
-		
-	}
+	
 }
 
 void StarcraftAI::onSendText(std::string text)
