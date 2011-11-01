@@ -1,0 +1,1 @@
+ATM when one field in the PT is negative, and all others are 0, it dosent take into account if any of those 0 are better then others
