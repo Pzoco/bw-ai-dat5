@@ -15,7 +15,7 @@ public:
 	virtual double UnitAgent::CalculateEdgesPotential();
 	virtual double UnitAgent::CalculatePotentialField(BWAPI::Position);
 	virtual void UnitAgent::InitializeParameters(PotentialFieldParameters &field);
-	virtual BWAPI::Position UnitAgent::GetPotentialBestField();
+	virtual BWAPI::Position UnitAgent::GetPotentialBestField(double &_currentGoalPotential);
 	virtual BWAPI::Unit* UnitAgent::GetUnit();
 	virtual void UnitAgent::FindAndSetNewGoal();
 };

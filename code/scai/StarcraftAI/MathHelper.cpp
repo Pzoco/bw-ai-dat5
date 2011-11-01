@@ -28,6 +28,8 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int
 	//sqrt(double(tileSize^2+tileSize^2))
 	int diagnonalLength = 68;
 
+	positions.push_front(BWAPI::Position(x,y));
+
 	for(int i = 0;i<8;i++)
 	{	
 		if(i%2 == 0)
@@ -81,7 +83,7 @@ int MathHelper::GetNearestEnemy(int x, int y)
 
 	return distance;
 }
-int MathHelper::GetNearestAlly(int x, int y)
+int MathHelper::GetNearestAlly(int x, int y, int unitID)
 {
 	//Getting a list of all our units.
 	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
@@ -90,12 +92,16 @@ int MathHelper::GetNearestAlly(int x, int y)
 	//Iterating trough them, and calculating the distance to the closest one
 	for(std::set<BWAPI::Unit*>::const_iterator i = myUnits.begin(); i != myUnits.end(); i++)
 	{
-		int getDist = (*i)->getDistance(BWAPI::Position(x,y));
-		if(getDist < distance)
+		if((*i)->getID() != unitID)
 		{
-			distance = getDist;
+			int getDist = (*i)->getDistance(BWAPI::Position(x,y));
+			if(getDist < distance)
+			{
+				distance = getDist;
+			}
 		}
 	}
+	//BWAPI::Broodwar->printf("distance = %d. from %d,%d to", distance,x,y);
 	return distance;
 }
 
