@@ -15,12 +15,16 @@ UnitAgent::UnitAgent(BWAPI::Unit* unit)
 {
 	_unit = unit;
 }
+BWAPI::Unit* UnitAgent::GetUnit()
+{
+	return _unit;
+}
 #pragma region PF parameters
 #pragma region PF constants
-const int FORCE = 25;
-const int SQUADDISTANCE_CONSTANT = 30;
-const int ALLYDISTANCE_CONSTANT = 30;
-const int EDGESDISTANCE_CONSTANT = 30;
+const int FORCE = 5;
+const int SQUADDISTANCE_CONSTANT = 5;
+const int ALLYDISTANCE_CONSTANT = 5;
+const int EDGESDISTANCE_CONSTANT = 5;
 #pragma endregion PF constants
 #pragma region PF struct1
 struct UnitAgent::PotentialFieldParameters
@@ -94,16 +98,20 @@ UnitAgent::PotentialFieldParameters _parameters;
 #pragma region CalculatePotential functions
 double UnitAgent::CalculateAllyPotential()
 {
+	//BWAPI::Broodwar->printf("_parameters.da is %d",_parameters.da);
 	if(_parameters.da > ALLYDISTANCE_CONSTANT)
 	{
+		//BWAPI::Broodwar->printf("_parameters.da > ALLYDISTANCE_CONSTANT - return 0.0");
 		return 0.0;
 	}
 	else if(_parameters.da == ALLYDISTANCE_CONSTANT)
 	{
+		//BWAPI::Broodwar->printf("_parameters.da == ALLYDISTANCE_CONSTANT - return %d",(-1*FORCE)/_parameters.da);
 		return (-1*FORCE)/_parameters.da;
 	}
 	else
 	{
+		//BWAPI::Broodwar->printf("else - return -5");
 		return (-1*FORCE);
 	}
 }
@@ -154,13 +162,15 @@ double UnitAgent::CalculateEdgesPotential()
 double UnitAgent::CalculatePotentialField(BWAPI::Position)
 {
 	double potentialOfField = 0.0;
-	potentialOfField = UnitAgent::CalculateAllyPotential();
-	potentialOfField = UnitAgent::CalculateEnemyPotential();
-	potentialOfField = UnitAgent::CalculateSquadCenterPotential();
-	potentialOfField = UnitAgent::CalculateMaximumDistancePotential();
-	potentialOfField = UnitAgent::CalculateWeaponCoolDownPotential();
-	potentialOfField = UnitAgent::CalculateEdgesPotential();
-
+	
+	
+	potentialOfField =  UnitAgent::CalculateAllyPotential();
+	//potentialOfField = UnitAgent::CalculateEnemyPotential();
+	//potentialOfField = UnitAgent::CalculateSquadCenterPotential();
+	//potentialOfField = UnitAgent::CalculateMaximumDistancePotential();
+	//potentialOfField = UnitAgent::CalculateWeaponCoolDownPotential();
+	//potentialOfField = UnitAgent::CalculateEdgesPotential();
+	//BWAPI::Broodwar->printf("potentialOfField = %d",potentialOfField);
 	return potentialOfField;
 }
 BWAPI::Position UnitAgent::GetPotentialBestField()
@@ -170,15 +180,25 @@ BWAPI::Position UnitAgent::GetPotentialBestField()
 	//Calculation surround walking tiles.
 	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
 	std::list<BWAPI::Position> positions = MathHelper::GetSurroundingPositions(centerPosition.x(),centerPosition.y(),48);
-	BWAPI::Position bestPosition;
+	BWAPI::Position bestPosition = BWAPI::Position(1,1);
 	double bestPotential = -1000.0;
+
+	//BWAPI::Broodwar->printf("MyPos = %d,%d",_unit->getPosition().x(),_unit->getPosition().y());
 	for each(BWAPI::Position position in positions)
 	{
+		//BWAPI::Broodwar->printf("SuPos = %d,%d",position.x(),position.y());
 		double currentPotential = CalculatePotentialField(position);
+
+		//BWAPI::Broodwar->printf("bestPotential = %d. currentPotential = %d",bestPotential,currentPotential);
 		if(bestPotential < currentPotential)
 		{
 			bestPosition = position;
 			bestPotential = currentPotential;
+
+
+			int a = position.x();
+			int b = position.y();
+			//BWAPI::Broodwar->printf("bestPosition changed to %d,%d.. Potential is %d",a,b,currentPotential);
 		}
 	}
 	return bestPosition;
@@ -188,5 +208,9 @@ BWAPI::Position UnitAgent::GetPotentialBestField()
 void UnitAgent::FindAndSetNewGoal()
 {
 	_currentGoal = GetPotentialBestField();
+
+	//int x = _currentGoal.x();
+	//int y = _currentGoal.y();
+	//BWAPI::Broodwar->printf("Goal at %d,%d..",x,y);
 	_unit->rightClick(_currentGoal);
 }
