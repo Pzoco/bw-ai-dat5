@@ -112,12 +112,14 @@ double UnitAgent::CalculateAllyPotential(BWAPI::Position pos)
 	else if(_parameters.da == ALLYDISTANCE_CONSTANT)
 	{
 		//BWAPI::Broodwar->printf("_parameters.da == ALLYDISTANCE_CONSTANT - return %d",(-1*FORCE)/_parameters.da);
-		return (-1*FORCE)/_parameters.da;
+		return (-1*FORCE);
 	}
 	else
 	{
 		//BWAPI::Broodwar->printf("else - return -5");
-		return (-1*FORCE);
+
+		double work = (double)(-1*FORCE)/(double)_parameters.da;
+		return work;
 	}
 }
 double UnitAgent::CalculateEnemyPotential()
