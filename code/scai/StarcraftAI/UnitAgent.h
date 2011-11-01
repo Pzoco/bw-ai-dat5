@@ -9,7 +9,7 @@ public:
 	virtual struct PotentialFieldParameters;
 	virtual double UnitAgent::CalculateAllyPotential(BWAPI::Position);
 	virtual double UnitAgent::CalculateEnemyPotential();
-	virtual double UnitAgent::CalculateSquadCenterPotential();
+	virtual double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position);
 	virtual double UnitAgent::CalculateMaximumDistancePotential();
 	virtual double UnitAgent::CalculateWeaponCoolDownPotential();
 	virtual double UnitAgent::CalculateEdgesPotential();
