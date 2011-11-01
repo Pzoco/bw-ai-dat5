@@ -23,7 +23,7 @@ BWAPI::Unit* UnitAgent::GetUnit()
 #pragma region PF constants
 const int FORCE = 5;
 const int SQUADDISTANCE_CONSTANT = 5;
-const int ALLYDISTANCE_CONSTANT = 15;
+const int ALLYDISTANCE_CONSTANT = 5;
 const int EDGESDISTANCE_CONSTANT = 5;
 #pragma endregion PF constants
 #pragma region PF struct1
@@ -178,7 +178,7 @@ double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
 	//BWAPI::Broodwar->printf("potentialOfField = %d",potentialOfField);
 	return potentialOfField;
 }
-BWAPI::Position UnitAgent::GetPotentialBestField(double &_currentGoalPotential)
+BWAPI::Position UnitAgent::GetPotentialBestField(double &currentGoalPotential, bool &allZero)
 {
 	UnitAgent::InitializeParameters(_parameters);
 	Position centerPosition = _unit->getPosition();
@@ -203,19 +203,27 @@ BWAPI::Position UnitAgent::GetPotentialBestField(double &_currentGoalPotential)
 			int b = position.y();
 			//BWAPI::Broodwar->printf("bestPosition changed to %d,%d.. Potential is %d",a,b,currentPotential);
 		}
+		if(currentPotential != 0)
+		{
+			allZero = false;
+		}
 	}
-	_currentGoalPotential = bestPotential;
+	currentGoalPotential = bestPotential;
 	return bestPosition;
 }
 #pragma endregion CalculatePotential functions
 
 void UnitAgent::FindAndSetNewGoal()
 {
-	double _currentGoalPotential = 0;
-	_currentGoal = GetPotentialBestField(_currentGoalPotential);
+	double currentGoalPotential = 0;
+	bool allZero = true;
+	_currentGoal = GetPotentialBestField(currentGoalPotential, allZero);
 
-	BWAPI::Broodwar->printf("Goal potential = %d",_currentGoalPotential);
+	BWAPI::Broodwar->printf("Goal potential = %d",currentGoalPotential);
 
-	_unit->rightClick(_currentGoal);
+	if(allZero == false)
+	{
+		_unit->rightClick(_currentGoal);
+	}
 	
 }
