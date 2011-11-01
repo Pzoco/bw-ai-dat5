@@ -11,13 +11,12 @@ void StarcraftAI::onStart()
   Broodwar->enableFlag(Flag::UserInput);
 
 	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
-	bool sdf = false;
+	
 	for(std::set<BWAPI::Unit*>::iterator k = myUnits.begin(); k != myUnits.end(); k++)
 	{
-		if((*k)->getType() == BWAPI::UnitTypes::Terran_SCV && sdf == false)
+		if((*k)->getType() == BWAPI::UnitTypes::Terran_SCV)
 		{
-			sdf = true;
-			_allUnitAgents.push_back(UnitAgent::UnitAgent((*k)));
+			_allUnitAgents.push_front(UnitAgent::UnitAgent((*k)));
 		}
 		
 	}

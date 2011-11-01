@@ -6,7 +6,7 @@
 	$f =$ force.\\
 	$da =$ distance to closed ally unit.\\
 	$ds =$ distance from center of army to unit.\\
-	$dsp =$ distance from center of army to current current vector.\\
+	$dsv =$ distance from center of army to current current vector.\\
 	$sr =$ units maximum shooting range.\\
 	$de =$ distance to enamy.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
@@ -17,7 +17,7 @@
 		damage taken.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
-					f \times (ds - dsp) & \text{if } ds > c\\
+					f \times (ds - dsv) & \text{if } ds > c\\
 					0 & \text{if } ds \leq c
 				\end{cases}		
 		\end{displaymath}
