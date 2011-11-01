@@ -15,7 +15,7 @@ BWAPI::Position MathHelper::GetPositionFromAngle(int x, int y, int angle, int le
 	yPos = y+(int)(ySin*(double)length);
 
 	BWAPI::Position newPos = BWAPI::Position(xPos,yPos);
-	BWAPI::Broodwar->printf("pos %d,%d - tile %d,%d",x,y,newPos.x(),newPos.y());
+	//BWAPI::Broodwar->printf("pos %d,%d - tile %d,%d",x,y,newPos.x(),newPos.y());
 	//BWAPI::Broodwar->printf("input: pos=%d,%d - a = %d - l = %d",x,y,angle,length);
 	//BWAPI::Broodwar->printf("GetPositionFromAngle: pos=%d,%d - tile=%d,%d",xPos,yPos,newPos.x(),newPos.y());
 	
