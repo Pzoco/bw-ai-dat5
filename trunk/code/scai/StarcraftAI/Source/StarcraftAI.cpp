@@ -37,7 +37,11 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	
+	for each(UnitAgent agent in _allUnitAgents)
+	{
+		BWAPI::Broodwar->printf("------------");
+		agent.FindAndSetNewGoal();
+	}
 }
 
 void StarcraftAI::onSendText(std::string text)
