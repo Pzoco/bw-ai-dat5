@@ -24,10 +24,10 @@ void StarcraftAI::onStart()
 	{
 		agent.FindAndSetNewGoal();
 	}
-	/*for each(UnitAgent agent in _allUnitAgents)
+	for each(UnitAgent agent in _allUnitAgents)
 	{
-		BWAPI::Broodwar->printf("%s",agent.GetUnit()->getType().getName().c_str());
-	}*/
+		BWAPI::Broodwar->printf("%d",agent.GetUnit()->getType().getID());
+	}
 	
 }
 
