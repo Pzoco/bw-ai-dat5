@@ -219,7 +219,7 @@ void UnitAgent::FindAndSetNewGoal()
 	bool allZero = true;
 	_currentGoal = GetPotentialBestField(currentGoalPotential, allZero);
 
-	BWAPI::Broodwar->printf("Goal potential = %d",currentGoalPotential);
+	//BWAPI::Broodwar->printf("Goal potential = %d",currentGoalPotential);
 
 	if(allZero == false)
 	{

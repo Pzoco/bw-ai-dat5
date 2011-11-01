@@ -92,7 +92,7 @@ int MathHelper::GetNearestAlly(int x, int y, int unitID)
 	//Iterating trough them, and calculating the distance to the closest one
 	for(std::set<BWAPI::Unit*>::const_iterator i = myUnits.begin(); i != myUnits.end(); i++)
 	{
-		if((*i)->getID() != unitID)
+		if((*i)->getID() != unitID && (*i)->getType().isBuilding() == false)
 		{
 			int getDist = (*i)->getDistance(BWAPI::Position(x,y));
 			if(getDist < distance)
