@@ -47,7 +47,8 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 	//force.
 	parameters.f = FORCE;
 	//distance to nearest ally unit.
-	parameters.da = MathHelper::GetNearestAlly(centerPos.x(),centerPos.y());
+	//parameters.da is calculated in MathHelper::GetNearestAlly();
+	
 	//distance to center of this unit's squad.
 	
 	/* just need to add the squad.. its not defined yet
@@ -96,8 +97,9 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 UnitAgent::PotentialFieldParameters _parameters;
 #pragma endregion PF parameters
 #pragma region CalculatePotential functions
-double UnitAgent::CalculateAllyPotential()
+double UnitAgent::CalculateAllyPotential(BWAPI::Position pos)
 {
+	_parameters.da = MathHelper::GetNearestAlly(pos.x(),pos.y());
 	//BWAPI::Broodwar->printf("_parameters.da is %d",_parameters.da);
 	if(_parameters.da > ALLYDISTANCE_CONSTANT)
 	{
@@ -159,12 +161,12 @@ double UnitAgent::CalculateEdgesPotential()
 	}
 }
 
-double UnitAgent::CalculatePotentialField(BWAPI::Position)
+double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
 {
 	double potentialOfField = 0.0;
 	
 	
-	potentialOfField =  UnitAgent::CalculateAllyPotential();
+	potentialOfField =  UnitAgent::CalculateAllyPotential(pos);
 	//potentialOfField = UnitAgent::CalculateEnemyPotential();
 	//potentialOfField = UnitAgent::CalculateSquadCenterPotential();
 	//potentialOfField = UnitAgent::CalculateMaximumDistancePotential();
@@ -183,12 +185,10 @@ BWAPI::Position UnitAgent::GetPotentialBestField()
 	BWAPI::Position bestPosition = BWAPI::Position(1,1);
 	double bestPotential = -1000.0;
 
-	//BWAPI::Broodwar->printf("MyPos = %d,%d",_unit->getPosition().x(),_unit->getPosition().y());
 	for each(BWAPI::Position position in positions)
 	{
-		//BWAPI::Broodwar->printf("SuPos = %d,%d",position.x(),position.y());
 		double currentPotential = CalculatePotentialField(position);
-
+		BWAPI::Broodwar->printf("MyPos = %d,%d, SuPos = %d,%d, ptf = %f",_unit->getPosition().x(),_unit->getPosition().y(),position.x(),position.y(),currentPotential);
 		//BWAPI::Broodwar->printf("bestPotential = %d. currentPotential = %d",bestPotential,currentPotential);
 		if(bestPotential < currentPotential)
 		{
