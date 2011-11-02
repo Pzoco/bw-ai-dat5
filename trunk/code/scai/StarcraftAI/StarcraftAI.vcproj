@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ReinforcementLearning.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
@@ -215,6 +219,10 @@
 			>
 			<File
 				RelativePath=".\MathHelper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ReinforcementLearning.h"
 				>
 			</File>
 			<File
