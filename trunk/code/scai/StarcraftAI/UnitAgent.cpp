@@ -25,6 +25,7 @@ const int FORCE = 5;
 const int SQUADDISTANCE_CONSTANT = 50;
 const int ALLYDISTANCE_CONSTANT = 25;
 const int EDGESDISTANCE_CONSTANT = 5;
+
 #pragma endregion PF constants
 #pragma region PF struct1
 struct UnitAgent::PotentialFieldParameters
@@ -59,7 +60,7 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 	MathHelper::GetSquadCenter(myUnits,squadX,squadY);
 	parameters.squadPos = BWAPI::Position(squadX,squadY);
 	parameters.ds = centerPos.getApproxDistance(parameters.squadPos);
-	BWAPI::Broodwar->drawCircle(CoordinateType::Map,squadX,squadY,10,Colors::Green,true);
+	//BWAPI::Broodwar->drawCircle(CoordinateType::Map,squadX,squadY,10,Colors::Green,true);
 
 	//unit's maximum shooting range. -1 if no wepaon for this type.
 	if(_unit->getType().groundWeapon() != BWAPI::WeaponTypes::None)
@@ -73,14 +74,15 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
 	//unit's maximum shooting range for air. -1 if no wepaon for this type.
 	if(_unit->getType().airWeapon() != BWAPI::WeaponTypes::None)
 	{
-		parameters.sv = _unit->getType().airWeapon().maxRange();
+		parameters.sva = _unit->getType().airWeapon().maxRange();
 	}
 	else
 	{
-		parameters.sv = -1;
+		parameters.sva = -1;
 	}
 	//distance to enemy.
-	parameters.de = MathHelper::GetNearestEnemy(centerPos.x(),centerPos.y());
+	parameters.de = MathHelper::GetNearestEnemy(centerPos.x(),centerPos.y(),centerPos);
+
 	//boolean denoting whether or not the weapons are ready to fire.
 	if(_unit->getAirWeaponCooldown() == 0 && _unit->getGroundWeaponCooldown() == 0)
 	{
@@ -143,7 +145,7 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 		int returning = (_parameters.ds - dsv )* FORCE;
 		//BWAPI::Broodwar->printf("CSCP if - ds = %d, c = %d, return = %d",_parameters.ds,SQUADDISTANCE_CONSTANT,returning);
 		//BWAPI::Broodwar->printf("ds = %d, f = %d, return = %d",_parameters.ds,FORCE,(double)returning);
-		Broodwar->drawTextMap(pos.x()+15,pos.y()+15,"%d",returning);
+		//Broodwar->drawTextMap(pos.x()+15,pos.y()+15,"%d",returning);
 
 
 		return returning;
@@ -155,10 +157,40 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 }
 #pragma endregion CalculateSquadCenterPotential
 #pragma region CalculateMaximumDistancePotential
-double UnitAgent::CalculateMaximumDistancePotential()
+double UnitAgent::CalculateMaximumDistancePotential(BWAPI::Position pos)
 {
-	//Needs fixing in the report
-	return 0.0;
+	Position centerPos = _unit->getPosition();
+
+	//Dist from curent square to closest enemy.
+	int centerDist = _parameters.de;
+	int localDist = MathHelper::GetNearestEnemy(pos.x(),pos.y(),centerPos);
+	int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
+	int correctedDist = localDist - distBetweenTheAboveTwo;
+
+	int potential = 0.0;
+	if(_parameters.de == 0.0)
+	{
+		potential = 0;
+		
+		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"if");
+		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
+	}
+	else if(correctedDist > _parameters.sv)
+	{
+		potential = FORCE * correctedDist;
+		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
+		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"else 1");
+		//Broodwar->drawTextMap(pos.x()+20,pos.y()+20,"sr = %d", _parameters.sv);
+	}
+	else if(correctedDist <= _parameters.sv )
+	{
+		potential = (int)( correctedDist /(-1)*FORCE );
+		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
+		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"else 2");
+		//Broodwar->drawTextMap(pos.x()+20,pos.y()+20,"sr = %d", _parameters.sv);
+	}
+	//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",correctedDist);
+	return (double)potential;
 }
 #pragma endregion CalculateMaximumDistancePotential
 #pragma region CalculateWeaponCoolDownPotential
@@ -193,15 +225,15 @@ double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
 	double potentialOfField = 0.0;
 	
 	
-	potentialOfField +=  UnitAgent::CalculateAllyPotential(pos);
-	potentialOfField += UnitAgent::CalculateSquadCenterPotential(pos);
-	//potentialOfFie+ld = UnitAgent::CalculateEnemyPotential();
-	//potentialOfField = UnitAgent::CalculateMaximumDistancePotential();
+	//potentialOfField +=  UnitAgent::CalculateAllyPotential(pos);
+	//potentialOfField += UnitAgent::CalculateSquadCenterPotential(pos);
+	potentialOfField += UnitAgent::CalculateMaximumDistancePotential(pos);
+	//potentialOfFie+ld = UnitAgent::CalculateEnemyPotential();	
 	//potentialOfField = UnitAgent::CalculateWeaponCoolDownPotential();
 	//potentialOfField = UnitAgent::CalculateEdgesPotential();
 	//BWAPI::Broodwar->printf("potentialOfField = %d",potentialOfField);
 	
-	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)potentialOfField);
+	//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)potentialOfField);
 	return potentialOfField;
 }
 #pragma endregion CalculatePotentialField
