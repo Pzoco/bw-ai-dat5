@@ -11,7 +11,7 @@ public:
 	virtual double UnitAgent::CalculateEnemyPotential();
 	virtual double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position);
 	virtual double UnitAgent::CalculateMaximumDistancePotential(BWAPI::Position pos);
-	virtual double UnitAgent::CalculateWeaponCoolDownPotential();
+	virtual double UnitAgent::CalculateWeaponCoolDownPotential(BWAPI::Position pos);
 	virtual double UnitAgent::CalculateEdgesPotential();
 	virtual double UnitAgent::CalculatePotentialField(BWAPI::Position);
 	virtual void UnitAgent::InitializeParameters(PotentialFieldParameters &field);
