@@ -23,7 +23,7 @@ BWAPI::Unit* UnitAgent::GetUnit()
 #pragma region PF constants
 const int FORCE = 5;
 const int SQUADDISTANCE_CONSTANT = 50;
-const int ALLYDISTANCE_CONSTANT = 5;
+const int ALLYDISTANCE_CONSTANT = 25;
 const int EDGESDISTANCE_CONSTANT = 5;
 #pragma endregion PF constants
 #pragma region PF struct1
@@ -133,13 +133,19 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 	int dsv = pos.getApproxDistance(_parameters.squadPos);	
 	//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",_parameters.ds);
 
-	if(_parameters.ds > SQUADDISTANCE_CONSTANT /*&& _parameters.ds > distFromCurrentCell*/)
+	if(dsv >= _parameters.ds)
+	{
+		return 0;
+	}
+	else if(_parameters.ds > SQUADDISTANCE_CONSTANT)
 	{
 
 		int returning = (_parameters.ds - dsv )* FORCE;
 		//BWAPI::Broodwar->printf("CSCP if - ds = %d, c = %d, return = %d",_parameters.ds,SQUADDISTANCE_CONSTANT,returning);
 		//BWAPI::Broodwar->printf("ds = %d, f = %d, return = %d",_parameters.ds,FORCE,(double)returning);
 		Broodwar->drawTextMap(pos.x()+15,pos.y()+15,"%d",returning);
+
+
 		return returning;
 	}
 	else
