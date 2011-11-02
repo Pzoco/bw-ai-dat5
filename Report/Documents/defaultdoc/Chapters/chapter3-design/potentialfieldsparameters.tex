@@ -9,7 +9,7 @@
 	$dsv =$ distance from center of army to current point.\\
 	$sr =$ units maximum shooting range.\\
 	$de =$ distance to enemy.\\
-	$de =$ distance from current point to enemy.\\
+	$due =$ distance from current point to enemy.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
 	$dc =$ distance to cliff or edge.
 	
@@ -40,7 +40,7 @@
 			AllyUnits = \begin{cases}
 					0 & \text{if } da > c\\
 					\frac{-f}{da} & \text{if } da \leq c\\
-					-f & \text{if } da = 0
+					-f * (due - de + due) & \text{if } da = 0
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Weapon cool down (Repulsive)}
