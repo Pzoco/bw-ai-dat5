@@ -8,8 +8,8 @@ std::list<UnitAgent> _allUnitAgents;
 void StarcraftAI::onStart()
 {
 	
-  Broodwar->enableFlag(Flag::UserInput);
-
+	Broodwar->enableFlag(Flag::UserInput);
+	/*
 	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
 	
 	for(std::set<BWAPI::Unit*>::iterator k = myUnits.begin(); k != myUnits.end(); k++)
@@ -27,7 +27,7 @@ void StarcraftAI::onStart()
 	for each(UnitAgent agent in _allUnitAgents)
 	{
 		BWAPI::Broodwar->printf("%d",agent.GetUnit()->getType().getID());
-	}
+	}*/
 	
 }
 
@@ -38,8 +38,15 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	for each(UnitAgent agent in _allUnitAgents)
+	/*for each(UnitAgent agent in _allUnitAgents)
 	{
+		agent.FindAndSetNewGoal();
+	}*/
+	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
+	
+	for(std::set<BWAPI::Unit*>::iterator k = myUnits.begin(); k != myUnits.end(); k++)
+	{
+		UnitAgent agent = UnitAgent::UnitAgent((*k));
 		agent.FindAndSetNewGoal();
 	}
 }
