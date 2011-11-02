@@ -17,6 +17,7 @@
 		damage taken.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
+					0 & \text{if } dsv >= ds\\
 					f \times (ds - dsv) & \text{if } ds > c\\
 					0 & \text{if } ds \leq c
 				\end{cases}		
