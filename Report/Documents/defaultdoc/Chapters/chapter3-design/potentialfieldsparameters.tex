@@ -3,7 +3,7 @@
 	potential fields the parameters will either be repulsive or attractive.
 	
 	Variables:\\
-	$f =$ force.\\
+	$f_c =$ A force used to adjust the potential field.\\
 	$da =$ distance to closed ally unit.\\
 	$ds =$ distance from center of army to unit.\\
 	$dsv =$ distance from center of army to current point.\\
@@ -19,7 +19,7 @@
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
 					0 & \text{if } dsv >= ds\\
-					f \times (ds - dsv) & \text{if } ds > c\\
+					f_{S} \times (ds - dsv) & \text{if } ds > c\\
 					0 & \text{if } ds \leq c
 				\end{cases}		
 		\end{displaymath}
@@ -30,8 +30,8 @@
 		to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
-					f \times de & \text{if } (due - de + due) \geq sr\\
-					- \frac{de}{f} & \text{if } (due - de + due) < sr
+					f_{MDP} \times de & \text{if } (due - de + due) \geq sr\\
+					- \frac{de}{f_{MDP}} & \text{if } (due - de + due) < sr
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Ally units (Repulsive)}
@@ -39,8 +39,8 @@
 		\begin{displaymath}
 			AllyUnits = \begin{cases}
 					0 & \text{if } da > c\\
-					\frac{-f}{da} & \text{if } da \leq c\\
-					-f * (due - de + due) & \text{if } da = 0
+					\frac{-f_{AU}}{da} & \text{if } da \leq c\\
+					-f_{AU} * (due - de + due) & \text{if } da = 0
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Weapon cool down (Repulsive)}
@@ -48,14 +48,14 @@
 		\begin{displaymath}
 			WeaponCoolDown = \begin{cases}
 					0 & \text{if } wr\\
-					-f & \text{else}
+					-f_{WCD} & \text{else}
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Edges and cliffs (Repulsive)}
 		As with the ally units, we do not want the vultures to clump up against the wall so cliffs and edges will be repulsive.
 		\begin{displaymath}
 			EdgesAndCliffs = \begin{cases}
-					\frac{-f}{de} & \text{if } de \leq c\\
+					\frac{-f_{EAC}}{de} & \text{if } de \leq c\\
 					0 & \text{if } de > c
 				\end{cases}		
 		\end{displaymath}
