@@ -28,7 +28,6 @@ void StarcraftAI::onStart()
 	{
 		BWAPI::Broodwar->printf("%d",agent.GetUnit()->getType().getID());
 	}*/
-	
 }
 
 void StarcraftAI::onEnd(bool isWinner)

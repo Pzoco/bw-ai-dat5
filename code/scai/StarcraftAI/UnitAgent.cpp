@@ -227,7 +227,8 @@ double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
 	
 	//potentialOfField +=  UnitAgent::CalculateAllyPotential(pos);
 	//potentialOfField += UnitAgent::CalculateSquadCenterPotential(pos);
-	potentialOfField += UnitAgent::CalculateMaximumDistancePotential(pos);
+	//potentialOfField += UnitAgent::CalculateMaximumDistancePotential(pos);
+	potentialOfField += UnitAgent::CalculateWeaponCoolDownPotential();
 	//potentialOfFie+ld = UnitAgent::CalculateEnemyPotential();	
 	//potentialOfField = UnitAgent::CalculateWeaponCoolDownPotential();
 	//potentialOfField = UnitAgent::CalculateEdgesPotential();
