@@ -21,16 +21,22 @@ BWAPI::Unit* UnitAgent::GetUnit()
 	return _unit;
 }
 #pragma region PF constants
-const int FORCE = 5;
-const int SQUADDISTANCE_CONSTANT = 50;
-const int ALLYDISTANCE_CONSTANT = 25;
-const int EDGESDISTANCE_CONSTANT = 5;
-
+struct UnitAgent::Constants
+{
+	int FORCEALLY;
+	int FORCESQUAD;
+	int FORCEMAXDIST;
+	int FORCECOOLDOWN;
+	int FORCEEDGE;
+	int SQUADDISTANCE_CONSTANT;
+	int ALLYDISTANCE_CONSTANT;
+	int EDGESDISTANCE_CONSTANT;
+};
+UnitAgent::Constants _constants;
 #pragma endregion PF constants
 #pragma region PF struct1
 struct UnitAgent::PotentialFieldParameters
 {
-	int f;//force.
 	int da;//distance to closed ally unit.
 	int ds;//distance from center of army to unit.
 	int sv;//units maximum shooting range. -1 if no wepaon for this type.
@@ -43,13 +49,19 @@ struct UnitAgent::PotentialFieldParameters
 };
 #pragma endregion PF struct1
 #pragma region PF InitializeParameters
-void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters)
+void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters,Constants &constants)
 {
+	constants.FORCEALLY = 5;
+	constants.FORCESQUAD = 5;
+	constants.FORCEMAXDIST = 5;
+	constants.FORCECOOLDOWN = 5;
+	constants.FORCEEDGE = 5;
+	constants.SQUADDISTANCE_CONSTANT = 50;
+	constants.ALLYDISTANCE_CONSTANT = 25;
+	constants.EDGESDISTANCE_CONSTANT = 5;
+
 	// finding unit position and setting it to the center of the matrix.
 	Position centerPos = _unit->getPosition();
-	
-	//force.
-	parameters.f = FORCE;
 	//distance to nearest ally unit.
 	//parameters.da is calculated in MathHelper::GetNearestAlly();
 	
@@ -103,21 +115,21 @@ double UnitAgent::CalculateAllyPotential(BWAPI::Position pos)
 	_parameters.da = MathHelper::GetNearestAlly(pos.x(),pos.y(),_unit->getID());
 	//BWAPI::Broodwar->printf("_parameters.da is %d",_parameters.da);
 	//BWAPI::Broodwar->printf("da = %d - ", _parameters.da);
-	if(_parameters.da > ALLYDISTANCE_CONSTANT)
+	if(_parameters.da > _constants.ALLYDISTANCE_CONSTANT)
 	{
 		//BWAPI::Broodwar->printf("_parameters.da > ALLYDISTANCE_CONSTANT - return 0.0");
 		return 0.0;
 	}
-	else if(_parameters.da == ALLYDISTANCE_CONSTANT)
+	else if(_parameters.da == _constants.ALLYDISTANCE_CONSTANT)
 	{
 		//BWAPI::Broodwar->printf("_parameters.da == ALLYDISTANCE_CONSTANT - return %d",(-1*FORCE)/_parameters.da);
-		return (-1*FORCE);
+		return (-1*_constants.FORCEALLY);
 	}
 	else
 	{
 		//BWAPI::Broodwar->printf("else - return -5");
 
-		double work = (double)(-1*FORCE)/(double)_parameters.da;
+		double work = (double)(-1*_constants.FORCEALLY)/(double)_parameters.da;
 		return work;
 	}
 }
@@ -139,10 +151,10 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 	{
 		return 0;
 	}
-	else if(_parameters.ds > SQUADDISTANCE_CONSTANT)
+	else if(_parameters.ds > _constants.SQUADDISTANCE_CONSTANT)
 	{
 
-		int returning = (_parameters.ds - dsv )* FORCE;
+		int returning = (_parameters.ds - dsv )* _constants.FORCESQUAD;
 		//BWAPI::Broodwar->printf("CSCP if - ds = %d, c = %d, return = %d",_parameters.ds,SQUADDISTANCE_CONSTANT,returning);
 		//BWAPI::Broodwar->printf("ds = %d, f = %d, return = %d",_parameters.ds,FORCE,(double)returning);
 		//Broodwar->drawTextMap(pos.x()+15,pos.y()+15,"%d",returning);
@@ -177,14 +189,14 @@ double UnitAgent::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	}
 	else if(correctedDist > _parameters.sv)
 	{
-		potential = FORCE * correctedDist;
+		potential = _constants.FORCEMAXDIST * correctedDist;
 		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
 		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"else 1");
 		//Broodwar->drawTextMap(pos.x()+20,pos.y()+20,"sr = %d", _parameters.sv);
 	}
 	else if(correctedDist <= _parameters.sv )
 	{
-		potential = (int)( correctedDist /(-1)*FORCE );
+		potential = (int)( correctedDist /(-1)*_constants.FORCEMAXDIST );
 		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
 		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"else 2");
 		//Broodwar->drawTextMap(pos.x()+20,pos.y()+20,"sr = %d", _parameters.sv);
@@ -207,7 +219,7 @@ double UnitAgent::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 		int localDist = MathHelper::GetNearestEnemy(pos.x(),pos.y(),centerPos);
 		int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
 		int correctedDist = localDist - distBetweenTheAboveTwo;
-		int toReturn = (-1)*correctedDist*FORCE;
+		int toReturn = (-1)*correctedDist*_constants.FORCECOOLDOWN;
 		Broodwar->drawTextMap(pos.x(),pos.y(),"%d",toReturn);
 
 		return toReturn;
@@ -217,9 +229,9 @@ double UnitAgent::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 #pragma region CalculateEdgesPotential
 double UnitAgent::CalculateEdgesPotential()
 {
-	if(_parameters.dc <= EDGESDISTANCE_CONSTANT)
+	if(_parameters.dc <= _constants.EDGESDISTANCE_CONSTANT)
 	{
-		return (-1*FORCE)/_parameters.dc;
+		return (-1*_constants.FORCEEDGE)/_parameters.dc;
 	}
 	else
 	{
@@ -236,20 +248,19 @@ double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
 	//potentialOfField +=  UnitAgent::CalculateAllyPotential(pos);
 	//potentialOfField += UnitAgent::CalculateSquadCenterPotential(pos);
 	//potentialOfField += UnitAgent::CalculateMaximumDistancePotential(pos);
-	potentialOfField += UnitAgent::CalculateWeaponCoolDownPotential(pos);
-	//potentialOfFie+ld = UnitAgent::CalculateEnemyPotential();	
-	//potentialOfField = UnitAgent::CalculateWeaponCoolDownPotential();
+	//potentialOfField += UnitAgent::CalculateWeaponCoolDownPotential(pos);
 	//potentialOfField = UnitAgent::CalculateEdgesPotential();
+	//potentialOfFie+ld = UnitAgent::CalculateEnemyPotential();	
 	//BWAPI::Broodwar->printf("potentialOfField = %d",potentialOfField);
 	
-	//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)potentialOfField);
+	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)potentialOfField);
 	return potentialOfField;
 }
 #pragma endregion CalculatePotentialField
 #pragma region GetPotentialBestField
 BWAPI::Position UnitAgent::GetPotentialBestField(double &currentGoalPotential, bool &allZero)
 {
-	UnitAgent::InitializeParameters(_parameters);
+	UnitAgent::InitializeParameters(_parameters,_constants);
 	Position centerPosition = _unit->getPosition();
 	//Calculation surround walking tiles.
 	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
@@ -297,3 +308,11 @@ void UnitAgent::FindAndSetNewGoal()
 	
 }
 #pragma endregion FindAndSetNewGoal
+UnitAgent::Constants UnitAgent::GetConstants()
+{
+	return _constants;
+}
+void UnitAgent::SetConstants(UnitAgent::Constants cons)
+{
+	_constants = cons;
+}
