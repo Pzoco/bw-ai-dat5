@@ -188,28 +188,32 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Squad.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
 			<Filter
-				Name="Units"
+				Name="Tactics"
 				>
 				<File
-					RelativePath=".\UnitAgent.cpp"
+					RelativePath=".\BaseTactic.cpp"
 					>
 				</File>
-				<Filter
-					Name="TerranUnits"
+				<File
+					RelativePath=".\VultureTactic.cpp"
 					>
-					<File
-						RelativePath=".\Vulture.cpp"
-						>
-					</File>
-				</Filter>
+				</File>
 			</Filter>
 			<Filter
 				Name="Managers"
 				>
+				<File
+					RelativePath=".\TacticsManager.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -217,6 +221,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\BaseTactic.h"
+				>
+			</File>
 			<File
 				RelativePath=".\MathHelper.h"
 				>
@@ -226,11 +234,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Squad.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\StarcraftAI.h"
 				>
 			</File>
 			<File
-				RelativePath=".\UnitAgent.h"
+				RelativePath=".\TacticsManager.h"
 				>
 			</File>
 			<File

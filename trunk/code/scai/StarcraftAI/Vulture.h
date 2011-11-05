@@ -1,10 +1,10 @@
 #pragma once
-#include "UnitAgent.h"
+#include "BaseTactic.h"
 #include <BWAPI.h>
 #include <BWTA.h>
 
 class Vulture :
-	public UnitAgent
+	public BaseTactic
 {
 public:
 	Vulture(BWAPI::Unit* unit);

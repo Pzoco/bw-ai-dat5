@@ -1,33 +1,13 @@
 #include "StarcraftAI.h"
-#include "../UnitAgent.h"
+#include "../BaseTactic.h"
+#include "../TacticsManager.h"
 using namespace BWAPI;
 
-std::list<BWAPI::Unit*> _allUnits;
-std::list<UnitAgent> _allUnitAgents;
+TacticsManager tacticsManager;
 
 void StarcraftAI::onStart()
 {
-	
 	Broodwar->enableFlag(Flag::UserInput);
-	/*
-	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
-	
-	for(std::set<BWAPI::Unit*>::iterator k = myUnits.begin(); k != myUnits.end(); k++)
-	{
-		if((*k)->getType() == BWAPI::UnitTypes::Terran_SCV)
-		{
-			_allUnitAgents.push_front(UnitAgent::UnitAgent((*k)));
-		}
-		
-	}
-	for each(UnitAgent agent in _allUnitAgents)
-	{
-		agent.FindAndSetNewGoal();
-	}
-	for each(UnitAgent agent in _allUnitAgents)
-	{
-		BWAPI::Broodwar->printf("%d",agent.GetUnit()->getType().getID());
-	}*/
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -37,17 +17,7 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	/*for each(UnitAgent agent in _allUnitAgents)
-	{
-		agent.FindAndSetNewGoal();
-	}*/
-	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
-	
-	for(std::set<BWAPI::Unit*>::iterator k = myUnits.begin(); k != myUnits.end(); k++)
-	{
-		UnitAgent agent = UnitAgent::UnitAgent((*k));
-		agent.FindAndSetNewGoal();
-	}
+	tacticsManager.Update();
 }
 
 void StarcraftAI::onSendText(std::string text)
