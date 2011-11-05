@@ -2,7 +2,7 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 
-Vulture::Vulture(BWAPI::Unit* unit):UnitAgent(unit)
+Vulture::Vulture(BWAPI::Unit* unit):BaseTactic(unit)
 {
 
 }

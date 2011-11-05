@@ -1,4 +1,4 @@
-#include "UnitAgent.h"
+#include "BaseTactic.h"
 #include <BWAPI.h>
 #include <BWTA.h>
 #include <math.h>
@@ -9,19 +9,19 @@ BWAPI::Unit* _unit;
 BWAPI::Position _currentGoal;
 
 
-UnitAgent::UnitAgent()
+BaseTactic::BaseTactic()
 {
 }
-UnitAgent::UnitAgent(BWAPI::Unit* unit)
+BaseTactic::BaseTactic(BWAPI::Unit* unit)
 {
 	_unit = unit;
 }
-BWAPI::Unit* UnitAgent::GetUnit()
+BWAPI::Unit* BaseTactic::GetUnit()
 {
 	return _unit;
 }
 #pragma region PF constants
-struct UnitAgent::Constants
+struct BaseTactic::Constants
 {
 	int FORCEALLY;
 	int FORCESQUAD;
@@ -32,10 +32,10 @@ struct UnitAgent::Constants
 	int ALLYDISTANCE_CONSTANT;
 	int EDGESDISTANCE_CONSTANT;
 };
-UnitAgent::Constants _constants;
+BaseTactic::Constants _constants;
 #pragma endregion PF constants
 #pragma region PF struct1
-struct UnitAgent::PotentialFieldParameters
+struct BaseTactic::PotentialFieldParameters
 {
 	int da;//distance to closed ally unit.
 	int ds;//distance from center of army to unit.
@@ -49,7 +49,7 @@ struct UnitAgent::PotentialFieldParameters
 };
 #pragma endregion PF struct1
 #pragma region PF InitializeParameters
-void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters,Constants &constants)
+void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Constants &constants)
 {
 	constants.FORCEALLY = 5;
 	constants.FORCESQUAD = 5;
@@ -108,9 +108,9 @@ void UnitAgent::InitializeParameters(PotentialFieldParameters &parameters,Consta
 	parameters.dc = 0;
 }
 #pragma endregion PF InitializeParameters
-UnitAgent::PotentialFieldParameters _parameters;
+BaseTactic::PotentialFieldParameters _parameters;
 #pragma region CalculateAllyPotential
-double UnitAgent::CalculateAllyPotential(BWAPI::Position pos)
+double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 {
 	_parameters.da = MathHelper::GetNearestAlly(pos.x(),pos.y(),_unit->getID());
 	//BWAPI::Broodwar->printf("_parameters.da is %d",_parameters.da);
@@ -135,14 +135,14 @@ double UnitAgent::CalculateAllyPotential(BWAPI::Position pos)
 }
 #pragma endregion CalculateAllyPotential
 #pragma region CalculateEnemyPotential
-double UnitAgent::CalculateEnemyPotential()
+double BaseTactic::CalculateEnemyPotential()
 {
 	//Not written
 	return 0.0;
 }
 #pragma endregion CalculateEnemyPotential
 #pragma region CalculateSquadCenterPotential
-double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
+double BaseTactic::CalculateSquadCenterPotential(BWAPI::Position pos)
 {
 	int dsv = pos.getApproxDistance(_parameters.squadPos);	
 	//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",_parameters.ds);
@@ -169,7 +169,7 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 }
 #pragma endregion CalculateSquadCenterPotential
 #pragma region CalculateMaximumDistancePotential
-double UnitAgent::CalculateMaximumDistancePotential(BWAPI::Position pos)
+double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 {
 	Position centerPos = _unit->getPosition();
 
@@ -206,7 +206,7 @@ double UnitAgent::CalculateMaximumDistancePotential(BWAPI::Position pos)
 }
 #pragma endregion CalculateMaximumDistancePotential
 #pragma region CalculateWeaponCoolDownPotential
-double UnitAgent::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
+double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 {
 	if(_parameters.wr)
 	{
@@ -227,7 +227,7 @@ double UnitAgent::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 }
 #pragma endregion CalculateWeaponCoolDownPotential
 #pragma region CalculateEdgesPotential
-double UnitAgent::CalculateEdgesPotential()
+double BaseTactic::CalculateEdgesPotential()
 {
 	if(_parameters.dc <= _constants.EDGESDISTANCE_CONSTANT)
 	{
@@ -240,17 +240,17 @@ double UnitAgent::CalculateEdgesPotential()
 }
 #pragma endregion CalculateEdgesPotential
 #pragma region CalculatePotentialField
-double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
+double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 {
 	double potentialOfField = 0.0;
 	
 	
-	//potentialOfField +=  UnitAgent::CalculateAllyPotential(pos);
-	//potentialOfField += UnitAgent::CalculateSquadCenterPotential(pos);
-	//potentialOfField += UnitAgent::CalculateMaximumDistancePotential(pos);
-	//potentialOfField += UnitAgent::CalculateWeaponCoolDownPotential(pos);
-	//potentialOfField = UnitAgent::CalculateEdgesPotential();
-	//potentialOfFie+ld = UnitAgent::CalculateEnemyPotential();	
+	//potentialOfField +=  BaseTactic::CalculateAllyPotential(pos);
+	//potentialOfField += BaseTactic::CalculateSquadCenterPotential(pos);
+	//potentialOfField += BaseTactic::CalculateMaximumDistancePotential(pos);
+	//potentialOfField += BaseTactic::CalculateWeaponCoolDownPotential(pos);
+	//potentialOfField = BaseTactic::CalculateEdgesPotential();
+	//potentialOfFie+ld = BaseTactic::CalculateEnemyPotential();	
 	//BWAPI::Broodwar->printf("potentialOfField = %d",potentialOfField);
 	
 	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)potentialOfField);
@@ -258,9 +258,9 @@ double UnitAgent::CalculatePotentialField(BWAPI::Position pos)
 }
 #pragma endregion CalculatePotentialField
 #pragma region GetPotentialBestField
-BWAPI::Position UnitAgent::GetPotentialBestField(double &currentGoalPotential, bool &allZero)
+BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero)
 {
-	UnitAgent::InitializeParameters(_parameters,_constants);
+	BaseTactic::InitializeParameters(_parameters,_constants);
 	Position centerPosition = _unit->getPosition();
 	//Calculation surround walking tiles.
 	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
@@ -292,8 +292,8 @@ BWAPI::Position UnitAgent::GetPotentialBestField(double &currentGoalPotential, b
 	return bestPosition;
 }
 #pragma endregion GetPotentialBestField
-#pragma region FindAndSetNewGoal
-void UnitAgent::FindAndSetNewGoal()
+#pragma region ExecuteTactic
+void BaseTactic::ExecuteTactic(BWAPI::Unit* unit)
 {
 	double currentGoalPotential = 0;
 	bool allZero = true;
@@ -303,16 +303,16 @@ void UnitAgent::FindAndSetNewGoal()
 
 	if(allZero == false)
 	{
-		_unit->rightClick(_currentGoal);
+		unit->move(_currentGoal);
 	}
 	
 }
-#pragma endregion FindAndSetNewGoal
-UnitAgent::Constants UnitAgent::GetConstants()
+#pragma endregion ExecuteTactic
+BaseTactic::Constants BaseTactic::GetConstants()
 {
 	return _constants;
 }
-void UnitAgent::SetConstants(UnitAgent::Constants cons)
+void BaseTactic::SetConstants(BaseTactic::Constants cons)
 {
 	_constants = cons;
 }
