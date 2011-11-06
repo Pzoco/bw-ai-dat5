@@ -7,6 +7,10 @@
 std::list<BWAPI::Unit*> _units;
 BaseTactic _tactic;
 
+Squad::Squad()
+{
+
+}
 Squad::Squad(std::list<BWAPI::Unit*> units,BaseTactic tactic)
 {
 	_units = units;
@@ -30,4 +34,12 @@ void Squad::ExecuteTactics()
 void Squad::AddUnit(BWAPI::Unit* unit)
 {
 	
+}
+void Squad::RemoveUnit(BWAPI::Unit* unit)
+{
+
+}
+int Squad::GetSize()
+{
+	return _units.size();
 }

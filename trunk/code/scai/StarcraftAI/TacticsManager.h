@@ -1,5 +1,8 @@
 #pragma once
 #include "Squad.h"
+#include <BWAPI.h>
+#include <BWTA.h>
+
 class TacticsManager
 {
 public:
@@ -8,7 +11,7 @@ public:
 	void AddSquad(Squad squad);
 	void RemoveSquad(Squad squad);
 	void AssignToSquad(BWAPI::Unit* unit);
-	void AssignToSquads(std::list<BWAPI::Unit*> units);
+	void AssignToSquads(std::set<BWAPI::Unit*> units);
 private:
 	Squad GetRightSquadList(BWAPI::UnitType);
 };

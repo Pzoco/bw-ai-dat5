@@ -203,7 +203,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\VultureTactic.cpp"
+					RelativePath=".\VultureTactics.cpp"
 					>
 				</File>
 			</Filter>
@@ -246,7 +246,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Vulture.h"
+				RelativePath=".\VultureTactics.h"
 				>
 			</File>
 		</Filter>

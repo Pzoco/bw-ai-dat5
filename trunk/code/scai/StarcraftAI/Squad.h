@@ -5,9 +5,11 @@
 class Squad
 {
 public:
+	Squad();
 	Squad(std::list<BWAPI::Unit*> units,BaseTactic tactic);
 	Squad::Squad(BWAPI::Unit* unit,BaseTactic tactic);
 	void ExecuteTactics();
 	void AddUnit(BWAPI::Unit* unit);
 	void RemoveUnit(BWAPI::Unit* unit);
+	int GetSize();
 };

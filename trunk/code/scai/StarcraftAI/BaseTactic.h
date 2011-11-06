@@ -5,7 +5,6 @@ class BaseTactic
 {
 public:
 	BaseTactic();
-	BaseTactic(BWAPI::Unit* unit);
 	virtual struct Constants;
 	virtual struct PotentialFieldParameters;
 	virtual double BaseTactic::CalculateAllyPotential(BWAPI::Position);
@@ -17,7 +16,6 @@ public:
 	virtual double BaseTactic::CalculatePotentialField(BWAPI::Position);
 	virtual void BaseTactic::InitializeParameters(PotentialFieldParameters &field,Constants &constants);
 	virtual BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero);
-	virtual BWAPI::Unit* BaseTactic::GetUnit();
 	virtual void BaseTactic::ExecuteTactic(BWAPI::Unit*);
 	virtual Constants BaseTactic::GetConstants();
 	virtual void BaseTactic::SetConstants(Constants cons);

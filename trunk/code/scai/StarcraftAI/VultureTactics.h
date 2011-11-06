@@ -3,9 +3,9 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 
-class Vulture :
+class VultureTactics :
 	public BaseTactic
 {
 public:
-	Vulture(BWAPI::Unit* unit);
+	VultureTactics();
 };
