@@ -6,20 +6,11 @@
 
 using namespace BWAPI;
 BWAPI::Unit* _unit;
-BWAPI::Position _currentGoal;
-
 
 BaseTactic::BaseTactic()
 {
 }
-BaseTactic::BaseTactic(BWAPI::Unit* unit)
-{
-	_unit = unit;
-}
-BWAPI::Unit* BaseTactic::GetUnit()
-{
-	return _unit;
-}
+
 #pragma region PF constants
 struct BaseTactic::Constants
 {
@@ -295,15 +286,16 @@ BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, 
 #pragma region ExecuteTactic
 void BaseTactic::ExecuteTactic(BWAPI::Unit* unit)
 {
+	_unit = unit;
 	double currentGoalPotential = 0;
 	bool allZero = true;
-	_currentGoal = GetPotentialBestField(currentGoalPotential, allZero);
+	Position  currentGoal = GetPotentialBestField(currentGoalPotential, allZero);
 
 	//BWAPI::Broodwar->printf("Goal potential = %d",currentGoalPotential);
 
 	if(allZero == false)
 	{
-		unit->move(_currentGoal);
+		unit->move(currentGoal);
 	}
 	
 }
