@@ -1,0 +1,50 @@
+\section{Implementing ootential fields}
+	In this section we will look at the implementation of the potential fields.
+	First the general structure we put in place, then each of the different potential fields. When we describe the individually potential fields all other fields will be turned off, so we only observe the desired field.
+	
+	\subsection{General structure}
+	% TALK ABOUT _constants and _parameters
+	
+	
+	
+	\subsection{Squad center)}	
+		\begin{Sourcecode}[caption=Squad center]
+double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
+{
+	int dsv = pos.getApproxDistance(_parameters.squadPos);
+	(*@\lnote@*)if(dsv >= _parameters.ds){	return 0;	}
+	(*@\lnote@*)else if(_parameters.ds > _constants.SQUADDISTANCE_CONSTANT)
+	{
+		int returning = (_parameters.ds - dsv )* _constants.FORCESQUAD;
+		return returning;
+	}
+	(*@\lnote@*)else{	return 0;	}
+}
+\end{Sourcecode}
+
+		Recall from section \ref{SCA_label}:
+		\begin{itemize}
+			\item  dsv is distance from center of army to current point.
+			\item  ds is distance from center of army to unit.
+		\end{itemize}
+		$F_{S}$ is named $SQUADDISTANCE\_CONSTANT$ in the code.
+		When implementing squad center, its clear from the design in section \ref{SCA_label} that we need three cases. 
+		In case \lnnum{1} we handle the situation where the current vector we are calculating is facing a way from the squad and need to be 0. If we didn't include this step the unit would also be attracted to tiles in the right direction. This is being done because the calculation is based on the distance to the squad and the tiles facing away is at a greater distance but should not be more attractive.
+		
+		\lnnum{2} is concerning the case where we are not within the desired range of the squad. So we calculate how strongly we want to move towards the squad, this depends on the distance. 
+		
+		\lnnum{3} is all other cases, being that the unit is within the squad.
+		
+		All theses three cases can be opserved in figure \ref{fig:SCA}, the selected unit is attracted towards the squad and not attracted to the tiles facing away. The other units are within the desired range of each other so they don't want to move.
+		
+		
+		%(*@\lnote@*)
+		%\lnnum{1}
+
+		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
+			{Squad center attraction}{fig:SCA}{-3in}
+	
+	\subsection*{Maximum distance positioning (Attractive)}
+	\subsection*{Ally units (Repulsive)}
+	\subsection*{Weapon cool down (Repulsive)}
+	\subsection*{Edges and cliffs (Repulsive)}
