@@ -16,7 +16,7 @@ TacticsManager::TacticsManager(void)
 
 }
 
-std::list<Squad> GetRightSquadList(BWAPI::UnitType unitType)
+std::list<Squad> TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
 {
 	if(unitType == BWAPI::UnitTypes::Terran_Vulture){return _vultureSquads;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Marine) { return _marineSquads; }
@@ -28,6 +28,14 @@ std::list<Squad> GetRightSquadList(BWAPI::UnitType unitType)
 
 	//Dont do this :D
 	return _vultureSquads;
+}
+
+void TacticsManager::AddSquad(Squad squad)
+{
+}
+void TacticsManager::RemoveSquad(Squad squad)
+{
+
 }
 void TacticsManager::Update()
 {
@@ -58,7 +66,7 @@ void TacticsManager::Update()
 }
 
 
-void AssignToSquad(BWAPI::Unit* unit)
+void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
 	if(unit->getType() == BWAPI::UnitTypes::Terran_SCV || unit->getType() == BWAPI::UnitTypes::Buildings)
 	{
@@ -77,7 +85,7 @@ void AssignToSquad(BWAPI::Unit* unit)
 		squads.front().AddUnit(unit);
 	}
 }
-void AssignToSquads(std::set<BWAPI::Unit*> units)
+void TacticsManager::AssignToSquads(std::set<BWAPI::Unit*> units)
 {
 	for each(BWAPI::Unit* unit in units)
 	{
