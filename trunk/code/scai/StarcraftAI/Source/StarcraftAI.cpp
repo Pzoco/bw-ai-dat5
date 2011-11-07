@@ -24,7 +24,7 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	//tacticsManager.Update();
+	
 }
 
 void StarcraftAI::onSendText(std::string text)
