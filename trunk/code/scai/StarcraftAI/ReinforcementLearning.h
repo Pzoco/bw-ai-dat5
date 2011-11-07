@@ -1,7 +1,7 @@
-#ifndef GAMMA_H
-#define GAMMA_H
+#ifndef THETA_H
+#define THETA_H
 
-float GAMMA = 0.9;
+float THETA = 0.9;
 
 #endif
 
