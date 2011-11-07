@@ -1,5 +1,5 @@
 
-#include "ReinforcementLearning.h";
+#include "ReinforcementLearning.h"
 //The gamma is defined in header file
 
 /*
