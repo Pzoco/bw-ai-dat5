@@ -34,7 +34,7 @@ void Squad::RemoveUnit(BWAPI::Unit* unit)
 		}
 	}
 }
-void Squad::Execute()
+void Squad::ExecuteTactics()
 {
 	for(std::set<BWAPI::Unit*>::iterator u = _units.begin(); u != _units.end(); u++)
 	{

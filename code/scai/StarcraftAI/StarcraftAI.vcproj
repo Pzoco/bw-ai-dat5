@@ -176,10 +176,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\BaseTactic.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Source\Dll.cpp"
 				>
 			</File>
@@ -199,21 +195,21 @@
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\TacticsManager.cpp"
-				>
-			</File>
 			<Filter
-				Name="Units"
+				Name="Tactics"
 				>
-				<Filter
-					Name="TerranUnits"
+				<File
+					RelativePath=".\BaseTactic.cpp"
 					>
-				</Filter>
+				</File>
 			</Filter>
 			<Filter
 				Name="Managers"
 				>
+				<File
+					RelativePath=".\TacticsManager.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
