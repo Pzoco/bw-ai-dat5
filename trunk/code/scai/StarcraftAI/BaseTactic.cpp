@@ -39,7 +39,7 @@ struct BaseTactic::PotentialFieldParameters
 };
 #pragma endregion PF struct1
 #pragma region PF InitializeParameters
-void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Constants &constants)
+void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Constants &constants, std::set<BWAPI::Unit*> myUnits)
 {
 	constants.FORCEALLY = 5;
 	constants.FORCESQUAD = 5;
@@ -56,7 +56,6 @@ void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Const
 	//parameters.da is calculated in MathHelper::GetNearestAlly();
 	
 	//distance to center of this unit's squad.
-	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits(); //TEST ARMY
 	int squadX = 0;
 	int squadY = 0;
 	MathHelper::GetSquadCenter(myUnits,squadX,squadY);
@@ -236,7 +235,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	
 	
 	//potentialOfField +=  BaseTactic::CalculateAllyPotential(pos);
-	//potentialOfField += BaseTactic::CalculateSquadCenterPotential(pos);
+	potentialOfField += BaseTactic::CalculateSquadCenterPotential(pos);
 	//potentialOfField += BaseTactic::CalculateMaximumDistancePotential(pos);
 	//potentialOfField += BaseTactic::CalculateWeaponCoolDownPotential(pos);
 	//potentialOfField = BaseTactic::CalculateEdgesPotential();
@@ -248,9 +247,9 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 }
 #pragma endregion CalculatePotentialField
 #pragma region GetPotentialBestField
-BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero)
+BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero, std::set<BWAPI::Unit*> mySquad)
 {
-	BaseTactic::InitializeParameters(_parameters,_constants);
+	BaseTactic::InitializeParameters(_parameters,_constants,mySquad);
 	Position centerPosition = _unit->getPosition();
 	//Calculation surround walking tiles.
 	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
@@ -283,12 +282,12 @@ BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, 
 }
 #pragma endregion GetPotentialBestField
 #pragma region ExecuteTactic
-void BaseTactic::ExecuteTactic(BWAPI::Unit* unit)
+void BaseTactic::ExecuteTactic(BWAPI::Unit* unit,std::set<BWAPI::Unit*> theSquad)
 {
 	_unit = unit;
 	double currentGoalPotential = 0;
 	bool allZero = true;
-	Position  currentGoal = GetPotentialBestField(currentGoalPotential, allZero);
+	Position currentGoal = GetPotentialBestField(currentGoalPotential, allZero, theSquad);
 
 	//BWAPI::Broodwar->printf("Goal potential = %d",currentGoalPotential);
 

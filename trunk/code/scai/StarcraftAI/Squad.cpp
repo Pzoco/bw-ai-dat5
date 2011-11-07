@@ -1,45 +1,43 @@
 #include "Squad.h"
-#include "BaseTactic.h"
 #include <BWAPI.h>
 #include <BWTA.h>
+#include "BaseTactic.h"
 
-
-std::list<BWAPI::Unit*> _units;
+std::set<BWAPI::Unit*> _units;
 BaseTactic _tactic;
 
 Squad::Squad()
 {
 
 }
-Squad::Squad(std::list<BWAPI::Unit*> units,BaseTactic tactic)
+Squad::Squad(std::set<BWAPI::Unit*> units,BaseTactic tactic)
 {
 	_units = units;
 	_tactic = tactic;
 }
 Squad::Squad(BWAPI::Unit* unit,BaseTactic tactic)
 {
-	_units.push_back(unit);
+	_units.insert(unit);
 	_tactic = tactic;
 }
-void Squad::ExecuteTactics()
-{
-	for each(BWAPI::Unit* unit in _units)
-	{
-		_tactic.ExecuteTactic(unit);
-	}
-}
-
-
-
 void Squad::AddUnit(BWAPI::Unit* unit)
 {
-	
+	_units.insert(unit);
 }
 void Squad::RemoveUnit(BWAPI::Unit* unit)
 {
-
+	for(std::set<BWAPI::Unit*>::const_iterator u = _units.begin(); u != _units.end(); u++)
+	{
+		if(unit == (*u))
+		{
+			_units.erase(u);
+		}
+	}
 }
-int Squad::GetSize()
+void Squad::Execute()
 {
-	return _units.size();
+	for(std::set<BWAPI::Unit*>::iterator u = _units.begin(); u != _units.end(); u++)
+	{
+		_tactic.ExecuteTactic((*u),_units);
+	}
 }
