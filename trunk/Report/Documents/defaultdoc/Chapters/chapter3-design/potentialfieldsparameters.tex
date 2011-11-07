@@ -24,6 +24,13 @@
 				\end{cases}		
 		\end{displaymath}
 		
+		When we desined squad center, it became clear that we need three cases. 
+		In case 1 we handle the situation where the current vector we are calculating is facing a way from the squad and need to be 0. If we didn't include this step the unit would also be attracted to tiles in the wrong direction. This is being done because the calculation is based on the distance to the squad and the tiles facing away is at a greater distance but should not be more attractive.
+		
+		Case 2 is concerning the case where we are not within the desired range of the squad. So we calculate how strongly we want to move towards the squad, this depends on the distance. 
+		
+		Case 3 is all other cases, being that the unit is within the squad.
+					
 	\subsection*{Maximum distance positioning (Attractive)}
 		The vultures have to utilize the range they have and therefore they will be attracted to the position which gives them the maximum distance 
 		to the enemies.
