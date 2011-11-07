@@ -15,7 +15,7 @@
 	
 	\subsection*{Squad center (Attractive)}
 		A vulture is more likely to survive if it sticks together with it's squad. It will both give a better damage output and also spread out the 
-		damage taken.
+		damage taken\footnote{Each of the cases in the potential fields will be explained in detail in the implementation}.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
 					0 & \text{if } dsv >= ds\\
@@ -23,7 +23,6 @@
 					0 & \text{if } ds \leq c
 				\end{cases}		
 		\end{displaymath}
-		
 		
 	\subsection*{Maximum distance positioning (Attractive)}
 		The vultures have to utilize the range they have and therefore they will be attracted to the position which gives them the maximum distance 
@@ -48,7 +47,7 @@
 		\begin{displaymath}
 			WeaponCoolDown = \begin{cases}
 					0 & \text{if } wr\\
-					-f_{WCD} & \text{else}
+					-f_{WCD} * (due - de + due) & \text{else}
 				\end{cases}		
 		\end{displaymath}
 	\subsection*{Edges and cliffs (Repulsive)}

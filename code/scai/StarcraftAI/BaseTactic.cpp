@@ -10,7 +10,6 @@ BWAPI::Unit* _unit;
 BaseTactic::BaseTactic()
 {
 }
-
 #pragma region PF constants
 struct BaseTactic::Constants
 {
@@ -170,7 +169,7 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
 	int correctedDist = localDist - distBetweenTheAboveTwo;
 
-	int potential = 0.0;
+	int potential = 0;
 	if(_parameters.de == 0.0)
 	{
 		potential = 0;
@@ -241,7 +240,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	//potentialOfField += BaseTactic::CalculateMaximumDistancePotential(pos);
 	//potentialOfField += BaseTactic::CalculateWeaponCoolDownPotential(pos);
 	//potentialOfField = BaseTactic::CalculateEdgesPotential();
-	//potentialOfFie+ld = BaseTactic::CalculateEnemyPotential();	
+	//potentialOfField = BaseTactic::CalculateEnemyPotential();	
 	//BWAPI::Broodwar->printf("potentialOfField = %d",potentialOfField);
 	
 	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)potentialOfField);
