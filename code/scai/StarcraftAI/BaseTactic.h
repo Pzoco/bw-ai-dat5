@@ -14,9 +14,9 @@ public:
 	virtual double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos);
 	virtual double BaseTactic::CalculateEdgesPotential();
 	virtual double BaseTactic::CalculatePotentialField(BWAPI::Position);
-	virtual void BaseTactic::InitializeParameters(PotentialFieldParameters &field,Constants &constants);
-	virtual BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero);
-	virtual void BaseTactic::ExecuteTactic(BWAPI::Unit*);
+	virtual void BaseTactic::InitializeParameters(PotentialFieldParameters &field,Constants &constants, std::set<BWAPI::Unit*> myUnits);
+	virtual BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero, std::set<BWAPI::Unit*> myUnits);
+	virtual void BaseTactic::ExecuteTactic(BWAPI::Unit*,std::set<BWAPI::Unit*>);
 	virtual Constants BaseTactic::GetConstants();
 	virtual void BaseTactic::SetConstants(Constants cons);
 };

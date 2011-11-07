@@ -1,20 +1,23 @@
 #include "StarcraftAI.h"
+#include "../Squad.h"
 #include "../BaseTactic.h"
 #include "../TacticsManager.h"
-#include <BWAPI.h>
-#include <BWTA.h>
 using namespace BWAPI;
-
-TacticsManager *tacticsManager;
-
+TacticsManager tacticsManager;
+Squad mySquad;
 void StarcraftAI::onStart()
 {
+	
 	Broodwar->enableFlag(Flag::UserInput);
-	tacticsManager = new TacticsManager();
-	for(std::set<Unit*>::const_iterator i=Broodwar->self()->getUnits().begin();i!=Broodwar->self()->getUnits().end();i++)
+	
+
+	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
+	for(std::set<BWAPI::Unit*>::const_iterator k = myUnits.begin(); k != myUnits.end(); k++)
 	{
-		tacticsManager->AssignToSquad((*i));
+		tacticsManager.AssignToSquad(*k);
+		//mySquad.AddUnit(*k);
 	}
+
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -24,7 +27,7 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	
+	mySquad.Execute();
 }
 
 void StarcraftAI::onSendText(std::string text)
