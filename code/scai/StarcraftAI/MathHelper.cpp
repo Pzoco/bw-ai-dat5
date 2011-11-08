@@ -2,7 +2,7 @@
 #include "math.h"
 #define PI 3.14159265
 
-BWAPI::Position MathHelper::GetPositionFromAngle(int x, int y, int angle, int length)
+BWAPI::Position MathHelper::GetPositionFromAngle(BWAPI::Position pos, int angle, int length)
 {
 	int xPos, yPos;
 	//xPos = x+((int)cos((float)angle))*length;
@@ -11,8 +11,8 @@ BWAPI::Position MathHelper::GetPositionFromAngle(int x, int y, int angle, int le
 	
 	double xCos = cos(trueAngle);
 	double ySin = sin(trueAngle);
-	xPos = x+(int)(xCos*(double)length);
-	yPos = y+(int)(ySin*(double)length);
+	xPos = pos.x()+(int)(xCos*(double)length);
+	yPos = pos.y()+(int)(ySin*(double)length);
 
 	BWAPI::Position newPos = BWAPI::Position(xPos,yPos);
 	//BWAPI::Broodwar->printf("pos %d,%d - tile %d,%d",x,y,newPos.x(),newPos.y());
@@ -21,24 +21,24 @@ BWAPI::Position MathHelper::GetPositionFromAngle(int x, int y, int angle, int le
 	
 	return newPos;
 }
-std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int tileSize)
+std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(BWAPI::Position pos, int tileSize)
 {
 	std::list<BWAPI::Position> positions;
 	int angle = 0;
 	//sqrt(double(tileSize^2+tileSize^2))
 	int diagnonalLength = 68;
 
-	positions.push_front(BWAPI::Position(x,y));
+	positions.push_front(pos);
 
 	for(int i = 0;i<8;i++)
 	{	
 		if(i%2 == 0)
 		{
-			positions.push_front(MathHelper::GetPositionFromAngle(x, y, angle, tileSize));
+			positions.push_front(MathHelper::GetPositionFromAngle(pos, angle, tileSize));
 		}
 		else
 		{
-			positions.push_front(MathHelper::GetPositionFromAngle(x, y, angle, diagnonalLength));
+			positions.push_front(MathHelper::GetPositionFromAngle(pos, angle, diagnonalLength));
 		}
 		
 		angle+=45;
@@ -46,7 +46,7 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int
 	return positions;
 }
 
-int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position centerPos)
+int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position unitPos)
 {
 	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();	
 	std::set<BWAPI::Unit*> enemieUnits;
@@ -75,7 +75,7 @@ int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position c
 		for(std::set<BWAPI::Unit*>::iterator k = enemieUnits.begin(); k != enemieUnits.end(); k++)
 		{
 			int getDist = (*k)->getDistance(pos);
-			int distFromCenter = (*k)->getDistance(centerPos);
+			int distFromCenter = (*k)->getDistance(unitPos);
 			if(getDist < distance)
 			{
 				rangeModifyer = distFromCenter;
