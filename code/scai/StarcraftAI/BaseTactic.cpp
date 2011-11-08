@@ -10,8 +10,8 @@ BWAPI::Unit* _unit;
 BaseTactic::BaseTactic()
 {
 }
-#pragma region PF constants
-struct BaseTactic::Constants
+#pragma region PF variables
+struct BaseTactic::Variables
 {
 	int FORCEALLY;
 	int FORCESQUAD;
@@ -22,8 +22,8 @@ struct BaseTactic::Constants
 	int ALLYDISTANCE_CONSTANT;
 	int EDGESDISTANCE_CONSTANT;
 };
-BaseTactic::Constants _constants;
-#pragma endregion PF constants
+BaseTactic::Variables _variables;
+#pragma endregion PF variables
 #pragma region PF struct1
 struct BaseTactic::PotentialFieldParameters
 {
@@ -39,16 +39,16 @@ struct BaseTactic::PotentialFieldParameters
 };
 #pragma endregion PF struct1
 #pragma region PF InitializeParameters
-void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Constants &constants, std::set<BWAPI::Unit*> myUnits)
+void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Variables &variables, std::set<BWAPI::Unit*> myUnits)
 {
-	constants.FORCEALLY = 5;
-	constants.FORCESQUAD = 5;
-	constants.FORCEMAXDIST = 5;
-	constants.FORCECOOLDOWN = 5;
-	constants.FORCEEDGE = 5;
-	constants.SQUADDISTANCE_CONSTANT = 50;
-	constants.ALLYDISTANCE_CONSTANT = 25;
-	constants.EDGESDISTANCE_CONSTANT = 5;
+	variables.FORCEALLY = 5;
+	variables.FORCESQUAD = 5;
+	variables.FORCEMAXDIST = 5;
+	variables.FORCECOOLDOWN = 5;
+	variables.FORCEEDGE = 5;
+	variables.SQUADDISTANCE_CONSTANT = 50;
+	variables.ALLYDISTANCE_CONSTANT = 25;
+	variables.EDGESDISTANCE_CONSTANT = 5;
 
 	// finding unit position and setting it to the center of the matrix.
 	Position centerPos = _unit->getPosition();
@@ -63,26 +63,18 @@ void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Const
 	parameters.ds = centerPos.getApproxDistance(parameters.squadPos);
 	//BWAPI::Broodwar->drawCircle(CoordinateType::Map,squadX,squadY,10,Colors::Green,true);
 
-	//unit's maximum shooting range. -1 if no wepaon for this type.
+	//unit's maximum shooting range. -1 if no wepaon of this type.
 	if(_unit->getType().groundWeapon() != BWAPI::WeaponTypes::None)
-	{
 		parameters.sv = _unit->getType().groundWeapon().maxRange();
-	}
 	else
-	{
 		parameters.sv = -1;
-	}
-	//unit's maximum shooting range for air. -1 if no wepaon for this type.
+	//unit's maximum shooting range for air. -1 if no wepaon of this type.
 	if(_unit->getType().airWeapon() != BWAPI::WeaponTypes::None)
-	{
 		parameters.sva = _unit->getType().airWeapon().maxRange();
-	}
 	else
-	{
 		parameters.sva = -1;
-	}
 	//distance to enemy.
-	parameters.de = MathHelper::GetNearestEnemy(centerPos.x(),centerPos.y(),centerPos);
+	parameters.de = MathHelper::GetNearestEnemy(centerPos,centerPos);
 
 	//boolean denoting whether or not the weapons are ready to fire.
 	if(_unit->getAirWeaponCooldown() == 0 && _unit->getGroundWeaponCooldown() == 0)
@@ -104,21 +96,21 @@ double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 	_parameters.da = MathHelper::GetNearestAlly(pos.x(),pos.y(),_unit->getID());
 	//BWAPI::Broodwar->printf("_parameters.da is %d",_parameters.da);
 	//BWAPI::Broodwar->printf("da = %d - ", _parameters.da);
-	if(_parameters.da > _constants.ALLYDISTANCE_CONSTANT)
+	if(_parameters.da > _variables.ALLYDISTANCE_CONSTANT)
 	{
 		//BWAPI::Broodwar->printf("_parameters.da > ALLYDISTANCE_CONSTANT - return 0.0");
 		return 0.0;
 	}
-	else if(_parameters.da == _constants.ALLYDISTANCE_CONSTANT)
+	else if(_parameters.da == _variables.ALLYDISTANCE_CONSTANT)
 	{
 		//BWAPI::Broodwar->printf("_parameters.da == ALLYDISTANCE_CONSTANT - return %d",(-1*FORCE)/_parameters.da);
-		return (-1*_constants.FORCEALLY);
+		return (-1*_variables.FORCEALLY);
 	}
 	else
 	{
 		//BWAPI::Broodwar->printf("else - return -5");
 
-		double work = (double)(-1*_constants.FORCEALLY)/(double)_parameters.da;
+		double work = (double)(-1*_variables.FORCEALLY)/(double)_parameters.da;
 		return work;
 	}
 }
@@ -140,10 +132,10 @@ double BaseTactic::CalculateSquadCenterPotential(BWAPI::Position pos)
 	{
 		return 0;
 	}
-	else if(_parameters.ds > _constants.SQUADDISTANCE_CONSTANT)
+	else if(_parameters.ds > _variables.SQUADDISTANCE_CONSTANT)
 	{
 
-		int returning = (_parameters.ds - dsv )* _constants.FORCESQUAD;
+		int returning = (_parameters.ds - dsv )* _variables.FORCESQUAD;
 		//BWAPI::Broodwar->printf("CSCP if - ds = %d, c = %d, return = %d",_parameters.ds,SQUADDISTANCE_CONSTANT,returning);
 		//BWAPI::Broodwar->printf("ds = %d, f = %d, return = %d",_parameters.ds,FORCE,(double)returning);
 		//Broodwar->drawTextMap(pos.x()+15,pos.y()+15,"%d",returning);
@@ -162,36 +154,22 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 {
 	Position centerPos = _unit->getPosition();
 
-	//Dist from curent square to closest enemy.
+	//Distance from current square to closest enemy.
 	int centerDist = _parameters.de;
-	int localDist = MathHelper::GetNearestEnemy(pos.x(),pos.y(),centerPos);
+	int localDist = MathHelper::GetNearestEnemy(pos,centerPos);
 	int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
 	int correctedDist = localDist - distBetweenTheAboveTwo;
 
-	int potential = 0;
-	if(_parameters.de == 0.0)
-	{
-		potential = 0;
-		
-		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"if");
-		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
-	}
+
+	double potential = 0;
+	if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
+		potential = 0.0;
 	else if(correctedDist > _parameters.sv)
-	{
-		potential = _constants.FORCEMAXDIST * correctedDist;
-		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
-		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"else 1");
-		//Broodwar->drawTextMap(pos.x()+20,pos.y()+20,"sr = %d", _parameters.sv);
-	}
-	else if(correctedDist <= _parameters.sv )
-	{
-		potential = (int)( correctedDist /(-1)*_constants.FORCEMAXDIST );
-		//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",potential);
-		//Broodwar->drawTextMap(pos.x()+10,pos.y()+10,"else 2");
-		//Broodwar->drawTextMap(pos.x()+20,pos.y()+20,"sr = %d", _parameters.sv);
-	}
-	//Broodwar->drawTextMap(pos.x(),pos.y(),"%d",correctedDist);
-	return (double)potential;
+		potential = double(_variables.FORCEMAXDIST * correctedDist);
+	else if(correctedDist < _parameters.sv )
+		potential = ( correctedDist /(-1)*_variables.FORCEMAXDIST );
+
+	return potential;
 }
 #pragma endregion CalculateMaximumDistancePotential
 #pragma region CalculateWeaponCoolDownPotential
@@ -205,10 +183,10 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 	{
 		Position centerPos = _unit->getPosition();
 		int centerDist = _parameters.de;
-		int localDist = MathHelper::GetNearestEnemy(pos.x(),pos.y(),centerPos);
+		int localDist = MathHelper::GetNearestEnemy(pos,centerPos);
 		int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
 		int correctedDist = localDist - distBetweenTheAboveTwo;
-		int toReturn = (-1)*correctedDist*_constants.FORCECOOLDOWN;
+		int toReturn = (-1)*correctedDist*_variables.FORCECOOLDOWN;
 		Broodwar->drawTextMap(pos.x(),pos.y(),"%d",toReturn);
 
 		return toReturn;
@@ -218,9 +196,9 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 #pragma region CalculateEdgesPotential
 double BaseTactic::CalculateEdgesPotential()
 {
-	if(_parameters.dc <= _constants.EDGESDISTANCE_CONSTANT)
+	if(_parameters.dc <= _variables.EDGESDISTANCE_CONSTANT)
 	{
-		return (-1*_constants.FORCEEDGE)/_parameters.dc;
+		return (-1*_variables.FORCEEDGE)/_parameters.dc;
 	}
 	else
 	{
@@ -235,8 +213,8 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	
 	
 	//potentialOfField +=  BaseTactic::CalculateAllyPotential(pos);
-	potentialOfField += BaseTactic::CalculateSquadCenterPotential(pos);
-	//potentialOfField += BaseTactic::CalculateMaximumDistancePotential(pos);
+	//potentialOfField += BaseTactic::CalculateSquadCenterPotential(pos);
+	potentialOfField += BaseTactic::CalculateMaximumDistancePotential(pos);
 	//potentialOfField += BaseTactic::CalculateWeaponCoolDownPotential(pos);
 	//potentialOfField = BaseTactic::CalculateEdgesPotential();
 	//potentialOfField = BaseTactic::CalculateEnemyPotential();	
@@ -249,7 +227,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 #pragma region GetPotentialBestField
 BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero, std::set<BWAPI::Unit*> mySquad)
 {
-	BaseTactic::InitializeParameters(_parameters,_constants,mySquad);
+	BaseTactic::InitializeParameters(_parameters,_variables,mySquad);
 	Position centerPosition = _unit->getPosition();
 	//Calculation surround walking tiles.
 	//Tilesize is 48, because a normal tile is 32 and plus the half of the centertile - 32+32/2 = 48
@@ -298,11 +276,11 @@ void BaseTactic::ExecuteTactic(BWAPI::Unit* unit,std::set<BWAPI::Unit*> theSquad
 	
 }
 #pragma endregion ExecuteTactic
-BaseTactic::Constants BaseTactic::GetConstants()
+BaseTactic::Variables BaseTactic::GetVariables()
 {
-	return _constants;
+	return _variables;
 }
-void BaseTactic::SetConstants(BaseTactic::Constants cons)
+void BaseTactic::SetVariables(BaseTactic::Variables vars)
 {
-	_constants = cons;
+	_variables = vars;
 }

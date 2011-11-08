@@ -22,7 +22,15 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	tacticsManager.Update();
+	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
+	for(std::set<BWAPI::Unit*>::const_iterator k = myUnits.begin(); k != myUnits.end(); k++)
+	{
+		BaseTactic tac;
+		tac.ExecuteTactic((*k),myUnits);
+		
+		
+	}
+	//tacticsManager.Update();
 }
 
 void StarcraftAI::onSendText(std::string text)
