@@ -246,7 +246,8 @@ void BaseTactic::ExecuteTactic(BWAPI::Unit* unit,std::set<BWAPI::Unit*> theSquad
 	//Calculating the potential
 	Position currentGoal = GetBestPositionBasedOnPotential(theSquad);
 
-	//If there is nothing to do just dont do anything!
+	//If there is nothing to do just dont do anything aka, GetBestPositionBasedOnPotential return the tile we are currently on.
+	//This can happen in two cases, first the current tile we are on is the best, or all tiles are 0.
 	if(currentGoal != _unit->getPosition())
 		unit->move(currentGoal);
 
