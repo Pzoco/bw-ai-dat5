@@ -113,7 +113,7 @@ int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 	return distance;
 }
 
-//This function takes int &x, int &y not to use it as input but to allow to return to values ;)
+//This function takes a list of units and returns the center of the squad ;)
 BWAPI::Position MathHelper::GetSquadCenterPosition(std::set<BWAPI::Unit*> listOfUnits)
 {
 	/*
