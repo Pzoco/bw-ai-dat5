@@ -46,7 +46,7 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int
 	return positions;
 }
 
-int MathHelper::GetNearestEnemy(int x, int y, BWAPI::Position centerPos)
+int MathHelper::GetNearestEnemy(BWAPI::Position pos, BWAPI::Position centerPos)
 {
 	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();	
 	std::set<BWAPI::Unit*> enemieUnits;
@@ -74,7 +74,7 @@ int MathHelper::GetNearestEnemy(int x, int y, BWAPI::Position centerPos)
 		//Calculating the distance to the nearest one,
 		for(std::set<BWAPI::Unit*>::iterator k = enemieUnits.begin(); k != enemieUnits.end(); k++)
 		{
-			int getDist = (*k)->getDistance(BWAPI::Position(x,y));
+			int getDist = (*k)->getDistance(pos);
 			int distFromCenter = (*k)->getDistance(centerPos);
 			if(getDist < distance)
 			{

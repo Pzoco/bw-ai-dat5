@@ -1,9 +1,9 @@
-\section{Implementing ootential fields}
+\section{Implementing potential fields}
 	In this section we will look at the implementation of the potential fields.
-	First the general structure we put in place, then each of the different potential fields. When we describe the individually potential fields all other fields will be turned off, so we only observe the desired field.
+	First the general structure we put in place, then each of the different potential fields. When we describe the individually potential fields all other fields will be turned off, so we only observe the desired field\footnote{In the following section we will use a lot of the variables described in from section \ref{SCA_label}}.
 	
 	\subsection{General structure}
-	% TALK ABOUT _constants and _parameters
+	% TALK ABOUT _variables and _parameters
 	
 	
 	
@@ -12,36 +12,60 @@
 double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 {
 	(*@\lnote@*)int dsv = pos.getApproxDistance(_parameters.squadPos);
-	(*@\lnote@*)if(dsv >= _parameters.ds){	return 0;	}
-	(*@\lnote@*)else if(_parameters.ds > _constants.SQUADDISTANCE_CONSTANT)
+	(*@\lnote@*)if(dsv >= _parameters.ds)
+		return 0;	
+	(*@\lnote@*)else if(_parameters.ds > _variables.SQUADDISTANCE_CONSTANT)
 	{
-		int returning = (_parameters.ds - dsv )* _constants.FORCESQUAD;
+		int returning = (_parameters.ds - dsv )* _variables.FORCESQUAD;
 		return returning;
 	}
-	(*@\lnote@*)else{	return 0;	}
+	(*@\lnote@*)else
+		return 0;
 }
 \end{Sourcecode}
-
-		Recall from section \ref{SCA_label}:
-		\begin{itemize}
-			\item  dsv is distance from center of army to current point.
-			\item  ds is distance from center of army to unit.
-		\end{itemize}
-		$F_{S}$ is named \textit{SQUADDISTANCE\_CONSTANT} in the code.
+		$F_{S}$ is named \textit{FORCESQUAD} in the code.
+		\textit{SQUADDISTANCE\_CONSTANT} describes the size of a squad. 
+		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculation potential on. This is so the distance to the the squad from this particular field can be calculated, also called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
 		
-		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculation potentield on. This is so the distance to the the squad from this particular field can be calculated, aldo called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
-		
-		All theses three cases can be opserved in figure \ref{fig:SCA}, the selected unit is attracted towards the squad and not attracted to the tiles facing away. The other units are within the desired range of each other so they don't want to move.
+		All theses three cases can be observed in figure \ref{fig:SCA}, the selected unit is attracted towards the squad and not attracted to the tiles facing away. The other units are within the desired range of each other so they don't want to move.
 		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
-			{Squad center attraction}{fig:SCA}{-3in}
-			
-		%(*@\lnote@*)
-		%\lnnum{1}
+			{Squad center}{fig:SCA}{-3in}
+				 
+	\subsection{Maximum distance positioning}
+		\begin{Sourcecode}[caption=Maximum distance]
+double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
+{
+	Position centerPos = _unit->getPosition();
+	int centerDist = _parameters.de;
+	(*@\lnote@*)int localDist = MathHelper::GetNearestEnemy(pos,centerPos);
+	int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
+	(*@\lnote@*)int correctedDist = localDist - distBetweenTheAboveTwo;
 
+	double potential = 0;
+	(*@\lnote@*)if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
+		potential = 0.0;
+	else if(correctedDist > _parameters.sv)
+		potential = double(_variables.FORCEMAXDIST * correctedDist);
+	else if(correctedDist < _parameters.sv )
+		potential = ( correctedDist /(-1)*_variables.FORCEMAXDIST );
 		
+	return potential;
+}
+\end{Sourcecode}
+	$F_{MDP}$ is named \textit{FORCEMAXDIST} in the code.
+	\textit{CalculateMaximumDistancePotential} takes as input the current tile we are calculating the potential field on, it is used to take into account in which direction the enemy is positioned.
 	
-	 
-	\subsection*{Maximum distance positioning (Attractive)}
-	\subsection*{Ally units (Repulsive)}
-	\subsection*{Weapon cool down (Repulsive)}
-	\subsection*{Edges and cliffs (Repulsive)}
+	In \lnnum{1} the function \textit{MathHelper::GetNearestEnemy} returns what in section \ref{SCA_label} is known as $(due - de + due)$.
+	
+	The point of \lnnum{2} is we don't want to know if the current tile is in range, but whether or not the unit will be in range if it moves to this tile.
+	
+	To handle the case where no enemy is in sight we added an extra case in \lnnum{3}.
+	
+	%(*@\lnote@*)
+		%\lnnum{1}
+	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/MaximumDistance.png}
+			{Maximum distance positioning}{fig:MDP}{-3in}
+		
+	\subsection{Ally units (Repulsive)}
+	\subsection{Weapon cool down (Repulsive)}
+	\subsection{Edges and cliffs (Repulsive)}
