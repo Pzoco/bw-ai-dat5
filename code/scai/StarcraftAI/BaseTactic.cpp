@@ -53,13 +53,10 @@ void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Varia
 	// finding unit position and setting it to the center of the matrix.
 	Position centerPos = _unit->getPosition();
 	//distance to nearest ally unit.
-	//parameters.da is calculated in MathHelper::GetNearestAlly();
+	//parameters.da is calculated in MathHelper::GetDistanceToNearestAlly();
 	
 	//distance to center of this unit's squad.
-	int squadX = 0;
-	int squadY = 0;
-	MathHelper::GetSquadCenter(myUnits,squadX,squadY);
-	parameters.squadPos = BWAPI::Position(squadX,squadY);
+	parameters.squadPos = MathHelper::GetSquadCenterPosition(myUnits);
 	parameters.ds = centerPos.getApproxDistance(parameters.squadPos);
 	//BWAPI::Broodwar->drawCircle(CoordinateType::Map,squadX,squadY,10,Colors::Green,true);
 
@@ -74,7 +71,7 @@ void BaseTactic::InitializeParameters(PotentialFieldParameters &parameters,Varia
 	else
 		parameters.sva = -1;
 	//distance to enemy.
-	parameters.de = MathHelper::GetNearestEnemy(centerPos,centerPos);
+	parameters.de = MathHelper::GetDistanceToNearestEnemy(centerPos,centerPos);
 
 	//boolean denoting whether or not the weapons are ready to fire.
 	if(_unit->getAirWeaponCooldown() == 0 && _unit->getGroundWeaponCooldown() == 0)
@@ -93,7 +90,7 @@ BaseTactic::PotentialFieldParameters _parameters;
 #pragma region CalculateAllyPotential
 double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 {
-	_parameters.da = MathHelper::GetNearestAlly(pos.x(),pos.y(),_unit->getID());
+	_parameters.da = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
 	//BWAPI::Broodwar->printf("_parameters.da is %d",_parameters.da);
 	//BWAPI::Broodwar->printf("da = %d - ", _parameters.da);
 	if(_parameters.da > _variables.ALLYDISTANCE_CONSTANT)
@@ -156,7 +153,7 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 
 	//Distance from current square to closest enemy.
 	int centerDist = _parameters.de;
-	int localDist = MathHelper::GetNearestEnemy(pos,centerPos);
+	int localDist = MathHelper::GetDistanceToNearestEnemy(pos,centerPos);
 	int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
 	int correctedDist = localDist - distBetweenTheAboveTwo;
 
@@ -183,7 +180,7 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 	{
 		Position centerPos = _unit->getPosition();
 		int centerDist = _parameters.de;
-		int localDist = MathHelper::GetNearestEnemy(pos,centerPos);
+		int localDist = MathHelper::GetDistanceToNearestEnemy(pos,centerPos);
 		int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
 		int correctedDist = localDist - distBetweenTheAboveTwo;
 		int toReturn = (-1)*correctedDist*_variables.FORCECOOLDOWN;
