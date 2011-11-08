@@ -15,7 +15,7 @@ public:
 	virtual double BaseTactic::CalculateEdgesPotential();
 	virtual double BaseTactic::CalculatePotentialField(BWAPI::Position);
 	virtual void BaseTactic::InitializeParameters(PotentialFieldParameters &field,Variables &variables, std::set<BWAPI::Unit*> myUnits);
-	virtual BWAPI::Position BaseTactic::GetPotentialBestField(double &currentGoalPotential, bool &allZero, std::set<BWAPI::Unit*> myUnits);
+	virtual BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit*> myUnits);
 	virtual void BaseTactic::ExecuteTactic(BWAPI::Unit*,std::set<BWAPI::Unit*>);
 	virtual Variables BaseTactic::GetVariables();
 	virtual void BaseTactic::SetVariables(Variables vars);
