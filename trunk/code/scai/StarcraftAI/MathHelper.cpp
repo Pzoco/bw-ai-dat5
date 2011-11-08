@@ -46,7 +46,7 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(int x, int y, int
 	return positions;
 }
 
-int MathHelper::GetNearestEnemy(BWAPI::Position pos, BWAPI::Position centerPos)
+int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position centerPos)
 {
 	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();	
 	std::set<BWAPI::Unit*> enemieUnits;
@@ -91,7 +91,7 @@ int MathHelper::GetNearestEnemy(BWAPI::Position pos, BWAPI::Position centerPos)
 
 	return distance;
 }
-int MathHelper::GetNearestAlly(int x, int y, int unitID)
+int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 {
 	//Getting a list of all our units.
 	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
@@ -102,7 +102,7 @@ int MathHelper::GetNearestAlly(int x, int y, int unitID)
 	{
 		if((*i)->getID() != unitID && (*i)->getType().isBuilding() == false)
 		{
-			int getDist = (*i)->getDistance(BWAPI::Position(x,y));
+			int getDist = (*i)->getDistance(pos);
 			if(getDist < distance)
 			{
 				distance = getDist;
@@ -114,7 +114,7 @@ int MathHelper::GetNearestAlly(int x, int y, int unitID)
 }
 
 //This function takes int &x, int &y not to use it as input but to allow to return to values ;)
-void MathHelper::GetSquadCenter(std::set<BWAPI::Unit*> listOfUnits, int &x, int &y)
+BWAPI::Position MathHelper::GetSquadCenterPosition(std::set<BWAPI::Unit*> listOfUnits)
 {
 	/*
 		Center of mass from http://klassewiki.dk/OTG3B/index.php/1._September,_Fysik
@@ -126,6 +126,8 @@ void MathHelper::GetSquadCenter(std::set<BWAPI::Unit*> listOfUnits, int &x, int 
 	*/
 	int mass = 1;
 	int n = 0;
+	int x = 0;
+	int y = 0;
 	for(std::set<BWAPI::Unit*>::const_iterator i = listOfUnits.begin(); i != listOfUnits.end(); i++)
 	{
 		n++;
@@ -142,6 +144,6 @@ void MathHelper::GetSquadCenter(std::set<BWAPI::Unit*> listOfUnits, int &x, int 
 	y = y/(n*mass);
 
 	//Center is now calculated
-
-	return;
+	
+	return BWAPI::Position(x,y);
 }
