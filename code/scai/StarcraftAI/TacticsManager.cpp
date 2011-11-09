@@ -66,7 +66,6 @@ void TacticsManager::Update()
 {
 	for each(Squad squad in _vultureSquads)
 	{
-		BWAPI::Broodwar->printf("squads: %d",_vultureSquads.size());
 		squad.ExecuteTactics();
 	}
 	for each(Squad squad in _marineSquads)

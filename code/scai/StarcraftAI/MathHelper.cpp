@@ -1,12 +1,14 @@
 #include "MathHelper.h"
 #include "math.h"
 #define PI 3.14159265
-
+struct MathHelper::ReturningUnit
+{
+	BWAPI::Unit* ClosestEnemy;
+	bool exist;
+};
 BWAPI::Position MathHelper::GetPositionFromAngle(BWAPI::Position pos, int angle, int length)
 {
 	int xPos, yPos;
-	//xPos = x+((int)cos((float)angle))*length;
-	//yPos = y+((int)sin((float)angle))*length;
 	double trueAngle = (double)angle*PI/180;
 	
 	double xCos = cos(trueAngle);
@@ -14,11 +16,7 @@ BWAPI::Position MathHelper::GetPositionFromAngle(BWAPI::Position pos, int angle,
 	xPos = pos.x()+(int)(xCos*(double)length);
 	yPos = pos.y()+(int)(ySin*(double)length);
 
-	BWAPI::Position newPos = BWAPI::Position(xPos,yPos);
-	//BWAPI::Broodwar->printf("pos %d,%d - tile %d,%d",x,y,newPos.x(),newPos.y());
-	//BWAPI::Broodwar->printf("input: pos=%d,%d - a = %d - l = %d",x,y,angle,length);
-	//BWAPI::Broodwar->printf("GetPositionFromAngle: pos=%d,%d - tile=%d,%d",xPos,yPos,newPos.x(),newPos.y());
-	
+	BWAPI::Position newPos = BWAPI::Position(xPos,yPos);	
 	return newPos;
 }
 std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(BWAPI::Position pos, int tileSize)
@@ -46,11 +44,14 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(BWAPI::Position p
 	return positions;
 }
 
-int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position unitPos)
+MathHelper::ReturningUnit MathHelper::GetNerestEnemy(BWAPI::Position unitPos)
 {
+	
+	//BWAPI::Broodwar->printf("inside GetNerestEnemy");
 	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();	
 	std::set<BWAPI::Unit*> enemieUnits;
-	int distance = 30000;
+	ReturningUnit ClosestEnemyStruct;
+	ClosestEnemyStruct.exist = false;
 
 	//Now to get all the enemies units in one list.
 	//Iterating trough all the enemies
@@ -64,25 +65,43 @@ int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position u
 		{
 			//And add them to a list of all enemieunits in the map.
 			enemieUnits.insert((*j));
+			//BWAPI::Broodwar->printf("enemy in range");
 		}
 	}
 
 	//If there is any enemie units we know of.
-	int rangeModifyer = 0;
+	int distance = 30000;
 	if(enemieUnits.empty() != true)
 	{
+		//BWAPI::Broodwar->printf("enemy not empty");
 		//Calculating the distance to the nearest one,
 		for(std::set<BWAPI::Unit*>::iterator k = enemieUnits.begin(); k != enemieUnits.end(); k++)
 		{
-			int getDist = (*k)->getDistance(pos);
-			int distFromCenter = (*k)->getDistance(unitPos);
+			int getDist = (*k)->getDistance(unitPos);
 			if(getDist < distance)
 			{
-				rangeModifyer = distFromCenter;
+
 				distance = getDist;
+				ClosestEnemyStruct.ClosestEnemy = (*k);
+				ClosestEnemyStruct.exist = true;
 			}
 		}
-		distance = (rangeModifyer - distance + rangeModifyer);
+	}
+
+	//ClosestEnemy->exists();
+	return ClosestEnemyStruct;
+}
+int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos)
+{	
+	//BWAPI::Broodwar->printf("inside GetDistanceToNearestEnemy / calling GetNerestEnemy");
+	ReturningUnit ClosestEnemyStruct = GetNerestEnemy(pos);
+	int distance = 30000;
+
+	//If there is any enemie units we know of.
+	if(ClosestEnemyStruct.exist == true)
+	{
+		int getDist = ClosestEnemyStruct.ClosestEnemy->getDistance(pos);
+		distance = getDist;
 	}
 	else
 	{
@@ -91,6 +110,7 @@ int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos, BWAPI::Position u
 
 	return distance;
 }
+
 int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 {
 	//Getting a list of all our units.

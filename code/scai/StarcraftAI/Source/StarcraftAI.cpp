@@ -10,11 +10,10 @@ TacticsManager tacticsManager;
 
 void StarcraftAI::onStart()
 {
-	
+	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	tacticsManager = TacticsManager();
 	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
-	tacticsManager.Update();
 
 	/*Squad s;
 	std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
@@ -32,15 +31,7 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	/*std::set<BWAPI::Unit*> myUnits = BWAPI::Broodwar->self()->getUnits();
-	for(std::set<BWAPI::Unit*>::const_iterator k = myUnits.begin(); k != myUnits.end(); k++)
-	{
-		BaseTactic tac;
-		tac.ExecuteTactic((*k),myUnits);
-		
-		
-	}*/
-	//tacticsManager.Update();
+	tacticsManager.Update();
 }
 
 void StarcraftAI::onSendText(std::string text)
