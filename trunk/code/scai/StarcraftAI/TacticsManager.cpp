@@ -29,7 +29,32 @@ std::list<Squad> TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
 	//Dont do this :D
 	return _vultureSquads;
 }
+/*
+	The following is a possible solution to the bug in AssignToSquad.
+	Before it only got a copy of the list, so if the list was empty and 
+	you tried to add something, you would just add it to a copy of the
+	list, and then never save it. This is just a function that saves it.
 
+	It should be possible to get it to work by returning a pointer to the
+	correct list like:
+	std::list<Squad> * TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
+	{
+		if(unitType == BWAPI::UnitTypes::Terran_Vulture){std::list<Squad> *squad = &_vultureSquads; return squad;}
+		...
+	}
+	But havnt gotten that solution to work.
+
+*/
+void TacticsManager::WriteSquadList(BWAPI::UnitType unitType, std::list<Squad> list)
+{
+	if(unitType == BWAPI::UnitTypes::Terran_Vulture){_vultureSquads = list;}
+	else if(unitType == BWAPI::UnitTypes::Terran_Marine) { _marineSquads = list; }
+	else if(unitType == BWAPI::UnitTypes::Terran_Medic) { _medicSquads = list; }
+	else if(unitType == BWAPI::UnitTypes::Terran_Wraith) { _wraithSquads = list;}
+	else if(unitType == BWAPI::UnitTypes::Terran_Goliath) { _golliathSquads = list;}
+	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode) { _tankSquads = list;}
+	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode) { _tankSquads = list;}
+}
 void TacticsManager::AddSquad(Squad squad)
 {
 }
@@ -41,6 +66,7 @@ void TacticsManager::Update()
 {
 	for each(Squad squad in _vultureSquads)
 	{
+		BWAPI::Broodwar->printf("squads: %d",_vultureSquads.size());
 		squad.ExecuteTactics();
 	}
 	for each(Squad squad in _marineSquads)
@@ -64,8 +90,6 @@ void TacticsManager::Update()
 		squad.ExecuteTactics();
 	}
 }
-
-
 void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
 	if(unit->getType() == BWAPI::UnitTypes::Terran_SCV || unit->getType() == BWAPI::UnitTypes::Buildings)
@@ -78,6 +102,7 @@ void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 		//Should use the specific tactic not basetactic
 		Squad s = Squad(unit,BaseTactic());
 		squads.push_back(s);
+		WriteSquadList(unit->getType(),squads);
 	}
 	else
 	{

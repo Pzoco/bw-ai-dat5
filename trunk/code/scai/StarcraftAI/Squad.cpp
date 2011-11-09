@@ -41,3 +41,7 @@ void Squad::ExecuteTactics()
 		_tactic.ExecuteTactic((*u),_units);
 	}
 }
+int Squad::GetSize()
+{
+	return _units.size();
+}
