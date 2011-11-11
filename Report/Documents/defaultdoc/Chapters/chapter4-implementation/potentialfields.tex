@@ -1,4 +1,4 @@
-\section{Implementing potential fields}
+{\color[rgb]{0.000000,0.000000,0.000000}\section{Implementing potential fields}
 	In this section we will look at the implementation of the potential fields.
 	First the general structure we put in place, then each of the different potential fields. When we describe the individually potential fields all other fields will be turned off, so we only observe the desired field\footnote{In the following section we will use a lot of the variables described in from section \ref{SCA_label}}.
 	
@@ -7,7 +7,7 @@
 	
 	
 	
-	\subsection{Squad center)}	
+	\subsection{Squad center}	
 		\begin{Sourcecode}[caption=Squad center]
 double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 {
@@ -25,9 +25,9 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 \end{Sourcecode}
 		$F_{S}$ is named \textit{FORCESQUAD} in the code.
 		\textit{SQUADDISTANCE\_CONSTANT} describes the size of a squad. 
-		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculation potential on. This is so the distance to the the squad from this particular field can be calculated, also called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
+		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculating the potential on. This is to enable the calculation of distance to the the squad from this particular field, also called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
 		
-		All theses three cases can be observed in figure \ref{fig:SCA}, the selected unit is attracted towards the squad and not attracted to the tiles facing away. The other units are within the desired range of each other so they don't want to move.
+		All theses three cases can be observed in figure \ref{fig:SCA}, the selected unit is attracted towards the squad and not attracted to the tiles facing away (?). The other units are within the desired range of each other so they don't want to move.
 		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
 			{Squad center}{fig:SCA}{-3in}
 				 
@@ -53,11 +53,11 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 }
 \end{Sourcecode}
 	$F_{MDP}$ is named \textit{FORCEMAXDIST} in the code.
-	\textit{CalculateMaximumDistancePotential} takes as input the current tile we are calculating the potential field on, it is used to take into account in which direction the enemy is positioned.
+	\textit{CalculateMaximumDistancePotential} takes as an input the current tile we are calculating the potential field on and it is used to take into account in which direction the enemy is positioned.
 	
 	In \lnnum{1} the function \textit{MathHelper::GetNearestEnemy} returns what in section \ref{SCA_label} is known as $(due - de + due)$.
 	
-	The point of \lnnum{2} is we don't want to know if the current tile is in range, but whether or not the unit will be in range if it moves to this tile.
+	The point of \lnnum{2} is that we don't want to know if the current tile is in range, but whether or not the unit will be in range if it moves to this tile.
 	
 	To handle the case where no enemy is in sight we added an extra case in \lnnum{3}.
 	
@@ -68,4 +68,4 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 		
 	\subsection{Ally units (Repulsive)}
 	\subsection{Weapon cool down (Repulsive)}
-	\subsection{Edges and cliffs (Repulsive)}
+	\subsection{Edges and cliffs (Repulsive)}}
