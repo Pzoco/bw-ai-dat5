@@ -1,0 +1,5 @@
+Ally 1.0
+Edges 1.0
+MaximumDistance 1.0
+SquadCenter 1.0
+WeaponCoolDown 1.0
