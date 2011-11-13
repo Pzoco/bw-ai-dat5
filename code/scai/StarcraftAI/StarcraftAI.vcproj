@@ -184,10 +184,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ReinforcementLearning.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Squad.cpp"
 				>
 			</File>
@@ -211,12 +207,40 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Reinforcement Learning"
+				>
+				<File
+					RelativePath=".\Action.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ReinforcementLearning.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\State.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Weights.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\weights_data.txt"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\Action.h"
+				>
+			</File>
 			<File
 				RelativePath=".\BaseTactic.h"
 				>
@@ -238,7 +262,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\State.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TacticsManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Weights.h"
 				>
 			</File>
 		</Filter>
