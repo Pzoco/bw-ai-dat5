@@ -9,25 +9,25 @@
 	
 	\subsection{Squad center}	
 		\begin{Sourcecode}[caption=Squad center]
-double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
+double BaseTactic::CalculateSquadCenterPotential(BWAPI::Position pos)
 {
-	(*@\lnote@*)int dsv = pos.getApproxDistance(_parameters.squadPos);
+	(*@\lnote@*)int dsv = pos.getApproxDistance(_parameters.squadPos);	
+	double potential = 0.0;
 	(*@\lnote@*)if(dsv >= _parameters.ds)
-		return 0;	
+		potential = 0.0;
 	(*@\lnote@*)else if(_parameters.ds > _variables.SQUADDISTANCE_CONSTANT)
-	{
-		int returning = (_parameters.ds - dsv )* _variables.FORCESQUAD;
-		return returning;
-	}
+		potential = (_parameters.ds - dsv )* _variables.FORCESQUAD;
 	(*@\lnote@*)else
-		return 0;
+		potential = 0.0;
+
+	return potential;
 }
 \end{Sourcecode}
 		$F_{S}$ is named \textit{FORCESQUAD} in the code.
 		\textit{SQUADDISTANCE\_CONSTANT} describes the size of a squad. 
 		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculating the potential on. This is to enable the calculation of distance to the the squad from this particular field, also called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
 		
-		All theses three cases can be observed in figure \ref{fig:SCA}, the selected unit is attracted towards the squad and not attracted to the tiles facing away (?). The other units are within the desired range of each other so they don't want to move.
+		All theses three cases can be observed in figure \ref{fig:SCA}, the selected unit is attracted towards the squad. The other units are within the desired range of each other so they don't want to move.
 		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
 			{Squad center}{fig:SCA}{-3in}
 				 
@@ -35,37 +35,84 @@ double UnitAgent::CalculateSquadCenterPotential(BWAPI::Position pos)
 		\begin{Sourcecode}[caption=Maximum distance]
 double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 {
-	Position centerPos = _unit->getPosition();
-	int centerDist = _parameters.de;
-	(*@\lnote@*)int localDist = MathHelper::GetNearestEnemy(pos,centerPos);
-	int distBetweenTheAboveTwo = centerPos.getApproxDistance(pos);
-	(*@\lnote@*)int correctedDist = localDist - distBetweenTheAboveTwo;
+	Position unitPos = _unit->getPosition();
+	int distanceToEnemyFromUnit = _parameters.de;
+	(*@\lnote@*)int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
+	(*@\lnote@*)int correctedDistance = (_parameters.de - distanceToEnemyFromCurrentTile + _parameters.de);
 
-	double potential = 0;
-	(*@\lnote@*)if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
+	double potential = 0.0;
+	if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
 		potential = 0.0;
-	else if(correctedDist > _parameters.sv)
-		potential = double(_variables.FORCEMAXDIST * correctedDist);
-	else if(correctedDist < _parameters.sv )
-		potential = ( correctedDist /(-1)*_variables.FORCEMAXDIST );
-		
+	else if(distanceToEnemyFromCurrentTile > _parameters.sv)
+		potential = (_variables.FORCEMAXDIST * correctedDistance);
+	else if(distanceToEnemyFromCurrentTile < _parameters.sv )
+		potential = (-1)*(correctedDistance /_variables.FORCEMAXDIST);
+	
 	return potential;
 }
 \end{Sourcecode}
 	$F_{MDP}$ is named \textit{FORCEMAXDIST} in the code.
 	\textit{CalculateMaximumDistancePotential} takes as an input the current tile we are calculating the potential field on and it is used to take into account in which direction the enemy is positioned.
 	
-	In \lnnum{1} the function \textit{MathHelper::GetNearestEnemy} returns what in section \ref{SCA_label} is known as $(due - de + due)$.
+	In \lnnum{1} the function \textit{MathHelper::GetDistanceToNearestEnemy} returns what in section \ref{SCA_label} is known as $due$, being the distance from the current tile we are calculating the potential field from to the nearest enemy.
 	
-	The point of \lnnum{2} is that we don't want to know if the current tile is in range, but whether or not the unit will be in range if it moves to this tile.
-	
-	To handle the case where no enemy is in sight we added an extra case in \lnnum{3}.
+	\lnnum{2} is a small calculation also found in section \ref{SCA_label} called $due - de + due$. The point of this calculation is make tiles closer to the enemy have a higher potential. If we just used the distance from the enemy to the tile, then the tiles facing away from the unit would have a higher potential, even though we actually want to be closer. The potential by using $due - de + due$ can be observed in figure \ref{fig:MDP}.
 	
 	%(*@\lnote@*)
 		%\lnnum{1}
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/MaximumDistance.png}
 			{Maximum distance positioning}{fig:MDP}{-3in}
 		
-	\subsection{Ally units (Repulsive)}
-	\subsection{Weapon cool down (Repulsive)}
+	\subsection{Ally units}
+	
+	
+		\begin{Sourcecode}[caption=Ally units]
+double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
+{
+	(*@\lnote@*)_parameters.da = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
+	double potential = 0.0;
+	(*@\lnote@*)if(_parameters.da > _variables.ALLYDISTANCE_CONSTANT)
+		potential = 0.0;
+	else if(_parameters.da == _variables.ALLYDISTANCE_CONSTANT)
+		potential = (-1)*_variables.FORCEALLY;
+	else
+		potential = (-1)*(double)_variables.FORCEALLY/(double)_parameters.da;
+	
+	return potential;
+}
+\end{Sourcecode}	
+	$F_{AU}$ is named \textit{FORCEALLY} in the code. 
+	The first thing we do in Ally potential is calculating the distance to the nearest ally. This is done using the function \textit{MathHelper::GetDistanceToNearestAlly} in \lnnum{1}, it takes as parameters, the position of the current tile and a units id. The unit used in units id, is the unit we are currently calculating the potential field for, this is used to avoid calculating the distance from the current tile to the that specific unit, if we didn't do this the closed unit will always be the unit we are current calculating the potential field for.
+	
+	Besides calculating the distance \textit{Ally units} is exactly as in the design. The last thing to note is that the constant $c$ from the design is called \textit{ALLYDISTANCE\_CONSTANT} in \lnnum{2}.
+	
+	The finished result of textit{Ally units} can be seen in figure \ref{fig:AU}.
+	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Allyunits.png}
+			{Repulsion of ally units}{fig:AU}{-3in}
+	
+	\subsection{Weapon cool down}
+		\begin{Sourcecode}[caption=Weapon cool down]
+double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
+{
+	double potential = 0.0;
+	if(_parameters.wr)
+		return potential;
+	else
+	{
+		int distanceToEnemyFromUnit = _parameters.de;
+		(*@\lnote@*)int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
+		(*@\lnote@*)int correctedDistance = (_parameters.de - distanceToEnemyFromCurrentTile + _parameters.de);
+		(*@\lnote@*)potential = (-1)*correctedDistance*_variables.FORCECOOLDOWN;
+		return potential;
+	}
+}
+\end{Sourcecode}		
+	$F_{WCD}$ is named \textit{FORCECOOLDOWN} in the code. 
+	
+	\textit{Weapon cool down} look like \textit{Maximum distance positioning} in many ways. They both use the same calculation to find $due - de + due$ in \lnnum{1} and \lnnum{2}.
+	They both concern the case where we want a specific potential in the direction of the enemy. The main difference is that \textit{Weapon cool down} is a repulsive force \lnnum{3}, and it only apply when the weapons are cooling down.
+	
+	The potential field during cool down can be seen in figure \ref{fig:WCD}.
+	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Weaponscooldown.png}
+			{Potential during cool down}{fig:WCD}{-3in}
 	\subsection{Edges and cliffs (Repulsive)}}

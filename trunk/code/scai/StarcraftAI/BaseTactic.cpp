@@ -49,7 +49,7 @@ BaseTactic::PotentialFieldParameters _parameters;
 void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits)
 {
 	//Setting all the variables, this should later be done by the reinforcement learning
-	_variables.FORCEALLY = 5;
+	_variables.FORCEALLY = 500;
 	_variables.FORCESQUAD = 5;
 	_variables.FORCEMAXDIST = 5;
 	_variables.FORCECOOLDOWN = 5;
@@ -195,7 +195,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	double totalPotentialForCurrentTile = 0.0;
 	//totalPotentialForCurrentTile +=  BaseTactic::CalculateAllyPotential(pos);
 	//totalPotentialForCurrentTile += BaseTactic::CalculateSquadCenterPotential(pos);
-	totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
+	//totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
 	totalPotentialForCurrentTile += BaseTactic::CalculateWeaponCoolDownPotential(pos);
 	//totalPotentialForCurrentTile = BaseTactic::CalculateEdgesPotential();
 	
