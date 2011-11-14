@@ -15,7 +15,8 @@ struct BaseTactic::Variables
 	//This contain all the different forces and variables the reinforsment learning should change
 	int FORCEALLY;
 	int FORCESQUAD;
-	int FORCEMAXDIST;
+	int FORCEMAXDIST1;
+	int FORCEMAXDIST2;
 	int FORCECOOLDOWN;
 	int FORCEEDGE;
 	int FORCENEMY;
@@ -51,7 +52,8 @@ void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits)
 	//Setting all the variables, this should later be done by the reinforcement learning
 	_variables.FORCEALLY = 500;
 	_variables.FORCESQUAD = 5;
-	_variables.FORCEMAXDIST = 5;
+	_variables.FORCEMAXDIST1 = 5;
+	_variables.FORCEMAXDIST2 = 500;
 	_variables.FORCECOOLDOWN = 5;
 	_variables.FORCEEDGE = 5;
 	_variables.FORCENEMY = 1;
@@ -148,9 +150,9 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
 		potential = 0.0;
 	else if(distanceToEnemyFromCurrentTile > _parameters.sv)
-		potential = (_variables.FORCEMAXDIST * correctedDistance);
+		potential = (_variables.FORCEMAXDIST1 * correctedDistance);
 	else if(distanceToEnemyFromCurrentTile < _parameters.sv )
-		potential = (-1)*(correctedDistance /_variables.FORCEMAXDIST);
+		potential = (-1)*(_variables.FORCEMAXDIST2/correctedDistance);
 	
 	return potential;
 }
@@ -195,8 +197,8 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	double totalPotentialForCurrentTile = 0.0;
 	//totalPotentialForCurrentTile +=  BaseTactic::CalculateAllyPotential(pos);
 	//totalPotentialForCurrentTile += BaseTactic::CalculateSquadCenterPotential(pos);
-	//totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
-	totalPotentialForCurrentTile += BaseTactic::CalculateWeaponCoolDownPotential(pos);
+	totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
+	//totalPotentialForCurrentTile += BaseTactic::CalculateWeaponCoolDownPotential(pos);
 	//totalPotentialForCurrentTile = BaseTactic::CalculateEdgesPotential();
 	
 	// The line below is optional, it will print the potential to the screen.
