@@ -48,7 +48,7 @@
 		
 		
 	\subsection*{Ally units (Repulsive)}
-		Because the vultures are not supposed to clump up, we will add some repulsion to ally units.
+We do not want all of the vultures to clump completely together during a match. This can lead them vulnerable to spash damage attacks. If we keep the Vulture spread out a reasonable distance the spash damage will not take any effect.
 		\begin{displaymath}
 			AllyUnits = \begin{cases}
 					0 & \text{if } da > c\\
@@ -56,14 +56,19 @@
 					-f_{AU} * (due - de + due) & \text{if } da = 0
 				\end{cases}		
 		\end{displaymath}
+	For the first case we wanted to make sure that if the vultures where far enought away from each other (the constant c) then they would not repulse each other at all. The reasoning behind this is simple because if the vultures are far away then they cannot take any splash damage.
+	On the second case we want out units to repulse each other when they are close enough together. To do this we take our -fAU (force Ally Unit) and divide it by the distance to the ally unit. This way the closer our vultures get to each other the more they will want to move away.
+	Our final case is if some how the vultures are right on top of each other or on the same position. Given our other equation this would cause a divide by zero error. So instead of using our second formula we use---------->insert more stuff
 	\subsection*{Weapon cool down (Repulsive)}
-		The vultures is only needed in range of the enemies if they can shoot, so some repulsion is added when attack cool down is present.
+A vulture cannot do any damage right after it shoots. This is because in there is a certain amount of time in between each shot. Right after a vulture shoots we want it to move out of the battle until it can fire again. This way each vulture will be less vulnerable to taking damage when it cannot give any damage.
 		\begin{displaymath}
 			WeaponCoolDown = \begin{cases}
 					0 & \text{if } wr\\
 					-f_{WCD} * (due - de + due) & \text{else}
 				\end{cases}		
 		\end{displaymath}
+In our first case we give the field a value of zero if the vulture is ready to fire. We do not want it to retreat if it is available to fire.
+The other case is if the vulture's weapon is not ready. In this case we take the distance from the enemy(due-de+due) and multiply it by the force.
 	\subsection*{Edges and cliffs (Repulsive)}
 		As with the ally units, we do not want the vultures to clump up against the wall so cliffs and edges will be repulsive.
 		\begin{displaymath}
