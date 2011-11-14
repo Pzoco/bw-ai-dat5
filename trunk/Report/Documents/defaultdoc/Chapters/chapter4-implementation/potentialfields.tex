@@ -44,14 +44,14 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
 		potential = 0.0;
 	else if(distanceToEnemyFromCurrentTile > _parameters.sv)
-		potential = (_variables.FORCEMAXDIST * correctedDistance);
+		potential = (_variables.FORCEMAXDIST1 * correctedDistance);
 	else if(distanceToEnemyFromCurrentTile < _parameters.sv )
-		potential = (-1)*(correctedDistance /_variables.FORCEMAXDIST);
+		potential = (-1)*(_variables.FORCEMAXDIST2/correctedDistance);
 	
 	return potential;
 }
 \end{Sourcecode}
-	$F_{MDP}$ is named \textit{FORCEMAXDIST} in the code.
+	$F_{MDP1}$ is named \textit{FORCEMAXDIST1} and $F_{MDP2}$ is named \textit{FORCEMAXDIST2} in the code.
 	\textit{CalculateMaximumDistancePotential} takes as an input the current tile we are calculating the potential field on and it is used to take into account in which direction the enemy is positioned.
 	
 	In \lnnum{1} the function \textit{MathHelper::GetDistanceToNearestEnemy} returns what in section \ref{SCA_label} is known as $due$, being the distance from the current tile we are calculating the potential field from to the nearest enemy.
