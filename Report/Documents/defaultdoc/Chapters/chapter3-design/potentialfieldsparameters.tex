@@ -44,6 +44,7 @@
 		Maximum distance positioning contains to cases. The first is handling the situation where we are not witin the maximum range. In that case we cant to be attractet to the enemy. Note that in both cases we have $(due - de + due)$ which basicaly just invert the distances to the enemy so the closet tile will have the largest value.
 		In the secound case we handle when we are exactly within the right distance, and just want to stay where we are.
 		The last case takes care or the last option, we are to close and want to get away.
+		We use to different forces to be able to adjust them indepentently later.
 		
 		
 		
