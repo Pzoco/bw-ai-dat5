@@ -1,6 +1,6 @@
 {\color[rgb]{0.000000,0.000000,0.000000}\section{Implementing potential fields}
 	In this section we will look at the implementation of the potential fields.
-	First the general structure we put in place, then each of the different potential fields. When we describe the individually potential fields all other fields will be turned off, so we only observe the desired field\footnote{In the following section we will use a lot of the variables described in from section \ref{SCA_label}}.
+	First we will take a look at the general structure we put in place, then each of the different potential fields. When we describe the individually potential fields. This will be done by turning all other fields off, so we only observe the desired field\footnote{In the following section we will use a lot of the variables described in from section \ref{SCA_label}}.
 	
 	\subsection{General structure}
 	% TALK ABOUT _variables and _parameters
@@ -82,7 +82,7 @@ double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 }
 \end{Sourcecode}	
 	$F_{AU}$ is named \textit{FORCEALLY} in the code. 
-	The first thing we do in Ally potential is calculating the distance to the nearest ally. This is done using the function \textit{MathHelper::GetDistanceToNearestAlly} in \lnnum{1}, it takes as parameters, the position of the current tile and a units id. The unit used in units id, is the unit we are currently calculating the potential field for, this is used to avoid calculating the distance from the current tile to the that specific unit, if we didn't do this the closed unit will always be the unit we are current calculating the potential field for.
+	The first thing we do in Ally potential is calculating the distance to the nearest ally. This is done using the function \textit{MathHelper::GetDistanceToNearestAlly} in \lnnum{1}, it takes as parameters, the position of the current tile and a units id. The unit used in units id, is the unit we are currently calculating the potential field for, this is used to avoid calculating the distance from the current tile to the  specific unit, if we didn't do this the closed unit will always be the unit we are current calculating the potential field for.
 	
 	Besides calculating the distance \textit{Ally units} is exactly as in the design. The last thing to note is that the constant $c$ from the design is called \textit{ALLYDISTANCE\_CONSTANT} in \lnnum{2}.
 	
@@ -116,3 +116,24 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Weaponscooldown.png}
 			{Potential during cool down}{fig:WCD}{-3in}
 	\subsection{Edges and cliffs (Repulsive)}}
+
+
+
+
+%line 28: what three cases? Is it the four cases where dvs is in he code?
+
+%Listing 4.2: Gives good overview to use the naming distanceToEnemyFromCurrentTile,
+%		maybe we should only use this naming in the code OR we should use the
+%		shorter naming like dsv, de, ds..
+
+
+%line 85:
+%a bit hard to understand: 
+%"The unit used in units id, is the unit we are
+%currently calculating the potential eld for, this is used to avoid calculating the
+%distance from the current tile to the that specic unit, if we didn't do this the
+%closed unit will always be the unit we are current calculating the potential eld for."
+
+%what about saying:
+%The unit with this id is used to calculat the potential fields for this unit. ..I don't
+% understand the next part:S Why is this the case?
