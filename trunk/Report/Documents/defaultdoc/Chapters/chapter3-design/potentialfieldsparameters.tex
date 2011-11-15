@@ -36,9 +36,9 @@
 		to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
-					f_{MDP1} \times (due - de + due) & \text{if } de > sr\\
+					f_{MDP} \times (due - de + due) & \text{if } de > sr\\
 					0 & \text{if } de = sr\\
-					- \frac{f_{MDP2}}{(due - de + due)} & \text{if } de < sr
+					-f_{MDP} \times (due - de + due) & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
 		Maximum distance positioning contains to cases. The first is handling the situation where we are not witin the maximum range. In that case we cant to be attractet to the enemy. Note that in both cases we have $(due - de + due)$ which basicaly just invert the distances to the enemy so the closet tile will have the largest value.
