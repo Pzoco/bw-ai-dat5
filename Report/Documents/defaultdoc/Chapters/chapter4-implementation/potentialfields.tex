@@ -56,7 +56,7 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	
 	In \lnnum{1} the function \textit{MathHelper::GetDistanceToNearestEnemy} returns what in section \ref{SCA_label} is known as $due$, being the distance from the current tile we are calculating the potential field from to the nearest enemy.
 	
-	\lnnum{2} is a small calculation also found in section \ref{SCA_label} called $due - de + due$. The point of this calculation is to make tiles closer to the enemy have a higher potential. If we just used the distance from the enemy to the tile, then the tiles facing away from the unit would have a higher potential, even though we actually want to be closer. The potential by using $due - de + due$ can be observed in figure \ref{fig:MDP}.
+	\lnnum{2} is a small calculation also found in section \ref{SCA_label} called $de - due + de$. The point of this calculation is to make tiles closer to the enemy have a higher potential. If we just used the distance from the enemy to the tile, then the tiles facing away from the unit would have a higher potential, even though we actually want to be closer. The potential by using $de - due + de$ can be observed in figure \ref{fig:MDP}.
 	
 	%(*@\lnote@*)
 		%\lnnum{1}
@@ -109,7 +109,7 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 \end{Sourcecode}		
 	$F_{WCD}$ is named \textit{FORCECOOLDOWN} in the code. 
 	
-	\textit{Weapon cool down} look like \textit{Maximum distance positioning} in many ways. They both use the same calculation to find $due - de + due$ in \lnnum{1} and \lnnum{2}.
+	\textit{Weapon cool down} look like \textit{Maximum distance positioning} in many ways. They both use the same calculation to find $de - due + de$ in \lnnum{1} and \lnnum{2}.
 	They both concern the case where we want a specific potential in the direction of the enemy. The main difference is that \textit{Weapon cool down} is a repulsive force \lnnum{3}, and it only apply when the weapons are cooling down.
 	
 	The potential field during cool down can be seen in figure \ref{fig:WCD}.

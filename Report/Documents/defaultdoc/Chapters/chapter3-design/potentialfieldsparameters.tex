@@ -37,9 +37,9 @@
 		to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
-					f_{MDP} \times (due - de + due) & \text{if } de > sr\\
+					f_{MDP} \times (de - due + de) & \text{if } de > sr\\
 					0 & \text{if } de = sr\\
-					-f_{MDP} \times (due - de + due) & \text{if } de < sr
+					-f_{MDP} \times (de - due + de) & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
 		Maximum distance positioning contains to cases. The first is handling the situation where we are not witin the maximum range. In that case we cant to be attractet to the enemy. Note that in both cases we have $(due - de + due)$ which basicaly just invert the distances to the enemy so the closet tile will have the largest value.
@@ -55,7 +55,7 @@ We do not want all of the vultures to clump completely together during a match. 
 			AllyUnits = \begin{cases}
 					0 & \text{if } da > c\\
 					-f_{AU} \times da & \text{if } da \leq c\\
-					-f_{AU} * (dua - da + dua) & \text{if } da = 0
+					-f_{AU} * (da - dua + da) & \text{if } da = 0
 				\end{cases}		
 		\end{displaymath}
 	For the first case we wanted to make sure that if the vultures where far enought away from each other (the constant c) then they would not repulse each other at all. The reasoning behind this is simple because if the vultures are far away then they cannot take any splash damage.
@@ -66,7 +66,7 @@ A vulture cannot do any damage right after it shoots. This is because in there i
 		\begin{displaymath}
 			WeaponCoolDown = \begin{cases}
 					0 & \text{if } wr\\
-					-f_{WCD} * (due - de + due) & \text{else}
+					-f_{WCD} * (de - due + de) & \text{else}
 				\end{cases}		
 		\end{displaymath}
 In our first case we give the field a value of zero if the vulture is ready to fire. We do not want it to retreat if it is available to fire.
