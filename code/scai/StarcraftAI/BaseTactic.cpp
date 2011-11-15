@@ -15,8 +15,7 @@ struct BaseTactic::Variables
 	//This contain all the different forces and variables the reinforsment learning should change
 	int FORCEALLY;
 	int FORCESQUAD;
-	int FORCEMAXDIST1;
-	int FORCEMAXDIST2;
+	int FORCEMAXDIST;
 	int FORCECOOLDOWN;
 	int FORCEEDGE;
 	int FORCENEMY;
@@ -52,8 +51,7 @@ void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits)
 	//Setting all the variables, this should later be done by the reinforcement learning
 	_variables.FORCEALLY = 500;
 	_variables.FORCESQUAD = 5;
-	_variables.FORCEMAXDIST1 = 5;
-	_variables.FORCEMAXDIST2 = 500;
+	_variables.FORCEMAXDIST = 5;
 	_variables.FORCECOOLDOWN = 5;
 	_variables.FORCEEDGE = 5;
 	_variables.FORCENEMY = 1;
@@ -150,9 +148,9 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	if(_parameters.de == 0.0 || _parameters.de == _parameters.sv)
 		potential = 0.0;
 	else if(distanceToEnemyFromCurrentTile > _parameters.sv)
-		potential = (_variables.FORCEMAXDIST1 * correctedDistance);
+		potential = (_variables.FORCEMAXDIST * correctedDistance);
 	else if(distanceToEnemyFromCurrentTile < _parameters.sv )
-		potential = (-1)*(_variables.FORCEMAXDIST2/correctedDistance);
+		potential = (-1)*(_variables.FORCEMAXDIST * correctedDistance);
 	
 	return potential;
 }
