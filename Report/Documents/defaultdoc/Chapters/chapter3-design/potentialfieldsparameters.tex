@@ -75,7 +75,7 @@ The other case is if the vulture's weapon is not ready. In this case we take the
 		As with the ally units, we do not want the vultures to clump up against the wall so cliffs and edges will be repulsive.
 		\begin{displaymath}
 			EdgesAndCliffs = \begin{cases}
-					\frac{-f_{EAC}}{de} & \text{if } de \leq c\\
+					-f_{EAC} \times {de} & \text{if } de \leq c\\
 					0 & \text{if } de > c
 				\end{cases}		
 		\end{displaymath}
