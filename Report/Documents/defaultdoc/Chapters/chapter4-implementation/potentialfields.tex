@@ -24,8 +24,8 @@ double BaseTactic::CalculateSquadCenterPotential(BWAPI::Position pos)
 }
 \end{Sourcecode}
 		$F_{S}$ is named \textit{FORCESQUAD} in the code.
-		\textit{SQUADDISTANCE\_CONSTANT} describes the size of a squad. 
-		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculating the potential on. This is to enable the calculation of distance to the the squad from this particular field, also called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
+		\textit{SQUADDISTANCE\_CONSTANT} describes the size of the squads. 
+		\textit{CalculateSquadCenterPotential} takes as an input the tile that we are calculating the potential on. This is to enable the calculation of distance to the the squad from this particular tile, also called \textit{dsv} in \lnnum{1}, and then in \lnnum{2},\lnnum{3} and \lnnum{4} we check the three different cases described in section \ref{SCA_label}.		
 		
 		All theses three cases can be observed in figure \ref{fig:SCA}, the selected unit is attracted towards the squad. The other units are within the desired range of each other so they don't want to move.
 		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
@@ -51,7 +51,7 @@ double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos)
 	return potential;
 }
 \end{Sourcecode}
-	$F_{MDP1}$ is named \textit{FORCEMAXDIST1} and $F_{MDP2}$ is named \textit{FORCEMAXDIST2} in the code.
+	$F_{MDP}$ is named \textit{FORCEMAXDIST} in the code.
 	\textit{CalculateMaximumDistancePotential} takes as an input the current tile we are calculating the potential field on and it is used to take into account in which direction the enemy is positioned.
 	
 	In \lnnum{1} the function \textit{MathHelper::GetDistanceToNearestEnemy} returns what in section \ref{SCA_label} is known as $due$, being the distance from the current tile we are calculating the potential field from to the nearest enemy.
@@ -76,15 +76,15 @@ double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 	else if(_parameters.da == _variables.ALLYDISTANCE_CONSTANT)
 		potential = (-1)*_variables.FORCEALLY;
 	else
-		potential = (-1)*(double)_variables.FORCEALLY/(double)_parameters.da;
+		potential = (-1)*_variables.FORCEALLY * _parameters.da;
 	
 	return potential;
 }
 \end{Sourcecode}	
 	$F_{AU}$ is named \textit{FORCEALLY} in the code. 
-	The first thing we do in Ally potential is calculating the distance to the nearest ally. This is done using the function \textit{MathHelper::GetDistanceToNearestAlly} in \lnnum{1}, it takes as parameters, the position of the current tile and a units id. The unit used in units id, is the unit we are currently calculating the potential field for, this is used to avoid calculating the distance from the current tile to the  specific unit, if we didn't do this the closed unit will always be the unit we are current calculating the potential field for.
+	The first thing we do in Ally potential is calculating the distance to the nearest ally. This is done using the function \textit{MathHelper::GetDistanceToNearestAlly} in \lnnum{1}, it takes as parameters, the position of the current tile and a units id. The unit used in units id, is the unit we are currently calculating the potential field for, this is used to avoid calculating the distance from the current tile to that specific unit, if we didn't do this the closed unit will always be the unit we are current calculating the potential field for.
 	
-	Besides calculating the distance \textit{Ally units} is exactly as in the design. The last thing to note is that the constant $c$ from the design is called \textit{ALLYDISTANCE\_CONSTANT} in \lnnum{2}.
+	Besides that calculating the distance \textit{Ally units} is exactly as in the design. The last thing to note is that the constant $c$ from the design is called \textit{ALLYDISTANCE\_CONSTANT} in \lnnum{2}.
 	
 	The finished result of textit{Ally units} can be seen in figure \ref{fig:AU}.
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Allyunits.png}
