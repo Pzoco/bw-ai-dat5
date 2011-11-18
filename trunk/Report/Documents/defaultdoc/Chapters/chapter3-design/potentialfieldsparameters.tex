@@ -12,7 +12,7 @@
 	$due =$ distance from current point to enemy.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
 	$dc =$ distance to cliff or edge. \\
-	$dua =$ distance from current point to enemy.
+	$dua =$ distance from current point to ally.
 	
 	\subsection*{Squad center (Attractive)}
 		\label{SCA_label}A vulture is more likely to survive if it sticks together with it's squad. It will both give a better damage output and also spread out the 
@@ -72,12 +72,13 @@ A vulture cannot do any damage right after it shoots. This is because in there i
 In our first case we give the field a value of zero if the vulture is ready to fire. We do not want it to retreat if it is available to fire.
 The other case is if the vulture's weapon is not ready. In this case we take the distance from the enemy(due-de+due) and multiply it by the force.
 	\subsection*{Edges and cliffs (Repulsive)}
-		As with the ally units, we do not want the vultures to clump up against the wall so cliffs and edges will be repulsive.
+		We do not want our vultures to get stuck against any walls so we will add a potential field for any edge where a unit can get stuck.
 		\begin{displaymath}
 			EdgesAndCliffs = \begin{cases}
 					-f_{EAC} \times {de} & \text{if } de \leq c\\
 					0 & \text{if } de > c
 				\end{cases}		
 		\end{displaymath}
-	
+In the first case we take the force and divide by the distance from our unit to the cliff. This way as we get closer to the cliff the potential field becomes stronger so we will work harder to move away from the edge.
+The second case is just for when the unit is a certain distance away from the cliff. If the unit is far enough away the potential field would be negligible so we just consider it zero.	
 	
