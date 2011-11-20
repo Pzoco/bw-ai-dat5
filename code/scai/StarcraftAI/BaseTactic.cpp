@@ -93,7 +93,7 @@ void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits)
 		_parameters.wr = false;
 	}
 	//distance to cliff or edge.
-	_parameters.dc = 0;
+	_parameters.dc = BWTA::getNearestUnwalkablePosition(_unit->getPosition());
 }
 #pragma endregion PF InitializeParameters
 #pragma region CalculateAllyPotential // NEEDS COMMENTS
@@ -177,6 +177,7 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 #pragma region CalculateEdgesPotential // NOT IMPLEMENTET
 double BaseTactic::CalculateEdgesPotential()
 {
+	Broodwar->get
 	if(_parameters.dc <= _variables.EDGESDISTANCE_CONSTANT)
 	{
 		return (-1*_variables.FORCEEDGE)/_parameters.dc;
