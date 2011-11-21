@@ -1,16 +1,17 @@
-\section{Aspects of winning}
-In this section we will introduce the elements of Starcraft Broodwar which have to be taking into acount in order to get ahead. This will give a understanding 
-of Broodwar and will later be useful to make a bot. We will take a look at the elements build order, information gathering, macromanagement and
+\section{Important Techniques}
+%\section{Aspects of winning}
+In this section we will introduce the elements of Starcraft Broodwar which have to be taken into account in order to win a match. This will give a understanding 
+of Broodwar and will later be useful in making our bot. We will take a look at build orders, information gathering, macromanagement and
 micromanagement.
 
-	\subsection{Build order}
+	\subsection{Build Orders}
 		A build order is an early game strategy describing in which order certain building and units should be produced\cite{wiki_build_order}. 
 		The purpose of a build order is to optimize the player's economy and to control the timing of units which can give 
-		the player the advantages at certain points in the game.\\
-		The build order depends on many factors like the specific map played and the race of the opponent. 
+		the player advantages at certain points in the game.\\
+		The build order depends on several factors like the specific map played and the race of the opponent. 
 		Early game scouting can help determine the opponent's build order and so you can counter their strategy.\\
 		
-		A build order is mostly important at the beginning of the game and relies a lot on timing. 
+		A build order is most important at the beginning of the game and relies a lot on timing. 
 		The player must choose a spot to build a certain building, ensure a worker is there to do it, 
 		and make sure the player has the required resources. 
 		A good player knows the exact time to do these kinds of actions. 
@@ -21,64 +22,65 @@ micromanagement.
 	\subsection{Information Gathering}
 		Every strategy and decision made throughout the game depends on the pieces of information 
 		known in the current moment. From the most basic decisions like where to build, what to build, and
-		which units to build; to wider decisions like how to defend, when to attack, when to rush, or how to counterattack.
-		Everything depends on the information. The decision making process begins and grows with the input information.
-		Therefore, how the agent obtains pieces of information is just as important 
-		as how it process them. 
+		which units to build; to wider decisions like how to defend, when to attack, when to rush, or how to counter-attack.
+		Everything depends on the known information. The decision making process begins and grows with the input information.
+		How the agent obtains pieces of information is just as important 
+		as how it process them. You do not want to waste too many resources finding out information otherwise you will waste units. 
 	
-			\subsubsection{Knowing the map}
-				During the game, many of the actions have to take into consideration the map. Movements, starting point, 
-				tactics and general strategy depend on how much data there is about the map. 				
-				For example; the resources you need for building and expanding through the game are normally distributed
+			\subsubsection{Map Knowledge}
+				During the game many of the actions have to rely the map that the player's are playing on. Movements, starting point, 
+				tactics, and general strategy depend on how much data there is about the map. 				
+				For example the resources you need for building and expanding through the game are normally distributed
 				equally between the players, and the players are normally placed at opposite ends of the maps. 
 				Using this general map information and the information obtained in the moment the game starts 
 				(map, size, exact location, opposite race), a player will decide on his build order and starting actions. 
 		
 			\subsubsection{Scouting}
-				Reasons for exploring the map is not only to find out about the geographical structure, 
-				but to obtain information on the actions of the opposite player. The player's actions will depend on
-				the enemy's position, buildings, units, tactics and general strategy. The processing of the information 
+				Reasons for exploring the map are not just to find out about the geographical structure, 
+				but to obtain information on the actions of the opposing player. The player's actions will depend on
+				the enemy's position, buildings, units, tactics and strategy. The processing of the information 
 				obtained from scouting is important and delicate since it is obtaining small pieces of information 
 				that structure a large network of unknown information. Also, this other source of information 
 				is more volatile and temporal than the previous considerations because it is only obtained for the 
 				limited amount of time the unit stays in a certain place and to the areas the buildings limit the fog of war.
 				
 	\subsection{Macromanagement}
-		Macro is a key concept in Starcraft Broodwar. 
+		Macromanagement often just called Macro is a key concept in Starcraft Broodwar. 
 		Macro is the ability to use all ones resources and the ability to expand at the right times to keep a healthy economy.
 		The most difficult part of macro is to keep up production of units and keeping down resources while attacking.
 		If players focus on economy and don't attack each other, the game is considered a macro game. This defensive tactic where a
 		player stays in his base and macro up a big army is called a turtling. Macro heavy games, where players are turtling, lead to
 		long games with massive battles. 
 			
-			\subsubsection{Queing}
-				If a player has good macro, he should not queue up units. 
-				Every time you queue a unit the resources are withdrawn instantly before begins its production time. This means that optimally you only want to have one unit in a queue at a time for each producing facility.
+			\subsubsection{Queuing}
+				If a player has good macro he should not queue up units. 
+				Every time you queue a unit the resources are withdrawn instantly before the unit begins its production time. This means that optimally you only want to have one unit in a queue at a time for each producing facility.
 				This is also the case with workers. Normally the player wants to keep building workers throughout the entire match in order the have the best economy.
 				In some cases it can be an advantage to stop building workers and focus on spending resources on something else like a building.
 				
 				
 	\subsection{Micromanagement}
-		Micromanagement requires a player to control their units so that you can get the most out of them.\\
+		Micromanagement also known as micro requires a player to control their units so that you can get the most out of them.\\
 		
 		For a human player this can be very difficult as it requires a lot of concentration and can hurt an inexperienced players macro. 
 		An advantage for a computer player is it does not have to balance its concentration between micromanagement and macromanagement.\\
 		
 		One way to do micro is to keep your units alive as long as possible. 
-		The idea behind this is simple, if your units stay alive after a battle then you do not have to replace as many units as your opponent. 
+		If your units stay alive after a battle then you do not have to replace as many units as your opponent. 
 		Players can move hurt units out of battle and then back in. 
 		The reason for this is that the enemy will then start attacking another one of your 
 		units and then your hurt unit can enter back in the battle and continue doing damage. 
 		A unit will do the same amount of damage no matter how much health it has but will do no damage if it is dead.\\
 		
 		Another form of micro is making several of your units attack one unit at a time, this is called \textit{focus firing}.
-		A computer can do this very well. Computuers can perform calculations to find how many units it takes to kill another unit in one shot.
+		A computer can do this very well. Computers can perform calculations to find how many units it takes to kill another unit in one shot.
 		This is useful so that too many units don't waste their shots in killing one unit when they can be doing damage to other units.\\
-		In order to micro units effectively you must be do a lot of different actions at one time. 
+		In order to micro units effectively you must be able to do a lot of different actions at one time. 
 		This is generally measured by a unit called \abapm. 
 		A computer can have an extremely high \abapm. Making it easy for it to micro its units precisely.
-		
-	\subsection{Unpredictability}
+
+\subsection{Meta-Game}		
+%	\subsection{Unpredictability}
 		When playing tournaments or even just playing a normal match, being unpredictable can win you the game. 
 		If your opponent is adapting to your play style you can throw him off by doing something different or playing strange.
 		In tournaments psychology is a big factor. Professional players can make the other player do a certain strategy because they know 
