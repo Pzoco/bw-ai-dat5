@@ -44,7 +44,7 @@ std::list<BWAPI::Position> MathHelper::GetSurroundingPositions(BWAPI::Position p
 	return positions;
 }
 
-MathHelper::ReturningUnit MathHelper::GetNerestEnemy(BWAPI::Position unitPos)
+MathHelper::ReturningUnit MathHelper::GetNearestEnemy(BWAPI::Position unitPos)
 {
 	
 	//BWAPI::Broodwar->printf("inside GetNerestEnemy");
@@ -94,7 +94,7 @@ MathHelper::ReturningUnit MathHelper::GetNerestEnemy(BWAPI::Position unitPos)
 int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos)
 {	
 	//BWAPI::Broodwar->printf("inside GetDistanceToNearestEnemy / calling GetNerestEnemy");
-	ReturningUnit ClosestEnemyStruct = GetNerestEnemy(pos);
+	ReturningUnit ClosestEnemyStruct = GetNearestEnemy(pos);
 	int distance = 30000;
 
 	//If there is any enemie units we know of.
@@ -111,6 +111,11 @@ int MathHelper::GetDistanceToNearestEnemy(BWAPI::Position pos)
 	return distance;
 }
 
+double MathHelper::GetDistanceBetweenPositions(BWAPI::Position pos1, BWAPI::Position pos2)
+{
+	// Square root of (x2-x1)^2+(y2-y1)^2
+	return sqrt(pow(double(pos2.x()-pos1.x()),2)+pow(double(pos2.y()-pos1.y()),2));
+}
 int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 {
 	//Getting a list of all our units.
