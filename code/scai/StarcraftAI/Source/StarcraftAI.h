@@ -7,6 +7,7 @@
 class StarcraftAI : public BWAPI::AIModule
 {
 public:
+  static bool analyzed;
   virtual void onStart();
   virtual void onEnd(bool isWinner);
   virtual void onFrame();
