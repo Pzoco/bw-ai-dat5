@@ -203,6 +203,10 @@
 				Name="Managers"
 				>
 				<File
+					RelativePath=".\ScoutingManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\TacticsManager.cpp"
 					>
 				</File>
@@ -251,6 +255,10 @@
 			</File>
 			<File
 				RelativePath=".\ReinforcementLearning.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ScoutingManager.h"
 				>
 			</File>
 			<File

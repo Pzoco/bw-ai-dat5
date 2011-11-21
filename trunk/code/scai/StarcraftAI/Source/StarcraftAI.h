@@ -1,13 +1,13 @@
 #pragma once
 #include <BWAPI.h>
-
 #include <BWTA.h>
 #include <windows.h>
+
+
 
 class StarcraftAI : public BWAPI::AIModule
 {
 public:
-  static bool analyzed;
   virtual void onStart();
   virtual void onEnd(bool isWinner);
   virtual void onFrame();
