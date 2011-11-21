@@ -5,6 +5,7 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 using namespace BWAPI;
+bool analyzed;
 
 TacticsManager tacticsManager;
 
@@ -12,6 +13,9 @@ void StarcraftAI::onStart()
 {
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
+	BWTA::readMap();
+	BWTA::analyze();
+
 	tacticsManager = TacticsManager();
 	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
 

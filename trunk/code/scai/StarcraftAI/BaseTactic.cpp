@@ -93,7 +93,7 @@ void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits)
 		_parameters.wr = false;
 	}
 	//distance to cliff or edge.
-	_parameters.dc = BWTA::getNearestUnwalkablePosition(_unit->getPosition());
+	/*_parameters.dc*/ BWAPI::Position pos = BWTA::getNearestUnwalkablePosition(_unit->getPosition());
 }
 #pragma endregion PF InitializeParameters
 #pragma region CalculateAllyPotential // NEEDS COMMENTS
@@ -175,12 +175,11 @@ double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos)
 }
 #pragma endregion CalculateWeaponCoolDownPotential
 #pragma region CalculateEdgesPotential // NOT IMPLEMENTET
-double BaseTactic::CalculateEdgesPotential()
+double BaseTactic::CalculateEdgesPotential(BWAPI::Position pos)
 {
-	Broodwar->get
 	if(_parameters.dc <= _variables.EDGESDISTANCE_CONSTANT)
 	{
-		return (-1*_variables.FORCEEDGE)/_parameters.dc;
+		return (-1*_variables.FORCEEDGE)*_parameters.dc;
 	}
 	else
 	{
@@ -196,9 +195,9 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	double totalPotentialForCurrentTile = 0.0;
 	//totalPotentialForCurrentTile +=  BaseTactic::CalculateAllyPotential(pos);
 	//totalPotentialForCurrentTile += BaseTactic::CalculateSquadCenterPotential(pos);
-	totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
+	//totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
 	//totalPotentialForCurrentTile += BaseTactic::CalculateWeaponCoolDownPotential(pos);
-	//totalPotentialForCurrentTile = BaseTactic::CalculateEdgesPotential();
+	totalPotentialForCurrentTile = BaseTactic::CalculateEdgesPotential(pos);
 	
 	// The line below is optional, it will print the potential to the screen.
 	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)totalPotentialForCurrentTile);
