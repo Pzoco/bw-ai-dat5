@@ -92,7 +92,7 @@ void TacticsManager::Update()
 }
 void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
-	if(unit->getType() == BWAPI::UnitTypes::Terran_SCV || unit->getType() == BWAPI::UnitTypes::Buildings)
+	if(!IsSquadType(unit->getType()))
 	{
 		return;
 	}
@@ -117,7 +117,31 @@ void TacticsManager::AssignToSquads(std::set<BWAPI::Unit*> units)
 		AssignToSquad(unit);
 	}
 }
-
-
-
-
+void TacticsManager::IsSquadType(BWAPI::UnitType)
+{
+	if(unit->getType() == BWAPI::UnitTypes::Terran_SCV || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Command_Center || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Academy || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Command_Center || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Armory ||
+		unit->getType() == BWAPI::UnitTypes::Terran_Barracks || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Bunker || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Comsat_Station || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Control_Tower 
+		unit->getType() == BWAPI::UnitTypes::Terran_Covert_Ops || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Engineering_Bay
+		unit->getType() == BWAPI::UnitTypes::Terran_Missile_Turret || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Machine_Shop ||
+		unit->getType() == BWAPI::UnitTypes::Terran_Nuclear_Silo || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Physics_Lab ||
+		unit->getType() == BWAPI::UnitTypes::Terran_Refinery || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Science_Facility
+		unit->getType() == BWAPI::UnitTypes::Terran_Starport || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Supply_Depot
+		unit->getType() == BWAPI::UnitTypes::Terran_Vulture_Spider_Mine || 
+		unit->getType() == BWAPI::UnitTypes::Terran_Nuclear_Missile)
+	{
+		return false;
+	}
+	return true;
+}
