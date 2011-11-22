@@ -6,7 +6,7 @@ class ReinforcementLearning
 {
 public:
 	struct Weights;
-	double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> enemieUnits, std::set<BWAPI::Unit*> squad);
+	double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad);
 	void ReinforcementLearning::LoadWeightsFromFile();
 	void ReinforcementLearning::SaveCurrentWeightsToFile();
 	void ReinforcementLearning::UpdateCurrentWeights(double actualReward, double expectedReward);
