@@ -1,5 +1,5 @@
-Ally 1.0
-Edges 1.0
-MaximumDistance 1.0
-SquadCenter 1.0
-WeaponCoolDown 1.0
+FORCEALLY = 1.0;
+FORCESQUAD = 1.0;
+FORCEMAXDIST = 1.0;
+FORCECOOLDOWN = 1.0;
+FORCEEDGE = 1.0;

@@ -4,6 +4,7 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include <math.h>
+#include "Source/StarcraftAI.h"
 
 
 using namespace BWAPI;
@@ -220,6 +221,7 @@ BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit
 	for each(BWAPI::Position position in positions)
 	{
 		double currentPotential = CalculatePotentialField(position);
+		
 		//Setting bestPotential to be the best potential
 		if(bestPotential < currentPotential)
 		{
@@ -232,6 +234,11 @@ BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit
 			centerPositionPotential = currentPotential;
 		}
 	}
+
+	/*
+		Save bestPotential and pretend to be at bestPosition
+	*/
+	std::list<BWAPI::Position> qPositions = MathHelper::GetSurroundingPositions(centerPosition,48);
 
 	
 	if(bestPotential == 0.0 && centerPositionPotential == 0.0)
