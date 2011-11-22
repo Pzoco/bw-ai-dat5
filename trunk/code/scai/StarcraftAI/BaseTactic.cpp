@@ -109,7 +109,7 @@ double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 	else if(_parameters.da == _variables.ALLYDISTANCE_CONSTANT)
 		potential = (-1)*_variables.FORCEALLY;
 	else
-		potential = (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
+		potential = (-1)*(double)_variables.FORCEALLY/(double)_parameters.da;
 	
 	return potential;
 }
@@ -202,111 +202,6 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	// The line below is optional, it will print the potential to the screen.
 	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)totalPotentialForCurrentTile);
 	return totalPotentialForCurrentTile;
-}
-
-void BaseTactic::InitializeQParameters(std::set<BWAPI::Unit*> myUnits,BWAPI::Position fakeUnitPos)
-{
-	//Setting all the variables, this should later be done by the reinforcement learning
-	// finding unit position and setting it to the center of the matrix.
-	Position unitPos = fakeUnitPos;
-	//distance to nearest ally unit.
-	//_parameters.da is calculated in MathHelper::GetDistanceToNearestAlly();
-	
-	//distance to center of this unit's squad.
-	_qParameters.squadPos = MathHelper::GetSquadCenterPosition(myUnits);
-	_qParameters.ds = unitPos.getApproxDistance(_parameters.squadPos);
-	//BWAPI::Broodwar->drawCircle(CoordinateType::Map,squadX,squadY,10,Colors::Green,true);
-
-	//unit's maximum shooting range. -1 if no weapon of this type.
-	if(_unit->getType().groundWeapon() != BWAPI::WeaponTypes::None)
-		_qParameters.sv = _unit->getType().groundWeapon().maxRange();
-	else
-		_qParameters.sv = -1;
-	//unit's maximum shooting range for air. -1 if no weapon of this type.
-	if(_unit->getType().airWeapon() != BWAPI::WeaponTypes::None)
-		_qParameters.sva = _unit->getType().airWeapon().maxRange();
-	else
-		_qParameters.sva = -1;
-	//distance to enemy.
-	//BWAPI::Broodwar->printf("calling GetDistanceToNearestEnemy");
-	_qParameters.de = MathHelper::GetDistanceToNearestEnemy(unitPos);
-
-	//boolean denoting whether or not the weapons are ready to fire.
-	if(_unit->getAirWeaponCooldown() == 0 && _unit->getGroundWeaponCooldown() == 0)
-	{
-		_qParameters.wr = true;
-	}
-	else
-	{
-		_qParameters.wr = false;
-	}
-	//distance to cliff or edge.
-	_qParameters.dc = 0;
-}
-double BaseTactic::CalculateQPotentialField(BWAPI::Position pos,BWAPI::Position fakeUnitPos)
-{
-	double potential = 0.0;
-	//EDGE
-	if(ScoutingManager::IsMapAnalyzed())
-	{
-		_qParameters.dc = (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),pos);
-		potential += (-1*_variables.FORCEEDGE)*_qParameters.dc;
-	}
-	//COOLDOWN
-	else
-	{
-		int distanceToEnemyFromUnit = _qParameters.de;
-		int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
-		int correctedDistance = (_qParameters.de - distanceToEnemyFromCurrentTile + _qParameters.de);
-		potential += (-1)*correctedDistance*_variables.FORCECOOLDOWN;
-	}
-	//MAXDIST
-	Position unitPos = fakeUnitPos;
-	int distanceToEnemyFromUnit = _qParameters.de;
-	int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
-	int correctedDistance = (_qParameters.de - distanceToEnemyFromCurrentTile + _qParameters.de);
-	potential += (_variables.FORCEMAXDIST * correctedDistance);
-	potential += (-1)*(_variables.FORCEMAXDIST * correctedDistance);
-	//SQUADCENTER
-	int dsv = pos.getApproxDistance(_qParameters.squadPos);	
-	potential += (_qParameters.ds - dsv )* _variables.FORCESQUAD;
-	//ALLY
-	_qParameters.da = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
-	potential += (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
-	
-	return potential;
-}
-double BaseTactic::CalculateBestQPotentialField(BWAPI::Position fakeUnitPos)
-{
-	BWAPI::Position bestPosition = BWAPI::Position(1,1);
-	//handling the special case where the tile we are now have a negative posistion and some other tile have 0
-	double centerPositionPotential = 0.0;
-	double bestPotential = -1000.0;
-	BWAPI::Position unitPos = fakeUnitPos;
-	Position centerPosition = fakeUnitPos;
-	std::list<BWAPI::Position> qPositions = MathHelper::GetSurroundingPositions(fakeUnitPos,48);
-
-	for each(BWAPI::Position position in qPositions)
-	{
-		double currentPotential = CalculateQPotentialField(position,fakeUnitPos);
-		
-		//Setting bestPotential to be the best potential
-		if(bestPotential < currentPotential)
-		{
-			bestPosition = position;
-			bestPotential = currentPotential;
-		}
-		//Handling the special case
-		if(position == centerPosition)
-		{
-			centerPositionPotential = currentPotential;
-		}
-	}
-
-	if(bestPotential == 0.0 && centerPositionPotential == 0.0)
-		return centerPositionPotential;
-	else
-		return bestPotential;
 }
 BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit*> mySquad)
 {
