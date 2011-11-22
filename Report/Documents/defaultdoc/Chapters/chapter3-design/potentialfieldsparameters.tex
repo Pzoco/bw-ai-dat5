@@ -1,5 +1,5 @@
 \section{Parameters for the potential fields}
-	This section will contain the parameters, which will be tweaked in order to give the vulture an optimal behaviour. Because we are tweaking 
+	This section will contain the parameters which will be tweaked in order to give the vulture an optimal behaviour. Because we are tweaking 
 	potential fields the parameters will either be repulsive or attractive.
 	
 	Variables:\\
@@ -17,7 +17,7 @@
 	Where $f_c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad.
 	
 	\subsection*{Squad center (Attractive)}
-		\label{SCA_label}A vulture is more likely to survive if it sticks together with it's squad. It will both give a better damage output and also spread out the 
+		\label{SCA_label}A vulture is more likely to survive if it sticks together with its squad. It will both give a better damage output and also spread out the 
 		damage taken\footnote{Each of the cases in the potential fields will be explained in detail in the implementation}.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
@@ -27,15 +27,15 @@
 				\end{cases}		
 		\end{displaymath}
 		
-		When we desined squad center, it became clear that we need three cases. 
-		In case first we handle the situation where the current vector we are calculating is facing a way from the squad and need to be 0. If we didn't include this step the unit would also be attracted to tiles in the wrong direction. This is being done because the calculation is based on the distance to the squad and the tiles facing away is at a greater distance but should not be more attractive.
+		When we designed squad center, it became clear that we need three cases. 
+		In case one we handle the situation where the current vector we are calculating is facing a way from the squad and needs to be 0. If we did not include this step the unit would also be attracted to tiles in the wrong direction. This is being done because the calculation is based on the distance to the squad and the tiles facing away is at a greater distance but should not be more attractive.
 		
-		Second case  is concerning the case where we are not within the desired range of the squad. So we calculate how strongly we want to move towards the squad, this depends on the distance. 
+		Second case  is where we are not within the desired range of the squad. So we calculate how strongly we want to move towards the squad, this depends on the distance. 
 		
 		Third case is all other cases, being that the unit is within the squad.
 					
 	\subsection*{Maximum distance positioning (Attractive)}
-		The vultures have to utilize the range they have and therefore they will be attracted to the position which gives them the maximum distance 
+		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance 
 		to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
@@ -44,10 +44,10 @@
 					-f_{MDP} \times (de - due + de) & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
-		Maximum distance positioning contains to cases. The first is handling the situation where we are not witin the maximum range. In that case we cant to be attractet to the enemy. Note that in both cases we have $(due - de + due)$ which basicaly just invert the distances to the enemy so the closet tile will have the largest value.
-		In the secound case we handle when we are exactly within the right distance, and just want to stay where we are.
-		The last case takes care or the last option, we are to close and want to get away.
-		We use to different forces to be able to adjust them indepentently later.
+		Maximum distance positioning contains two cases. The first is handling the situation where we are not within the maximum range. In that case we cant to be attracted to the enemy. Note that in both cases we have $(due - de + due)$ which basically just invert the distances to the enemy so the closet tile will have the largest value.
+		Second case we handle when we are exactly within the right distance and just want to stay where we are.
+		The last case is when we are to close and want to get away.
+		We use two different forces to be able to adjust them independently later.
 		
 		
 		

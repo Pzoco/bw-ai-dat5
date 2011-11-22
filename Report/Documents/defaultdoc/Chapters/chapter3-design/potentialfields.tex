@@ -1,14 +1,14 @@
 \section{Potential fields}
-	Potential fields can be used to representing an area of the game using vectors.  The vectors is calculated based on all the objects in the area, and then used to calculate a path trough the area.
+	Potential fields can be used to represent an area of the game using vectors.  The vectors are calculated based on all the objects in the area, and then used to calculate a path trough the area.
 
-	Objects can have two types of influence on form of the potential field an Attractive behavior or an Repulsive behavior.
+	Objects can have an attractive or repulsive type of influence in the potential field.
 	
-	If we begin by assuming the out world is empty, and we then introduce a single enemy unit we want to attack, this would result in the entire area begin flooded with vectors pointing toward this point, as seen in figure \ref{fig:seekbehavior}. This is called the Attractive behavior, because it makes our own units want to reach this point in order to attack it.
+If we begin by introducing a single enemy unit into an empty out world the entire area begin flooded with vectors pointing toward this point, as seen in figure \ref{fig:seekbehavior}. This is called the Attractive behaviour because it makes our own units want to reach this point in order to attack it.
 	
 	\insertmarginfigure{height=3in}{Potentialfields/seek.png}
 		{Attractive behavior\cite{pft}}{fig:seekbehavior}{-3in}
 	
-	Likewise if we assume there is only a single obstacles in the area, this could be a unit we did not want to attack, it would generate a repulsive field around it, see figure \ref{fig:avoidbehavior}. This is called the Repulsive behavior because it causes our own units to try and move away from it.
+	Likewise if we assume there is only a single obstacles in the area (a unit we do not want to attack) it would generate a repulsive field around it, see figure \ref{fig:avoidbehavior}. This is called the Repulsive behavior because it causes our own units to try and move away from it.
 
 	\insertmarginfigure{height=3in}{Potentialfields/avoid.png}
 		{Repulsive behavior\cite{pft}}{fig:avoidbehavior}{-3in}
@@ -25,7 +25,7 @@
 		$f =$ force\\
 		$s =$ size of the potential field\\
 		$c =$ fade of constant\\
-		$d =$ destination\\
+		$d =$ distance\\
 		\begin{displaymath}
 			%\begin{math}
 			Attractive = \begin{cases}
@@ -43,6 +43,6 @@
 				\end{cases}		
 			%\end{math}
 		\end{displaymath}
-		But we need to have more then just these to simple cases. As explained in the next chapter
+		But we need to have more then just these to simple cases as explained in the next chapter.
 		
 		
