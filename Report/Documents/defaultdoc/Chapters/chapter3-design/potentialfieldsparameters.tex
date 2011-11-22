@@ -44,7 +44,7 @@
 					-f_{MDP} \times (de - due + de) & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
-		Maximum distance positioning contains two cases. The first is handling the situation where we are not within the maximum range. In that case we cant to be attracted to the enemy. Note that in both cases we have $(due - de + due)$ which basically just invert the distances to the enemy so the closet tile will have the largest value.
+		Maximum distance positioning contains two cases. The first is handling the situation where we are not within the maximum range. In that case we cant to be attracted to the enemy. Note that in both cases we have $(due - de + due)$ which basically just invert the distances to the enemy so the closet tile will have the largest value.\\
 		Second case we handle when we are exactly within the right distance and just want to stay where we are.
 		The last case is when we are to close and want to get away.
 		We use two different forces to be able to adjust them independently later.
@@ -60,9 +60,9 @@ We do not want all of the vultures to clump completely together during a match. 
 					-f_{AU} * (da - dua + da) & \text{if } da = 0
 				\end{cases}		
 		\end{displaymath}
-	For the first case we wanted to make sure that if the vultures where far enought away from each other (the constant c) then they would not repulse each other at all. The reasoning behind this is simple because if the vultures are far away then they cannot take any splash damage.
-	On the second case we want out units to repulse each other when they are close enough together. To do this we take our -fAU (force Ally Unit) and divide it by the distance to the ally unit. This way the closer our vultures get to each other the more they will want to move away.
-	Our final case is if some how the vultures are right on top of each other or on the same position. Given our other equation this would cause a divide by zero error. So instead of using our second formula we use---------->insert more stuff
+	For the first case we wanted to make sure that if the vultures where far enought away from each other (the constant c) then they would not repulse each other at all. The reasoning behind this is simple because if the vultures are far away then they cannot take any splash damage.\\
+	On the second case we want out units to repulse each other when they are close enough together. To do this we take our -fAU (force Ally Unit) and divide it by the distance to the ally unit. This way the closer our vultures get to each other the more they will want to move away.\\
+	Our final case is if some how the vultures are right on top of each other or on the same position. Given our other equation this would cause a divide by zero error. So instead of using our second formula we take our force and multiply by distance.\\
 	\subsection*{Weapon cool down (Repulsive)}
 A vulture cannot do any damage right after it shoots. This is because in there is a certain amount of time in between each shot. Right after a vulture shoots we want it to move out of the battle until it can fire again. This way each vulture will be less vulnerable to taking damage when it cannot give any damage.
 		\begin{displaymath}
@@ -81,6 +81,6 @@ The other case is if the vulture's weapon is not ready. In this case we take the
 					0 & \text{if } de > c
 				\end{cases}		
 		\end{displaymath}
-In the first case we take the force and divide by the distance from our unit to the cliff. This way as we get closer to the cliff the potential field becomes stronger so we will work harder to move away from the edge.
+In the first case we take the force and divide by the distance from our unit to the cliff. This way as we get closer to the cliff the stronger the potential field becomes so we will work harder to move away from the edge.
 The second case is just for when the unit is a certain distance away from the cliff. If the unit is far enough away the potential field would be negligible so we just consider it zero.	
 	
