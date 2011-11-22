@@ -5,7 +5,7 @@
 #include <BWTA.h>
 #include <math.h>
 #include "Source/StarcraftAI.h"
-
+#include "ReinforcementLearning.h"
 
 using namespace BWAPI;
 BWAPI::Unit* _unit;
@@ -109,7 +109,7 @@ double BaseTactic::CalculateAllyPotential(BWAPI::Position pos)
 	else if(_parameters.da == _variables.ALLYDISTANCE_CONSTANT)
 		potential = (-1)*_variables.FORCEALLY;
 	else
-		potential = (-1)*(double)_variables.FORCEALLY/(double)_parameters.da;
+		potential = (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
 	
 	return potential;
 }
@@ -204,7 +204,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	return totalPotentialForCurrentTile;
 }
 
-void BaseTactic::InitializeQParameters(std::set<BWAPI::Unit*> myUnits,fakeUnitPos)
+void BaseTactic::InitializeQParameters(std::set<BWAPI::Unit*> myUnits,BWAPI::Position fakeUnitPos)
 {
 	//Setting all the variables, this should later be done by the reinforcement learning
 	// finding unit position and setting it to the center of the matrix.
@@ -243,7 +243,7 @@ void BaseTactic::InitializeQParameters(std::set<BWAPI::Unit*> myUnits,fakeUnitPo
 	//distance to cliff or edge.
 	_qParameters.dc = 0;
 }
-double BaseTactic::CalculateQPotentialField(BWAPI::Position pos,fakeUnitPos)
+double BaseTactic::CalculateQPotentialField(BWAPI::Position pos,BWAPI::Position fakeUnitPos)
 {
 	double potential = 0.0;
 	//EDGE
@@ -261,7 +261,7 @@ double BaseTactic::CalculateQPotentialField(BWAPI::Position pos,fakeUnitPos)
 		potential += (-1)*correctedDistance*_variables.FORCECOOLDOWN;
 	}
 	//MAXDIST
-	Position unitPos = fakeUnitPos);
+	Position unitPos = fakeUnitPos;
 	int distanceToEnemyFromUnit = _qParameters.de;
 	int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
 	int correctedDistance = (_qParameters.de - distanceToEnemyFromCurrentTile + _qParameters.de);
@@ -269,14 +269,12 @@ double BaseTactic::CalculateQPotentialField(BWAPI::Position pos,fakeUnitPos)
 	potential += (-1)*(_variables.FORCEMAXDIST * correctedDistance);
 	//SQUADCENTER
 	int dsv = pos.getApproxDistance(_qParameters.squadPos);	
-	double potential = 0.0;
 	potential += (_qParameters.ds - dsv )* _variables.FORCESQUAD;
 	//ALLY
 	_qParameters.da = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
-	potential = (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
+	potential += (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
 	
 	return potential;
-	
 }
 double BaseTactic::CalculateBestQPotentialField(BWAPI::Position fakeUnitPos)
 {
@@ -285,6 +283,7 @@ double BaseTactic::CalculateBestQPotentialField(BWAPI::Position fakeUnitPos)
 	double centerPositionPotential = 0.0;
 	double bestPotential = -1000.0;
 	BWAPI::Position unitPos = fakeUnitPos;
+	Position centerPosition = fakeUnitPos;
 	std::list<BWAPI::Position> qPositions = MathHelper::GetSurroundingPositions(fakeUnitPos,48);
 
 	for each(BWAPI::Position position in qPositions)
@@ -343,19 +342,14 @@ BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit
 	/*
 		Save bestPotential and pretend to be at bestPosition
 	*/
-	BaseTactic::InitializeQParameters(mySquad);
+	BaseTactic::InitializeQParameters(mySquad,bestPosition);
 	double bestQ = CalculateBestQPotentialField(bestPosition);
-
-
-
-
-
-
-
-
-
-
 	
+	
+	
+	/*
+		Figure out what to return
+	*/	
 	if(bestPotential == 0.0 && centerPositionPotential == 0.0)
 		return centerPosition;
 	else

@@ -5,21 +5,20 @@
 #include "../ScoutingManager.h"
 #include <BWAPI.h>
 #include <BWTA.h>
+#include "../ReinforcementLearning.h"
 
 using namespace BWAPI;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
-
+ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
 void StarcraftAI::onStart()
 {
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
-	
 	//Creating a tacticsmanager and assigning the our units to squads
 	tacticsManager = TacticsManager();
 	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
-
 	scoutingManager = ScoutingManager();
 	scoutingManager.AnalyzeMap();
 

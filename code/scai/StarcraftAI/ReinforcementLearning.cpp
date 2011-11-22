@@ -28,13 +28,28 @@ double const c3 = 1;
 double const c4 = 1;
 
 std::ofstream _file;
-double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> enemieUnits, std::set<BWAPI::Unit*> squad)
+double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 {
 	double reward = 0.0;
 	double maxEnemieHealth = startingEnemies * startingEnemyMaxHealth;
 	double maxUnitHealth = startingUnits * startingUnitMaxHealth;
 	double enemyCurrentHealth = 0.0;
 	double currentUnitHealth = 0.0;
+	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();	
+	std::set<BWAPI::Unit*> enemieUnits;
+	for(std::set<BWAPI::Player*>::const_iterator i = enemies.begin(); i != enemies.end(); i++)
+	{
+		//Making a list of that players units
+		std::set<BWAPI::Unit*> tempUnits = (*i)->getUnits();
+
+		//Iterating trough them.
+		for(std::set<BWAPI::Unit*>::iterator j = tempUnits.begin(); j != tempUnits.end(); j++)
+		{
+			//And add them to a list of all enemieunits in the map.
+			enemieUnits.insert((*j));
+			//BWAPI::Broodwar->printf("enemy in range");
+		}
+	}
 	for(std::set<BWAPI::Unit*>::iterator j = enemieUnits.begin(); j != enemieUnits.end(); j++)
 	{
 		enemyCurrentHealth += (double)(*j)->getHitPoints();
