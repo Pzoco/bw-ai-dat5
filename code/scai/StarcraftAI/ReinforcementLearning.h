@@ -5,16 +5,13 @@
 class ReinforcementLearning
 {
 public:
-	struct Weights;
-	double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad);
-	void ReinforcementLearning::LoadWeightsFromFile();
-	void ReinforcementLearning::SaveCurrentWeightsToFile();
-	void ReinforcementLearning::UpdateCurrentWeights(double actualReward, double expectedReward);
-	void ReinforcementLearning::OpenRewardFile();
-	void ReinforcementLearning::CloseRewardFile();
-	void ReinforcementLearning::WriteRewardFile(double doubleToFile);
-	double ReinforcementLearning::UpdateWeight(double weight,double actualReward,double expectedReward);
+	static struct Weights;
+	static double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad);
+	static void ReinforcementLearning::LoadWeightsFromFile();
+	static void ReinforcementLearning::SaveCurrentWeightsToFile();
+	static void ReinforcementLearning::UpdateCurrentWeights(double actualReward, double expectedReward);
+	static void ReinforcementLearning::OpenRewardFile();
+	static void ReinforcementLearning::CloseRewardFile();
+	static void ReinforcementLearning::WriteRewardFile(double doubleToFile);
+	static double ReinforcementLearning::UpdateWeight(double weight,double actualReward,double expectedReward);
 };
-
-
-

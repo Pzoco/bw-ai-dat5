@@ -18,10 +18,10 @@ double const alpha = 0.4;
 double const gamma = 0.4;
 
 //Manually change these when training
-double const startingEnemies = 1;
-double const startingEnemyMaxHealth = 1;
-double const startingUnits = 1;
-double const startingUnitMaxHealth = 1;
+double const startingEnemies = 20;
+double const startingEnemyMaxHealth = 40;
+double const startingUnits = 5;
+double const startingUnitMaxHealth = 80;
 double const c1 = 1;
 double const c2 = 1;
 double const c3 = 1;
@@ -69,10 +69,11 @@ void ReinforcementLearning::LoadWeightsFromFile()
 	std::ifstream file;
 	try
 	{
-		file.open("weights_data.txt");
+		file.open("C:/weights_data.txt");
 	}
 	catch(char *c)
 	{
+		BWAPI::Broodwar->printf("File could not be opened");
 		std::cout << "File could not be opened -" << c << "\n";
 	}
 	try
@@ -83,7 +84,7 @@ void ReinforcementLearning::LoadWeightsFromFile()
 		line.erase(0,strlen("FORCEALLY "));
 		std::remove(line.begin(),line.end(),'\n');
 		_weights.FORCEALLY = atof(line.c_str());
-		
+
 		//Gets the value of the edges theta
 		std::getline(file,line);
 		line.erase(0,strlen("FORCEEDGE "));
@@ -112,7 +113,7 @@ void ReinforcementLearning::LoadWeightsFromFile()
 	{
 		std::cout << "Wrong format of file -" << c << "\n";
 	}
-	
+	BWAPI::Broodwar->printf("Loaded = %d,%d,%d,%d,%d",(double)_weights.FORCEALLY,(double)_weights.FORCEEDGE,(double)_weights.FORCEMAXDIST,(double)_weights.FORCESQUAD,(double)_weights.FORCECOOLDOWN);
 	
 }
 void ReinforcementLearning::SaveCurrentWeightsToFile()
@@ -170,10 +171,6 @@ void ReinforcementLearning::UpdateCurrentWeights(double actualReward, double exp
 	_weights.FORCECOOLDOWN = UpdateWeight(_weights.FORCECOOLDOWN,actualReward,expectedReward);
 	
 }
-
-
-
-
 
 
 

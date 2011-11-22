@@ -14,6 +14,9 @@ ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
 void StarcraftAI::onStart()
 {
+	
+	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
+	//reinforcementLearning.OpenRewardFile();
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	//Creating a tacticsmanager and assigning the our units to squads
@@ -26,7 +29,7 @@ void StarcraftAI::onStart()
 
 void StarcraftAI::onEnd(bool isWinner)
 {
-	
+	//reinforcementLearning.CloseRewardFile();
 }
 
 void StarcraftAI::onFrame()
