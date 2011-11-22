@@ -197,7 +197,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	totalPotentialForCurrentTile += BaseTactic::CalculateSquadCenterPotential(pos);
 	totalPotentialForCurrentTile += BaseTactic::CalculateMaximumDistancePotential(pos);
 	totalPotentialForCurrentTile += BaseTactic::CalculateWeaponCoolDownPotential(pos);
-	totalPotentialForCurrentTile += BaseTactic::CalculateEdgesPotential(pos);
+	//totalPotentialForCurrentTile += BaseTactic::CalculateEdgesPotential(pos);
 	
 	// The line below is optional, it will print the potential to the screen.
 	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)totalPotentialForCurrentTile);
@@ -342,8 +342,8 @@ BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit
 	/*
 		Save bestPotential and pretend to be at bestPosition
 	*/
-	BaseTactic::InitializeQParameters(mySquad,bestPosition);
-	double bestQ = CalculateBestQPotentialField(bestPosition);
+	//BaseTactic::InitializeQParameters(mySquad,bestPosition);
+	//double bestQ = CalculateBestQPotentialField(bestPosition);
 	
 	
 	
