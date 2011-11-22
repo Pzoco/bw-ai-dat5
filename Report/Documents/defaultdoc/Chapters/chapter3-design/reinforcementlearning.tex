@@ -1,4 +1,4 @@
-\subsection{Neural Network}			 
+\section{Neural Network}			 
 			
 %Intro
 Neural network [NN] can be used to teach an agent to behave a certain way.
@@ -35,13 +35,19 @@ A short description of the different ways one can use reinforcement learning and
 			% Exploration
 			% Q-Learning - Explaning now
 			
-\subsection{Direct utility estimation}
+\subsection*{Direct utility estimation}
 
-\subsection{Adaptive dynamic programming}
 
-\subsection{Temporal difference learning}
 
-\subsection{Exploration}
+%NEEDS A CITE TO MARKOV AND TO DPM DAN
+\subsection*{Adaptive dynamic programming}
+This method of learning is taking advantage of the constraints between states, an agent learns the transition model as it goes along and solving the Markov decision process using a dynamic programming method. By using the Bellman equations it calculates the utility of the states. This method will not suit our agent very well since it's not good use for a larger state space \cite[p. 767]{rl}
+
+%YOU CAN DO IT!!
+\subsection*{Temporal difference learning}
+
+
+\subsection*{Exploration}
 As the name states this is really an exploration way of learning. The agent learn via using an exploration method, it never learns the true utilities or the true optimal policy. It carries on trying random movements until it finds a good utility and sticks with that one. This agent we call a greedy agent and greedy agents seldom converges to the optimal policy and even sometimes converges with a bad policy. This is similar to the human way of thinking about 'should I stay with what I got, or should I explore the world and find a better life' - where this fits best to the first statement. \cite[p. 771]{rl}
 
 \subsection{Q-Learning}			
