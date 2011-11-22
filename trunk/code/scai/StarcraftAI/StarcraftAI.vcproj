@@ -215,19 +215,15 @@
 				Name="Reinforcement Learning"
 				>
 				<File
-					RelativePath=".\Action.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\ReinforcementLearning.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\State.cpp"
+					RelativePath=".\rewards.txt.txt"
 					>
 				</File>
 				<File
-					RelativePath=".\Weights.cpp"
+					RelativePath=".\State.cpp"
 					>
 				</File>
 				<File
@@ -241,10 +237,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\Action.h"
-				>
-			</File>
 			<File
 				RelativePath=".\BaseTactic.h"
 				>
@@ -275,10 +267,6 @@
 			</File>
 			<File
 				RelativePath=".\TacticsManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Weights.h"
 				>
 			</File>
 		</Filter>

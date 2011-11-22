@@ -2,12 +2,14 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include <windows.h>
+#include "../ReinforcementLearning.h"
 
 
 
 class StarcraftAI : public BWAPI::AIModule
 {
 public:
+  ReinforcementLearning reinforcementLearning;
   virtual void onStart();
   virtual void onEnd(bool isWinner);
   virtual void onFrame();

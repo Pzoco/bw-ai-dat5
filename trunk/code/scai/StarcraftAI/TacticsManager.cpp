@@ -68,6 +68,7 @@ void TacticsManager::Update()
 	{
 		squad.ExecuteTactics();
 	}
+	/*
 	for each(Squad squad in _marineSquads)
 	{
 		squad.ExecuteTactics();
@@ -87,7 +88,7 @@ void TacticsManager::Update()
 	for each(Squad squad in _tankSquads)
 	{
 		squad.ExecuteTactics();
-	}
+	}*/
 }
 void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
