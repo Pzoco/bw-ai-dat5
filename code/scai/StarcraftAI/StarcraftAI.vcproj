@@ -180,56 +180,88 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MathHelper.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Squad.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
 			<Filter
-				Name="Tactics"
+				Name="Helpers"
 				>
 				<File
-					RelativePath=".\BaseTactic.cpp"
+					RelativePath=".\MathHelper.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
 				Name="Managers"
 				>
-				<File
-					RelativePath=".\ScoutingManager.cpp"
+				<Filter
+					Name="ProductionManager"
 					>
-				</File>
-				<File
-					RelativePath=".\TacticsManager.cpp"
+					<File
+						RelativePath=".\BuildingPlacer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\BuildOrder.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\BuildOrderHandler.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ProductionManager.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="ScoutingManager"
 					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Reinforcement Learning"
-				>
-				<File
-					RelativePath=".\ReinforcementLearning.cpp"
+					<File
+						RelativePath=".\ScoutingManager.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="TacticsManager"
 					>
-				</File>
-				<File
-					RelativePath=".\rewards.txt"
-					>
-				</File>
-				<File
-					RelativePath=".\State.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\weights_data.txt"
-					>
-				</File>
+					<File
+						RelativePath=".\Squad.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\TacticsManager.cpp"
+						>
+					</File>
+					<Filter
+						Name="Tactics"
+						>
+						<File
+							RelativePath=".\BaseTactic.cpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Reinforcement Learning"
+						>
+						<File
+							RelativePath=".\ReinforcementLearning.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\rewards.txt"
+							>
+						</File>
+						<File
+							RelativePath=".\State.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\weights_data.txt"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -242,7 +274,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BuildingPlacer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BuildOrder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BuildOrderHandler.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MathHelper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ProductionManager.h"
 				>
 			</File>
 			<File

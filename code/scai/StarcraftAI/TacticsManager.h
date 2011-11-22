@@ -15,5 +15,5 @@ public:
 private:
 	std::list<Squad> GetRightSquadList(BWAPI::UnitType);
 	void WriteSquadList(BWAPI::UnitType, std::list<Squad>);
-	void IsSquadType(BWAPI::UnitType);
+	bool IsSquadType(BWAPI::UnitType);
 };
