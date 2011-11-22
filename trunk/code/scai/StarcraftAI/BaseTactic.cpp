@@ -238,7 +238,7 @@ BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit
 	/*
 		Save bestPotential and pretend to be at bestPosition
 	*/
-	std::list<BWAPI::Position> qPositions = MathHelper::GetSurroundingPositions(centerPosition,48);
+	std::list<BWAPI::Position> qPositions = MathHelper::GetSurroundingPositions(bestPosition,48);
 
 	
 	if(bestPotential == 0.0 && centerPositionPotential == 0.0)
