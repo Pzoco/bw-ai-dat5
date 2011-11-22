@@ -22,10 +22,10 @@ double const startingEnemies = 20;
 double const startingEnemyMaxHealth = 40;
 double const startingUnits = 5;
 double const startingUnitMaxHealth = 80;
-double const c1 = 1;
+double const c1 = 100;
 double const c2 = 1;
-double const c3 = 1;
-double const c4 = 1;
+double const c3 = 0.5;
+double const c4 = 1.125;
 
 std::ofstream _file;
 double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
@@ -70,6 +70,7 @@ void ReinforcementLearning::LoadWeightsFromFile()
 	try
 	{
 		file.open("C:/weights_data.txt");
+		BWAPI::Broodwar->printf("WEIGHTS FILE - OPEN"); 
 	}
 	catch(char *c)
 	{
