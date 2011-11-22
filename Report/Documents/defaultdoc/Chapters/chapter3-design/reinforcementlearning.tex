@@ -26,7 +26,7 @@ We have chosen not to use neural network and the main reason is that neural netw
 	
 	
 	Reinforcement learning can be used in two different ways, either an active or a passive way. By using the passive reinforcement learning one defines a specific policy of the agent, and the task is to learn the utilities of states \cite{rl}. The basic goal is to learn how good the predefined policy is, and it does that by iterative going through the states without knowing the rewards beforehand and by trying and 'remembering' the best way. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl} by that in mind we have to learn an agent a complete model with what outcome for every action. The basic idea behind active reinforcement learning is that in the end it should be taught and obeying the optimal policy.
-
+A short description of the different ways one can use reinforcement learning and what we have chosen to work with in this report.
 	% There should be something about:
 		% Passive Reinforcement / Active Reinforcement
 			% Direct utility estimation
@@ -36,9 +36,14 @@ We have chosen not to use neural network and the main reason is that neural netw
 			% Q-Learning - Explaning now
 			
 \subsection{Direct utility estimation}
+
 \subsection{Adaptive dynamic programming}
+
 \subsection{Temporal difference learning}
+
 \subsection{Exploration}
+As the name states this is really an exploration way of learning. The agent learn via using an exploration method, it never learns the true utilities or the true optimal policy. It carries on trying random movements until it finds a good utility and sticks with that one. This agent we call a greedy agent and greedy agents seldom converges to the optimal policy and even sometimes converges with a bad policy. This is similar to the human way of thinking about 'should I stay with what I got, or should I explore the world and find a better life' - where this fits best to the first statement. \cite[p. 771]{rl}
+
 \subsection{Q-Learning}			
 Just to give an example of how large state spaces easily can get we can take a look at some well known games chess and backgammon. They are a tiny subset of the real world and their state spaces contain on the order of $10^50$ and $10^120$ states, and if the agent should visit all these states to learn how to play the game it will run i an absurd long time \cite[p. 777]{rl}. That's why we are going to use function approximation, which basicly means that we don't show the function as a table.
 
