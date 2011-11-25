@@ -4,5 +4,4 @@ class BuildingPlacer
 {
 public:
 	BuildingPlacer(void);
-	~BuildingPlacer(void);
 };

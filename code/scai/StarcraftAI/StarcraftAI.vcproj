@@ -206,10 +206,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\BuildOrderHandler.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\ProductionManager.cpp"
 						>
 					</File>
@@ -282,7 +278,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BuildOrderHandler.h"
+				RelativePath=".\CommonData.h"
 				>
 			</File>
 			<File

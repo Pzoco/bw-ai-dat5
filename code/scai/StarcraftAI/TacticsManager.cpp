@@ -117,6 +117,7 @@ void TacticsManager::AssignToSquads(std::set<BWAPI::Unit*> units)
 		AssignToSquad(unit);
 	}
 }
+
 bool TacticsManager::IsSquadType(BWAPI::UnitType type)
 {
 	if(type == BWAPI::UnitTypes::Terran_SCV || 
@@ -144,4 +145,18 @@ bool TacticsManager::IsSquadType(BWAPI::UnitType type)
 		return false;
 	}
 	return true;
+}
+int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
+{
+	if(IsSquadType(type))
+	{
+		std::list<Squad> squads = GetRightSquadList(type);
+		int number= 0;
+		for each(Squad squad in squads)
+		{
+			number+=squad.GetSize();
+		}
+		return 0;
+	}
+	return 0;
 }
