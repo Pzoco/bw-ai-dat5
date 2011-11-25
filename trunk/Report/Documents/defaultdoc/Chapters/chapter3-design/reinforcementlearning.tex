@@ -1,18 +1,18 @@
 \section{Neural Network}			 
 			
 %Intro
-Neural network [NN] can be used to teach an agent to behave a certain way.
-A neural network is similar to how the brain obtains new information, and learns it. The human brain is made up of about 100 billion neurons, and each neuron is connected with thousand of other neurons communicating via electrochemical signals \cite{nn}. The neuron gets a lot of input and when the neuron has filled a threshold it fires through something called an axon. This automatic method of filling up information and storing it when a certain threshold is reached can be implemented in a computer.
+A neural network [NN] can be used to teach an agent to behave a certain way.
+A neural network is modelled similarly to how the brain obtains new information, and learns it. The human brain is made up of about 100 billion neurons, and each neuron is connected with thousands of other neurons communicating via electrochemical signals \cite{nn}. The neuron gets large amounts of input and when the neuron has filled a threshold it fires through something called an axon. This automatic method of filling up information and storing it when a certain threshold is reached can be implemented in a computer.
 
 %Description
-There are different ways of connection a neural network, but we will be concentrating on the method called \textit{feedforward}. The way to feed the neuron is by applying different inputs to it, and before entering the neuron the input goes through some weights, that is adjusted manually. Just like before if the input in total is greater or equal to a certain threshold the neuron will output a signal, if it's less it will output zero.
+There are different ways of connecting a neural network, but we will be concentrating on the method called \textit{feedforward}. The way to feed the neuron is by applying different inputs to it, and before entering the neuron the input goes through some weights that are adjusted manually. Just like before if the input in total is greater or equal to a certain threshold the neuron will output a signal, and if it's less it will output zero.
 %Technical details
 A neuron can have from 1 to n number of inputs, and each input will be multiplied by its weight
 If we have input $x_1, x_2, x_3, x_n$ the weights calculated will look like $x_1 w_1 + x_2 w_2 + x_3 w_3 + .. +  x_n w_n$
 
 %Why we're not using NN
 
-We have chosen not to use neural network and the main reason is that neural network is very slow, and in a real-time-strategy game where we can have around 50.000 states, the computation time will be very slow and the input will be way to high every minute it has to compute approximately 50.000 states. A generalization function would be a better approach because it approximates the states, and doesn't have to compute the entire state-space in a game. 
+We have chosen not to use neural network, and the main reason is that neural networks are very slow. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A generalization function would be a better approach because it approximates the states and doesn't have to compute the entire state-space in a game. 
 %50.000 states because APM Multiplied with TimeSpent in the game 
 
 
