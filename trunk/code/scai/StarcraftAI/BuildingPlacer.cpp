@@ -3,7 +3,3 @@
 BuildingPlacer::BuildingPlacer(void)
 {
 }
-
-BuildingPlacer::~BuildingPlacer(void)
-{
-}
