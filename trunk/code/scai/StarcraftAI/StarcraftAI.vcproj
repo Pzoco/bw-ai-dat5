@@ -278,10 +278,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CommonData.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MathHelper.h"
 				>
 			</File>
