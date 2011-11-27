@@ -28,8 +28,8 @@ void StarcraftAI::onStart()
 
 	//Creates a scoutingmanager and analyzes the map
 	scoutingManager = ScoutingManager();
-	scoutingManager.AnalyzeMap()
-		;
+	scoutingManager.AnalyzeMap();
+
 	//Creates a productionmanager and saves the scvs
 	productionManager = ProductionManager();
 	productionManager.AssignScvs(Broodwar->self()->getUnits());
