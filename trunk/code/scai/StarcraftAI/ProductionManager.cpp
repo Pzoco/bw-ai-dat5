@@ -1,21 +1,35 @@
 #include "ProductionManager.h"
 #include "BuildingPlacer.h"
-#include "CommonData.h"
 #include "BuildOrder.h"
 
 BuildingPlacer _buildingPlacer;
 BuildOrder _currentBuildOrder;
 std::list<BuildOrder> _allBuildOrders;
+std::list<BWAPI::Unit*> _scvs;
 BuildOrderItem::ProductionFocus _productionFocus;
 
-ProductionManager::ProductionManager(void)
+ProductionManager::ProductionManager()
 {
 	InitiateBuildOrders();
-
 	//Always 2 fact vulture now
 	SetCurrentBuildOrder();
+
 }
 
+void ProductionManager::AssignScv(BWAPI::Unit* unit)
+{
+	_scvs.push_back(unit);
+}
+void ProductionManager::AssignScvs(std::set<BWAPI::Unit*> units)
+{
+	for each(BWAPI::Unit* unit in units)
+	{
+		if(unit->getType() == BWAPI::UnitTypes::Terran_SCV)
+		{
+			_scvs.push_back(unit);
+		}
+	}
+}
 void ProductionManager::InitiateBuildOrders()
 {
 	BuildOrder twoFactVultures = BuildOrder();
@@ -62,7 +76,7 @@ void ProductionManager::ProduceUnit(BWAPI::UnitType unitType)
 }
 void ProductionManager::ConstructBuilding(BWAPI::UnitType buildingType)
 {
-	
+
 }
 
 void ProductionManager::ResearchTech(BWAPI::TechType techType)
