@@ -88,5 +88,5 @@ bool UnitHelper::IsOffensiveType(BWAPI::UnitType type)
 
 bool UnitHelper::IsBuilding(BWAPI::UnitType type)
 {
-
+	return false;
 }
