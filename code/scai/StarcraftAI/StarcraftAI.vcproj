@@ -190,6 +190,10 @@
 					RelativePath=".\MathHelper.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\UnitHelper.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Managers"
@@ -307,6 +311,10 @@
 			</File>
 			<File
 				RelativePath=".\TacticsManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitHelper.h"
 				>
 			</File>
 		</Filter>

@@ -12,7 +12,6 @@ public:
 	void RemoveSquad(Squad squad);
 	void AssignToSquad(BWAPI::Unit* unit);
 	void AssignToSquads(std::set<BWAPI::Unit*> units);
-	bool IsSquadType(BWAPI::UnitType type);
 	int	GetNumberOfUnits(BWAPI::UnitType type);
 private:
 	std::list<Squad> GetRightSquadList(BWAPI::UnitType);

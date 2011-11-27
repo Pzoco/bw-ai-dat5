@@ -2,6 +2,7 @@
 #include "Squad.h"
 #include <BWAPI.h>
 #include <BWTA.h>
+#include "UnitHelper.h"
 
 std::list<Squad> _vultureSquads;
 std::list<Squad> _marineSquads;
@@ -92,7 +93,7 @@ void TacticsManager::Update()
 }
 void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
-	if(!IsSquadType(unit->getType()))
+	if(!UnitHelper::IsOffensiveType(unit->getType()))
 	{
 		return;
 	}
@@ -118,37 +119,10 @@ void TacticsManager::AssignToSquads(std::set<BWAPI::Unit*> units)
 	}
 }
 
-bool TacticsManager::IsSquadType(BWAPI::UnitType type)
-{
-	if(type == BWAPI::UnitTypes::Terran_SCV || 
-		type == BWAPI::UnitTypes::Terran_Command_Center || 
-		type == BWAPI::UnitTypes::Terran_Academy || 
-		type == BWAPI::UnitTypes::Terran_Command_Center || 
-		type == BWAPI::UnitTypes::Terran_Armory ||
-		type == BWAPI::UnitTypes::Terran_Barracks || 
-		type == BWAPI::UnitTypes::Terran_Bunker || 
-		type == BWAPI::UnitTypes::Terran_Comsat_Station || 
-		type == BWAPI::UnitTypes::Terran_Control_Tower ||
-		type == BWAPI::UnitTypes::Terran_Covert_Ops || 
-		type == BWAPI::UnitTypes::Terran_Engineering_Bay ||
-		type == BWAPI::UnitTypes::Terran_Missile_Turret || 
-		type == BWAPI::UnitTypes::Terran_Machine_Shop ||
-		type == BWAPI::UnitTypes::Terran_Nuclear_Silo || 
-		type == BWAPI::UnitTypes::Terran_Physics_Lab ||
-		type == BWAPI::UnitTypes::Terran_Refinery || 
-		type == BWAPI::UnitTypes::Terran_Science_Facility ||
-		type == BWAPI::UnitTypes::Terran_Starport || 
-		type == BWAPI::UnitTypes::Terran_Supply_Depot ||
-		type == BWAPI::UnitTypes::Terran_Vulture_Spider_Mine || 
-		type == BWAPI::UnitTypes::Terran_Nuclear_Missile)
-	{
-		return false;
-	}
-	return true;
-}
+
 int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
 {
-	if(IsSquadType(type))
+	if(UnitHelper::IsOffensiveType(type))
 	{
 		std::list<Squad> squads = GetRightSquadList(type);
 		int number= 0;
