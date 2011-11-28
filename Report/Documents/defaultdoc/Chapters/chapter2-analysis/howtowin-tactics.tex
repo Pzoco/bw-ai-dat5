@@ -1,3 +1,6 @@
+Before we can narrow down how our bot will work we will have to determine which race the bot will play. It could be able to play all three races, but 
+this will be time consuming and not interesting in relation to machine intelligence. We have therefore settled on one race, which is Terran.
+
 \section{Terran tactics}
 	This section will feature some concrete ways a Terran player can win a game. 
 	These tactics are important to analyze because a bot will need to utilize these tactics in order to win.
@@ -5,9 +8,11 @@
 	
 	\subsection{Timing Attack}
 		A timing attack is an attack which either hits when a specific upgrade is done and/or when the opponent is vulnerable in his specific build order. 
-		When a bot does a timing attack it can be deadly because a bot can be very precise. Making the bot attack when a specific upgrade is completed is trivial, but for it to 
-		analyze when the opponent is weak may be a more difficult task. This would require the bot to research which build order the opponent is using, and 
-		 change its build order or strategy to fit a timing attack. If the bot could succeed in doing this, it could take opponents off guard.
+		When a bot does a timing attack it can be deadly because a bot can be very precise. 
+		Making the bot attack when a specific upgrade is completed is trivial, but for it to 
+		analyze when the opponent is weak may be a more difficult task. 
+		This would require the bot to research which build order the opponent is using, and change its build order or strategy to fit a timing attack. 
+		If the bot could succeed in doing this, it could take opponents off guard.
 		
 	\subsection{Pushing}
 		The term \textit{pushing} refers to an attack that occurs when the Terran player has gained a large army after being defensive for a long 
@@ -16,18 +21,23 @@
 		easy to defend your base as Terran. When you are ready to do the push your army will be difficult to beat.
 		
 	\subsection{Harassment}
-		Harassing is a tactic that every race can use, but here we will give some ways for the Terran race to do it. Doing drops is one way to harass. Dropping 
-		refers to transporting units into the opponents base. The most common type of drops for Terran are done with vultures and marines. The vultures are 
-		fast and can take out the workers in the base. They can also place mines so enemy units can not easily come to defend the workers. When dropping with marines 
-		the purpose is generally just to destroy important enemy buildings rather than kill workers(note this is not always the case). Vultures can also be used without 
-		dropping them. Because of their superior speed vultures can easily slip past enemy units and into the enemy's main base. Doing harassment requires 
-		good multitasking ability. If you keep your units out of sight for one second they might be destroyed, and if you forget to macro you can 
-		get far behind economically. This is a field that the bot can really prove its abilities because multitasking is something that is hard for a human to do but 
-		easy for a computer.
+		Harassing is a tactic that every race can use, but here we will give some ways for the Terran race to do it. 
+		Doing drops is one way to harass. Dropping refers to transporting units into the opponents base. 
+		The most common type of drops for Terran are done with vultures and marines. The vultures are fast and can take out the workers in the base. 
+		They can also place mines so enemy units can not easily come to defend the workers. When dropping with marines 
+		the purpose is generally just to destroy important enemy buildings rather than kill workers(note this is not always the case). 
+		Vultures can also be used without dropping them. 
+		Because of their superior speed vultures can easily slip past enemy units and into the enemy's main base. Doing harassment requires 
+		good multitasking ability. If you keep your units out of sight for one second they might be destroyed, 
+		and if you forget to macro you can get far behind economically. 
+		This is a field that the bot can really prove its abilities because 
+		multitasking is something that is hard for a human to do but easy for a computer.
 	
 	\subsection{Mining the map}
-		In this tactic vultures are used to gain map control by placing mines all over the map. If the opponent wants to attack he will need to destroy the 
-		mines. This can give the Terran player security and a way to establish a superior army and economy. 
+		This tactic is used to gain map control by placing mines all over the map. A mine is set by a vulture, 
+		if an enemy unit is near it, it will unborrow and run after the enemy unit dealing massive damage if hit. To see a borrowed mine you will need 
+		detection. By mining the map you can slow the opponent down, because he needs to kill the mines before he can attack. 
+		This can give the Terran player security and a way to establish a superior army and economy. 
 		This is also a tactic that requires a lot of multitasking and is quite closely related to the harassment tactic because they both act in a 
 		aggressive way.
 		
