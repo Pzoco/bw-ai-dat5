@@ -282,6 +282,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BuildOrderItem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Condition.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MathHelper.h"
 				>
 			</File>
