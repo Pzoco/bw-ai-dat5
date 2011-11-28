@@ -5,11 +5,11 @@
 #include "UnitHelper.h"
 
 std::list<Squad> _vultureSquads;
-std::list<Squad> _marineSquads;
+/*std::list<Squad> _marineSquads;
 std::list<Squad> _medicSquads;
 std::list<Squad> _wraithSquads;
 std::list<Squad> _golliathSquads;
-std::list<Squad> _tankSquads;
+std::list<Squad> _tankSquads;*/
 
 
 TacticsManager::TacticsManager(void)
@@ -17,16 +17,16 @@ TacticsManager::TacticsManager(void)
 
 }
 
-std::list<Squad> TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
+std::list<Squad>& TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
 {
 	if(unitType == BWAPI::UnitTypes::Terran_Vulture){return _vultureSquads;}
-	else if(unitType == BWAPI::UnitTypes::Terran_Marine) { return _marineSquads; }
+	/*else if(unitType == BWAPI::UnitTypes::Terran_Marine) { return _marineSquads; }
 	else if(unitType == BWAPI::UnitTypes::Terran_Medic) { return _medicSquads; }
 	else if(unitType == BWAPI::UnitTypes::Terran_Wraith) { return _wraithSquads;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Goliath) { return _golliathSquads;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode) { return _tankSquads;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode) { return _tankSquads;}
-
+	*/
 	//Dont do this :D
 	return _vultureSquads;
 }
@@ -46,7 +46,7 @@ std::list<Squad> TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
 	But havnt gotten that solution to work.
 
 */
-void TacticsManager::WriteSquadList(BWAPI::UnitType unitType, std::list<Squad> list)
+/*void TacticsManager::WriteSquadList(BWAPI::UnitType unitType, std::list<Squad> list)
 {
 	if(unitType == BWAPI::UnitTypes::Terran_Vulture){_vultureSquads = list;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Marine) { _marineSquads = list; }
@@ -55,7 +55,7 @@ void TacticsManager::WriteSquadList(BWAPI::UnitType unitType, std::list<Squad> l
 	else if(unitType == BWAPI::UnitTypes::Terran_Goliath) { _golliathSquads = list;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode) { _tankSquads = list;}
 	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode) { _tankSquads = list;}
-}
+}*/
 void TacticsManager::AddSquad(Squad squad)
 {
 }
@@ -93,22 +93,21 @@ void TacticsManager::Update()
 }
 void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
-	if(!UnitHelper::IsOffensiveType(unit->getType()))
+	if(UnitHelper::IsOffensiveType(unit->getType()))
 	{
-		return;
-	}
-	std::list<Squad> squads = GetRightSquadList(unit->getType());
-	if(squads.empty())
-	{
-		//Should use the specific tactic not basetactic
-		Squad s = Squad(unit,BaseTactic());
-		squads.push_back(s);
-		WriteSquadList(unit->getType(),squads);
-	}
-	else
-	{
-		//Improve this in the future
-		squads.front().AddUnit(unit);
+		std::list<Squad> &squads = GetRightSquadList(unit->getType());
+		if(squads.empty())
+		{
+			//Should use the specific tactic not basetactic
+			Squad s = Squad(unit,BaseTactic());
+			squads.push_back(s);
+			//WriteSquadList(unit->getType(),squads);
+		}
+		else
+		{
+			//Improve this in the future
+			squads.front().AddUnit(unit);
+		}
 	}
 }
 void TacticsManager::AssignToSquads(std::set<BWAPI::Unit*> units)
@@ -130,7 +129,7 @@ int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
 		{
 			number+=squad.GetSize();
 		}
-		return 0;
+		return number;
 	}
 	return 0;
 }

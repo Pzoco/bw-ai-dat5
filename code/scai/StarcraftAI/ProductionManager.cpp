@@ -1,18 +1,19 @@
 #include "ProductionManager.h"
-#include "BuildingPlacer.h"
 #include "BuildOrder.h"
+#include "BuildOrderItem.h"
+#include "Condition.h"
+#include "BuildingPlacer.h"
+
 
 BuildingPlacer _buildingPlacer;
 BuildOrder _currentBuildOrder;
 std::list<BuildOrder> _allBuildOrders;
 std::list<BWAPI::Unit*> _scvs;
 BuildOrderItem::ProductionFocus _productionFocus;
+bool initiated = false;
 
 ProductionManager::ProductionManager()
 {
-	InitiateBuildOrders();
-	//Always 2 fact vulture now
-	SetCurrentBuildOrder();
 
 }
 
@@ -33,7 +34,8 @@ void ProductionManager::AssignScvs(std::set<BWAPI::Unit*> units)
 void ProductionManager::InitiateBuildOrders()
 {
 	BuildOrder twoFactVultures = BuildOrder();
-	
+	twoFactVultures.Hello();
+	twoFactVultures.AddItem(BuildOrderItem());
 	//Enum stuff doesnt look good - Might need a fix later
 	twoFactVultures.AddItem(ProductionFocusItem(BuildOrderItem::Focus_Workers,SupplyCondition(4)));
 	twoFactVultures.AddItem(BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,SupplyCondition(9)));
@@ -42,31 +44,40 @@ void ProductionManager::InitiateBuildOrders()
 void ProductionManager::SetCurrentBuildOrder()
 {
 	_currentBuildOrder = _allBuildOrders.front();
+	initiated = true;
 }
 void ProductionManager::Update()
 {
-	for each(BuildOrderItem item in _currentBuildOrder.GetBuildOrderItems())
+	if(initiated)
 	{
-		bool allConditionsFulfilled = true;
-		for each(Condition condition in item.GetConditions())
+		for each(BuildOrderItem item in _currentBuildOrder.GetBuildOrderItems())
 		{
-			if(!condition.IsFulfilled())
+			bool allConditionsFulfilled = true;
+			for each(Condition condition in item.GetConditions())
 			{
-				allConditionsFulfilled = false;
-				break;
+				if(!condition.IsFulfilled())
+				{
+					allConditionsFulfilled = false;
+					break;
+				}
 			}
-		}
-		if(allConditionsFulfilled == true)
-		{
-			switch(item.GetType())
+			if(allConditionsFulfilled == true)
 			{
-				case 1: ResearchTech(dynamic_cast<ResearchItem&>(item).techType); break;
-				case 2: ConstructBuilding(dynamic_cast<BuildingItem&>(item).building); break;
-				case 3: ProduceUnit(dynamic_cast<UnitProductionItem&>(item).unit); break;
-				case 4: _productionFocus = dynamic_cast<ProductionFocusItem&>(item).productionFocus;
-			}
+				switch(item.GetType())
+				{
+					case 1: ResearchTech(dynamic_cast<ResearchItem&>(item).techType); break;
+					case 2: ConstructBuilding(dynamic_cast<BuildingItem&>(item).building); break;
+					case 3: ProduceUnit(dynamic_cast<UnitProductionItem&>(item).unit); break;
+					case 4: _productionFocus = dynamic_cast<ProductionFocusItem&>(item).productionFocus;
+				}
 
+			}
 		}
+	}
+	else
+	{
+		InitiateBuildOrders();
+		SetCurrentBuildOrder();
 	}
 }
 

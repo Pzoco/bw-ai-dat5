@@ -6,16 +6,18 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include "../ReinforcementLearning.h"
+#include "../ProductionManager.h"
 
 using namespace BWAPI;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
-ReinforcementLearning reinforcementLearning = ReinforcementLearning();
+ProductionManager productionManager;
+//ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
 void StarcraftAI::onStart()
 {
 	
-	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
+	//StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	//Creating a tacticsmanager and assigning the our units to squads
@@ -23,7 +25,6 @@ void StarcraftAI::onStart()
 	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
 	scoutingManager = ScoutingManager();
 	scoutingManager.AnalyzeMap();
-
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -36,6 +37,7 @@ void StarcraftAI::onFrame()
 {
 	tacticsManager.Update();
 	scoutingManager.Update();
+	productionManager.Update();
 }
 
 void StarcraftAI::onSendText(std::string text)

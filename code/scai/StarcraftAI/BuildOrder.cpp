@@ -1,7 +1,8 @@
 #include "BuildOrder.h"
+#include <BWAPI.h>
 
 std::list<BuildOrderItem> items;
-BuildOrder::BuildOrder(void)
+BuildOrder::BuildOrder()
 {
 	
 }

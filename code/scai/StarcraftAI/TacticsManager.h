@@ -14,6 +14,6 @@ public:
 	void AssignToSquads(std::set<BWAPI::Unit*> units);
 	int	GetNumberOfUnits(BWAPI::UnitType type);
 private:
-	std::list<Squad> GetRightSquadList(BWAPI::UnitType);
+	std::list<Squad> &GetRightSquadList(BWAPI::UnitType);
 	void WriteSquadList(BWAPI::UnitType, std::list<Squad>);
 };
