@@ -18,7 +18,6 @@ void StarcraftAI::onStart()
 {
 	
 	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
-	//reinforcementLearning.OpenRewardFile();
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 
@@ -37,7 +36,8 @@ void StarcraftAI::onStart()
 }
 
 void StarcraftAI::onEnd(bool isWinner)
-{
+{	
+	StarcraftAI::reinforcementLearning.SaveCurrentWeightsToFile(); 
 	//reinforcementLearning.CloseRewardFile();
 }
 

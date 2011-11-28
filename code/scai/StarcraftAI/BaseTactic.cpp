@@ -16,16 +16,17 @@ BaseTactic::BaseTactic()
 struct BaseTactic::Variables
 {
 	//This contain all the different forces and variables the reinforsment learning should change
-	int FORCEALLY;
-	int FORCESQUAD;
-	int FORCEMAXDIST;
-	int FORCECOOLDOWN;
-	int FORCEEDGE;
-	int FORCENEMY;
+	double FORCEALLY;
+	double FORCESQUAD;
+	double FORCEMAXDIST;
+	double FORCECOOLDOWN;
+	double FORCEEDGE;
+	double FORCENEMY;
 	int SQUADDISTANCE_CONSTANT;
 	int ALLYDISTANCE_CONSTANT;
 	int EDGESDISTANCE_CONSTANT;
-};
+}; 
+
 BaseTactic::Variables _variables;
 
 struct BaseTactic::PotentialFieldParameters
@@ -51,12 +52,14 @@ BaseTactic::PotentialFieldParameters _qParameters;
 void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits)
 {
 	//Setting all the variables, this should later be done by the reinforcement learning
-	_variables.FORCEALLY = 500;
-	_variables.FORCESQUAD = 5;
-	_variables.FORCEMAXDIST = 5;
-	_variables.FORCECOOLDOWN = 5;
-	_variables.FORCEEDGE = 5;
-	_variables.FORCENEMY = 1;
+	_variables.FORCEALLY = StarcraftAI::reinforcementLearning.GetForceAlly();
+	_variables.FORCESQUAD = StarcraftAI::reinforcementLearning.GetForceSquad();
+	_variables.FORCEMAXDIST = StarcraftAI::reinforcementLearning.GetForceMaxDist();
+	_variables.FORCECOOLDOWN = StarcraftAI::reinforcementLearning.GetForceCooldown();
+	_variables.FORCEEDGE = StarcraftAI::reinforcementLearning.GetForceEdge();
+	
+
+	//_variables.FORCENEMY = 1;
 	//StarcraftAI::reinforcementLearning.
 	_variables.SQUADDISTANCE_CONSTANT = 100;
 	_variables.ALLYDISTANCE_CONSTANT = 200;
@@ -192,11 +195,17 @@ double BaseTactic::CalculateEdgesPotential(BWAPI::Position pos)
 double BaseTactic::CalculateQPotentialField(BWAPI::Position pos)
 {
 	double potential = 0.0;
+	double edge = 0.0;
+	double cool = 0.0;
+	double maxdist1 = 0.0;
+	double maxdist2 = 0.0;
+	double squad = 0.0;
+	double ally = 0.0;
 	//EDGE
 	if(ScoutingManager::IsMapAnalyzed())
 	{
 		_qParameters.dc = (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),pos);
-		potential += (-1*_variables.FORCEEDGE)*_qParameters.dc;
+		edge += (-1*_variables.FORCEEDGE)*_qParameters.dc;
 	}
 	//COOLDOWN
 	else
@@ -204,22 +213,24 @@ double BaseTactic::CalculateQPotentialField(BWAPI::Position pos)
 		int distanceToEnemyFromUnit = _qParameters.de;
 		int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
 		int correctedDistance = (_parameters.de - distanceToEnemyFromCurrentTile + _parameters.de);
-		potential += (-1)*correctedDistance*_variables.FORCECOOLDOWN;
+		cool += (-1)*correctedDistance*_variables.FORCECOOLDOWN;
 	}
 	//MAXDIST
 	Position unitPos = _unit->getPosition();
 	int distanceToEnemyFromUnit = _parameters.de;
 	int distanceToEnemyFromCurrentTile = MathHelper::GetDistanceToNearestEnemy(pos);
 	int correctedDistance = (_parameters.de - distanceToEnemyFromCurrentTile + _parameters.de);
-	potential += (_variables.FORCEMAXDIST * correctedDistance);
-	potential += (-1)*(_variables.FORCEMAXDIST * correctedDistance);
+	maxdist1 += (_variables.FORCEMAXDIST * correctedDistance);
+	maxdist2 += (-1)*(_variables.FORCEMAXDIST * correctedDistance);
 	//SQUADCENTER
 	int dsv = pos.getApproxDistance(_parameters.squadPos);	
-	potential += (_parameters.ds - dsv )* _variables.FORCESQUAD;
+	squad += (_parameters.ds - dsv )* _variables.FORCESQUAD;
 	//ALLY
 	_parameters.da = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
-	potential += (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
+	ally += (-1)*(double)_variables.FORCEALLY*(double)_parameters.da;
 	
+	potential = edge + cool + maxdist1 + maxdist2 + squad + ally + potential;
+	BWAPI::Broodwar->printf("e %f, c %f, m1 %f, m2 %f, s %f, a %f, p %f",edge,cool,maxdist1,maxdist2,squad,ally,potential);
 	return potential;
 }
 double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
@@ -236,6 +247,7 @@ double BaseTactic::CalculatePotentialField(BWAPI::Position pos)
 	Broodwar->drawTextMap(pos.x(),pos.y(),"%d",(int)totalPotentialForCurrentTile);
 	return totalPotentialForCurrentTile;
 }
+
 BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit*> mySquad)
 {
 	BaseTactic::InitializeParameters(mySquad);
@@ -272,7 +284,11 @@ BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit
 	*/
 	double currentQ = CalculateQPotentialField(centerPosition);
 	double nextQ = CalculateQPotentialField(bestPosition);
-	double reward = StarcraftAI::reinforcementLearning.CalculateReward(mySquad);
+	double reward = StarcraftAI::reinforcementLearning.CalculateReward(mySquad); 
+	StarcraftAI::reinforcementLearning.WriteRewardFile(currentQ);
+	//StarcraftAI::reinforcementLearning.WriteRewardFile(nextQ);
+	//StarcraftAI::reinforcementLearning.WriteRewardFile(reward);
+	
 	//StarcraftAI::reinforcementLearning.WriteRewardFile(currentQ);
 	//StarcraftAI::reinforcementLearning.WriteRewardFile(nextQ);
 	//StarcraftAI::reinforcementLearning.WriteRewardFile(reward);
