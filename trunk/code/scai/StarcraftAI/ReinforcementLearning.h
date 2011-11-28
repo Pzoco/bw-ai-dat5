@@ -10,8 +10,12 @@ public:
 	static void ReinforcementLearning::LoadWeightsFromFile();
 	static void ReinforcementLearning::SaveCurrentWeightsToFile();
 	static void ReinforcementLearning::UpdateCurrentWeights(double actualReward, double expectedReward);
-	static void ReinforcementLearning::OpenRewardFile();
-	static void ReinforcementLearning::CloseRewardFile();
 	static void ReinforcementLearning::WriteRewardFile(double doubleToFile);
 	static double ReinforcementLearning::UpdateWeight(double weight,double actualReward,double expectedReward);
+	static double ReinforcementLearning::GetForceAlly();
+	static double ReinforcementLearning::GetForceSquad();
+	static double ReinforcementLearning::GetForceMaxDist();
+	static double ReinforcementLearning::GetForceCooldown();
+	static double ReinforcementLearning::GetForceEdge();
+
 };
