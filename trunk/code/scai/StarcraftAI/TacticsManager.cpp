@@ -58,9 +58,20 @@ std::list<Squad>& TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
 }*/
 void TacticsManager::AddSquad(Squad squad)
 {
+	_vultureSquads.push_front(squad);
 }
 void TacticsManager::RemoveSquad(Squad squad)
 {
+	_vultureSquads.(squad);
+
+	for(std::set<BWAPI::Squad*>::const_iterator s = _vultureSquads.begin(); s != _vultureSquad.end(); s++)
+	{
+		if(squad == (*s))
+		{
+			_vultureSquads.erase(s);
+		}
+	}
+
 
 }
 void TacticsManager::Update()
