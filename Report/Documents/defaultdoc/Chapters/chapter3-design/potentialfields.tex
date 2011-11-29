@@ -1,31 +1,45 @@
 \section{Potential fields}
-	Potential fields can be used to represent an area of the game using vectors.  The vectors are calculated based on all the objects in the area, and then used to calculate a path trough the area.
-
-	Objects can have an attractive or repulsive type of influence in the potential field.
+	Potential fields can be used to control a computer AI through a dynamically updated environment. 
+	If one would program an AI, which should move from one point to another, one would most likely use the normal shortest path algorithms. 
+	The problem is, though, that if a lot of dynamic influences are affecting the route this calculation can be very complex. It could be 
+	enemies that should be avoided or other dynamic influences. \\
 	
-If we begin by introducing a single enemy unit into an empty out world the entire area begin flooded with vectors pointing toward this point, as seen in figure \ref{fig:seekbehavior}. This is called the Attractive behaviour because it makes our own units want to reach this point in order to attack it.
+	That is why potential field are good for such a problem. It works by generating either attractive or repulsive fields of vectors $v=(m\times d )$. 
+	Where $m$ is the magnitude and $d$ is the direction. 
+	If we create an attractive potential field the point will be surrounded with vectors pointing toward this point, 
+	as seen in figure \ref{fig:seekbehavior}. 
+	The bot will be attracted towards this point, the magnitude determines how attracted it will be and the direction, 
+	just shows in which way the bot is directed. This is called a Attractive behaviour 
 	
 	\insertmarginfigure{height=3in}{Potentialfields/seek.png}
 		{Attractive behavior\cite{pft}}{fig:seekbehavior}{-3in}
 	
-	Likewise if we assume there is only a single obstacles in the area (a unit we do not want to attack) it would generate a repulsive field around it, see figure \ref{fig:avoidbehavior}. This is called the Repulsive behavior because it causes our own units to try and move away from it.
+	Likewise if we assume there is only a single obstacles in the area (a unit we do not want to attack) it would generate a repulsive field around it, 
+	see figure \ref{fig:avoidbehavior}. This is called the Repulsive behaviour because it causes our own units to try and move away from it.
 
 	\insertmarginfigure{height=3in}{Potentialfields/avoid.png}
 		{Repulsive behavior\cite{pft}}{fig:avoidbehavior}{-3in}
 		
-	These two kind of behaviours can then be combined to make a map that can tell our unit how to move around enemy units and reach a specific target as seen in figure \ref{fig:combinedbehavior}.
+	These two kind of behaviours can then be combined to make a map that can tell our unit 
+	how to move around enemy units and reach a specific target as seen in figure \ref{fig:combinedbehavior}.
 	
 	\insertmarginfigure{height=3in}{Potentialfields/combined.png}
 		{Combined behavior\cite{pft}}{fig:combinedbehavior}{-3in}
 		
-	\subsection{The math behind potential fields}
-		A simple potential field can be described as below.\\
+	\subsection{Designing our potential field functions}		
+		The potential fields of our bot, will not be represented by a vector, but simply a number which indicates how attractive or repulsive a field is. 
+		This number is calculated by functions, which is either attractive and/or repulsive and is related to the obstacles in the game world. \\
+		
+		Our functions will be described with the following math: \\
 		
 		Variables:\\
 		$f =$ force\\
 		$s =$ size of the potential field\\
 		$c =$ fade of constant\\
 		$d =$ distance\\
+		
+		\subsubsection*{Two examples of potential field functions}
+		
 		\begin{displaymath}
 			%\begin{math}
 			Attractive = \begin{cases}
@@ -43,6 +57,5 @@ If we begin by introducing a single enemy unit into an empty out world the entir
 				\end{cases}		
 			%\end{math}
 		\end{displaymath}
-		But we need to have more then just these to simple cases as explained in the next chapter.
 		
 		
