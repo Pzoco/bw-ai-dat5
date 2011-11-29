@@ -6,18 +6,41 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include "../ReinforcementLearning.h"
-#include "../ProductionManager.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace BWAPI;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
-ProductionManager productionManager;
-//ReinforcementLearning reinforcementLearning = ReinforcementLearning();
+ReinforcementLearning reinforcementLearning = ReinforcementLearning();
+
+struct StarcraftAI::Thetas
+{
+	double ally;
+	double squad;
+	double mde1;
+	double mde2;
+	double edge;
+	double cool;
+} _thetas; 
+
 
 void StarcraftAI::onStart()
 {
-	
-	//StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
+	remove( "C:/rewards.txt");
+
+
+	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
+
+	//Get the initial values of all the forces. 
+	_thetas.ally = StarcraftAI::reinforcementLearning.GetForceAlly();
+	_thetas.squad = StarcraftAI::reinforcementLearning.GetForceSquad();
+	_thetas.mde1 = StarcraftAI::reinforcementLearning.GetForceMaxDist1();
+	_thetas.mde2 = StarcraftAI::reinforcementLearning.GetForceMaxDist2();
+	_thetas.edge = StarcraftAI::reinforcementLearning.GetForceEdge();
+	_thetas.cool = StarcraftAI::reinforcementLearning.GetForceCooldown();
+
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	//Creating a tacticsmanager and assigning the our units to squads
@@ -25,19 +48,95 @@ void StarcraftAI::onStart()
 	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
 	scoutingManager = ScoutingManager();
 	scoutingManager.AnalyzeMap();
+
 }
 
 void StarcraftAI::onEnd(bool isWinner)
 {	
+	StarcraftAI::reinforcementLearning.WriteValueToBuffer(0,true);
+
 	StarcraftAI::reinforcementLearning.SaveCurrentWeightsToFile(); 
-	//reinforcementLearning.CloseRewardFile();
+
+	try
+	{
+		std::ifstream file("C:/rewards.txt"); 
+		std::string line; 
+
+		double edge, cool, mde1, mde2, squad, ally; 
+		double currQ; 
+		double nextQ; 
+		double reward; 
+		
+		for(int i = 0; std::getline(file,line); i++) 
+		{
+			switch(i%9)
+			{
+				case 0:
+					ally = atof(line.c_str());
+					break; 
+				case 1:
+					squad = atof(line.c_str());
+					break; 
+				case 2:
+					mde1 = atof(line.c_str());
+					break;
+				case 3:
+					mde2 = atof(line.c_str());
+					break; 
+				case 4:
+					cool = atof(line.c_str());
+					break; 
+				case 5:
+					edge = atof(line.c_str());
+					break; 
+				case 6:
+					currQ = (-1)*atof(line.c_str());
+					break; 
+				case 7:
+					nextQ = (-1)*atof(line.c_str());
+					break; 
+				case 8:
+					reward = atof(line.c_str());
+					_thetas.edge = ReinforcementLearning::CalculateTheta(_thetas.edge,reward,currQ,nextQ,edge);
+					_thetas.cool = ReinforcementLearning::CalculateTheta(_thetas.cool,reward,currQ,nextQ,cool);
+					_thetas.mde1 = ReinforcementLearning::CalculateTheta(_thetas.mde1,reward,currQ,nextQ,mde1);
+					_thetas.mde2 = ReinforcementLearning::CalculateTheta(_thetas.mde2,reward,currQ,nextQ,mde2);
+					_thetas.squad = ReinforcementLearning::CalculateTheta(_thetas.squad,reward,currQ,nextQ,squad);
+					_thetas.ally = ReinforcementLearning::CalculateTheta(_thetas.ally,reward,currQ,nextQ,ally);
+					
+					break;
+				default:
+					break; 
+			}
+		}
+
+		ReinforcementLearning::SetForceAlly(_thetas.ally);
+		ReinforcementLearning::SetForceSquad(_thetas.squad);
+		ReinforcementLearning::SetForceMaxDist1(_thetas.mde1);
+		ReinforcementLearning::SetForceMaxDist2(_thetas.mde2);
+		ReinforcementLearning::SetForceCooldown(_thetas.cool);
+		ReinforcementLearning::SetForceEdge(_thetas.edge);
+		ReinforcementLearning::SaveCurrentWeightsToFile(); 
+		file.close(); 
+
+	}
+	catch(char *c)
+	{
+		BWAPI::Broodwar->printf("File could not be opened");
+		std::cout << "File could not be opened -" << c << "\n";
+	}
 }
 
 void StarcraftAI::onFrame()
 {
 	tacticsManager.Update();
 	scoutingManager.Update();
-	productionManager.Update();
+	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
+	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
+	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist1 = %f",reinforcementLearning.GetForceMaxDist1());
+	BWAPI::Broodwar->drawTextScreen(10,40,"MaxDist1 = %f",reinforcementLearning.GetForceMaxDist2());
+	BWAPI::Broodwar->drawTextScreen(10,50,"Squad = %f",reinforcementLearning.GetForceSquad());
+	BWAPI::Broodwar->drawTextScreen(10,60,"Cooldown = %f",reinforcementLearning.GetForceCooldown());
 }
 
 void StarcraftAI::onSendText(std::string text)

@@ -125,7 +125,7 @@ int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 	//Iterating trough them, and calculating the distance to the closest one
 	for(std::set<BWAPI::Unit*>::const_iterator i = myUnits.begin(); i != myUnits.end(); i++)
 	{
-		if((*i)->getID() != unitID && (*i)->getType().isBuilding() == false)
+		if((*i)->getID() != unitID && (*i)->getType().isBuilding() == false && (*i)->exists())
 		{
 			int getDist = (*i)->getDistance(pos);
 			if(getDist < distance)
@@ -135,7 +135,10 @@ int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 		}
 	}
 	//BWAPI::Broodwar->printf("distance = %d. from %d,%d to", distance,x,y);
-	return distance;
+	if(distance == 30000)
+		return 0;
+	else
+		return distance;
 }
 
 //This function takes a list of units and returns the center of the squad ;)
@@ -155,16 +158,22 @@ BWAPI::Position MathHelper::GetSquadCenterPosition(std::set<BWAPI::Unit*> listOf
 	int y = 0;
 	for(std::set<BWAPI::Unit*>::const_iterator i = listOfUnits.begin(); i != listOfUnits.end(); i++)
 	{
-		n++;
-		BWAPI::Position unitPos = (*i)->getPosition();
-		x += (mass*unitPos.x());
+		if((*i)->exists())
+		{
+			n++;
+			BWAPI::Position unitPos = (*i)->getPosition();
+			x += (mass*unitPos.x());
+		}
 	}
 	x = x/(n*mass);
 
 	for(std::set<BWAPI::Unit*>::const_iterator j = listOfUnits.begin(); j != listOfUnits.end(); j++)
 	{
-		BWAPI::Position unitPos = (*j)->getPosition();
-		y += (mass*unitPos.y());
+		if((*j)->exists())
+		{
+			BWAPI::Position unitPos = (*j)->getPosition();
+			y += (mass*unitPos.y());
+		}
 	}
 	y = y/(n*mass);
 

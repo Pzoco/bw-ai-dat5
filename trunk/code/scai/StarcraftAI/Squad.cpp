@@ -38,7 +38,10 @@ void Squad::ExecuteTactics()
 {
 	for(std::set<BWAPI::Unit*>::iterator u = _units.begin(); u != _units.end(); u++)
 	{
-		_tactic.ExecuteTactic((*u),_units);
+		if((*u)->exists())
+		{
+			_tactic.ExecuteTactic((*u),_units);
+		}
 	}
 }
 int Squad::GetSize()

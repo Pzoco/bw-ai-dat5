@@ -8,6 +8,7 @@ class StarcraftAI : public BWAPI::AIModule
 {
 public:
   static ReinforcementLearning reinforcementLearning;
+  virtual struct Thetas; 
   virtual void onStart();
   virtual void onEnd(bool isWinner);
   virtual void onFrame();
