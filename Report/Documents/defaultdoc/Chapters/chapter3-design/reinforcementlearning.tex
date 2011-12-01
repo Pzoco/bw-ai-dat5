@@ -1,4 +1,8 @@
-\section{Neural Network}			 
+\section{Agent Learning}\label{agent_learning}
+
+There will be a brief introduction to different learning techniques/methods in the following section, we will explain how to use them and what we have chosen to work with and why it fits best to the agent we're building. 
+
+\subsection*{Neural Network}			 
 			
 %Intro
 Neural networks [NN] can be used to teach agents to behave certain ways.
@@ -16,7 +20,9 @@ We have chosen not to use neural network, and the main reason is that neural net
 %50.000 states because APM Multiplied with TimeSpent in the game 
 
 
-\section{Reinforcement Learning}
+\subsection*{Reinforcement Learning}\label{RL}
+
+This section will come across some of the different reinforcement learning techniques. The different techniques and methods will be explained briefly and argued why it does not fit our agent very well.
 
 	Reinforcement learning is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment there is a reward or some feedback that reinforces all the actions that have bigger rewards. In a larger scale the task of reinforcement learning is the process to discover the optimal path or series of actions to accomplish the best possible reward at the end of the process. 
 
@@ -30,11 +36,11 @@ A short description of the different ways one can use reinforcement learning and
 
 			
 \subsection*{Direct utility estimation}
-
+%This needs to be done!!!
 
 
 %NEEDS A CITE TO MARKOV AND TO DPM DAN
-\subsection*{Adaptive dynamic programming}
+\subsection*{Adaptive dynamic programming}\label{ADP}
 This method of learning is taking advantage of the constraints between states, an agent learns the transition model as it goes along and solving the Markov decision process using a dynamic programming method. By using the Bellman equations it calculates the utility of the states. This method will not suit our agent very well since it's not good use for a larger state space \cite[p. 767]{rl}, but you will read in the next subsection that one can combine adaptive dynamic programming with direct utility estimation without solving all the states with Bellman's equations. 
 
 \subsection*{Temporal difference learning}
@@ -43,9 +49,9 @@ This is a method that uses approximation of the constraints equations without so
 \subsection*{Exploration}
 As the name states this is really an exploration way of learning. The agent learn via using an exploration method, it never learns the true utilities or the true optimal policy. It carries on trying random movements until it finds a good utility and sticks with that one. This agent we call a greedy agent and greedy agents seldom converges to the optimal policy and even sometimes converges with a bad policy. This is similar to the human way of thinking about 'should I stay with what I got, or should I explore the world and find a better life' - where this fits best to the first statement. \cite[p. 771]{rl}
 
-\subsection{Q-Learning}			
-Just to give an example of how large state spaces easily can get we can take a look at some well known games chess and backgammon. They are a tiny subset of the real world and their state spaces contain on the order of $10^50$ and $10^120$ states, and if the agent should visit all these states to learn how to play the game it will run i an absurd long time \cite[p. 777]{rl}. That's why we are going to use function approximation, which basicly means that we don't show the function as a table.
-
+\subsection*{Q-Learning}	\label{qlearning}
+Just to give an example of how large state spaces easily can get we can take a look at some well known games chess and backgammon. They are a tiny subset of the real world and their state spaces contain on the order of $10^{50}$ and $10^{120}$ states, and if the agent should visit all these states to learn how to play the game it will run i an absurd long time \cite[p. 777]{rl}. That's why we are going to use function approximation, which basicly means that we don't show the function as a table.
+\hat{U}
 $U_\Theta(s) = \Theta_1 f_1(s) + \Theta_2 f_2(s) + ... + \Theta_n f_n(s) $
 
 The parameters $\Theta = \Theta_1, ..., \Theta_n$ so the evaluation function above $U_\Theta$ approximates the utility function. Instead of the explanation above with the state space of $10^120$ values in a table.
@@ -62,8 +68,6 @@ The description of these variables can be read here \ref{cha3_variables}
 $R(s) = C_1 numberOfUnits - C_2 healthLost +  C_3 damageGiven +  C_4 numberOfFallenEnemies$\\
 
 $Q = f_{MDP1} (2de - due)-f_{AN}(da)-f_{WCD}(2de-due)-f_{EAC}(de)+f_s(ds-dsv)-f_{MDP2}(2de-due)$
-
-
 
 We are going to use approximation of Q-Learning, so it can handle a huge state space
 
