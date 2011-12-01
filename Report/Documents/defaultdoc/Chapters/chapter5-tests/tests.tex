@@ -18,12 +18,12 @@ in the two maps.
  \begin{tabular}{|l||c|c|c|c|}
 	\multicolumn{5}{c}{First Test Resultes From First Map} \\
 	\hline
-	\ Players & Produced units & Killed Unit & Lost Units &  Total Unit Score \\
+	\ Players & Produced units & Killed Unit & Lost Units\\
 	\hline
 	\hline
-		Player with vultures & 5 & 9 & 5  & 875\\
+		Player with vultures & 5 & 9 & 5 \\
 	\hline
-		Player with zerglings & 30 & 9 & 5 & 1500\\
+		Player with zerglings & 30 & 9 & 5\\
 	\hline
 
 \end{tabular}
@@ -33,12 +33,12 @@ in the two maps.
  \begin{tabular}{|l||c|c|c|c|}
 	\multicolumn{5}{c}{First Test Resultes From Second Map} \\
 	\hline
-	\ Players & Produced units & Killed Unit & Lost Units &  Total Unit Score \\
+	\ Players & Produced units & Killed Unit & Lost Units \\
 	\hline
 	\hline
-		Player with vultures & 5 & 5 & 5  & 875\\
+		Player with vultures & 5 & 5 & 5\\
 	\hline
-		Player with marines & 20 & 5 & 5 & 1750\\
+		Player with marines & 20 & 5 & 5\\
 	\hline
 
 \end{tabular}
@@ -53,16 +53,39 @@ This is the first test where we test the our bot agenst the built-in bot.
  \begin{tabular}{|l||c|c|c|c|}
 	\multicolumn{5}{c}{First Test Resultes From Second Map} \\
 	\hline
-	\ Players & Produced units & Killed Unit & Lost Units &  Total Unit Score \\
+	\ Players & Produced units & Killed Unit & Lost Units\\
 	\hline
 	\hline
-		Player with vultures & 5 & 30 & 0  & 2145\\
+		Player with vultures & 5 & 30 & 0\\
 	\hline
-		Player with zerglings & 30 & 0 & 30 & 750\\
+		Player with zerglings & 30 & 0 & 30\\
 	\hline
 
 \end{tabular}
 \end{centering}
+
 Out bot get this impressive result by not overextending himself and thereby only be in sight of a few zerglinges. This forced some zerglinges out
 of the group and made them a easy target. Though out the match this patten repeated, until the point where there was no more zerglings and all
 five vulture was at full health.
+
+\begin{centering}
+ \begin{tabular}{|l||c|c|c|c|}
+	\multicolumn{5}{c}{First Test Resultes From Second Map} \\
+	\hline
+	\ Players & Produced units & Killed Unit & Lost Units\\
+	\hline
+	\hline
+		Player with vultures & 5 & 6 & 5\\
+	\hline
+		Player with marines & 20 & 5 & 6\\
+	\hline
+
+\end{tabular}
+\end{centering}
+
+
+The result from this test wasn't as good as you would expect. The result of the vultures moving back and forth should be way better then static movment.
+But the fact is that the vultures only killed one more marine. The reason why this is the case is that the vultures couldn't use the same attack patteren as
+effektive as with the zerglinges, because the marines range attack sometimes delt damage to the vultures. So the vultures is getting to close before attacking.
+We see from this test that potentil feild in it self is not enough, if we like to win or have less losse then the opponent. In the next test we will test if there is an
+improvment if the bot uses reinforcement learning.
