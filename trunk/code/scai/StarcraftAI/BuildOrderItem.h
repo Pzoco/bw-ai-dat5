@@ -11,7 +11,7 @@ class BuildOrderItem
 {
 	public:
 		std::list<Condition> GetConditions(){return conditions;}
-		virtual std::string GetType(){return "Empty";}
+		virtual std::string GetType()
 	protected:
 		std::list <Condition> conditions;
 };
@@ -74,8 +74,9 @@ class UnitProductionItem: public BuildOrderItem
 		}
 		std::string GetType(){return "UnitProductionItem";}
 };
-class ProductionFocusItem: public BuildOrderItem
+class ProductionFocusItem
 {
+	std::list <Condition> conditions;
 	public:
 		ProductionEnums::ProductionFocus productionFocus;
 		ProductionFocusItem(ProductionEnums::ProductionFocus productionFocusToBeFulfilled,Condition conditionToBeFulfilled)
