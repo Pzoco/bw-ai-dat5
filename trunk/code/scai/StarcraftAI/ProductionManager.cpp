@@ -28,6 +28,7 @@ void ProductionManager::Update()
 	std::list<ProductionTask> tasks = _buildOrderHandler.GetProductionTasks();
 	if(!tasks.empty())
 	{
+		
 		//Adds the tasks from the buildorderhandler
 		for each(ProductionTask task in tasks)
 		{
