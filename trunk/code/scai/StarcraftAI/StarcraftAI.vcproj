@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="StarcraftAI"
 	ProjectGUID="{2E63AE74-758A-4607-9DE4-D28E814A6E13}"
 	RootNamespace="ExampleAIModule"
@@ -220,6 +220,22 @@
 					<Filter
 						Name="Conditions"
 						>
+						<File
+							RelativePath=".\Condition.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\SupplyCondition.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ThreatLevelCondition.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\UnitProductionCondition.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="BuildOrderItems"
@@ -266,14 +282,6 @@
 						>
 					</File>
 					<Filter
-						Name="Tactics"
-						>
-						<File
-							RelativePath=".\BaseTactic.cpp"
-							>
-						</File>
-					</Filter>
-					<Filter
 						Name="Reinforcement Learning"
 						>
 						<File
@@ -292,6 +300,14 @@
 							RelativePath=".\weights_data.txt"
 							>
 						</File>
+						<Filter
+							Name="Tactics"
+							>
+							<File
+								RelativePath=".\BaseTactic.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -314,7 +330,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BuildingItem.h"
+				>
+			</File>
+			<File
 				RelativePath=".\BuildingPlacer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BuildingProductionCondition.h"
 				>
 			</File>
 			<File
@@ -342,6 +366,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ProductionFocusItem.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ProductionManager.h"
 				>
 			</File>
@@ -351,6 +379,10 @@
 			</File>
 			<File
 				RelativePath=".\ReinforcementLearning.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ResearchItem.h"
 				>
 			</File>
 			<File
@@ -370,11 +402,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SupplyCondition.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TacticsManager.h"
 				>
 			</File>
 			<File
+				RelativePath=".\ThreatLevelCondition.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UnitHelper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitProductionCondition.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitProductionItem.h"
 				>
 			</File>
 			<File

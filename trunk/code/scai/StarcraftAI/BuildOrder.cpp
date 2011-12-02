@@ -4,7 +4,6 @@
 std::list<BuildOrderItem> items;
 BuildOrder::BuildOrder()
 {
-	
 }
 
 void BuildOrder::AddItem(BuildOrderItem buildOrderItem)
