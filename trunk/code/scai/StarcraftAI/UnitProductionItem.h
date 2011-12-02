@@ -1,20 +1,13 @@
 #pragma once
+#include "BuildOrderItem.h"
+#include "Condition.h"
+#include <BWAPI.h>
 
 class UnitProductionItem: public BuildOrderItem
 {
 	public: 
 		BWAPI::UnitType unit;
-		UnitProductionItem(BWAPI::UnitType unitToBeBuild, Condition conditionToBeFulfilled)
-		{
-			unit = unitToBeBuild;
-			conditions.push_back(conditionToBeFulfilled);
-		}			
-		UnitProductionItem(BWAPI::UnitType unitToBeBuild,std::list<Condition> conditionsToBeFulFilled): unit(unitToBeBuild)
-		{
-			for each(Condition c in conditionsToBeFulFilled)
-			{
-				conditions.push_back(c);
-			}
-		}
-		std::string GetType(){return "UnitProductionItem";}
+		UnitProductionItem(BWAPI::UnitType unitToBeBuild, Condition conditionToBeFulfilled);
+		UnitProductionItem(BWAPI::UnitType unitToBeBuild,std::list<Condition> conditionsToBeFulFilled);
+		std::string GetType();
 };
