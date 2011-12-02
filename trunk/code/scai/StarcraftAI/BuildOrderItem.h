@@ -10,8 +10,8 @@
 class BuildOrderItem
 {
 	public:
-		std::list<Condition> GetConditions(){return conditions;}
-		virtual std::string GetType()
+		std::list<Condition> GetConditions();
+		virtual std::string GetType();
 	protected:
 		std::list <Condition> conditions;
 };

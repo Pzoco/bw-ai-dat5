@@ -1,21 +1,17 @@
 #include "BuildingPlacer.h"
-#include <BWAPI.h>
 #include "WorkerManager.h"
+#include <BWAPI.h>
 
-BuildingPlacer::BuildingPlacer(void)
+BuildingPlacer::BuildingPlacer()
 {
 	
 }
 
-void BuildingPlacer::AddScv(BWAPI::Unit* unit)
-{
-	
-}
-void BuildingPlacer::Construct(BWAPI::UnitType buildingType, BuildingPlacer::Placement)
+void BuildingPlacer::Construct(BWAPI::UnitType buildingType)
 {
 
-	BWAPI::Unit* builder = WorkerManager::GetScv()
-	builder->build(Get the tile position,buildingType);
+	BWAPI::Unit* builder = WorkerManager::GetScv();
+	//builder->build(Get the tile position,buildingType);
 
 	int width = buildingType.tileWidth();
 	int height = buildingType.tileHeight();
@@ -34,8 +30,4 @@ void BuildingPlacer::Construct(BWAPI::UnitType buildingType, BuildingPlacer::Pla
 		//build a refinery by your base
 	}
 
-
-	
-
-  
 }
