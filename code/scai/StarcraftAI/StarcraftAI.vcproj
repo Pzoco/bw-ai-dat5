@@ -217,6 +217,34 @@
 						RelativePath=".\ProductionManager.cpp"
 						>
 					</File>
+					<Filter
+						Name="Conditions"
+						>
+					</Filter>
+					<Filter
+						Name="BuildOrderItems"
+						>
+						<File
+							RelativePath=".\BuildingItem.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\BuildOrderItem.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ProductionFocusItem.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ResearchItem.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\UnitProductionItem.cpp"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScoutingManager"

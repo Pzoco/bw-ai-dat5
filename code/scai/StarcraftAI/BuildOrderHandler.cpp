@@ -16,8 +16,9 @@ BuildOrderHandler::BuildOrderHandler(void)
 void BuildOrderHandler::InitiateBuildOrders()
 {
 	BuildOrder twoFactVultures = BuildOrder();
-
-	twoFactVultures.AddItem(ProductionFocusItem(ProductionEnums::Focus_Workers,SupplyCondition(4)));
+	ProductionFocusItem s = ProductionFocusItem(ProductionEnums::Focus_Workers,SupplyCondition(4));
+	BWAPI::Broodwar->printf("%s",s.GetType());
+	//twoFactVultures.AddItem(s);
 	twoFactVultures.AddItem(BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,SupplyCondition(9)));
 	_availableBuildOrders.push_back(twoFactVultures);
 }
