@@ -8,7 +8,7 @@
 struct Condition
 {
 	public: 
-		virtual bool IsFulfilled(){return true;} 
+		virtual bool IsFulfilled(){return true;}
 };
 class SupplyCondition: public Condition
 {
