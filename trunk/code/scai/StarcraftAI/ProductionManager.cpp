@@ -3,6 +3,7 @@
 #include "BuildOrderItem.h"
 #include "BuildOrderHandler.h"
 #include "WorkerManager.h"
+#include "BuildingPlacer.h"
 #include <algorithm>
 
 //The production facilities owned
@@ -25,6 +26,8 @@ ProductionManager::ProductionManager()
 
 void ProductionManager::Update()
 {
+	BuildingPlacer bp;
+	bp.Construct(BWAPI::UnitTypes::Terran_Supply_Depot);
 	std::list<ProductionTask> tasks = _buildOrderHandler.GetProductionTasks();
 	if(!tasks.empty())
 	{
@@ -116,6 +119,10 @@ void ProductionManager::TryProduceUnit(UnitProductionTask task)
 }
 void ProductionManager::TryConstructBuilding(ConstructionTask task)
 {
+	BWAPI::Broodwar->printf("trying to build");
+	BuildingPlacer bp;
+	bp.Construct(BWAPI::UnitTypes::Terran_Supply_Depot);
+	/*
 	BWAPI::TilePosition buildPosition;
 	BWAPI::Unit* builder = WorkerManager::GetScv();
 	//come up with a way to find a spot on the map to place building
@@ -124,6 +131,7 @@ void ProductionManager::TryConstructBuilding(ConstructionTask task)
 		buildPosition = BWAPI::TilePosition(buildPosition.x()++,buildPosition.y()++);
 	}
 	builder->build(buildPosition,task.building);
+	*/
 }
 
 void ProductionManager::TryResearchTech(ResearchTask task)
