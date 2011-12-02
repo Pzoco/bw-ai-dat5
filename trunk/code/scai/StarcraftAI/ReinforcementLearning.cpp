@@ -10,8 +10,7 @@ struct Weights
 {
 	double FORCEALLY;
 	double FORCESQUAD;
-	double FORCEMAXDIST1;
-	double FORCEMAXDIST2;
+	double FORCEMAXDIST;
 	double FORCECOOLDOWN;
 	double FORCEEDGE;
 
@@ -37,8 +36,8 @@ double const c5 = -5;	//adjustment	-5 for doing nothing
 
 double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative)
 {
-	/*std::ofstream file;
-	double test = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
+	std::ofstream file;
+	/*double test = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
 	file.open("C:/test.txt", std::ios::out | std::ios::app);
 	file << test << ", " << theta << ", " << alpha << ", " << reward << ", " << gamma << ", " << nextQ << ", " << currQ << ", " << derivative << "\n";
 	file.close();*/
@@ -90,12 +89,14 @@ double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 	}
 
 	reward = c1 * (startingUnits - squadSize) + c2 * (maxUnitHealth-currentUnitHealth) + c3 * (maxEnemieHealth-enemyCurrentHealth) + c4*(startingEnemies-numberOfEnemies)+ c5;
-	BWAPI::Broodwar->drawTextScreen(10,80,"size = %f",c1 * (startingUnits - squadSize));
-	BWAPI::Broodwar->drawTextScreen(10,90,"health = %f",c2*(maxUnitHealth-currentUnitHealth));
-	BWAPI::Broodwar->drawTextScreen(10,100,"ehealth = %f",c3*(maxEnemieHealth-enemyCurrentHealth));
-	BWAPI::Broodwar->drawTextScreen(10,110,"esize = %f",c4*(startingEnemies-numberOfEnemies));
-	BWAPI::Broodwar->drawTextScreen(10,120,"reward = %f",reward);
-	return reward;
+	double reward2 = reward / 1000;
+
+	BWAPI::Broodwar->drawTextScreen(10,80,"Units Killed = %f",(startingUnits - squadSize));
+	BWAPI::Broodwar->drawTextScreen(10,90,"Damage Taken= %f",(maxUnitHealth-currentUnitHealth));
+	BWAPI::Broodwar->drawTextScreen(10,100,"Damage Given = %f",(maxEnemieHealth-enemyCurrentHealth));
+	BWAPI::Broodwar->drawTextScreen(10,110,"Enemies Killed = %f",(startingEnemies-numberOfEnemies));
+	BWAPI::Broodwar->drawTextScreen(10,120,"Current Reward = %f",reward2);
+	return reward2;
 }
 
 void ReinforcementLearning::LoadWeightsFromFile()
@@ -105,7 +106,7 @@ void ReinforcementLearning::LoadWeightsFromFile()
 	{
 		std::ifstream file("C:/weights_data.txt"); 
 		std::string line; 
-		double arr[6]; 
+		double arr[5]; 
 		for(int i = 0; std::getline(file,line); i++) {
 			arr[i] = atof(line.c_str()); 
 			//BWAPI::Broodwar->printf("=) %f", arr[i]); 
@@ -115,10 +116,10 @@ void ReinforcementLearning::LoadWeightsFromFile()
 
 		_weights.FORCEALLY = arr[0];
 		_weights.FORCESQUAD = arr[1];
-		_weights.FORCEMAXDIST1 = arr[2];
-		_weights.FORCEMAXDIST2 = arr[3];
-		_weights.FORCECOOLDOWN = arr[4];
-		_weights.FORCEEDGE = arr[5];
+		//BWAPI::Broodwar->printf("=) %f, %f",_weights.FORCESQUAD , arr[1]); 
+		_weights.FORCEMAXDIST = arr[2];
+		_weights.FORCECOOLDOWN = arr[3];
+		_weights.FORCEEDGE = arr[4];
 
 	}
 	catch(char *c)
@@ -126,9 +127,6 @@ void ReinforcementLearning::LoadWeightsFromFile()
 		BWAPI::Broodwar->printf("File could not be opened");
 		std::cout << "File could not be opened -" << c << "\n";
 	}
-	
-	//BWAPI::Broodwar->printf("Loaded = %f,%f,%f,%f,%f,%f",(double)_weights.FORCEALLY,(double)_weights.FORCEEDGE,(double)_weights.FORCEMAXDIST1,(double)_weights.FORCEMAXDIST2,(double)_weights.FORCESQUAD,(double)_weights.FORCECOOLDOWN);
-	
 }
 
 
@@ -138,6 +136,32 @@ void ReinforcementLearning::LoadWeightsFromFile()
 double fileBuffer[130000]; 
 int bufferCounter = 0;
 
+double liveBuffer[10000];
+int liveCount = 0; 
+
+double* ReinforcementLearning::GetLiveBuffer()
+{
+	return liveBuffer; 
+}
+
+int ReinforcementLearning::GetLiveCount()
+{
+	return liveCount;
+}
+
+
+void ReinforcementLearning::WriteLiveValue(double value)
+{
+	liveBuffer[liveCount++] = value; 
+
+}
+
+void ReinforcementLearning::ClearLiveBuffer()
+{
+	//Make this cleanear later
+	liveCount = 0; 
+
+}
 
 void ReinforcementLearning::WriteValueToBuffer(double value, bool writeThrough)
 {
@@ -180,8 +204,7 @@ void ReinforcementLearning::SaveCurrentWeightsToFile()
 		file.open("C:/weights_data.txt");
 		file << _weights.FORCEALLY <<"\n";
 		file <<_weights.FORCESQUAD <<"\n";
-		file <<_weights.FORCEMAXDIST1<<"\n";
-		file <<_weights.FORCEMAXDIST2<<"\n";
+		file <<_weights.FORCEMAXDIST<<"\n";
 		file <<_weights.FORCECOOLDOWN<<"\n";
 		file <<_weights.FORCEEDGE<<"\n";
 		
@@ -239,14 +262,12 @@ double ReinforcementLearning::GetForceAlly(){
 }
 
 double ReinforcementLearning::GetForceSquad(){
+	//BWAPI::Broodwar->printf("%d in GetForceSquad",_weights.FORCESQUAD);
 	return _weights.FORCESQUAD; 
 }
 
-double ReinforcementLearning::GetForceMaxDist1(){
-	return _weights.FORCEMAXDIST1; 
-}
-double ReinforcementLearning::GetForceMaxDist2(){
-	return _weights.FORCEMAXDIST2; 
+double ReinforcementLearning::GetForceMaxDist(){
+	return _weights.FORCEMAXDIST; 
 }
 
 double ReinforcementLearning::GetForceCooldown(){
@@ -265,13 +286,10 @@ void ReinforcementLearning::SetForceSquad(double squad){
 	_weights.FORCESQUAD = squad;  
 }
 
-void ReinforcementLearning::SetForceMaxDist1(double mde1){
-	_weights.FORCEMAXDIST1 = mde1; 
+void ReinforcementLearning::SetForceMaxDist(double mde1){
+	_weights.FORCEMAXDIST = mde1; 
 }
 
-void ReinforcementLearning::SetForceMaxDist2(double mde2){
-	_weights.FORCEMAXDIST2 = mde2; 
-}
 
 void ReinforcementLearning::SetForceCooldown(double cool){
 	_weights.FORCECOOLDOWN = cool; 
