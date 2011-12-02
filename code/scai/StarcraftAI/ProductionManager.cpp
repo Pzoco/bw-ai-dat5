@@ -148,7 +148,7 @@ void ProductionManager::RemoveTask(ProductionTask task)
 {
 	for(std::list<ProductionTask>::iterator pTask = _productionQueue.begin();pTask!=_productionQueue.end();pTask++)
 	{
-		if((&(*pTask)) == &(task))
+		(&(*pTask)) == &(task))
 		{
 			_productionQueue.erase(pTask);
 			break;
@@ -157,5 +157,6 @@ void ProductionManager::RemoveTask(ProductionTask task)
 }
 void ProductionManager::BuildingConstructed(BWAPI::Unit *building)
 {
+		if(
 	productionFacilities[building->getType()].push_back(building);
 }
