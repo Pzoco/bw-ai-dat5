@@ -3,84 +3,67 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include "UnitHelper.h"
+#include "MathHelper.h"
 
-std::list<Squad> _vultureSquads;
-std::list<Squad> _marineSquads;
-std::list<Squad> _medicSquads;
-std::list<Squad> _wraithSquads;
-std::list<Squad> _golliathSquads;
-std::list<Squad> _tankSquads;
-
+//Does a mapping between unittypes and lists
+std::map<BWAPI::UnitType,std::list<Squad>> squads;
 
 TacticsManager::TacticsManager(void)
 {
-
+	
 }
 
-std::list<Squad>& TacticsManager::GetRightSquadList(BWAPI::UnitType unitType)
-{
-	if(unitType == BWAPI::UnitTypes::Terran_Vulture){return _vultureSquads;}
-	else if(unitType == BWAPI::UnitTypes::Terran_Marine) { return _marineSquads; }
-	else if(unitType == BWAPI::UnitTypes::Terran_Medic) { return _medicSquads; }
-	else if(unitType == BWAPI::UnitTypes::Terran_Wraith) { return _wraithSquads;}
-	else if(unitType == BWAPI::UnitTypes::Terran_Goliath) { return _golliathSquads;}
-	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Siege_Mode) { return _tankSquads;}
-	else if(unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode) { return _tankSquads;}
-
-	//Dont do this :D
-	return _vultureSquads;
-}
 void TacticsManager::AddSquad(Squad squad)
 {
-	_vultureSquads.push_front(squad);
+	squads[squad.GetUnitType()].push_back(squad);
 }
 void TacticsManager::RemoveSquad(Squad squad)
 {
-
+	for(std::list<Squad>::iterator s=squads[squad.GetUnitType()].begin();s!=squads[squad.GetUnitType()].end();s++)
+	{
+		if((&(*s)) == &(squad))
+		{
+			squads[squad.GetUnitType()].erase(s);
+			break;
+		}
+	}
 }
 void TacticsManager::Update()
 {
-	for each(Squad squad in _vultureSquads)
+	for(std::map<BWAPI::UnitType,std::list<Squad>>::iterator i = squads.begin(); i != squads.end(); i++ ) 
 	{
-		squad.ExecuteTactics();
+		for each(Squad squad in i->second)
+		{
+			squad.ExecuteTactics();
+		}
 	}
-	/*
-	for each(Squad squad in _marineSquads)
-	{
-		squad.ExecuteTactics();
-	}
-	for each(Squad squad in _medicSquads)
-	{
-		squad.ExecuteTactics();
-	}
-	for each(Squad squad in _wraithSquads)
-	{
-		squad.ExecuteTactics();
-	}
-	for each(Squad squad in _golliathSquads)
-	{
-		squad.ExecuteTactics();
-	}
-	for each(Squad squad in _tankSquads)
-	{
-		squad.ExecuteTactics();
-	}*/
 }
 void TacticsManager::AssignToSquad(BWAPI::Unit* unit)
 {
 	if(UnitHelper::IsOffensiveType(unit->getType()))
 	{
-		std::list<Squad> &squads = GetRightSquadList(unit->getType());
-		if(squads.empty())
+		if(squads[unit->getType()].empty())
 		{
 			//Should use the specific tactic not basetactic
 			Squad s = Squad(unit,BaseTactic());
-			squads.push_back(s);
+			squads[unit->getType()].push_back(s);
 		}
 		else
 		{
-			//Improve this in the future
-			squads.front().AddUnit(unit);
+			//Find a squad most suitable compared to the distance
+			Squad bestSquad;
+			int bestDistance=100000;
+			
+			for each(Squad s in squads[unit->getType()])
+			{
+				int squadCenterDistance = unit->getDistance(s.GetSquadCenter());
+				if(bestDistance > squadCenterDistance)
+				{
+					bestSquad = s;
+					bestDistance = squadCenterDistance;
+				}
+			}
+			bestSquad.AddUnit(unit);			
 		}
 	}
 }
@@ -97,9 +80,8 @@ int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
 {
 	if(UnitHelper::IsOffensiveType(type))
 	{
-		std::list<Squad> squads = GetRightSquadList(type);
 		int number= 0;
-		for each(Squad squad in squads)
+		for each(Squad squad in squads[type])
 		{
 			number+=squad.GetSize();
 		}

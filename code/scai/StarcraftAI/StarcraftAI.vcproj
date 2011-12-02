@@ -210,6 +210,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\BuildOrderHandler.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\ProductionManager.cpp"
 						>
 					</File>
@@ -262,6 +266,14 @@
 						</File>
 					</Filter>
 				</Filter>
+				<Filter
+					Name="WorkerManager"
+					>
+					<File
+						RelativePath=".\WorkerManager.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -274,11 +286,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BuildingPlacer.h"
+				RelativePath=".\BuildOrder.h"
 				>
 			</File>
 			<File
-				RelativePath=".\BuildOrder.h"
+				RelativePath=".\BuildOrderHandler.h"
 				>
 			</File>
 			<File
@@ -294,7 +306,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ProductionEnums.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ProductionManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ProductionTask.h"
 				>
 			</File>
 			<File
@@ -323,6 +343,10 @@
 			</File>
 			<File
 				RelativePath=".\UnitHelper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkerManager.h"
 				>
 			</File>
 		</Filter>
