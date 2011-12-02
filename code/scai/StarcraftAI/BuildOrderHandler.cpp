@@ -55,6 +55,7 @@ std::list<ProductionTask> BuildOrderHandler::GetProductionTasks()
 	{
 		InitiateBuildOrders();
 		SetCurrentBuildOrder();
+		//PrintBuildOrder(_currentBuildOrder);
 		initiated = true;
 	}
 	return productionTasks;
