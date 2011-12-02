@@ -1,7 +1,13 @@
 #include "BuildOrderHandler.h"
 #include "BuildOrder.h"
-#include "BuildOrderItem.h"
 #include "Condition.h"
+#include "BuildOrderItem.h"
+#include "ResearchItem.h"
+#include "BuildingItem.h"
+#include "UnitProductionItem.h"
+#include "ProductionFocusItem.h"
+#include "ResearchItem.h"
+#include "SupplyCondition.h"
 #include "ProductionTask.h"
 
 BuildOrder _currentBuildOrder;
@@ -16,9 +22,7 @@ BuildOrderHandler::BuildOrderHandler(void)
 void BuildOrderHandler::InitiateBuildOrders()
 {
 	BuildOrder twoFactVultures = BuildOrder();
-	ProductionFocusItem s = ProductionFocusItem(ProductionEnums::Focus_Workers,SupplyCondition(4));
-	BWAPI::Broodwar->printf("%s",s.GetType());
-	//twoFactVultures.AddItem(s);
+	twoFactVultures.AddItem(ProductionFocusItem(ProductionEnums::Focus_Workers,SupplyCondition(4)));
 	twoFactVultures.AddItem(BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,SupplyCondition(9)));
 	_availableBuildOrders.push_back(twoFactVultures);
 }

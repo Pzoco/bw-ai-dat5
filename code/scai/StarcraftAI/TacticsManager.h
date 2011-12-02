@@ -12,7 +12,7 @@ public:
 	void RemoveSquad(Squad squad);
 	void AssignToSquad(BWAPI::Unit* unit);
 	void AssignToSquads(std::set<BWAPI::Unit*> units);
-	int	GetNumberOfUnits(BWAPI::UnitType type);
+	int static GetNumberOfUnits(BWAPI::UnitType type);
 private:
 	std::list<Squad> &GetRightSquadList(BWAPI::UnitType);
 	void WriteSquadList(BWAPI::UnitType, std::list<Squad>);

@@ -159,8 +159,5 @@ void ProductionManager::RemoveTask(ProductionTask task)
 }
 void ProductionManager::BuildingConstructed(BWAPI::Unit *building)
 {
-	/*
-		if(
 	productionFacilities[building->getType()].push_back(building);
-	*/
 }
