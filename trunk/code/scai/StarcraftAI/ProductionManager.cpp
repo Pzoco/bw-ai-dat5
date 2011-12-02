@@ -146,17 +146,21 @@ void ProductionManager::TryResearchTech(ResearchTask task)
 }
 void ProductionManager::RemoveTask(ProductionTask task)
 {
+	
 	for(std::list<ProductionTask>::iterator pTask = _productionQueue.begin();pTask!=_productionQueue.end();pTask++)
 	{
-		(&(*pTask)) == &(task))
+		if(&(*pTask) == &(task))
 		{
 			_productionQueue.erase(pTask);
 			break;
 		}
 	}
+	
 }
 void ProductionManager::BuildingConstructed(BWAPI::Unit *building)
 {
+	/*
 		if(
 	productionFacilities[building->getType()].push_back(building);
+	*/
 }
