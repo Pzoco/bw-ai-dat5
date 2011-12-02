@@ -32,3 +32,7 @@ void ScoutingManager::Update()
 {
 
 }
+
+void InitialScout(std::list<BWAPI::Unit*> scvs)
+{
+}	
