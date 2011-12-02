@@ -1,11 +1,14 @@
 #include "StarcraftAI.h"
 #include "../Squad.h"
+#include "../UnitHelper.h"
 #include "../BaseTactic.h"
 #include "../TacticsManager.h"
 #include "../ScoutingManager.h"
+#include "../ProductionManager.h"
+#include "../ReinforcementLearning.h"
+#include "../WorkerManager.h"
 #include <BWAPI.h>
 #include <BWTA.h>
-#include "../ReinforcementLearning.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,6 +16,9 @@
 using namespace BWAPI;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
+ProductionManager productionManager;
+WorkerManager workerManager;
+
 ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
 struct StarcraftAI::Thetas
@@ -43,12 +49,15 @@ void StarcraftAI::onStart()
 
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
-	//Creating a tacticsmanager and assigning the our units to squads
-	tacticsManager = TacticsManager();
-	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
-	scoutingManager = ScoutingManager();
-	scoutingManager.AnalyzeMap();
 
+	//Iniatiating managers:
+	tacticsManager = TacticsManager();
+	scoutingManager = ScoutingManager();
+	productionManager = ProductionManager();
+	workerManager = WorkerManager();
+
+	//This makes it look like it crashed if the map was exited before it is done analyzing
+	//scoutingManager.AnalyzeMap();
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -131,6 +140,9 @@ void StarcraftAI::onFrame()
 {
 	tacticsManager.Update();
 	scoutingManager.Update();
+	productionManager.Update();
+	workerManager.Update();
+
 	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
 	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
 	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist1 = %f",reinforcementLearning.GetForceMaxDist1());
@@ -160,7 +172,7 @@ void StarcraftAI::onNukeDetect(BWAPI::Position target)
 
 void StarcraftAI::onUnitDiscover(BWAPI::Unit* unit)
 {
-  
+
 }
 
 void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
@@ -170,7 +182,23 @@ void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 {
-
+	if(unit->getPlayer() == BWAPI::Broodwar->self())
+	{
+		//Assigns the units to the different managers
+		//!!!! THE UNITS ARE ONLY BEING PRODUCED/CONSTRUCTED !!!!
+		if(UnitHelper::IsOffensiveType(unit->getType()))
+		{
+			tacticsManager.AssignToSquad(unit);
+		}
+		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV )
+		{
+			workerManager.ScvCreated(unit);
+		}
+		else if(unit->getType().isBuilding())
+		{
+			productionManager.BuildingConstructed(unit);
+		}
+	}
 }
 
 void StarcraftAI::onUnitHide(BWAPI::Unit* unit)

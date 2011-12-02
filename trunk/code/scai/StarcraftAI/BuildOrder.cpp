@@ -16,3 +16,7 @@ std::list<BuildOrderItem> BuildOrder::GetBuildOrderItems()
 {
 	return items;
 }
+bool BuildOrder::IsEmpty()
+{
+	return items.empty();
+}

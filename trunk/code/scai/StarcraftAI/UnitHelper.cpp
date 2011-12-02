@@ -59,34 +59,9 @@ BWAPI::UnitType UnitHelper::GetBuildingWhichCanProduce(BWAPI::UnitType unitType)
 }
 bool UnitHelper::IsOffensiveType(BWAPI::UnitType type)
 {
-	if(type == BWAPI::UnitTypes::Terran_SCV || 
-		type == BWAPI::UnitTypes::Terran_Command_Center || 
-		type == BWAPI::UnitTypes::Terran_Academy || 
-		type == BWAPI::UnitTypes::Terran_Command_Center || 
-		type == BWAPI::UnitTypes::Terran_Armory ||
-		type == BWAPI::UnitTypes::Terran_Barracks || 
-		type == BWAPI::UnitTypes::Terran_Bunker || 
-		type == BWAPI::UnitTypes::Terran_Comsat_Station || 
-		type == BWAPI::UnitTypes::Terran_Control_Tower ||
-		type == BWAPI::UnitTypes::Terran_Covert_Ops || 
-		type == BWAPI::UnitTypes::Terran_Engineering_Bay ||
-		type == BWAPI::UnitTypes::Terran_Missile_Turret || 
-		type == BWAPI::UnitTypes::Terran_Machine_Shop ||
-		type == BWAPI::UnitTypes::Terran_Nuclear_Silo || 
-		type == BWAPI::UnitTypes::Terran_Physics_Lab ||
-		type == BWAPI::UnitTypes::Terran_Refinery || 
-		type == BWAPI::UnitTypes::Terran_Science_Facility ||
-		type == BWAPI::UnitTypes::Terran_Starport || 
-		type == BWAPI::UnitTypes::Terran_Supply_Depot ||
-		type == BWAPI::UnitTypes::Terran_Vulture_Spider_Mine || 
-		type == BWAPI::UnitTypes::Terran_Nuclear_Missile)
+	if(type.isBuilding() || type.isWorker())
 	{
 		return false;
 	}
 	return true;
-}
-
-bool UnitHelper::IsBuilding(BWAPI::UnitType type)
-{
-	return false;
 }

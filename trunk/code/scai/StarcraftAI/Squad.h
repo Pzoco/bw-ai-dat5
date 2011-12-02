@@ -12,4 +12,6 @@ public:
 	void AddUnit(BWAPI::Unit* unit);
 	void RemoveUnit(BWAPI::Unit* unit);
 	int GetSize();
+	BWAPI::Position GetSquadCenter();
+	BWAPI::UnitType GetUnitType();
 };

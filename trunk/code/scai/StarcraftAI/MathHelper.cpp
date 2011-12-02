@@ -181,4 +181,3 @@ BWAPI::Position MathHelper::GetSquadCenterPosition(std::set<BWAPI::Unit*> listOf
 	
 	return BWAPI::Position(x,y);
 }
-

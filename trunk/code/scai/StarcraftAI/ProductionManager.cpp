@@ -1,96 +1,160 @@
 #include "ProductionManager.h"
-#include "BuildOrder.h"
+#include "ProductionTask.h"
 #include "BuildOrderItem.h"
-#include "Condition.h"
-#include "BuildingPlacer.h"
+#include "BuildOrderHandler.h"
+#include "WorkerManager.h"
+#include <algorithm>
 
+//The production facilities owned
+std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> productionFacilities;
 
-BuildingPlacer _buildingPlacer;
-BuildOrder _currentBuildOrder;
-std::list<BuildOrder> _allBuildOrders;
-std::list<BWAPI::Unit*> _scvs;
-BuildOrderItem::ProductionFocus _productionFocus;
-bool initiated = false;
+//Tasks are saved to this list and handled if minerals and gas amounts are sufficient
+std::list<ProductionTask> _productionQueue;
+
+//The current focus in production
+ProductionEnums::ProductionFocus _productionFocus;
+
+//Used for getting new tasks
+BuildOrderHandler _buildOrderHandler;
 
 ProductionManager::ProductionManager()
 {
 
 }
 
-void ProductionManager::AssignScv(BWAPI::Unit* unit)
-{
-	_scvs.push_back(unit);
-}
-void ProductionManager::AssignScvs(std::set<BWAPI::Unit*> units)
-{
-	for each(BWAPI::Unit* unit in units)
-	{
-		if(unit->getType() == BWAPI::UnitTypes::Terran_SCV)
-		{
-			_scvs.push_back(unit);
-		}
-	}
-}
-void ProductionManager::InitiateBuildOrders()
-{
-	BuildOrder twoFactVultures = BuildOrder();
-	twoFactVultures.Hello();
-	twoFactVultures.AddItem(BuildOrderItem());
-	//Enum stuff doesnt look good - Might need a fix later
-	twoFactVultures.AddItem(ProductionFocusItem(BuildOrderItem::Focus_Workers,SupplyCondition(4)));
-	twoFactVultures.AddItem(BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,SupplyCondition(9)));
-	_allBuildOrders.push_back(twoFactVultures);
-}
-void ProductionManager::SetCurrentBuildOrder()
-{
-	_currentBuildOrder = _allBuildOrders.front();
-	initiated = true;
-}
+
 void ProductionManager::Update()
 {
-	if(initiated)
+	std::list<ProductionTask> tasks = _buildOrderHandler.GetProductionTasks();
+	if(!tasks.empty())
 	{
-		for each(BuildOrderItem item in _currentBuildOrder.GetBuildOrderItems())
+		//Adds the tasks from the buildorderhandler
+		for each(ProductionTask task in tasks)
 		{
-			bool allConditionsFulfilled = true;
-			for each(Condition condition in item.GetConditions())
+			if(task.GetType() != "ProductionFocusTask")
 			{
-				if(!condition.IsFulfilled())
-				{
-					allConditionsFulfilled = false;
-					break;
-				}
+				_productionQueue.push_back(task);
 			}
-			if(allConditionsFulfilled == true)
+			else
 			{
-				switch(item.GetType())
-				{
-					case 1: ResearchTech(dynamic_cast<ResearchItem&>(item).techType); break;
-					case 2: ConstructBuilding(dynamic_cast<BuildingItem&>(item).building); break;
-					case 3: ProduceUnit(dynamic_cast<UnitProductionItem&>(item).unit); break;
-					case 4: _productionFocus = dynamic_cast<ProductionFocusItem&>(item).productionFocus;
-				}
+				//No reason to wait to set this, because it costs nothing
+				_productionFocus = dynamic_cast<ProductionFocusTask&>(task).focus;
+			}
+			
+		}
+	
+		//Trying to produce the first item in the list
+		ProductionTask firstInLine = _productionQueue.front();
 
+		//If we have enough mineral and gas then try doing the task
+		if(firstInLine.mineralPrice <= BWAPI::Broodwar->self()->minerals() &&
+			firstInLine.gasPrice <= BWAPI::Broodwar->self()->gas())
+		{
+			if("UnitProductionTask" == firstInLine.GetType())
+			{
+				TryProduceUnit(dynamic_cast<UnitProductionTask&>(firstInLine));
+			}
+			else if("ConstructionTask" == firstInLine.GetType())
+			{
+				TryConstructBuilding(dynamic_cast<ConstructionTask&>(firstInLine));
+			}
+			else if("ResearchTask" == firstInLine.GetType())
+			{
+				TryResearchTech(dynamic_cast<ResearchTask&>(firstInLine));
+			}
+
+		}
+	}
+	//Build scvs if this is the focus right now
+	if(_productionFocus == ProductionEnums::Focus_Workers)
+	{
+		for each(BWAPI::Unit* cc in productionFacilities[BWAPI::UnitTypes::Terran_Command_Center])
+		{
+			if(!cc->isTraining())
+			{
+				cc->train(BWAPI::UnitTypes::Terran_SCV);
 			}
 		}
 	}
-	else
+}
+
+void ProductionManager::TryProduceUnit(UnitProductionTask task)
+{
+	//Check if we have enough supply
+	if((BWAPI::Broodwar->self()->supplyTotal()-BWAPI::Broodwar->self()->supplyUsed()) < task.unit.supplyRequired())
+		return;
+
+	bool allBuildingsFound = true;
+	//If we have the required buildings and they are not currently producing, then build the unit
+	for(std::map<BWAPI::UnitType,int>::iterator i = task.requiredBuildings.begin();i!=task.requiredBuildings.end();i++)
 	{
-		InitiateBuildOrders();
-		SetCurrentBuildOrder();
+		if(productionFacilities[i->first].empty())
+		{
+			allBuildingsFound = false;
+			break;
+		}
+	}
+	//Trying to find a production facility that is capable of producing the unit
+	bool suitableProductionFacilityFound = false;
+	BWAPI::Unit* suitableBuilding;
+	for each(BWAPI::Unit* building in productionFacilities[task.unit])
+	{
+		if(building->isIdle())
+		{
+			suitableBuilding = building;
+			suitableProductionFacilityFound = true;
+			break;
+		}
+	}
+
+	if(allBuildingsFound && suitableProductionFacilityFound)
+	{
+		suitableBuilding->train(task.unit);
+		RemoveTask(task);
 	}
 }
-
-void ProductionManager::ProduceUnit(BWAPI::UnitType unitType)
+void ProductionManager::TryConstructBuilding(ConstructionTask task)
 {
-	
+	BWAPI::TilePosition buildPosition;
+	BWAPI::Unit* builder = WorkerManager::GetScv();
+	//come up with a way to find a spot on the map to place building
+	while(BWAPI::Broodwar->canBuildHere(builder,buildPosition,task.building,false)==false)
+	{
+		buildPosition = BWAPI::TilePosition(buildPosition.x()++,buildPosition.y()++);
+	}
+	builder->build(buildPosition,task.building);
 }
-void ProductionManager::ConstructBuilding(BWAPI::UnitType buildingType)
-{
 
+void ProductionManager::TryResearchTech(ResearchTask task)
+{
+	bool suitableResearchFacilityFound = false;
+	BWAPI::Unit* suitableBuilding;
+	for each(BWAPI::Unit* building in productionFacilities[task.techType.whatResearches()])
+	{
+		if(building->isIdle())
+		{
+			suitableBuilding = building;
+			suitableResearchFacilityFound=true;
+			break;
+		}
+	}
+	if(suitableResearchFacilityFound)
+	{
+		suitableBuilding->research(task.techType);
+	}
 }
-
-void ProductionManager::ResearchTech(BWAPI::TechType techType)
+void ProductionManager::RemoveTask(ProductionTask task)
 {
-
+	for(std::list<ProductionTask>::iterator pTask = _productionQueue.begin();pTask!=_productionQueue.end();pTask++)
+	{
+		if((&(*pTask)) == &(task))
+		{
+			_productionQueue.erase(pTask);
+			break;
+		}
+	}
+}
+void ProductionManager::BuildingConstructed(BWAPI::Unit *building)
+{
+	productionFacilities[building->getType()].push_back(building);
 }

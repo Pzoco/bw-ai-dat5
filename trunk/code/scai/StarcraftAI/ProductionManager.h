@@ -5,15 +5,14 @@
 class ProductionManager
 {
 public:
+	enum BuildingState{BeingConstructed,Producing,NotProducing};
 	ProductionManager();
-	void AssignScv(BWAPI::Unit* unit);
-	void AssignScvs(std::set<BWAPI::Unit*> units);
+	void BuildingConstructed(BWAPI::Unit* building);
+	void SetProductionFocus(ProductionEnums::ProductionFocus focus);
 	void Update();
 private:
-	void InitiateBuildOrders();
-	void SetCurrentBuildOrder();
-	void ProduceUnit(BWAPI::UnitType unitType);
-	void ConstructBuilding(BWAPI::UnitType buildingType);
-	void ResearchTech(BWAPI::TechType techType);
-	void TryBuildSCV();
+	void TryProduceUnit(UnitProductionTask task);
+	void TryConstructBuilding(ConstructionTask task);
+	void TryResearchTech(ResearchTask task);
+	void RemoveTask(ProductionTask task);
 };
