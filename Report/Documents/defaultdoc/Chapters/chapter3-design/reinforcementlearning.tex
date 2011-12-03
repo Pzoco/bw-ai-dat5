@@ -39,9 +39,9 @@ A short description of the different ways one can use reinforcement learning and
 %This needs to be done!!!
 
 
-%NEEDS A CITE TO MARKOV AND TO DPM DAN
+%NEEDS A CITE TO DPM DAN
 \subsection*{Adaptive dynamic programming}\label{ADP}
-This method of learning is taking advantage of the constraints between states, an agent learns the transition model as it goes along and solving the Markov decision process using a dynamic programming method. By using the Bellman equations it calculates the utility of the states. This method will not suit our agent very well since it's not good use for a larger state space \cite[p. 767]{rl}, but you will read in the next subsection that one can combine adaptive dynamic programming with direct utility estimation without solving all the states with Bellman's equations. 
+This method of learning is taking advantage of the constraints between states, an agent learns the transition model as it goes along and solving the Markov decision process \cite{mdp} using a dynamic programming method \cite{dp}. By using the Bellman equations it calculates the utility of the states. This method will not suit our agent very well since it's not good use for a larger state space \cite[p. 767]{rl}, but you will read in the next subsection that one can combine adaptive dynamic programming with direct utility estimation without solving all the states with Bellman's equations. 
 
 \subsection*{Temporal difference learning}
 This is a method that uses approximation of the constraints equations without solving all the states possible. Here is the observed value of the transitions used to update the values of the observed states so they agree with the constraint equations \cite[p. 767]{rl}. 
