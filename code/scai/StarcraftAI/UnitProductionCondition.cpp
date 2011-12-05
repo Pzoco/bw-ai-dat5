@@ -1,5 +1,6 @@
 #include "UnitProductionCondition.h"
 #include "TacticsManager.h"
+#include "UnitHelper.h"
 
 UnitProductionCondition::UnitProductionCondition(BWAPI::UnitType unitTypeToGet,int numberOfUnits)
 {
@@ -7,7 +8,8 @@ UnitProductionCondition::UnitProductionCondition(BWAPI::UnitType unitTypeToGet,i
 }
 bool UnitProductionCondition::IsFulfilled()
 {
-	if(number==TacticsManager::GetNumberOfUnits(unitType))
+	
+	if(number==UnitHelper::GetNumberOfUnitType(unitType))
 	{
 		return true;
 	}

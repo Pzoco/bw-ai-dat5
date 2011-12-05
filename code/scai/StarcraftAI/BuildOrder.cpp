@@ -1,10 +1,10 @@
 #include "BuildOrder.h"
 #include <BWAPI.h>
 
-std::list<BuildOrderItem*> items;
 
-BuildOrder::BuildOrder()
+BuildOrder::BuildOrder(std::string name)
 {
+	this->name = name;
 }
 
 void BuildOrder::AddItem(BuildOrderItem* buildOrderItem)
@@ -14,7 +14,14 @@ void BuildOrder::AddItem(BuildOrderItem* buildOrderItem)
 
 void BuildOrder::RemoveItem(BuildOrderItem* item)
 {
-	items.remove(item);
+	for(std::list<BuildOrderItem*>::iterator pItem = items.begin();pItem!=items.end();pItem++)
+	{
+		if( *pItem == item)
+		{
+			items.erase(pItem);
+			break;
+		}
+	}
 }
 
 std::list<BuildOrderItem*> BuildOrder::GetBuildOrderItems()
@@ -24,4 +31,9 @@ std::list<BuildOrderItem*> BuildOrder::GetBuildOrderItems()
 bool BuildOrder::IsEmpty()
 {
 	return items.empty();
+}
+
+int BuildOrder::GetSize()
+{
+	return items.size();
 }

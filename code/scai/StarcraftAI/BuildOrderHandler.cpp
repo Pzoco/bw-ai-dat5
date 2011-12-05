@@ -11,7 +11,6 @@
 #include "ProductionTask.h"
 
 
-
 BuildOrderHandler::BuildOrderHandler(void)
 {
 	initiated =false;
@@ -19,11 +18,12 @@ BuildOrderHandler::BuildOrderHandler(void)
 
 void BuildOrderHandler::InitiateBuildOrders()
 {
-	BuildOrder* twoFactVultures =new BuildOrder();
-	
+	BuildOrder* twoFactVultures =new BuildOrder("Two Fact Vulture");
+
 	twoFactVultures->AddItem(new ProductionFocusItem(ProductionEnums::Focus_Workers,new SupplyCondition(4)));
-	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(9)));
-	//BWAPI::Broodwar->printf("%s",twoFactVultures->GetBuildOrderItems().front()->GetConditions().front()->IsFulfilled() ? "true" : "false");
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(8)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Barracks,ProductionEnums::Placement_MainBase,new SupplyCondition(10)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Refinery,ProductionEnums::Placement_MainBase,new SupplyCondition(12)));
 	_availableBuildOrders.push_back(twoFactVultures);
 }
 void BuildOrderHandler::SetCurrentBuildOrder()
@@ -32,18 +32,17 @@ void BuildOrderHandler::SetCurrentBuildOrder()
 	_currentBuildOrder = _availableBuildOrders.front();
 }
 
-//Checks which build order items are ready for production (When all their conditions are fulfilled)
-std::list<ProductionTask*> BuildOrderHandler::GetProductionTasks()
+
+void BuildOrderHandler::Update()
 {
-	std::list<ProductionTask*> productionTasks;
-	
 	if(initiated && !_currentBuildOrder->IsEmpty())
 	{
 		std::list<BuildOrderItem*> items = _currentBuildOrder->GetBuildOrderItems();
 		for(std::list<BuildOrderItem*>::iterator item = items.begin();item!=items.end();++item)
 		{
 			bool allConditionsFulfilled = true;
-			for each(Condition* condition in (*item)->GetConditions())
+			std::list<Condition*> conditions = (*item)->GetConditions();
+			for each(Condition* condition in conditions)
 			{
 				if(!condition->IsFulfilled())
 				{
@@ -51,11 +50,11 @@ std::list<ProductionTask*> BuildOrderHandler::GetProductionTasks()
 					break;
 				}
 			}
-			//If all the conditions of the item was fulfilled we save it to the list of productiontasks
+			//If all the conditions of the item was fulfilled we save it to the right list of tasks
 			if(allConditionsFulfilled == true)
 			{
-				productionTasks.push_back(CreateProductionTask(*item));
-				_currentBuildOrder->RemoveItem(*item);
+				SaveAsTask(*item);				
+				_currentBuildOrder->items.remove(*item);
 			}
 		}
 	}
@@ -63,53 +62,42 @@ std::list<ProductionTask*> BuildOrderHandler::GetProductionTasks()
 	{
 		InitiateBuildOrders();
 		SetCurrentBuildOrder();
-		//PrintBuildOrder(_currentBuildOrder);
 		initiated = true;
 	}
-	return productionTasks;
+	
 }
 
-ProductionTask* BuildOrderHandler::CreateProductionTask(BuildOrderItem* item)
+void BuildOrderHandler::SaveAsTask(BuildOrderItem* item)
 {
-	//BWAPI::Broodwar->printf("%s",item->GetType().c_str());
+	
 	if(item->GetType() == "ResearchItem")
 	{
-
 		ResearchItem* ri = dynamic_cast<ResearchItem*>(item);
-		return new ResearchTask(ri->techType);
+		researchTasks.push_back(new ResearchTask(ri->techType));
 	}
 	else if(item->GetType() == "BuildingItem")
 	{
 		BuildingItem* bi = dynamic_cast<BuildingItem*>(item);
-		return new ConstructionTask(bi->building,bi->buildingPlacement);
+		constructionTasks.push_back(new ConstructionTask(bi->building,bi->buildingPlacement));
 	}
 	else if(item->GetType() == "UnitProductionItem")
 	{
 		UnitProductionItem* ui = dynamic_cast<UnitProductionItem*>(item);
-		return new UnitProductionTask(ui->unit);
+		unitProductionTasks.push_back(new UnitProductionTask(ui->unit));
 	}
 	else if(item->GetType() == "ProductionFocusItem")
 	{
-		ProductionFocusItem* ui = dynamic_cast<ProductionFocusItem*>(item);
-		return new ProductionFocusTask(ui->productionFocus);
+		ProductionFocusItem* pi = dynamic_cast<ProductionFocusItem*>(item);
+		productionFocusTasks.push_back(new ProductionFocusTask(pi->productionFocus));
 	}
-	return new ProductionTask();
+	
 }
 void BuildOrderHandler::PrintBuildOrder(BuildOrder* buildorder)
 {
-	for each(BuildOrderItem* item in buildorder->GetBuildOrderItems())
+	BWAPI::Broodwar->printf("Printing Build Order \n");
+	std::list<BuildOrderItem*> items =  buildorder->GetBuildOrderItems();
+	for each(BuildOrderItem* item in items)
 	{
-		BWAPI::Broodwar->printf("Buildorder item %s",item->GetType());
-	}
-}
-void BuildOrderHandler::RemoveItem(BuildOrderItem* item)
-{
-	for(std::list<BuildOrderItem*>::iterator pItem = _currentBuildOrder->GetBuildOrderItems().begin();pItem!=_currentBuildOrder->GetBuildOrderItems().end();pItem++)
-	{
-		if( *pItem == item)
-		{
-			_currentBuildOrder->GetBuildOrderItems().erase(pItem);
-			break;
-		}
+		BWAPI::Broodwar->printf("Buildorder item: %s \n",item->GetType().c_str());
 	}
 }

@@ -4,8 +4,6 @@ ConstructionTask::ConstructionTask(BWAPI::UnitType buildingType, ProductionEnums
 {
 	building = buildingType;
 	buildingPlacement = placement;
-	mineralPrice = building.mineralPrice();
-	gasPrice = building.gasPrice();
 }
 
 std::string ConstructionTask::GetType()
