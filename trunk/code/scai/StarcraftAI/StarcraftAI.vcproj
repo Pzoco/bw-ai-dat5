@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="StarcraftAI"
 	ProjectGUID="{2E63AE74-758A-4607-9DE4-D28E814A6E13}"
 	RootNamespace="ExampleAIModule"
@@ -176,31 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ConstructionTask.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Source\Dll.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ProductionFocusTask.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ProductionTask.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ResearchTask.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Source\StarcraftAI.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\UnitProductionTask.cpp"
 				>
 			</File>
 			<Filter
@@ -284,6 +264,26 @@
 					<Filter
 						Name="Task"
 						>
+						<File
+							RelativePath=".\ConstructionTask.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ProductionFocusTask.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ProductionTask.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ResearchTask.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\UnitProductionTask.cpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter

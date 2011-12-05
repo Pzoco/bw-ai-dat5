@@ -8,5 +8,4 @@ class ResearchItem: public BuildOrderItem
 		BWAPI::TechType techType;
 		ResearchItem(BWAPI::TechType tech,Condition* conditionToBeFulfilled);
 		ResearchItem(BWAPI::TechType tech,std::list<Condition*> conditionsToBeFulFilled);
-		std::string GetType();
 };	

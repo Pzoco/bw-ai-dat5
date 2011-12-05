@@ -10,6 +10,5 @@ class BuildingItem: public BuildOrderItem
 		ProductionEnums::BuildingPlacement buildingPlacement;
 		BuildingItem(BWAPI::UnitType buildingToBeBuild,ProductionEnums::BuildingPlacement buildingPlacement,Condition* conditionToBeFulfilled);
 		BuildingItem(BWAPI::UnitType buildingToBeBuild,ProductionEnums::BuildingPlacement buildingPlacement,std::list<Condition*> conditionsToBeFulFilled);
-		std::string GetType();
 };
 

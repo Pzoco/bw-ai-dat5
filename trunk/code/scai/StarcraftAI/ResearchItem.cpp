@@ -4,6 +4,7 @@ ResearchItem::ResearchItem(BWAPI::TechType tech,Condition* conditionToBeFulfille
 {
 	techType = tech;
 	conditions.push_back(conditionToBeFulfilled);
+	type = "ResearchItem";
 }
 ResearchItem::ResearchItem(BWAPI::TechType tech,std::list<Condition*> conditionsToBeFulFilled)
 {
@@ -12,8 +13,5 @@ ResearchItem::ResearchItem(BWAPI::TechType tech,std::list<Condition*> conditions
 	{
 		conditions.push_back(c);
 	}
-}
-std::string ResearchItem::GetType()
-{
-	return "ResearchItem";
+	type = "ResearchItem";
 }

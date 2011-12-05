@@ -2,6 +2,7 @@
 #include <BWAPI.h>
 
 std::list<BuildOrderItem*> items;
+
 BuildOrder::BuildOrder()
 {
 }

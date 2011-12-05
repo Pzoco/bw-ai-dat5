@@ -2,17 +2,17 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include <windows.h>
+#include "InformationEnums.h"
+
 
 DWORD WINAPI AnalyzeThread();
 class ScoutingManager
 {
 public:
-	enum ThreatLevel {Low,Medium,High};
 	ScoutingManager();
-	static ThreatLevel threatLevel;
+	InformationEnums::ThreatLevel currentThreatLevel;
 	static bool IsMapAnalyzed();
 	void AnalyzeMap();
 	void Update();
-	ThreatLevel GetThreatLevel(){return threatLevel;}
-	void IntialScout();
+	void Scout(BWAPI::Unit* scv);
 };
