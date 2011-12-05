@@ -10,6 +10,7 @@ class BuildOrder
 public:	
 	BuildOrder();
 	void AddItem(BuildOrderItem* buildOrderItem);
+	void RemoveItem(BuildOrderItem* item);
 	std::list<BuildOrderItem*> GetBuildOrderItems();
 	bool IsEmpty();
 };
