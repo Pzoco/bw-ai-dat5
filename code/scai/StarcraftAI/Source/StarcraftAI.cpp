@@ -16,6 +16,7 @@
 #include "../ProductionManager.h"
 
 using namespace BWAPI;
+int gameCount = 1;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
 ProductionManager productionManager;
@@ -139,6 +140,7 @@ void StarcraftAI::onEnd(bool isWinner)
 		BWAPI::Broodwar->printf("File could not be opened");
 		std::cout << "File could not be opened -" << c << "\n";
 	}*/
+	gameCount++;
 	BWAPI::Broodwar->restartGame();
 }
 
@@ -151,7 +153,9 @@ void StarcraftAI::onFrame()
 	productionManager.Update();
 	workerManager.Update();
 
-
+	//TESTING:
+	BWAPI::Broodwar->drawTextScreen(50,300,"Game Count is: = %d",gameCount);
+	//TESTING:
 	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
 	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
 	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist = %f",reinforcementLearning.GetForceMaxDist());
