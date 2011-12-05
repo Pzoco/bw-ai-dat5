@@ -33,20 +33,16 @@ void ProductionManager::Update()
 	std::list<ProductionTask*> tasks = _buildOrderHandler.GetProductionTasks();
 	
 
-	if(!tasks.empty())
+	/*if(!tasks.empty())
 	{
 		//Adds the tasks from the buildorderhandler
 		for each(ProductionTask* task in tasks)
 		{
-			
-			//task->GetType();
-			//BWAPI::Broodwar->printf("%s",task->GetType().c_str());
-
-			//if(task->GetType() != "ProductionFocusTask")
+			if(task->GetType() != "ProductionFocusTask")
 			{
 				_productionQueue.push_back(task);
 			}
-		//	else
+			else
 			{
 				//No reason to wait to set this, because it costs nothing
 				//_productionFocus = dynamic_cast<ProductionFocusTask*>(task)->focus;
@@ -63,21 +59,21 @@ void ProductionManager::Update()
 		if(firstInLine->mineralPrice <= BWAPI::Broodwar->self()->minerals() &&
 			firstInLine->gasPrice <= BWAPI::Broodwar->self()->gas())
 		{
-
-//			if("UnitProductionTask" == firstInLine->GetType())
+			/*
+			if("UnitProductionTask" == firstInLine->GetType())
 			{
 				BWAPI::Broodwar->printf("UnitProductionTast");
-			//	TryProduceUnit(dynamic_cast<UnitProductionTask*>(firstInLine));
+				TryProduceUnit(dynamic_cast<UnitProductionTask*>(firstInLine));
 			}
-	//		if("ConstructionTask" == firstInLine->GetType())
+			if("ConstructionTask" == firstInLine->GetType())
 			{
 				BWAPI::Broodwar->printf("ConstructionTast");
-			//	TryConstructBuilding(dynamic_cast<ConstructionTask*>(firstInLine));
+				TryConstructBuilding(dynamic_cast<ConstructionTask*>(firstInLine));
 			}
-//			else if("ResearchTask" == firstInLine->GetType())
+			else if("ResearchTask" == firstInLine->GetType())
 			{
 				BWAPI::Broodwar->printf("ResearchTask");
-			//	TryResearchTech(dynamic_cast<ResearchTask*>(firstInLine));
+				TryResearchTech(dynamic_cast<ResearchTask*>(firstInLine));
 			}
 
 		}
@@ -85,17 +81,17 @@ void ProductionManager::Update()
 	}
 
 	//Build scvs if this is the focus right now
-	//if(_productionFocus == ProductionEnums::Focus_Workers)
+	if(_productionFocus == ProductionEnums::Focus_Workers)
 	{
-	//	for each(BWAPI::Unit* cc in productionFacilities[BWAPI::UnitTypes::Terran_Command_Center])
+		for each(BWAPI::Unit* cc in productionFacilities[BWAPI::UnitTypes::Terran_Command_Center])
 		{
-//			if(!cc->isTraining())
+			if(!cc->isTraining())
 			{
-//s				cc->train(BWAPI::UnitTypes::Terran_SCV);
+			cc->train(BWAPI::UnitTypes::Terran_SCV);
 			}
 		}
 	}
-
+	*/
 }
 
 void ProductionManager::TryProduceUnit(UnitProductionTask* task)

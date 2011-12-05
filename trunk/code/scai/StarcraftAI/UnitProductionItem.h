@@ -9,4 +9,5 @@ class UnitProductionItem: public BuildOrderItem
 		BWAPI::UnitType unit;
 		UnitProductionItem(BWAPI::UnitType unitToBeBuild, Condition* conditionToBeFulfilled);
 		UnitProductionItem(BWAPI::UnitType unitToBeBuild,std::list<Condition*> conditionsToBeFulFilled);
+		std::string GetType();
 };

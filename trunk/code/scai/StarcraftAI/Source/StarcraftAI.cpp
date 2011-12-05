@@ -22,7 +22,6 @@ ProductionManager productionManager;
 WorkerManager workerManager;
 ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
-ProductionManager* productionManager;
 struct StarcraftAI::Thetas
 {
 	double ally;
@@ -60,7 +59,7 @@ void StarcraftAI::onStart()
 	
 	//scoutingManager.AnalyzeMap();
 
-	productionManager = new ProductionManager();
+	productionManager = ProductionManager();
 
 
 }
@@ -146,7 +145,6 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	productionManager->Update();
 	
 	tacticsManager.Update();
 	scoutingManager.Update();
