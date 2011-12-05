@@ -273,9 +273,13 @@ void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 		{
 			workerManager.ScvCreated(unit);
 		}
-		else if(unit->getType().isBuilding())
+		else if(unit->getType().isBuilding() && unit->getType().canProduce())
 		{
 			productionManager.BuildingConstructed(unit);
+		}
+		else if(unit->getType() == BWAPI::UnitTypes::Terran_Refinery)
+		{
+			workerManager.AddRefinery(unit);
 		}
 	}
 }
@@ -292,7 +296,22 @@ void StarcraftAI::onUnitCreate(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 {
-
+	if(unit->getPlayer() == BWAPI::Broodwar->self())
+	{
+		//Assigns the units to the different managers
+		if(UnitHelper::IsOffensiveType(unit->getType()))
+		{
+			tacticsManager.UnitKilled(unit);
+		}
+		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV )
+		{
+			workerManager.ScvKilled(unit);
+		}
+		else if(unit->getType().isBuilding() && unit->getType().canProduce())
+		{
+			productionManager.BuildingDestroyed(unit);
+		}
+	}
 }
 
 void StarcraftAI::onUnitMorph(BWAPI::Unit* unit)
