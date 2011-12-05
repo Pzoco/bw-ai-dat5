@@ -1,13 +1,13 @@
 #include "UnitProductionItem.h"
 
-UnitProductionItem::UnitProductionItem(BWAPI::UnitType unitToBeBuild, Condition conditionToBeFulfilled)
+UnitProductionItem::UnitProductionItem(BWAPI::UnitType unitToBeBuild, Condition* conditionToBeFulfilled)
 {
 	unit = unitToBeBuild;
 	conditions.push_back(conditionToBeFulfilled);
 }			
-UnitProductionItem::UnitProductionItem(BWAPI::UnitType unitToBeBuild,std::list<Condition> conditionsToBeFulFilled): unit(unitToBeBuild)
+UnitProductionItem::UnitProductionItem(BWAPI::UnitType unitToBeBuild,std::list<Condition*> conditionsToBeFulFilled): unit(unitToBeBuild)
 {
-	for each(Condition c in conditionsToBeFulFilled)
+	for each(Condition* c in conditionsToBeFulFilled)
 	{
 		conditions.push_back(c);
 	}

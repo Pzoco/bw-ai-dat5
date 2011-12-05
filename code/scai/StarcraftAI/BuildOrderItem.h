@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include <BWAPI.h>
 #include "ProductionTask.h"
 #include "ScoutingManager.h"
@@ -9,8 +9,8 @@
 class BuildOrderItem
 {
 	public:
-		std::list<Condition> GetConditions();
+		std::list<Condition*> GetConditions();
 		virtual std::string GetType();
 	protected:
-		std::list <Condition> conditions;
+		std::list <Condition*> conditions;
 };

@@ -10,11 +10,14 @@
 #include <fstream>
 #include <string>
 
+#include "../ProductionManager.h"
+
 using namespace BWAPI;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
 ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
+ProductionManager* productionManager;
 struct StarcraftAI::Thetas
 {
 	double ally;
@@ -48,6 +51,9 @@ void StarcraftAI::onStart()
 	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
 	scoutingManager = ScoutingManager();
 	scoutingManager.AnalyzeMap();
+
+	productionManager = new ProductionManager();
+
 
 }
 
@@ -129,8 +135,11 @@ void StarcraftAI::onEnd(bool isWinner)
 	BWAPI::Broodwar->restartGame();
 }
 
+
 void StarcraftAI::onFrame()
 {
+	productionManager->Update();
+	
 	tacticsManager.Update();
 	scoutingManager.Update();
 	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
