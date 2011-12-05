@@ -386,6 +386,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\InformationEnums.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MathHelper.h"
 				>
 			</File>
