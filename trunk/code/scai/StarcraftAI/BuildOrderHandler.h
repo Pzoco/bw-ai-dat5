@@ -13,14 +13,21 @@ class BuildOrderHandler
 {
 public:
 	BuildOrderHandler(void);
-	std::list<ProductionTask*> GetProductionTasks();
+	void Update();
+	std::list<UnitProductionTask*> GetUnitProductionTasks(){return unitProductionTasks;}
+	std::list<ConstructionTask*> GetConstructionTasks(){return constructionTasks;}
+	std::list<ProductionFocusTask*> GetProductionFocusTasks(){return productionFocusTasks;}
+	std::list<ResearchTask*> GetResearchTasks(){return researchTasks;}
 private:
 	BuildOrder* _currentBuildOrder;
 	std::list<BuildOrder*> _availableBuildOrders;
+	std::list<UnitProductionTask*> unitProductionTasks;
+	std::list<ProductionFocusTask*> productionFocusTasks;
+	std::list<ResearchTask*> researchTasks;
+	std::list<ConstructionTask*> constructionTasks;
 	bool initiated;
 	void InitiateBuildOrders();
 	void SetCurrentBuildOrder();
-	ProductionTask* CreateProductionTask(BuildOrderItem* item);
+	void SaveAsTask(BuildOrderItem* item);
 	void PrintBuildOrder(BuildOrder* buildorder);
-	void RemoveItem(BuildOrderItem* item);
 };

@@ -41,6 +41,17 @@ std::list<BWAPI::Unit*> UnitHelper::GetBuildingsWhichCanProduce(BWAPI::UnitType 
 	}
 	return buildings;
 }
+int UnitHelper::GetNumberOfUnitType(BWAPI::UnitType unitType)
+{
+	//Could probably be a better way
+	int count = 0;
+	for each(BWAPI::Unit* unit in BWAPI::Broodwar->self()->getUnits())
+	{
+		if(unit->getType() == unitType && unit->isCompleted())
+			count++;
+	}
+	return count;
+}
 BWAPI::UnitType UnitHelper::GetBuildingWhichCanProduce(BWAPI::UnitType unitType)
 {
 	if(unitType == BWAPI::UnitTypes::Terran_Marine || 
