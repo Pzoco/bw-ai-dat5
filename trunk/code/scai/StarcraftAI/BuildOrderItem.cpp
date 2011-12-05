@@ -1,6 +1,6 @@
 #include "BuildOrderItem.h"
 
-std::list <Condition> BuildOrderItem::GetConditions()
+std::list <Condition*> BuildOrderItem::GetConditions()
 {
 	return conditions;
 }

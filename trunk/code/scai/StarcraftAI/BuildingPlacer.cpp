@@ -23,7 +23,7 @@ bool BuildingPlacer::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType 
   //returns true if we can build this type of unit here. Takes into account reserved tiles.
   if (!BWAPI::Broodwar->canBuildHere(NULL, position, type))
     return false;
-  for(int x = position.x(); x < position.x() + type.tileWidth(); x++)
+//  for(int x = position.x(); x < position.x() + type.tileWidth(); x++)
 //    for(int y = position.y(); y < position.y() + type.tileHeight(); y++)
 //      if (reserveMap[x][y])
 //        return false;

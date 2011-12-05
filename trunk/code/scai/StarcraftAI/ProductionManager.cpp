@@ -10,7 +10,7 @@
 std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> productionFacilities;
 
 //Tasks are saved to this list and handled if minerals and gas amounts are sufficient
-std::list<ProductionTask> _productionQueue;
+std::list<ProductionTask*> _productionQueue;
 
 //The current focus in production
 ProductionEnums::ProductionFocus _productionFocus;
@@ -26,71 +26,87 @@ ProductionManager::ProductionManager()
 
 void ProductionManager::Update()
 {
-	BuildingPlacer bp;
-	bp.Construct(BWAPI::UnitTypes::Terran_Supply_Depot);
-	std::list<ProductionTask> tasks = _buildOrderHandler.GetProductionTasks();
+	//BWAPI::Broodwar->printf("Test");
+	//BuildingPlacer bp;
+	//bp.Construct(BWAPI::UnitTypes::Terran_Supply_Depot);
+	
+	std::list<ProductionTask*> tasks = _buildOrderHandler.GetProductionTasks();
+	
+
 	if(!tasks.empty())
 	{
-		
 		//Adds the tasks from the buildorderhandler
-		for each(ProductionTask task in tasks)
+		for each(ProductionTask* task in tasks)
 		{
-			if(task.GetType() != "ProductionFocusTask")
+			
+			//task->GetType();
+			//BWAPI::Broodwar->printf("%s",task->GetType().c_str());
+
+			//if(task->GetType() != "ProductionFocusTask")
 			{
 				_productionQueue.push_back(task);
 			}
-			else
+		//	else
 			{
 				//No reason to wait to set this, because it costs nothing
-				_productionFocus = dynamic_cast<ProductionFocusTask&>(task).focus;
+				//_productionFocus = dynamic_cast<ProductionFocusTask*>(task)->focus;
 			}
 			
 		}
 	
 		//Trying to produce the first item in the list
-		ProductionTask firstInLine = _productionQueue.front();
+		ProductionTask* firstInLine = _productionQueue.front();
 
+		//BWAPI::Broodwar->printf("Before GetTYpe");
+		//BWAPI::Broodwar->printf("%s",firstInLine->GetType().c_str());
 		//If we have enough mineral and gas then try doing the task
-		if(firstInLine.mineralPrice <= BWAPI::Broodwar->self()->minerals() &&
-			firstInLine.gasPrice <= BWAPI::Broodwar->self()->gas())
+		if(firstInLine->mineralPrice <= BWAPI::Broodwar->self()->minerals() &&
+			firstInLine->gasPrice <= BWAPI::Broodwar->self()->gas())
 		{
-			if("UnitProductionTask" == firstInLine.GetType())
+
+//			if("UnitProductionTask" == firstInLine->GetType())
 			{
-				TryProduceUnit(dynamic_cast<UnitProductionTask&>(firstInLine));
+				BWAPI::Broodwar->printf("UnitProductionTast");
+			//	TryProduceUnit(dynamic_cast<UnitProductionTask*>(firstInLine));
 			}
-			else if("ConstructionTask" == firstInLine.GetType())
+	//		if("ConstructionTask" == firstInLine->GetType())
 			{
-				TryConstructBuilding(dynamic_cast<ConstructionTask&>(firstInLine));
+				BWAPI::Broodwar->printf("ConstructionTast");
+			//	TryConstructBuilding(dynamic_cast<ConstructionTask*>(firstInLine));
 			}
-			else if("ResearchTask" == firstInLine.GetType())
+//			else if("ResearchTask" == firstInLine->GetType())
 			{
-				TryResearchTech(dynamic_cast<ResearchTask&>(firstInLine));
+				BWAPI::Broodwar->printf("ResearchTask");
+			//	TryResearchTech(dynamic_cast<ResearchTask*>(firstInLine));
 			}
 
 		}
+		
 	}
+
 	//Build scvs if this is the focus right now
-	if(_productionFocus == ProductionEnums::Focus_Workers)
+	//if(_productionFocus == ProductionEnums::Focus_Workers)
 	{
-		for each(BWAPI::Unit* cc in productionFacilities[BWAPI::UnitTypes::Terran_Command_Center])
+	//	for each(BWAPI::Unit* cc in productionFacilities[BWAPI::UnitTypes::Terran_Command_Center])
 		{
-			if(!cc->isTraining())
+//			if(!cc->isTraining())
 			{
-				cc->train(BWAPI::UnitTypes::Terran_SCV);
+//s				cc->train(BWAPI::UnitTypes::Terran_SCV);
 			}
 		}
 	}
+
 }
 
-void ProductionManager::TryProduceUnit(UnitProductionTask task)
+void ProductionManager::TryProduceUnit(UnitProductionTask* task)
 {
 	//Check if we have enough supply
-	if((BWAPI::Broodwar->self()->supplyTotal()-BWAPI::Broodwar->self()->supplyUsed()) < task.unit.supplyRequired())
+	if((BWAPI::Broodwar->self()->supplyTotal()-BWAPI::Broodwar->self()->supplyUsed()) < task->unit.supplyRequired())
 		return;
 
 	bool allBuildingsFound = true;
 	//If we have the required buildings and they are not currently producing, then build the unit
-	for(std::map<BWAPI::UnitType,int>::iterator i = task.requiredBuildings.begin();i!=task.requiredBuildings.end();i++)
+	for(std::map<BWAPI::UnitType,int>::iterator i = task->requiredBuildings.begin();i!=task->requiredBuildings.end();i++)
 	{
 		if(productionFacilities[i->first].empty())
 		{
@@ -101,7 +117,7 @@ void ProductionManager::TryProduceUnit(UnitProductionTask task)
 	//Trying to find a production facility that is capable of producing the unit
 	bool suitableProductionFacilityFound = false;
 	BWAPI::Unit* suitableBuilding;
-	for each(BWAPI::Unit* building in productionFacilities[task.unit])
+	for each(BWAPI::Unit* building in productionFacilities[task->unit])
 	{
 		if(building->isIdle())
 		{
@@ -113,11 +129,11 @@ void ProductionManager::TryProduceUnit(UnitProductionTask task)
 
 	if(allBuildingsFound && suitableProductionFacilityFound)
 	{
-		suitableBuilding->train(task.unit);
+		suitableBuilding->train(task->unit);
 		RemoveTask(task);
 	}
 }
-void ProductionManager::TryConstructBuilding(ConstructionTask task)
+void ProductionManager::TryConstructBuilding(ConstructionTask* task)
 {
 	BWAPI::Broodwar->printf("trying to build");
 	BuildingPlacer bp;
@@ -134,11 +150,11 @@ void ProductionManager::TryConstructBuilding(ConstructionTask task)
 	*/
 }
 
-void ProductionManager::TryResearchTech(ResearchTask task)
+void ProductionManager::TryResearchTech(ResearchTask* task)
 {
 	bool suitableResearchFacilityFound = false;
 	BWAPI::Unit* suitableBuilding;
-	for each(BWAPI::Unit* building in productionFacilities[task.techType.whatResearches()])
+	for each(BWAPI::Unit* building in productionFacilities[task->techType.whatResearches()])
 	{
 		if(building->isIdle())
 		{
@@ -149,15 +165,16 @@ void ProductionManager::TryResearchTech(ResearchTask task)
 	}
 	if(suitableResearchFacilityFound)
 	{
-		suitableBuilding->research(task.techType);
+		suitableBuilding->research(task->techType);
 	}
 }
-void ProductionManager::RemoveTask(ProductionTask task)
+void ProductionManager::RemoveTask(ProductionTask* task)
 {
 	
-	for(std::list<ProductionTask>::iterator pTask = _productionQueue.begin();pTask!=_productionQueue.end();pTask++)
+	for(std::list<ProductionTask*>::iterator pTask = _productionQueue.begin();pTask!=_productionQueue.end();pTask++)
 	{
-		if(&(*pTask) == &(task))
+		
+		if( *pTask == task)
 		{
 			_productionQueue.erase(pTask);
 			break;

@@ -9,7 +9,7 @@ class BuildOrder
 {
 public:	
 	BuildOrder();
-	void AddItem(BuildOrderItem buildOrderItem);
-	std::list<BuildOrderItem> GetBuildOrderItems();
+	void AddItem(BuildOrderItem* buildOrderItem);
+	std::list<BuildOrderItem*> GetBuildOrderItems();
 	bool IsEmpty();
 };

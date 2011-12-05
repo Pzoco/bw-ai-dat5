@@ -7,7 +7,7 @@ SupplyCondition::SupplyCondition(int supplyToReach)
 
 bool SupplyCondition::IsFulfilled()
 {
-	if(supply>=BWAPI::Broodwar->self()->supplyUsed())
+	if(supply<=BWAPI::Broodwar->self()->supplyUsed())
 	{
 		return true;
 	}
