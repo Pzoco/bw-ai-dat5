@@ -74,6 +74,17 @@ void TacticsManager::AssignToSquads(std::set<BWAPI::Unit*> units)
 		AssignToSquad(unit);
 	}
 }
+void TacticsManager::UnitKilled(BWAPI::Unit *unit)
+{
+	for(std::map<BWAPI::UnitType,std::list<Squad>>::iterator i = squads.begin(); i != squads.end(); i++ ) 
+	{
+		for each(Squad squad in i->second)
+		{
+			squad.RemoveUnit(unit);
+		}
+	}
+}
+
 
 
 int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)

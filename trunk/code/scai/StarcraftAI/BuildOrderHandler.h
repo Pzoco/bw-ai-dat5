@@ -14,10 +14,30 @@ class BuildOrderHandler
 public:
 	BuildOrderHandler(void);
 	void Update();
-	std::list<UnitProductionTask*> GetUnitProductionTasks(){return unitProductionTasks;}
-	std::list<ConstructionTask*> GetConstructionTasks(){return constructionTasks;}
-	std::list<ProductionFocusTask*> GetProductionFocusTasks(){return productionFocusTasks;}
-	std::list<ResearchTask*> GetResearchTasks(){return researchTasks;}
+	std::list<UnitProductionTask*> GetUnitProductionTasks()
+	{
+		std::list<UnitProductionTask*> returnList; 
+		returnList.merge(unitProductionTasks);
+		return returnList;
+	}
+	std::list<ConstructionTask*> GetConstructionTasks()
+	{
+		std::list<ConstructionTask*> returnList; 
+		returnList.merge(constructionTasks);
+		return returnList;
+	}
+	std::list<ProductionFocusTask*> GetProductionFocusTasks()
+	{
+		std::list<ProductionFocusTask*> returnList; 
+		returnList.merge(productionFocusTasks);
+		return returnList;
+	}
+	std::list<ResearchTask*> GetResearchTasks()
+	{
+		std::list<ResearchTask*> returnList; 
+		returnList.merge(researchTasks);
+		return returnList;
+	}
 private:
 	BuildOrder* _currentBuildOrder;
 	std::list<BuildOrder*> _availableBuildOrders;
