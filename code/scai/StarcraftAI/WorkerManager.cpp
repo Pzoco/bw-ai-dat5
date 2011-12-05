@@ -29,19 +29,6 @@ void WorkerManager::AddMineralLine(std::set<BWAPI::Unit*> minerals)
 void WorkerManager::AddRefinery(BWAPI::Unit* refinery)
 {
 	_workersOnRefinery[refinery]=0;
-
-	//Simple version - maybe it shouldnt be here
-	for each(BWAPI::Unit* scv in _scvs)
-	{
-		if(_scvStates[scv] == WorkerManager::MiningMinerals)
-		{
-			_scvStates[scv]= WorkerManager::MiningGas;
-			_scvResourceGoals[scv] = refinery;
-			_workersOnRefinery[refinery]++;
-			if(_workersOnRefinery[refinery]==3)
-				break;
-		}
-	}
 }
 void WorkerManager::ScvCreated(BWAPI::Unit* scv)
 {

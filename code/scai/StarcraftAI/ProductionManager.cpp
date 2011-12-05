@@ -28,6 +28,17 @@ void ProductionManager::BuildingConstructed(BWAPI::Unit *building)
 {
 	productionFacilities[building->getType()].push_back(building);
 }
+void ProductionManager::BuildingDestroyed(BWAPI::Unit *building)
+{
+	for each(BWAPI::Unit* b in productionFacilities[building->getType()])
+	{
+		if(b == building)
+		{
+			productionFacilities[building->getType()].remove(b);
+			break;
+		}
+	}
+}
 void ProductionManager::Update()
 {
 	_buildOrderHandler.Update();
@@ -37,22 +48,26 @@ void ProductionManager::Update()
 	if(!_productionFocusTasks.empty())
 	{
 		_productionFocus = _productionFocusTasks.front()->focus;
-		_productionFocusTasks.remove(_productionFocusTasks.front());
+		_productionFocusTasks.erase(_productionFocusTasks.begin());
 	}
 	if(!_constructionTasks.empty())
 	{
 		ConstructionTask* firstInLine = _constructionTasks.front();
-		TryConstructBuilding(firstInLine);
+		bool success = TryConstructBuilding(firstInLine);
+		if(success)
+			_constructionTasks.erase(_constructionTasks.begin());
 	}
 	if(!_unitProductionTasks.empty())
 	{
-		UnitProductionTask* firstInLine = _unitProductionTasks.front();
-		TryProduceUnit(firstInLine);
+		bool success = TryProduceUnit(_unitProductionTasks.front());
+		if(success)
+			_unitProductionTasks.erase(_unitProductionTasks.begin());
 	}
 	if(!_researchTasks.empty())
 	{
-		ResearchTask* firstInLine = _researchTasks.front();
-		TryResearchTech(firstInLine);
+		bool success = TryResearchTech(_researchTasks.front());
+		if(success)
+			_researchTasks.erase(_researchTasks.begin());
 	}
 	
 	//Build scvs if this is the focus right now
@@ -76,17 +91,17 @@ void ProductionManager::RetrieveTasks()
 	_unitProductionTasks.merge(_buildOrderHandler.GetUnitProductionTasks());
 	_productionFocusTasks.merge(_buildOrderHandler.GetProductionFocusTasks());
 }
-void ProductionManager::TryProduceUnit(UnitProductionTask* task)
+bool ProductionManager::TryProduceUnit(UnitProductionTask* task)
 {
 	//Check if we have enough supply
 	if((BWAPI::Broodwar->self()->supplyTotal()-BWAPI::Broodwar->self()->supplyUsed()) < task->unit.supplyRequired())
-		return;
+		return false;
 	
 	//Check if we got the money
 	if(task->unit.mineralPrice() > BWAPI::Broodwar->self()->minerals() &&
 		task->unit.gasPrice() > BWAPI::Broodwar->self()->gas())
 	{
-		return;
+		return false;
 	}
 
 	bool allBuildingsFound = true;
@@ -114,27 +129,22 @@ void ProductionManager::TryProduceUnit(UnitProductionTask* task)
 
 	if(allBuildingsFound && suitableProductionFacilityFound)
 	{
-		suitableBuilding->train(task->unit);
-		//RemoveTask(task);
+		return suitableBuilding->train(task->unit);
 	}
+	return false;
 }
-void ProductionManager::TryConstructBuilding(ConstructionTask* task)
+bool ProductionManager::TryConstructBuilding(ConstructionTask* task)
 {
-	//Check if we got the money
-	if(task->building.mineralPrice() > BWAPI::Broodwar->self()->minerals() ||
-		task->building.gasPrice() > BWAPI::Broodwar->self()->gas())
-	{
-		return;
-	}
-	_buildingPlacer.Construct(task->building);
+	//BWAPI::Broodwar->printf("Trying to build %s",task->building.getName().c_str());
+	return _buildingPlacer.Construct(task->building);
 }
 
-void ProductionManager::TryResearchTech(ResearchTask* task)
+bool ProductionManager::TryResearchTech(ResearchTask* task)
 {
 	if(task->techType.mineralPrice() > BWAPI::Broodwar->self()->minerals() ||
 		task->techType.gasPrice() > BWAPI::Broodwar->self()->gas())
 	{
-		return;
+		return false;
 	}
 
 	bool suitableResearchFacilityFound = false;
@@ -150,6 +160,7 @@ void ProductionManager::TryResearchTech(ResearchTask* task)
 	}
 	if(suitableResearchFacilityFound)
 	{
-		suitableBuilding->research(task->techType);
+		return suitableBuilding->research(task->techType);
 	}
+	return false;
 }

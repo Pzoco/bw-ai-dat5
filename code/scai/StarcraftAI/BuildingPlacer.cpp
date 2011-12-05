@@ -8,14 +8,22 @@ BuildingPlacer::BuildingPlacer()
 }
 
 
-void BuildingPlacer::Construct(BWAPI::UnitType buildingType)
+bool BuildingPlacer::Construct(BWAPI::UnitType buildingType)
 {
 
 	BWAPI::Unit* builder = WorkerManager::GetScv();
-	//builder->build(Get the tile position,buildingType);
+	//Check if we got enough money
+	if(buildingType.mineralPrice() > BWAPI::Broodwar->self()->minerals() ||
+		buildingType.gasPrice() > BWAPI::Broodwar->self()->gas())
+	{
+		return false;
+	}
+	if(buildingType == BWAPI::UnitTypes::Terran_Refinery)
+	{
+		return builder->build(GetClosestGasGeyser(BWAPI::Broodwar->self()->getStartLocation()),buildingType);
+	}
 	
-	builder->build(this->getBuildLocationNear(BWAPI::Broodwar->self()->getStartLocation(),buildingType),buildingType);
-
+	return builder->build(this->getBuildLocationNear(BWAPI::Broodwar->self()->getStartLocation(),buildingType),buildingType);
 }
 
 bool BuildingPlacer::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType type) const
@@ -155,4 +163,24 @@ BWAPI::TilePosition BuildingPlacer::getBuildLocationNear(BWAPI::TilePosition pos
   }
   return BWAPI::TilePositions::None;
 
+}
+
+
+BWAPI::TilePosition BuildingPlacer::GetClosestGasGeyser(BWAPI::TilePosition position)
+{
+	BWAPI::TilePosition closestGeyser;
+	double bestDistance = 10000;
+	for(std::set<BWAPI::Unit*>::iterator g=BWAPI::Broodwar->getGeysers().begin();g!=BWAPI::Broodwar->getGeysers().end();g++)
+	{
+		if((*g)->isVisible())
+		{
+			double distanceToGeyser = position.getDistance((*g)->getTilePosition());
+			if(distanceToGeyser < bestDistance)
+			{
+				closestGeyser = (*g)->getTilePosition();
+				bestDistance = distanceToGeyser;
+			}
+		}
+	}
+	return closestGeyser;
 }

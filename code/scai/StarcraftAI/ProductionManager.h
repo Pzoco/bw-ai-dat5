@@ -12,6 +12,7 @@ public:
 	enum BuildingState{BeingConstructed,Producing,NotProducing};
 	ProductionManager();
 	void BuildingConstructed(BWAPI::Unit* building);
+	void BuildingDestroyed(BWAPI::Unit* building);
 	void SetProductionFocus(ProductionEnums::ProductionFocus focus);
 	void Update();
 private:
@@ -20,7 +21,7 @@ private:
 	std::list<ResearchTask*> _researchTasks;
 	std::list<ProductionFocusTask*> _productionFocusTasks;
 	void RetrieveTasks();
-	void TryProduceUnit(UnitProductionTask* task);
-	void TryConstructBuilding(ConstructionTask* task);
-	void TryResearchTech(ResearchTask* task);
+	bool TryProduceUnit(UnitProductionTask* task);
+	bool TryConstructBuilding(ConstructionTask* task);
+	bool TryResearchTech(ResearchTask* task);
 };
