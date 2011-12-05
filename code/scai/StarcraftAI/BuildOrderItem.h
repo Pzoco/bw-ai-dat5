@@ -13,4 +13,5 @@ class BuildOrderItem
 		virtual std::string GetType();
 	protected:
 		std::list <Condition*> conditions;
+		std::string type;
 };

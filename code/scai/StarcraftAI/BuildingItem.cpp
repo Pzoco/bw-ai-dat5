@@ -7,6 +7,7 @@ BuildingItem::BuildingItem(BWAPI::UnitType buildingToBeBuild,ProductionEnums::Bu
 	building = buildingToBeBuild;
 	this->buildingPlacement = buildingPlacement;
 	conditions.push_back(conditionToBeFulfilled);
+	type = "BuildingItem";
 }
 BuildingItem::BuildingItem(BWAPI::UnitType buildingToBeBuild,ProductionEnums::BuildingPlacement buildingPlacement,std::list<Condition*> conditionsToBeFulFilled)
 {
@@ -16,6 +17,5 @@ BuildingItem::BuildingItem(BWAPI::UnitType buildingToBeBuild,ProductionEnums::Bu
 	{
 		conditions.push_back(c);
 	}
+	type = "BuildingItem";
 }
-
-std::string BuildingItem::GetType(){return "BuildingItem";}

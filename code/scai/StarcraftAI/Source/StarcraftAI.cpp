@@ -3,6 +3,9 @@
 #include "../BaseTactic.h"
 #include "../TacticsManager.h"
 #include "../ScoutingManager.h"
+#include "../WorkerManager.h"
+#include "../ProductionManager.h"
+#include "../UnitHelper.h"
 #include <BWAPI.h>
 #include <BWTA.h>
 #include "../ReinforcementLearning.h"
@@ -15,6 +18,8 @@
 using namespace BWAPI;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
+ProductionManager productionManager;
+WorkerManager workerManager;
 ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
 ProductionManager* productionManager;
@@ -46,11 +51,14 @@ void StarcraftAI::onStart()
 
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
-	//Creating a tacticsmanager and assigning the our units to squads
+	
+	//Creating managers
 	tacticsManager = TacticsManager();
-	tacticsManager.AssignToSquads(Broodwar->self()->getUnits());
 	scoutingManager = ScoutingManager();
-	scoutingManager.AnalyzeMap();
+	productionManager = ProductionManager();
+	workerManager = WorkerManager();
+	
+	//scoutingManager.AnalyzeMap();
 
 	productionManager = new ProductionManager();
 
@@ -142,6 +150,10 @@ void StarcraftAI::onFrame()
 	
 	tacticsManager.Update();
 	scoutingManager.Update();
+	productionManager.Update();
+	workerManager.Update();
+
+
 	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
 	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
 	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist = %f",reinforcementLearning.GetForceMaxDist());
@@ -247,7 +259,23 @@ void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 {
-
+	if(unit->getPlayer() == BWAPI::Broodwar->self())
+	{
+		//Assigns the units to the different managers
+		//!!!! THE UNITS ARE ONLY BEING PRODUCED/CONSTRUCTED !!!!
+		if(UnitHelper::IsOffensiveType(unit->getType()))
+		{
+			tacticsManager.AssignToSquad(unit);
+		}
+		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV )
+		{
+			workerManager.ScvCreated(unit);
+		}
+		else if(unit->getType().isBuilding())
+		{
+			productionManager.BuildingConstructed(unit);
+		}
+	}
 }
 
 void StarcraftAI::onUnitHide(BWAPI::Unit* unit)

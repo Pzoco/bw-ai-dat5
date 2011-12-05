@@ -6,5 +6,5 @@ std::list <Condition*> BuildOrderItem::GetConditions()
 }
 std::string BuildOrderItem::GetType()
 {
-	return "Empty";
+	return type;
 }

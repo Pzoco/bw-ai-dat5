@@ -6,7 +6,7 @@ bool analyzed = false;
 
 ScoutingManager::ScoutingManager()
 {
-
+	
 }
 
 DWORD WINAPI AnalyzeThread()
@@ -33,6 +33,7 @@ void ScoutingManager::Update()
 
 }
 
-void InitialScout(std::list<BWAPI::Unit*> scvs)
+void ScoutingManager::Scout(BWAPI::Unit* scv)
 {
+	//Scout the other bases
 }	
