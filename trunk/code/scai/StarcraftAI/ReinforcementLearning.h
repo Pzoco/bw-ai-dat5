@@ -6,7 +6,7 @@ class ReinforcementLearning
 {
 public:
 	static struct Weights;
-	static double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double force);
+	static double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative);
 	static double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad);
 	static void ReinforcementLearning::LoadWeightsFromFile();
 	static double* ReinforcementLearning::GetLiveBuffer(); 

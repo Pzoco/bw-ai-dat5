@@ -16,8 +16,8 @@ struct Weights
 
 }_weights;
 
-double const alpha = 0.5;
-double const gamma = 0.5;
+double const alpha = 0.3;
+double const gamma = 0.4;
 
 //Manually change these when training______________
 double const startingEnemies = 20;
@@ -29,9 +29,10 @@ double const startingUnitMaxHealth = 80;
 //REWARD COEFICIENTS___________________
 double const c1 = -180;	//Our units		-180 (startingUnitMaxHealth*2+20) for dying, 20 is because we care more about us then them
 double const c2 = -1;	//Our health	-1 for damage taken
-double const c3 = 1;	//There health	1 for damage
-double const c4 = 40;	//There units	40 (startingEnemies * 2) for killing
-double const c5 = -5;	//adjustment	-5 for doing nothing
+double const c3 = 2;	//Their health   2 for damage
+double const c4 = 40;	//Their units	40 (startingEnemies * 2) for killing
+double const c5 = 0;	//adjustment	0 for doing nothing
+double const c6 = 0;	//Time
 //_____________________________________
 
 double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative)
@@ -41,7 +42,8 @@ double ReinforcementLearning::CalculateTheta(double theta, double reward,double 
 	file.open("C:/test.txt", std::ios::out | std::ios::app);
 	file << test << ", " << theta << ", " << alpha << ", " << reward << ", " << gamma << ", " << nextQ << ", " << currQ << ", " << derivative << "\n";
 	file.close();*/
-	return theta + alpha * (reward + gamma * nextQ - currQ) * derivative; 
+	double newtheta = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
+	return newtheta;
 }
 
 double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
@@ -88,7 +90,7 @@ double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 		currentUnitHealth += (double)(*j)->getHitPoints();
 	}
 
-	reward = c1 * (startingUnits - squadSize) + c2 * (maxUnitHealth-currentUnitHealth) + c3 * (maxEnemieHealth-enemyCurrentHealth) + c4*(startingEnemies-numberOfEnemies)+ c5;
+	reward = c1 * (startingUnits - squadSize) + c2 * (maxUnitHealth-currentUnitHealth) + c3 * (maxEnemieHealth-enemyCurrentHealth) + c4*(startingEnemies-numberOfEnemies)+ c5 + c6*(BWAPI::Broodwar->getFrameCount());
 	double reward2 = reward / 1000;
 
 	BWAPI::Broodwar->drawTextScreen(10,80,"Units Killed = %f",(startingUnits - squadSize));
