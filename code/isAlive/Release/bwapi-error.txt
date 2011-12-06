@@ -1,8 +1,0 @@
-[2011/12/05 - 14:23:09] Could not find file "C:\Users\admin\Documents\Visual Studio 2008\Projects\isAlive\Release\BWAPI.dll\BWAPI.dll". - The system cannot find the path specified.
-
-[2011/12/05 - 14:23:52] Could not find file "C:\Users\admin\Documents\Visual Studio 2008\Projects\isAlive\Release\BWAPI.dll\BWAPI.dll". - The system cannot find the path specified.
-
-[2011/12/05 - 14:24:12] Could not find file "C:\Users\admin\Documents\Visual Studio 2008\Projects\isAlive\Release\BWAPI.dll\BWAPI.dll". - The system cannot find the path specified.
-
-[2011/12/05 - 14:26:12] Could not find file "C:\Users\admin\Documents\Visual Studio 2008\Projects\isAlive\Release\BWAPI.dll\BWAPI.dll". - The system cannot find the path specified.
-
