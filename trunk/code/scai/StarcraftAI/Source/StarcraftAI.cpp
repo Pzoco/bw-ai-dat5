@@ -59,10 +59,6 @@ void StarcraftAI::onStart()
 	workerManager = WorkerManager();
 	
 	//scoutingManager.AnalyzeMap();
-
-	productionManager = ProductionManager();
-
-
 }
 
 void StarcraftAI::onEnd(bool isWinner)
