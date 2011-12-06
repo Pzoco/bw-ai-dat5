@@ -3,7 +3,7 @@ In this Chapter we will describe the test results of mirco battles to test our A
 In the first test we will make the build-in AI fight itself, to know how the vultures are doing, and have a base case to compare with. This will help us understand how strong the two armies are compared with each other and what losses we can expect. The other test will test the potential fields and what effect they have on the result.
 In order to test this we will look at the difference with potential fields and without them. The last test we will test reinforcement learning and see how fast the bot will improve over time. We will do this by comparing several test runs.
 
-\section{First Test}
+\section{First Test} % VvsZ without RL and PF
 In this test the two forces are just attacking each other. This means the vultures are losing in both maps, which they should so we can prove that if a unit is being controlled rightly a win is possible. Below is a list of the results from the test
 in the two maps.
 
@@ -21,7 +21,7 @@ in the two maps.
 
 \end{tabular}
 \end{centering}
-
+%VvsM
 \begin{centering}
  \begin{tabular}{|l||c|c|c|}
 	\multicolumn{5}{c}{First test results from second map} \\
@@ -38,7 +38,7 @@ in the two maps.
 
 After this first test we know how weak the player with the vultures are compared to the opponent.
 
-\section{Second Test}
+\section{Second Test} %map is VvsZNew - with use of PF and NOT RL
 This is the first test where we test our bot with only potential fields fight against the built-in bot.
 
 \begin{centering}
