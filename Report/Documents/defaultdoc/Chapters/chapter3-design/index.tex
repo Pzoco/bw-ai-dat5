@@ -1,8 +1,13 @@
 \chapter{Design}\label{design}
-	In this chapter we are going to look at potential fields and reinforcement learning.
+	In this chapter we are going to look at the designing of the bot. We will look at reinforcement learning and potential fields for microing the bot and 
+	at Bayesian networks for predicting the start location and threat level of the opponent.
 	
-	Potential fields are a vector based representation of an environment. Potential fields are commonly used in robotics to guide a robot trough environment, but it is also becoming more and more popular within computer games\ref{ptf_in_game}. Objects in this environment can change position and the field will adapt accordingly. 
+	Before we can design these parts of the bot, we need some kind of skeleton in which these parts can be placed. This first section will explain how the 
+	bot is controlled by an interconnection of multiple managers.
 	
+%	Potential fields are a vector based representation of an environment. Potential fields are commonly used in robotics to guide a robot trough environment, but it is also becoming more and more popular within computer games\ref{ptf_in_game}. Objects in this environment can change position and the field will adapt accordingly. 
+	
+	\input{\ChapterDocsPath/chapter3-design/managers}
 	\input{\ChapterDocsPath/chapter3-design/potentialfields}
 	\input{\ChapterDocsPath/chapter3-design/potentialfieldsparameters}
 	\input{\ChapterDocsPath/chapter3-design/potentialfieldconclusion}

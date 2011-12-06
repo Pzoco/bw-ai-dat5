@@ -1,0 +1,24 @@
+\section{Bot Managers}
+	The managers of the bot are meant to control different parts of the bot. The part which is connected to microing of units will be we using the 
+	reinforcement learning and potential fields and the part which manages scouting information will using the Bayesian networks. 
+	The idea of these managers are that they are separated as much as possible and only using the other managers when a task is needed to be handled 
+	by another manager. The following subsections will explain the different managers.
+	
+	\subsection*{Tactics Manager}
+		This manager is responsible managing our offensive units in and out of small scale combat.
+	\subsection*{Production Manager}
+		A manager which is responsible for producing the right units either according to a build order or what is needed
+	\subsection*{Scouting Manager}
+		The Scouting Manager keeps track of the opponent, where he spawns and how threatening he is.
+	\subsection*{Strategy Manager}
+		A manager which is responsible for taking the right high-level decisions based on the information we have.
+	\subsection*{Worker Manager}
+		This manager sets the workers to work either by mining minerals, constructing buildings or another decision.
+
+	\subsection{Scenario of managers in work}
+		The game starts and the Production Manager starts following the build order which starts with producing of scvs. Every time a scv is created the 
+		Worker Manager sets the workers to a free mineral patch. The Scouting Manager sends out a scv for scouting the opponents base. The scout 
+		finds the base and the Strategy Manager still predicts that the threat level is low. The Production Manager still follows the build order and now 
+		we got marines assigned to a Tactics Manager. The Scout Manager send out another scv, but this one is killed before reaching the base of the 
+		opponent. The Strategy Manager sets the threat level to high and this makes the Production Manager stop producing workers and only offensive units. 
+		The opponent are doing an attack and the Tactics Manager is microing the units, which defeats the enemies.
