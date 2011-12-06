@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 
 #include "../ProductionManager.h"
 
@@ -36,8 +37,23 @@ struct StarcraftAI::Thetas
 void StarcraftAI::onStart()
 {
 	remove( "C:/rewards.txt");
-	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
+	std::ofstream file;
+	try
+	{
+		time_t t = time(0);
+		file.open("C:/lastGame.txt");
+		file << t <<"\n";
+		file.close();
+		
+	}
+	catch(char *c)
+	{
+		std::cout << "File could not be opened -" << c << "\n";
+	}
 
+	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
+	BWAPI::Broodwar->setLocalSpeed(0);
+	//BWAPI::Broodwar->setLocalSpeed(200);
 	BWAPI::Broodwar->sendText("war aint what it used to be");
 	BWAPI::Broodwar->sendText("black sheep wall");
 
@@ -136,7 +152,6 @@ void StarcraftAI::onEnd(bool isWinner)
 		BWAPI::Broodwar->printf("File could not be opened");
 		std::cout << "File could not be opened -" << c << "\n";
 	}*/
-	gameCount++;
 	BWAPI::Broodwar->restartGame();
 }
 
@@ -148,10 +163,6 @@ void StarcraftAI::onFrame()
 	scoutingManager.Update();
 	productionManager.Update();
 	workerManager.Update();
-
-	//TESTING:
-	BWAPI::Broodwar->drawTextScreen(50,300,"Game Count is: = %d",gameCount);
-	//TESTING:
 	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
 	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
 	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist = %f",reinforcementLearning.GetForceMaxDist());
@@ -190,10 +201,10 @@ void StarcraftAI::onFrame()
 					edge = liveBufferPointer[i];
 					break; 
 				case 5:
-					currQ = (-1)*liveBufferPointer[i];
+					currQ = liveBufferPointer[i];
 					break; 
 				case 6:
-					nextQ = (-1)*liveBufferPointer[i];
+					nextQ = liveBufferPointer[i];
 					break; 
 				case 7:
 					reward = liveBufferPointer[i];
@@ -215,6 +226,7 @@ void StarcraftAI::onFrame()
 			<< ";"<< _thetas.mde
 			<< ";"<< _thetas.cool 
 			<< ";"<< _thetas.edge
+			<< ";" << "0"
 			<< "\n";
 		file.close();
 	}

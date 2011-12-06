@@ -1,11 +1,41 @@
 #include "MathHelper.h"
 #include "math.h"
+#include "ScoutingManager.h"
 #define PI 3.14159265
 struct MathHelper::ReturningUnit
 {
 	BWAPI::Unit* ClosestEnemy;
 	bool exist;
 };
+bool MathHelper::IsTileValid(BWAPI::Position unitPos, BWAPI::Position pos, std::set<BWAPI::Unit*> mySquad)
+{
+	if(ScoutingManager::IsMapAnalyzed())
+	{
+		if(!unitPos.hasPath(pos))
+		{
+			return false;
+		}
+		
+		bool squadsNotInTheWay = false;
+		for(std::set<BWAPI::Unit*>::const_iterator u = mySquad.begin(); u != mySquad.end(); u++)
+		{
+			if(((*u)->getPosition().x() == pos.x()) && ((*u)->getPosition().x() == pos.x()))
+			{
+				squadsNotInTheWay = true;
+			}
+		}
+		//check if the squad is in the way
+		if(squadsNotInTheWay)
+		{
+			BWAPI::Position target = MathHelper::CalculateNextTileInLine(unitPos,pos);
+			if(!unitPos.hasPath(target))
+			{
+				return false;
+			}
+		} 
+	}
+	return true;
+}
 BWAPI::Position MathHelper::GetPositionFromAngle(BWAPI::Position pos, int angle, int length)
 {
 	int xPos, yPos;
@@ -180,4 +210,15 @@ BWAPI::Position MathHelper::GetSquadCenterPosition(std::set<BWAPI::Unit*> listOf
 	//Center is now calculated
 	
 	return BWAPI::Position(x,y);
+}
+BWAPI::Position MathHelper::CalculateNextTileInLine(BWAPI::Position currentPos, BWAPI::Position targetPos)
+{
+	BWAPI::Position newPos;
+	int x1,y1,x2,y2;
+	x1 = currentPos.x();
+	y1 = currentPos.y();
+	x2 = targetPos.x();
+	y2 = targetPos.y();
+
+	return BWAPI::Position((x2+(x2-x1)),(y2+(y2-y1)));
 }
