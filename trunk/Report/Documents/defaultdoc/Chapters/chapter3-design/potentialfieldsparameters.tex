@@ -19,7 +19,7 @@
 	
 	
 	
-	Where $f_c$ and $c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad and $c_squadSize$ for the size of the squad.\\
+	Where $f_c$ and $c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad and $c_{squadSize}$ for the size of the squad.\\
 	
 	The following sections will contain the functions with a reasoning behind the different cases.
 	
@@ -29,8 +29,8 @@
 		\footnote{Each of the cases in the potential fields will be explained in detail in the implementation}.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
-					0 & \text{if } ds < c_squadSize \\
-					f_{S} \times (2ds - dsv) & \text{if } ds >= c_squadSize
+					0 & \text{if } ds < c_{squadSize} \\
+					f_{S} \times (2ds - dsv) & \text{if } ds >= c_{squadSize}
 				\end{cases}		
 		\end{displaymath}
 		
@@ -39,9 +39,8 @@
 	    In the second case, the unit are outside the desired squad size, in that case we need to attract it towards the squad center.
 
         The calculation $(2ds - dsv)$ and other calculation with the same structure, is used to invert the distances see figure \ref{fig:cdist}. We need this because we cant just use the distance as it is, because the potential pointing away from the squad would be larger then the potentiel pointing towards the squad. $(2ds - dsv)$ changes the distance relative to the center and fixes this problem.    
-        \insertmarginfigure{height=2.5in}{Potentialfields/CorrectedDistance.pdf}
-		    {Correcting the distance}}{fig:cdist}{-3in}
-		
+        \insertmarginfigure{height=3in}{Potentialfields/CorrectedDistance.pdf}
+		    {Correcting the distance}{fig:cdist}{-3in}
 	\subsection*{Maximum distance positioning (Attractive)}
 		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance to the enemies.
 		\begin{displaymath}
@@ -58,8 +57,8 @@
 We do not want all of the vultures to clump completely together during a match. This can lead them vulnerable to splash damage attacks. If we keep the vulture spread out a reasonable distance the splash damage will not take any effect.
 		\begin{displaymath}
 			AllyUnits = \begin{cases}
-					0 & \text{if } da > c_allyDistance\\
-					-f_{AU} * (2da - dua) & \text{if } da < c_allyDistance
+					0 & \text{if } da > c_{allyDistance}\\
+					-f_{AU} * (2da - dua) & \text{if } da < c_{allyDistance}
 				\end{cases}		
 		\end{displaymath}
 	
@@ -82,8 +81,8 @@ A vulture cannot do any damage right after it shoots. This is because in there i
 		We do not want our vultures to get stuck against any walls so we will add a potential field for any edge where a unit can get stuck.
 		\begin{displaymath}
 			EdgesAndCliffs = \begin{cases}
-					-f_{EAC} \times {(2*dc - due} & \text{if } dc < c_edgeDistance\\
-					0 & \text{if } dc > c_edgeDistance
+					-f_{EAC} \times {(2*dc - due} & \text{if } dc < c_{edgeDistance}\\
+					0 & \text{if } dc > c_{edgeDistance}
 				\end{cases}		
 		\end{displaymath}
 
