@@ -8,14 +8,14 @@
 	$f_c =$ A force used to adjust the potential field.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
 	$sr =$ units maximum shooting range.\\
-	$da =$ distance from unit tile to nerest ally unit.\\
-	$dua =$ distance from current tile to nerest ally unit.\\
+	$da =$ distance from unit tile to nearest ally unit.\\
+	$dua =$ distance from current tile to nearest ally unit.\\
 	$ds =$ distance from center of army to unit tile.\\
 	$dsv =$ distance from center of army to current tile.\\
 	$de =$ distance from unit tile to enemy.\\
 	$due =$ distance from current tile to enemy.\\
-	$dc =$ distance from unit tile to nerest cliff or edge. \\
-	$duc =$ distance from current tile to nerest cliff or edge. 
+	$dc =$ distance from unit tile to nearest cliff or edge. \\
+	$duc =$ distance from current tile to nearest cliff or edge. 
 	
 	
 	
@@ -34,9 +34,9 @@
 				\end{cases}		
 		\end{displaymath}
 		
-	    The first case handles then whe unis are within the desired squad size. In that case we dont need to attract the units more towards the squad center.
+	    The first case handles then the units are within the desired squad size. In that case we don't need to attract the units more towards the squad center.
 	    
-	    In the secoung case, the unit are outside the desired squad size, in that case we need to attract it towards the squad center.
+	    In the second case, the unit are outside the desired squad size, in that case we need to attract it towards the squad center.
 		
 	\subsection*{Maximum distance positioning (Attractive)}
 		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance to the enemies.
@@ -47,8 +47,8 @@
 				\end{cases}		
 		\end{displaymath}
 		
-		In the first case handle the case there se want to get closer to the enemies because we are not within shooting range.
-		In the secound case the unit is within range and dont need to get closer. One could argue that we need a third case to handle if we are getting to close, but this is handled by \textit{Weapon cool down}.
+		In the first case handle the case there we want to get closer to the enemies because we are not within shooting range.
+		In the second case the unit is within range and don't need to get closer. One could argue that we need a third case to handle if we are getting to close, but this is handled by \textit{Weapon cool down}.
 		
 	\subsection*{Ally units (Repulsive)}
 We do not want all of the vultures to clump completely together during a match. This can lead them vulnerable to splash damage attacks. If we keep the vulture spread out a reasonable distance the splash damage will not take any effect.
@@ -59,7 +59,7 @@ We do not want all of the vultures to clump completely together during a match. 
 				\end{cases}		
 		\end{displaymath}
 	
-	The first case handles when the unit is fare enough away from the enemies to not substain splash damage, so we dont need to get further away.
+	The first case handles when the unit is fare enough away from the enemies to not sustain splash damage, so we don't need to get further away.
 	
 	The other case is active when the units are to close and we need them to move away from each other.
 	
