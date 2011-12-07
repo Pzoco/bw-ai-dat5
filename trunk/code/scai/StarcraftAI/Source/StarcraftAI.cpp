@@ -17,7 +17,6 @@
 #include "../ProductionManager.h"
 
 using namespace BWAPI;
-int gameCount = 1;
 TacticsManager tacticsManager;
 ScoutingManager scoutingManager;
 ProductionManager productionManager;
@@ -40,6 +39,7 @@ void StarcraftAI::onStart()
 	std::ofstream file;
 	try
 	{
+
 		time_t t = time(0);
 		file.open("C:/lastGame.txt");
 		file << t <<"\n";
@@ -152,6 +152,31 @@ void StarcraftAI::onEnd(bool isWinner)
 		BWAPI::Broodwar->printf("File could not be opened");
 		std::cout << "File could not be opened -" << c << "\n";
 	}*/
+	
+	std::ofstream countout;
+	std::ifstream countin("C:/gameCount.txt");
+	try
+	{
+// 
+		std::string line; 
+		std::getline(countin,line); 
+		int gameCount = atoi(line.c_str());
+		countin.close(); 
+
+		BWAPI::Broodwar->printf("GameCount is %d",gameCount);
+
+//
+
+		gameCount++;
+		countout.open("C:/gameCount.txt");
+		countout << gameCount <<"\n";
+		countout.close();
+	}
+
+	catch(char *c)
+	{
+		BWAPI::Broodwar->printf("Could not save the gameCount file");
+	}
 	BWAPI::Broodwar->restartGame();
 }
 

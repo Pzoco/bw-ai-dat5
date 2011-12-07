@@ -1,5 +1,6 @@
 #include "ReinforcementLearning.h"
 #include "Action.h"
+#include "Source/StarcraftAI.h"
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -45,7 +46,6 @@ double ReinforcementLearning::CalculateTheta(double theta, double reward,double 
 	double newtheta = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
 	return newtheta;
 }
-
 double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 {
 	double reward = 0.0;
@@ -98,6 +98,27 @@ double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 	BWAPI::Broodwar->drawTextScreen(10,100,"Damage Given = %f",(maxEnemieHealth-enemyCurrentHealth));
 	BWAPI::Broodwar->drawTextScreen(10,110,"Enemies Killed = %f",(startingEnemies-numberOfEnemies));
 	BWAPI::Broodwar->drawTextScreen(10,120,"Current Reward = %f",reward2);
+
+
+	
+	std::ifstream countin("C:/gameCount.txt");
+	std::string line; 
+	std::getline(countin,line); 
+	int gameCount = atoi(line.c_str());
+	countin.close(); 
+
+	if ((gameCount % 500)==0)
+	{
+	std::ofstream gameData;
+	gameData.open("C:/gameData.lgdat", std::ios::out | std::ios::app);
+	gameData	<< (startingUnits - squadSize)  << "; " 
+				<< (maxUnitHealth-currentUnitHealth) << "; " 
+				<< (maxEnemieHealth-enemyCurrentHealth) << "; "
+				<< (startingEnemies-numberOfEnemies) << "; " 
+				<<	"\n";
+	gameData.close();
+	}
+
 	return reward2;
 }
 
