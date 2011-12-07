@@ -4,21 +4,22 @@
 	
 	\label{cha3_variables}
 	Variables:\\
+	$c =$ A constant used to adjust the size of the different potential fields.\\ 
 	$f_c =$ A force used to adjust the potential field.\\
-	$da =$ distance to closed ally unit.\\
-	$ds =$ distance from center of army to unit.\\
-	$dsv =$ distance from center of army to current point.\\
-	$sr =$ units maximum shooting range.\\
-	$de =$ distance to enemy.\\
-	$due =$ distance from current point to enemy.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
-	$dc =$ distance from unit to cliff or edge. \\
-	$duc =$ distance from unit to cliff or edge. \\
-	$dua =$ distance from current tile to nerest ally.
+	$sr =$ units maximum shooting range.\\
+	$da =$ distance from unit tile to nerest ally unit.\\
+	$dua =$ distance from current tile to nerest ally unit.\\
+	$ds =$ distance from center of army to unit tile.\\
+	$dsv =$ distance from center of army to current tile.\\
+	$de =$ distance from unit tile to enemy.\\
+	$due =$ distance from current tile to enemy.\\
+	$dc =$ distance from unit tile to nerest cliff or edge. \\
+	$duc =$ distance from current tile to nerest cliff or edge. 
 	
 	
 	
-	Where $f_c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad. \\
+	Where $f_c$ and $c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad and $c_squadSize$ for the size of the squad.\\
 	
 	The following sections will contain the functions with a reasoning behind the different cases.
 	
@@ -28,47 +29,40 @@
 		\footnote{Each of the cases in the potential fields will be explained in detail in the implementation}.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
-					0 & \text{if } dsv >= ds\\
-					f_{S} \times (2ds - dsv) & \text{if } ds > c\\
-					0 & \text{if } ds \leq c
+					0 & \text{if } ds < c_squadSize \\
+					f_{S} \times (2ds - dsv) & \text{if } ds >= c_squadSize
 				\end{cases}		
 		\end{displaymath}
 		
-		In case one we handle the situation where the current vector we are calculating is facing away from the squad and needs to be 0. If we did not include this step the unit would also be attracted to tiles in the wrong direction. This is being done because the calculation is based on the distance to the squad and the tiles facing away is at a greater distance but should not be more attractive.
+	    The first case handles then whe unis are within the desired squad size. In that case we dont need to attract the units more towards the squad center.
+	    
+	    In the secoung case, the unit are outside the desired squad size, in that case we need to attract it towards the squad center.
 		
-		Second case  is where we are not within the desired range of the squad. So we calculate how strongly we want to move towards the squad, this depends on the distance. 
-		
-		Third case is all other cases, being that the unit is within the squad.
-					
 	\subsection*{Maximum distance positioning (Attractive)}
-		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance 
-		to the enemies.
+		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
-					f_{MDP} \times (2de - due) & \text{if } de > sr\\
-					0 & \text{if } de = sr\\
-					-f_{MDP} \times (2de - due) & \text{if } de < sr
+					f_{MDP} \times (2de - due) & \text{if } de < sr\\
+					0 & \text{if } de > sr\\
 				\end{cases}		
 		\end{displaymath}
-		Maximum distance positioning contains two cases. The first is handling the situation where we are not within the maximum range. In that case we cant to be attracted to the enemy. Note that in both cases we have $(due - de + due)$ which basically just invert the distances to the enemy so the closet tile will have the largest value.\\
-		Second case we handle when we are exactly within the right distance and just want to stay where we are.
-		The last case is when we are to close and want to get away.
-		We use two different forces to be able to adjust them independently later.
 		
-		
+		In the first case handle the case there se want to get closer to the enemies because we are not within shooting range.
+		In the secound case the unit is within range and dont need to get closer. One could argue that we need a third case to handle if we are getting to close, but this is handled by \textit{Weapon cool down}.
 		
 	\subsection*{Ally units (Repulsive)}
 We do not want all of the vultures to clump completely together during a match. This can lead them vulnerable to splash damage attacks. If we keep the vulture spread out a reasonable distance the splash damage will not take any effect.
 		\begin{displaymath}
 			AllyUnits = \begin{cases}
-					0 & \text{if } da > c\\
-					-f_{AU} \times da & \text{if } da \leq c\\
-					-f_{AU} * (2da - dua) & \text{if } da = 0
+					0 & \text{if } da > c_allyDistance\\
+					-f_{AU} * (2da - dua) & \text{if } da < c_allyDistance
 				\end{cases}		
 		\end{displaymath}
-	For the first case we wanted to make sure that if the vultures where far enought away from each other (the constant c) then they would not repulse each other at all. The reasoning behind this is simple because if the vultures are far away then they cannot take any splash damage.\\
-	On the second case we want out units to repulse each other when they are close enough together. To do this we take our -fAU (force Ally Unit) and divide it by the distance to the ally unit. This way the closer our vultures get to each other the more they will want to move away.\\
-	Our final case is if some how the vultures are right on top of each other or on the same position. Given our other equation this would cause a divide by zero error. So instead of using our second formula we take our force and multiply by distance.\\
+	
+	The first case handles when the unit is fare enough away from the enemies to not substain splash damage, so we dont need to get further away.
+	
+	The other case is active when the units are to close and we need them to move away from each other.
+	
 	\subsection*{Weapon cool down (Repulsive)}
 A vulture cannot do any damage right after it shoots. This is because in there is a certain amount of time in between each shot. Right after a vulture shoots we want it to move out of the battle until it can fire again. This way each vulture will be less vulnerable to taking damage when it cannot give any damage.
 		\begin{displaymath}
@@ -77,16 +71,17 @@ A vulture cannot do any damage right after it shoots. This is because in there i
 					-f_{WCD} * (2de - due) & \text{else}
 				\end{cases}		
 		\end{displaymath}
-In our first case we give the field a value of zero if the vulture is ready to fire. We do not want it to retreat if it is available to fire.
-The other case is if the vulture's weapon is not ready. In this case we take the distance from the enemy(due-de+due) and multiply it by the force.
+
+    WeaponCoolDown has two case, first for when the weapons are on cool down, in which case nothing happens. In the other case the weapons are on cool down, and we need to flee.        
+    
 	\subsection*{Edges and cliffs (Repulsive)}
 		We do not want our vultures to get stuck against any walls so we will add a potential field for any edge where a unit can get stuck.
 		\begin{displaymath}
 			EdgesAndCliffs = \begin{cases}
-					-f_{EAC} \times {dc} & \text{if } de \leq c\\
-					0 & \text{if } dc > c
+					-f_{EAC} \times {(2*dc - due} & \text{if } dc < c_edgeDistance\\
+					0 & \text{if } dc > c_edgeDistance
 				\end{cases}		
 		\end{displaymath}
-In the first case we take the force and divide by the distance from our unit to the cliff. This way as we get closer to the cliff the stronger the potential field becomes so we will work harder to move away from the edge.
-The second case is just for when the unit is a certain distance away from the cliff. If the unit is far enough away the potential field would be negligible so we just consider it zero.	
-	
+
+    In case one we are to close the edges and need to move away. In the other case its not the case, and we do nothing.   
+
