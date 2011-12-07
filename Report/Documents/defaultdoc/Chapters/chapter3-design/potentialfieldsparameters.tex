@@ -12,8 +12,11 @@
 	$de =$ distance to enemy.\\
 	$due =$ distance from current point to enemy.\\
 	$wr =$ boolean denoting whether or not the weapons are ready to fire.\\
-	$dc =$ distance to cliff or edge. \\
-	$dua =$ distance from current point to ally.
+	$dc =$ distance from unit to cliff or edge. \\
+	$duc =$ distance from unit to cliff or edge. \\
+	$dua =$ distance from current tile to nerest ally.
+	
+	
 	
 	Where $f_c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad. \\
 	
@@ -26,7 +29,7 @@
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
 					0 & \text{if } dsv >= ds\\
-					f_{S} \times (ds - dsv) & \text{if } ds > c\\
+					f_{S} \times (2ds - dsv) & \text{if } ds > c\\
 					0 & \text{if } ds \leq c
 				\end{cases}		
 		\end{displaymath}
@@ -42,9 +45,9 @@
 		to the enemies.
 		\begin{displaymath}
 			MaximumDistancePositioning = \begin{cases}
-					f_{MDP} \times (de - due + de) & \text{if } de > sr\\
+					f_{MDP} \times (2de - due) & \text{if } de > sr\\
 					0 & \text{if } de = sr\\
-					-f_{MDP} \times (de - due + de) & \text{if } de < sr
+					-f_{MDP} \times (2de - due) & \text{if } de < sr
 				\end{cases}		
 		\end{displaymath}
 		Maximum distance positioning contains two cases. The first is handling the situation where we are not within the maximum range. In that case we cant to be attracted to the enemy. Note that in both cases we have $(due - de + due)$ which basically just invert the distances to the enemy so the closet tile will have the largest value.\\
@@ -60,7 +63,7 @@ We do not want all of the vultures to clump completely together during a match. 
 			AllyUnits = \begin{cases}
 					0 & \text{if } da > c\\
 					-f_{AU} \times da & \text{if } da \leq c\\
-					-f_{AU} * (da - dua + da) & \text{if } da = 0
+					-f_{AU} * (2da - dua) & \text{if } da = 0
 				\end{cases}		
 		\end{displaymath}
 	For the first case we wanted to make sure that if the vultures where far enought away from each other (the constant c) then they would not repulse each other at all. The reasoning behind this is simple because if the vultures are far away then they cannot take any splash damage.\\
@@ -71,7 +74,7 @@ A vulture cannot do any damage right after it shoots. This is because in there i
 		\begin{displaymath}
 			WeaponCoolDown = \begin{cases}
 					0 & \text{if } wr\\
-					-f_{WCD} * (de - due + de) & \text{else}
+					-f_{WCD} * (2de - due) & \text{else}
 				\end{cases}		
 		\end{displaymath}
 In our first case we give the field a value of zero if the vulture is ready to fire. We do not want it to retreat if it is available to fire.
@@ -80,8 +83,8 @@ The other case is if the vulture's weapon is not ready. In this case we take the
 		We do not want our vultures to get stuck against any walls so we will add a potential field for any edge where a unit can get stuck.
 		\begin{displaymath}
 			EdgesAndCliffs = \begin{cases}
-					-f_{EAC} \times {de} & \text{if } de \leq c\\
-					0 & \text{if } de > c
+					-f_{EAC} \times {dc} & \text{if } de \leq c\\
+					0 & \text{if } dc > c
 				\end{cases}		
 		\end{displaymath}
 In the first case we take the force and divide by the distance from our unit to the cliff. This way as we get closer to the cliff the stronger the potential field becomes so we will work harder to move away from the edge.
