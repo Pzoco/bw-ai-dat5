@@ -5,6 +5,7 @@
 UnitProductionCondition::UnitProductionCondition(BWAPI::UnitType unitTypeToGet,int numberOfUnits)
 {
 	unitType = unitTypeToGet;
+	number = numberOfUnits;
 }
 bool UnitProductionCondition::IsFulfilled()
 {

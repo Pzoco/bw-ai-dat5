@@ -1,32 +1,27 @@
-#include "BuildingPlacer.h"
-#include "WorkerManager.h"
+#include "BuildingPlacementFinder.h"
 #include <BWAPI.h>
+#include "WorkerManager.h"
 
-BuildingPlacer::BuildingPlacer()
+BuildingPlacementFinder::BuildingPlacementFinder()
 {
 	
 }
 
 
-bool BuildingPlacer::Construct(BWAPI::UnitType buildingType)
+BWAPI::TilePosition BuildingPlacementFinder::FindBuildLocation(BWAPI::UnitType buildingType, ProductionEnums::BuildingPlacement buildingPlacement)
 {
-
-	BWAPI::Unit* builder = WorkerManager::GetScv();
-	//Check if we got enough money
-	if(buildingType.mineralPrice() > BWAPI::Broodwar->self()->minerals() ||
-		buildingType.gasPrice() > BWAPI::Broodwar->self()->gas())
-	{
-		return false;
-	}
 	if(buildingType == BWAPI::UnitTypes::Terran_Refinery)
 	{
-		return builder->build(GetClosestGasGeyser(BWAPI::Broodwar->self()->getStartLocation()),buildingType);
+		return GetClosestGasGeyser(BWAPI::Broodwar->self()->getStartLocation());
 	}
-	
-	return builder->build(this->getBuildLocationNear(BWAPI::Broodwar->self()->getStartLocation(),buildingType),buildingType);
+	else
+	{
+		return getBuildLocationNear(BWAPI::Broodwar->self()->getStartLocation(),buildingType);
+	}
+	return BWAPI::TilePositions::None;
 }
 
-bool BuildingPlacer::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType type) const
+bool BuildingPlacementFinder::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType type) const
 {
   //returns true if we can build this type of unit here. Takes into account reserved tiles.
   if (!BWAPI::Broodwar->canBuildHere(NULL, position, type))
@@ -37,12 +32,12 @@ bool BuildingPlacer::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType 
 //        return false;
   return true;
 }
-bool BuildingPlacer::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type) const
+bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type) const
 {
   return canBuildHereWithSpace(position,type,this->buildDistance);
 }
 
-bool BuildingPlacer::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist) const
+bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist) const
 {
   //returns true if we can build this type of unit here with the specified amount of space.
   //space value is stored in this->buildDistance.
@@ -107,12 +102,12 @@ bool BuildingPlacer::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::
   return true;
 }
 
-BWAPI::TilePosition BuildingPlacer::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type) const
+BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type) const
 {
   return getBuildLocationNear(position, type,this->buildDistance);
 }
 
-BWAPI::TilePosition BuildingPlacer::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist) const
+BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist) const
 {
   //returns a valid build location near the specified tile position.
   //searches outward in a spiral.
@@ -162,11 +157,10 @@ BWAPI::TilePosition BuildingPlacer::getBuildLocationNear(BWAPI::TilePosition pos
     //Spiral out. Keep going.
   }
   return BWAPI::TilePositions::None;
-
 }
 
 
-BWAPI::TilePosition BuildingPlacer::GetClosestGasGeyser(BWAPI::TilePosition position)
+BWAPI::TilePosition BuildingPlacementFinder::GetClosestGasGeyser(BWAPI::TilePosition position)
 {
 	BWAPI::TilePosition closestGeyser;
 	double bestDistance = 10000;

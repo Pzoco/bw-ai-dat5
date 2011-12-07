@@ -6,7 +6,7 @@
 class TacticsManager
 {
 public:
-	TacticsManager(void);
+	static TacticsManager* GetInstance();
 	void Update();
 	void AddSquad(Squad squad);
 	void RemoveSquad(Squad squad);
@@ -15,6 +15,8 @@ public:
 	void UnitKilled(BWAPI::Unit* unit);
 	int static GetNumberOfUnits(BWAPI::UnitType type);
 private:
+	TacticsManager();
+	static TacticsManager* tacticsManager;
 	std::list<Squad> &GetRightSquadList(BWAPI::UnitType);
 	void WriteSquadList(BWAPI::UnitType, std::list<Squad>);
 };

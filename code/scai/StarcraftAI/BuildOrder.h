@@ -1,7 +1,5 @@
 #pragma once
 #include <BWAPI.h>
-#include "ScoutingManager.h"
-#include "TacticsManager.h"
 #include "BuildOrderItem.h"
 
 //BuildOrder class

@@ -8,9 +8,15 @@
 //Does a mapping between unittypes and lists
 std::map<BWAPI::UnitType,std::list<Squad>> squads;
 
-TacticsManager::TacticsManager(void)
+TacticsManager* TacticsManager::tacticsManager = 0;
+TacticsManager::TacticsManager(){}
+TacticsManager* TacticsManager::GetInstance()
 {
-	
+	if(tacticsManager==NULL)
+	{
+		tacticsManager = new TacticsManager();
+	}
+	return tacticsManager;
 }
 
 void TacticsManager::AddSquad(Squad squad)

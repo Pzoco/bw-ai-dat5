@@ -1,14 +1,15 @@
 #include "BuildOrderHandler.h"
 #include "BuildOrder.h"
 #include "Condition.h"
+#include "UnitProductionCondition.h"
 #include "BuildOrderItem.h"
-#include "ResearchItem.h"
+#include "UpgradeItem.h"
 #include "BuildingItem.h"
 #include "UnitProductionItem.h"
 #include "ProductionFocusItem.h"
-#include "ResearchItem.h"
 #include "SupplyCondition.h"
 #include "ProductionTask.h"
+#include "ResearchItem.h"
 
 
 BuildOrderHandler::BuildOrderHandler(void)
@@ -19,11 +20,14 @@ BuildOrderHandler::BuildOrderHandler(void)
 void BuildOrderHandler::InitiateBuildOrders()
 {
 	BuildOrder* twoFactVultures =new BuildOrder("Two Fact Vulture");
-
 	twoFactVultures->AddItem(new ProductionFocusItem(ProductionEnums::Focus_Workers,new SupplyCondition(4)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(8)));
-	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Barracks,ProductionEnums::Placement_MainBase,new SupplyCondition(10)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Barracks,ProductionEnums::Placement_MainBase,new SupplyCondition(11)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Refinery,ProductionEnums::Placement_MainBase,new SupplyCondition(12)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Factory,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Machine_Shop,ProductionEnums::Placement_MainBase,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Factory,1)));	
+	twoFactVultures->AddItem(new UpgradeItem(BWAPI::UpgradeTypes::Ion_Thrusters,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,1)));	
 	_availableBuildOrders.push_back(twoFactVultures);
 }
 void BuildOrderHandler::SetCurrentBuildOrder()
@@ -69,7 +73,11 @@ void BuildOrderHandler::Update()
 
 void BuildOrderHandler::SaveAsTask(BuildOrderItem* item)
 {
-	
+	if(item->GetType() == "UpgradeItem")
+	{
+		UpgradeItem* ui = dynamic_cast<UpgradeItem*>(item);
+		upgradeTasks.push_back(new UpgradeTask(ui->upgradeType));
+	}
 	if(item->GetType() == "ResearchItem")
 	{
 		ResearchItem* ri = dynamic_cast<ResearchItem*>(item);

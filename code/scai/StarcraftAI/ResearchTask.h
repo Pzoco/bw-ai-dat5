@@ -7,5 +7,4 @@ public:
 	BWAPI::TechType techType;
 	std::string GetType();
 	ResearchTask(BWAPI::TechType tech);
-
 };
