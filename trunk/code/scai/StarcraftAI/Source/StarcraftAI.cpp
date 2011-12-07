@@ -1,26 +1,16 @@
 #include "StarcraftAI.h"
-#include "../Squad.h"
-#include "../BaseTactic.h"
-#include "../TacticsManager.h"
-#include "../ScoutingManager.h"
-#include "../WorkerManager.h"
-#include "../ProductionManager.h"
-#include "../UnitHelper.h"
 #include <BWAPI.h>
 #include <BWTA.h>
-#include "../ReinforcementLearning.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <time.h>
-
+#include "../TacticsManager.h"
+#include "../ScoutingManager.h"
 #include "../ProductionManager.h"
+#include "../WorkerManager.h"
 
 using namespace BWAPI;
-TacticsManager tacticsManager;
-ScoutingManager scoutingManager;
-ProductionManager productionManager;
-WorkerManager workerManager;
+int gameCount = 1;
 ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
 struct StarcraftAI::Thetas
@@ -36,26 +26,10 @@ struct StarcraftAI::Thetas
 void StarcraftAI::onStart()
 {
 	remove( "C:/rewards.txt");
-	std::ofstream file;
-	try
-	{
-
-		time_t t = time(0);
-		file.open("C:/lastGame.txt");
-		file << t <<"\n";
-		file.close();
-		
-	}
-	catch(char *c)
-	{
-		std::cout << "File could not be opened -" << c << "\n";
-	}
-
 	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
-	BWAPI::Broodwar->setLocalSpeed(0);
-	//BWAPI::Broodwar->setLocalSpeed(200);
-	BWAPI::Broodwar->sendText("war aint what it used to be");
-	BWAPI::Broodwar->sendText("black sheep wall");
+
+	//BWAPI::Broodwar->sendText("war aint what it used to be");
+	//BWAPI::Broodwar->sendText("black sheep wall");
 
 	//Get the initial values of all the forces. 
 	_thetas.ally = StarcraftAI::reinforcementLearning.GetForceAlly();
@@ -67,12 +41,6 @@ void StarcraftAI::onStart()
 
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
-	
-	//Creating managers
-	tacticsManager = TacticsManager();
-	scoutingManager = ScoutingManager();
-	productionManager = ProductionManager();
-	workerManager = WorkerManager();
 	
 	//scoutingManager.AnalyzeMap();
 }
@@ -152,31 +120,7 @@ void StarcraftAI::onEnd(bool isWinner)
 		BWAPI::Broodwar->printf("File could not be opened");
 		std::cout << "File could not be opened -" << c << "\n";
 	}*/
-	
-	std::ofstream countout;
-	std::ifstream countin("C:/gameCount.txt");
-	try
-	{
-// 
-		std::string line; 
-		std::getline(countin,line); 
-		int gameCount = atoi(line.c_str());
-		countin.close(); 
-
-		BWAPI::Broodwar->printf("GameCount is %d",gameCount);
-
-//
-
-		gameCount++;
-		countout.open("C:/gameCount.txt");
-		countout << gameCount <<"\n";
-		countout.close();
-	}
-
-	catch(char *c)
-	{
-		BWAPI::Broodwar->printf("Could not save the gameCount file");
-	}
+	gameCount++;
 	BWAPI::Broodwar->restartGame();
 }
 
@@ -184,10 +128,14 @@ void StarcraftAI::onEnd(bool isWinner)
 void StarcraftAI::onFrame()
 {
 	
-	tacticsManager.Update();
-	scoutingManager.Update();
-	productionManager.Update();
-	workerManager.Update();
+	TacticsManager::GetInstance()->Update();
+	ScoutingManager::GetInstance()->Update();
+	ProductionManager::GetInstance()->Update();
+	WorkerManager::GetInstance()->Update();
+
+	//TESTING:
+	BWAPI::Broodwar->drawTextScreen(50,300,"Game Count is: = %d",gameCount);
+	//TESTING:
 	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
 	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
 	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist = %f",reinforcementLearning.GetForceMaxDist());
@@ -226,10 +174,10 @@ void StarcraftAI::onFrame()
 					edge = liveBufferPointer[i];
 					break; 
 				case 5:
-					currQ = liveBufferPointer[i];
+					currQ = (-1)*liveBufferPointer[i];
 					break; 
 				case 6:
-					nextQ = liveBufferPointer[i];
+					nextQ = (-1)*liveBufferPointer[i];
 					break; 
 				case 7:
 					reward = liveBufferPointer[i];
@@ -251,7 +199,6 @@ void StarcraftAI::onFrame()
 			<< ";"<< _thetas.mde
 			<< ";"<< _thetas.cool 
 			<< ";"<< _thetas.edge
-			<< ";" << "0"
 			<< "\n";
 		file.close();
 	}
@@ -265,6 +212,7 @@ void StarcraftAI::onFrame()
 
 void StarcraftAI::onSendText(std::string text)
 {
+
 }
 
 void StarcraftAI::onReceiveText(BWAPI::Player* player, std::string text)
@@ -300,19 +248,15 @@ void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 		//!!!! THE UNITS ARE ONLY BEING PRODUCED/CONSTRUCTED !!!!
 		if(UnitHelper::IsOffensiveType(unit->getType()))
 		{
-			tacticsManager.AssignToSquad(unit);
+			TacticsManager::GetInstance()->AssignToSquad(unit);
 		}
 		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV )
 		{
-			workerManager.ScvCreated(unit);
+			WorkerManager::GetInstance()->ScvCreated(unit);
 		}
-		else if(unit->getType().isBuilding() && unit->getType().canProduce())
+		else if(unit->getType().isBuilding() && (unit->getType().canProduce() || UnitHelper::CanResearch(unit)))
 		{
-			productionManager.BuildingConstructed(unit);
-		}
-		else if(unit->getType() == BWAPI::UnitTypes::Terran_Refinery)
-		{
-			workerManager.AddRefinery(unit);
+			ProductionManager::GetInstance()->BuildingConstructed(unit);
 		}
 	}
 }
@@ -324,7 +268,6 @@ void StarcraftAI::onUnitHide(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitCreate(BWAPI::Unit* unit)
 {
-
 }
 
 void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
@@ -334,15 +277,15 @@ void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 		//Assigns the units to the different managers
 		if(UnitHelper::IsOffensiveType(unit->getType()))
 		{
-			tacticsManager.UnitKilled(unit);
+			TacticsManager::GetInstance()->UnitKilled(unit);
 		}
 		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV )
 		{
-			workerManager.ScvKilled(unit);
+			WorkerManager::GetInstance()->ScvKilled(unit);
 		}
 		else if(unit->getType().isBuilding() && unit->getType().canProduce())
 		{
-			productionManager.BuildingDestroyed(unit);
+			ProductionManager::GetInstance()->BuildingDestroyed(unit);
 		}
 	}
 }
