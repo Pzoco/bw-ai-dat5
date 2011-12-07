@@ -1,12 +1,11 @@
 \section{Agent Learning}\label{agent_learning}
 
-There will be a brief introduction to different learning techniques/methods in the following section, we will explain how to use them and what we have chosen to work with and why it fits best to the agent we're building. 
+This section addresses various different learning techniques and methods that could be used in the agent we are building. There will be a brief explanation of the options we considered and finally which one was the final desicion or best fit.
 
-\subsection*{Neural Network}			 
+\subsection*{Neural Networks}			 
 			
 %Intro
-Neural networks [NN] can be used to teach agents to behave certain ways.
-A neural network is modelled similarly to how the brain obtains new information, and learns it. The human brain is made up of about 100 billion neurons, and each neuron is connected with thousands of other neurons communicating via electrochemical signals \cite{nn}. The neuron gets large amounts of input and when the neuron has filled a threshold it fires through something called an axon. This automatic method of filling up information and storing it when a certain threshold is reached can be implemented in a computer.
+Neural networks [NN] can be used to teach agents to behave certain ways. A neural network is modelled similarly to how the brain obtains new information, and learns it. The human brain is made up of about 100 billion neurons, and each neuron is connected with thousands of other neurons communicating via electrochemical signals \cite{nn}. The neuron gets large amounts of input and when the neuron has filled a threshold it fires through something called an axon. This automatic method of filling up information and storing it when a certain threshold is reached can be implemented in a computer.
 
 %Description
 There are different ways of connecting a neural network, but we will be concentrating on the method called \textit{feedforward}. The way to feed the neuron is by applying different inputs to it, and before entering the neuron the input goes through some weights that are adjusted manually. Just like before if the input in total is greater or equal to a certain threshold the neuron will output a signal, and if it's less it will output zero.
@@ -15,40 +14,73 @@ A neuron can have from 1 to n number of inputs, and each input will be multiplie
 If we have input $x_1, x_2, x_3, x_n$ the weights calculated will look like $x_1 w_1 + x_2 w_2 + x_3 w_3 + .. +  x_n w_n$
 
 %Why we're not using NN
-
-We have chosen not to use neural network, and the main reason is that neural networks are very slow. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A generalization function would be a better approach because it approximates the states and doesn't have to compute the entire state-space in a game. 
+We have chosen not to use a neural network, and the main reason is that neural networks are very slow. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A generalization function would be a better approach because it approximates the states and doesn't have to compute the entire state-space in a game. 
 %50.000 states because APM Multiplied with TimeSpent in the game 
 
 
-\subsection*{Reinforcement Learning}\label{RL}
+\subsection*{Reinforcement Learning}
 
-This section will come across some of the different reinforcement learning techniques. The different techniques and methods will be explained briefly and argued why it does not fit our agent very well.
+Reinforcement learning is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. 
 
-	Reinforcement learning is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment there is a reward or some feedback that reinforces all the actions that have bigger rewards. In a larger scale the task of reinforcement learning is the process to discover the optimal path or series of actions to accomplish the best possible reward at the end of the process. 
+This subsection will come across some of the different reinforcement learning techniques. This techniques and methods will then be explained briefly and analized to evaluate its relevance for our agent. 
 
-	The choice of using reinforcement learning was based on the necessity to train our AI to improve after every match or test. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
+\subsection*{Reinfocement Learning: Passive vs Active }
 
-	Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. We combine the reinforcement learning method with potential fields by transforming all the potential fields of each unit into the representation of the utility function used by the agent. We do this by taking all the forces that determine the magnitude of the potential field vectors as coefficients in the utility function.
-	
-	
-	Reinforcement learning can be used in two different ways, either an active or a passive way. By using passive reinforcement learning one defines a specific policy for the agent, and the task is to learn the utilities of states \cite{rl}. The basic goal is to learn how good the predefined policy is, and it does that by iterative going through the states without knowing the rewards beforehand and by trying and 'remembering' the best way. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl} by that in mind we have to learn an agent a complete model with what outcome for every action. The basic idea behind active reinforcement learning is that in the end it should be taught and obeying the optimal policy.
-A short description of the different ways one can use reinforcement learning and what we have chosen to work with in this report.
-
+% i really need to explain this more
+Reinforcement learning can be used in two different ways, either an active or a passive way. By using passive reinforcement learning one defines a specific policy for the agent, and the task is to learn the utilities of states \cite{rl}. The basic goal is to learn how good the predefined policy is, and it does that by iterative going through the states without knowing the rewards beforehand and by trying and 'remembering' the best way. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl} by that in mind we have to learn an agent a complete model with what outcome for every action. The basic idea behind active reinforcement learning is that in the end it should be taught and obeying the optimal policy.
 			
-\subsection*{Direct utility estimation}
+\subsection*{Reinfocement Learning: Direct Utility Estimation}
 %This needs to be done!!!
 
 
 %NEEDS A CITE TO DPM DAN
-\subsection*{Adaptive dynamic programming}\label{ADP}
+\subsection*{Reinfocement Learning: Adaptive dynamic programming}\label{ADP}
 This method of learning is taking advantage of the constraints between states, an agent learns the transition model as it goes along and solving the Markov decision process \cite{mdp} using a dynamic programming method \cite{dp}. By using the Bellman equations it calculates the utility of the states. This method will not suit our agent very well since it's not good use for a larger state space \cite[p. 767]{rl}, but you will read in the next subsection that one can combine adaptive dynamic programming with direct utility estimation without solving all the states with Bellman's equations. 
 
-\subsection*{Temporal difference learning}
+\subsection*{Reinfocement Learning: Temporal difference learning}
 This is a method that uses approximation of the constraints equations without solving all the states possible. Here is the observed value of the transitions used to update the values of the observed states so they agree with the constraint equations \cite[p. 767]{rl}. 
 
-\subsection*{Exploration}
+\subsection*{Reinfocement Learning: Exploration}
 As the name states this is really an exploration way of learning. The agent learn via using an exploration method, it never learns the true utilities or the true optimal policy. It carries on trying random movements until it finds a good utility and sticks with that one. This agent we call a greedy agent and greedy agents seldom converges to the optimal policy and even sometimes converges with a bad policy. This is similar to the human way of thinking about 'should I stay with what I got, or should I explore the world and find a better life' - where this fits best to the first statement. \cite[p. 771]{rl}
 
-%Subconclusion
-The previously explained methods of agent learning does not fit our state space, since we have a large state space and an approximation will be necessary. In section \ref{qlearning} we will explain what we use instead and how we have implemented it.
+
+\section{Generalization of Q-Learning}	\label{qlearning}
+
+The choice of using reinforcement learning was based on the necessity to train our AI to improve after every match or test. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
+
+Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. 
+
+If we  
+
+
+
+%CHECK
+Just to give an example of how large state spaces easily can get we can take a look at some well known games chess and backgammon. They are a tiny subset of the real world and their state spaces contain on the order of $10^{50}$ and $10^{120}$ states, and if the agent should visit all these states to learn how to play the game it will run i an absurd long time \cite[p. 777]{rl}. That's why we are going to use function approximation, which basicly means that we don't show the function as a table.
+
+
+
+We combine the reinforcement learning method with the potential fields by transforming all the potential fields (per unit) into the representation of the Q function used by the agent. We do this by taking all the forces that determine the magnitude of the potential field vectors as coefficients in the utility function.
+
+
+
+
+$\hat{U}_\Theta(s) = \Theta_1 f_1(s) + \Theta_2 f_2(s) + ... + \Theta_n f_n(s) $
+
+The parameters $\Theta = \Theta_1, ..., \Theta_n$ so the evaluation function above $\hat{U}_\Theta$ approximates the utility function. Instead of the explanation above with the state space of $10^{120}$ values in a table.
+
+The approximation looks like:
+%NEEDS AN ACCENT DAN!!!
+$\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma maxQ_\Theta(a',s')-Q_\Theta(a,s) ] \frac{d}{d\Theta_i}(Q_\Theta(a,s))$
+
+
+and using our variables:\\
+First we define what a state can contain:\\
+$s = {(da, ds, dsv, de, due, wv, dc, dua, numberOfUnits, healthLost, damageDone, fallenEnemies)}$
+The description of these variables can be read here \ref{cha3_variables}\\
+$R(s) = C_1 numberOfUnits - C_2 healthLost +  C_3 damageGiven +  C_4 numberOfFallenEnemies$\\
+
+$Q = f_{MDP1} (2de - due)-f_{AN}(da)-f_{WCD}(2de-due)-f_{EAC}(de)+f_s(ds-dsv)-f_{MDP2}(2de-due)$
+
+We are going to use approximation of Q-Learning, so it can handle a huge state space
+
 
