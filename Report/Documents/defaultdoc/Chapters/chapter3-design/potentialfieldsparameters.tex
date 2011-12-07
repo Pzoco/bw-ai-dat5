@@ -37,6 +37,10 @@
 	    The first case handles then the units are within the desired squad size. In that case we don't need to attract the units more towards the squad center.
 	    
 	    In the second case, the unit are outside the desired squad size, in that case we need to attract it towards the squad center.
+
+        The calculation $(2ds - dsv)$ and other calculation with the same structure, is used to invert the distances see figure \ref{fig:cdist}. We need this because we cant just use the distance as it is, because the potential pointing away from the squad would be larger then the potentiel pointing towards the squad. $(2ds - dsv)$ changes the distance relative to the center and fixes this problem.    
+        \insertmarginfigure{height=2.5in}{Potentialfields/CorrectedDistance.pdf}
+		    {Correcting the distance}}{fig:cdist}{-3in}
 		
 	\subsection*{Maximum distance positioning (Attractive)}
 		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance to the enemies.
