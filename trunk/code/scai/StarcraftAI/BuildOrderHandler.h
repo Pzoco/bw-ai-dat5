@@ -7,6 +7,7 @@
 #include "ConstructionTask.h"
 #include "UnitProductionTask.h"
 #include "ProductionFocusTask.h"
+#include "UpgradeTask.h"
 #include "ResearchTask.h"
 
 class BuildOrderHandler
@@ -38,11 +39,18 @@ public:
 		returnList.merge(researchTasks);
 		return returnList;
 	}
+	std::list<UpgradeTask*> GetUpgradeTasks()
+	{
+		std::list<UpgradeTask*> returnList; 
+		returnList.merge(upgradeTasks);
+		return returnList;
+	}
 private:
 	BuildOrder* _currentBuildOrder;
 	std::list<BuildOrder*> _availableBuildOrders;
 	std::list<UnitProductionTask*> unitProductionTasks;
 	std::list<ProductionFocusTask*> productionFocusTasks;
+	std::list<UpgradeTask*> upgradeTasks;
 	std::list<ResearchTask*> researchTasks;
 	std::list<ConstructionTask*> constructionTasks;
 	bool initiated;

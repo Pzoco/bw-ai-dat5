@@ -4,10 +4,18 @@
 
 bool analyzed = false;
 
-ScoutingManager::ScoutingManager()
+ScoutingManager* ScoutingManager::scoutingManager = 0;
+
+ScoutingManager::ScoutingManager(){}
+ScoutingManager* ScoutingManager::GetInstance()
 {
-	
+	if(scoutingManager==NULL)
+	{
+		scoutingManager = new ScoutingManager();
+	}
+	return scoutingManager;
 }
+
 
 DWORD WINAPI AnalyzeThread()
 {

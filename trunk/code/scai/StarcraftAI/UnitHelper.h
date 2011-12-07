@@ -12,4 +12,6 @@ public:
 	static int GetNumberOfUnitType(BWAPI::UnitType unitType);
 	static bool IsOffensiveType(BWAPI::UnitType unitType);
 	static bool IsBuilding(BWAPI::UnitType unitType);
+	static BWAPI::UnitType GetMainBuildingOfAddon(BWAPI::UnitType addon);
+	static bool CanResearch(BWAPI::Unit* building);
 };

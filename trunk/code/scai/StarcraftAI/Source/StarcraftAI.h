@@ -3,6 +3,11 @@
 #include <BWTA.h>
 #include <windows.h>
 #include "../ReinforcementLearning.h"
+#include "../Squad.h"
+#include "../BaseTactic.h"
+#include "../UnitHelper.h"
+
+
 
 class StarcraftAI : public BWAPI::AIModule
 {

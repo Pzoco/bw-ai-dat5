@@ -202,10 +202,6 @@
 					Name="ProductionManager"
 					>
 					<File
-						RelativePath=".\BuildingPlacer.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\BuildOrder.cpp"
 						>
 					</File>
@@ -260,6 +256,10 @@
 							RelativePath=".\UnitProductionItem.cpp"
 							>
 						</File>
+						<File
+							RelativePath=".\UpgradeItem.cpp"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="Task"
@@ -282,6 +282,10 @@
 						</File>
 						<File
 							RelativePath=".\UnitProductionTask.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\UpgradeTask.cpp"
 							>
 						</File>
 					</Filter>
@@ -338,6 +342,10 @@
 					Name="WorkerManager"
 					>
 					<File
+						RelativePath=".\BuildingPlacementFinder.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\WorkerManager.cpp"
 						>
 					</File>
@@ -358,11 +366,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\BuildingPlacer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\BuildingProductionCondition.h"
+				RelativePath=".\BuildingPlacementFinder.h"
 				>
 			</File>
 			<File
@@ -467,6 +471,14 @@
 			</File>
 			<File
 				RelativePath=".\UnitProductionTask.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UpgradeItem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UpgradeTask.h"
 				>
 			</File>
 			<File

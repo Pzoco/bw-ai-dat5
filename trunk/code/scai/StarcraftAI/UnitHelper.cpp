@@ -50,6 +50,7 @@ int UnitHelper::GetNumberOfUnitType(BWAPI::UnitType unitType)
 		if(unit->getType() == unitType && unit->isCompleted())
 			count++;
 	}
+	//BWAPI::Broodwar->printf("There was %d of unittype %s",count,unitType.getName().c_str());
 	return count;
 }
 BWAPI::UnitType UnitHelper::GetBuildingWhichCanProduce(BWAPI::UnitType unitType)
@@ -61,8 +62,8 @@ BWAPI::UnitType UnitHelper::GetBuildingWhichCanProduce(BWAPI::UnitType unitType)
 		return BWAPI::UnitTypes::Terran_Barracks;
 	}
 	else if(unitType == BWAPI::UnitTypes::Terran_Vulture || 
-			unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode || 
-			unitType == BWAPI::UnitTypes::Terran_Goliath)
+		unitType == BWAPI::UnitTypes::Terran_Siege_Tank_Tank_Mode || 
+		unitType == BWAPI::UnitTypes::Terran_Goliath)
 	{
 		return BWAPI::UnitTypes::Terran_Factory;
 	}
@@ -75,4 +76,40 @@ bool UnitHelper::IsOffensiveType(BWAPI::UnitType type)
 		return false;
 	}
 	return true;
+}
+BWAPI::UnitType UnitHelper::GetMainBuildingOfAddon(BWAPI::UnitType addon)
+{
+	if(addon == BWAPI::UnitTypes::Terran_Machine_Shop)
+	{
+		return BWAPI::UnitTypes::Terran_Factory;
+	}
+	else if(addon == BWAPI::UnitTypes::Terran_Comsat_Station)
+	{
+		return BWAPI::UnitTypes::Terran_Command_Center;
+	}
+	else if(addon == BWAPI::UnitTypes::Terran_Control_Tower)
+	{
+		return BWAPI::UnitTypes::Terran_Starport;
+	}
+	else if(addon == BWAPI::UnitTypes::Terran_Physics_Lab || 
+		addon == BWAPI::UnitTypes::Terran_Covert_Ops)
+	{
+		return BWAPI::UnitTypes::Terran_Science_Facility;
+	}
+	return BWAPI::UnitTypes::None;
+}
+bool UnitHelper::CanResearch(BWAPI::Unit *building)
+{
+	BWAPI::UnitType type = building->getType();
+	if(type == BWAPI::UnitTypes::Terran_Academy ||
+		type == BWAPI::UnitTypes::Terran_Armory ||
+		type == BWAPI::UnitTypes::Terran_Control_Tower ||
+		type == BWAPI::UnitTypes::Terran_Covert_Ops ||
+		type == BWAPI::UnitTypes::Terran_Engineering_Bay ||
+		type == BWAPI::UnitTypes::Terran_Physics_Lab || 
+		type == BWAPI::UnitTypes::Terran_Machine_Shop)
+	{
+		return true;
+	}
+	return false;
 }

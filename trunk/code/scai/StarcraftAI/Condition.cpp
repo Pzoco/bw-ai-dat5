@@ -2,5 +2,5 @@
 
 bool Condition::IsFulfilled()
 {
-	return false;
+	return true;
 }

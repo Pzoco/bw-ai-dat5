@@ -1,3 +1,5 @@
+#pragma once
+
 namespace ProductionEnums
 {
 	enum Status{BuildStatus_NotStarted,BuildStatus_Started,BuildStatus_Processing,BuildStatus_Done};
