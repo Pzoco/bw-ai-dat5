@@ -1,6 +1,6 @@
 \section{Potential fields}
 	Potential fields can be used to control a computer AI through a dynamically updated environment. 
-	If one would program an AI, which should move from one point to another, one would most likely use the normal shortest path algorithms. 
+	If one would program an AI, which should move from one point to another, one would most likely use a normal shortest path algorithms. 
 	The problem is, though, that if a lot of dynamic influences are affecting the route this calculation can be very complex. It could be 
 	enemies that should be avoided or other dynamic influences. \\
 	
@@ -28,22 +28,26 @@
 		
 	\subsection{Designing our potential field functions}		
 		The potential fields of our bot, will not be represented by a vector, but simply a number which indicates how attractive or repulsive a field is. 
-		This number is calculated by functions, which is either attractive and/or repulsive and is related to the obstacles in the game world. \\
+		This number is calculated by functions, which is either attractive and/or repulsive and is related to the obstacles in the game world. 
 		
+		The reason we use numbers is we want to only calculate the potential on the tiles immediately around the units, so the direction is given relative to the numbers at the current location. As seen in figure \ref{fig:vectorsAsNumbers}
+		\insertmarginfigure{height=1.5in}{Potentialfields/vectors.png}
+		{Vector direction relative to center}{fig:vectorsAsNumbers}{-3in}
+		\\
+		
+		\subsubsection{Two examples of potential field functions}
 		Our functions will be described with the following math: \\
 		
 		Variables:\\
 		$f =$ force\\
 		$s =$ size of the potential field\\
-		$c =$ fade of constant\\
+		$c =$ constant\\
 		$d =$ distance\\
-		
-		\subsubsection*{Two examples of potential field functions}
 		
 		\begin{displaymath}
 			%\begin{math}
 			Attractive = \begin{cases}
-					-f & \text{if $d < s$}\\
+					f * c & \text{if $d < s$}\\
 					0 & \text{else}
 				\end{cases}		
 			%\end{math}
@@ -53,7 +57,7 @@
 			%\begin{math}
 			Repulsive = \begin{cases}
 					0 & \text{if $d > s$}\\
-					f * c & \text{else}
+					- f * c & \text{else}
 				\end{cases}		
 			%\end{math}
 		\end{displaymath}
