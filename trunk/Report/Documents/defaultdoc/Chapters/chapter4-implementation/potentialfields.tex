@@ -19,11 +19,11 @@ int useSquad = 0;
 \end{Sourcecode}
 		In \lnnum{1} we calculate \textit{dsv} by using the build in function getApproxDistance which returns the distance between two tiles as an integer. \textit{pos} is the current tile we want to calculate the potential for and \textit{squadPos} is the tile in the center of the squad.
 		
-		Then in \lnnum{2} we check weather or not to use the \textit{Squad center} which depends on the the distance from the unit, know as \textit{ds}, to the center of the squad. This is used to handle the two cases found in the design of the potential field.
+		Then in \lnnum{2} we check weather or not to use the \textit{Squad center} which depends on the distance from the unit, know as \textit{ds}, to the center of the squad. This is used to handle the two cases found in the design of the potential field.
 		
 		Afterwards we calculate the potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. Unlike in the design we times useSquad on the end, this is to make it zero if we don't want to use potential field, which would make the entire calculation become zero. This is way to control the use of the potential field is not only used in \textit{Squad center} but also in all the other potential fields.
 		
-		\textit{squadQ} in \lnnum{2} will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement} !!!!!!!!!!!!!!!!!!!!!!!! FIX REF !!!!!!!!!!!!!!!
+		\textit{squadQ} in \lnnum{4} and likewise will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement} !!!!!!!!!!!!!!!!!!!!!!!! FIX REF !!!!!!!!!!!!!!!
 		
 		The \textit{Squad center} implemented and running can be seen in figure \ref{fig:SCA}.
 \insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
@@ -79,7 +79,7 @@ if(_parameters.da < _variables.ALLYDISTANCE_CONSTANT)
 ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - dua)*useAlly;
 allyQ += (double)(2*_parameters.da - dua)*useAlly;
 \end{Sourcecode}	
-	In \textit{Ally units} at \lnnum{1} we use a function called \textit{MathHelper::GetDistanceToNearestAlly} which takes as input a tile position and the id of the current unit. We need the unit id because the function iterates trough all our units and we want to avoid calculating the distance to the current unit. \textit{Ally units} can be seen in figure \ref{fig:AU}.
+	In \textit{Ally units} at \lnnum{1} we use a function called \textit{MathHelper::GetDistanceToNearestAlly} which takes as input a tile position and the id of the current unit. We need the unit id because the function iterates trough all our units and we want to avoid calculating the distance to the current unit. If we did not use the unit id we would then always get the distance from the current unit to it self, because the distance would always be less then the distance to other units. \textit{Ally units} can be seen in figure \ref{fig:AU}.
 	
 		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Allyunits.png}
 			{Repulsion of ally units}{fig:AU}{-3in}
