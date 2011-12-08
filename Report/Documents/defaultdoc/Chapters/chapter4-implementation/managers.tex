@@ -1,0 +1,138 @@
+This section will document the implementation of the different managers mentioned in \ref{design::managers}. 
+
+\section{Managers}
+	A manager is responsible for different areas in the controlling of the bot, though some times they have to pass tasks to each other. Each manager has 
+	a method called Update which will be called on each frame, used for running their code.
+	\subsection{Production Manager}
+		The production manager is responsible for producing units, constructing buildings and researching tech. Every time a new production facility or 
+		a research facility is produced it will be saved here, so we are able to use them for later. The tasks the manager have to do are passed from a 
+		class called BuildOrderHandler, which is responsible for handling buildorders.
+		\subsubsection*{BuildOrderHandler}
+			This class contains the buildorders the bot can use and passes the items as tasks for the production manager. A BuildOrder contains a list of 
+			BuildOrderItems, which all contains a thing that should be done and one or more conditions before this can be done. 
+			There are 3 types of conditions, SupplyCondition, ThreatLevelCondition and UnitProductionCondition. The different conditions that have 
+			to be fulfilled for the conditions are: A certain supply count have to be reached, a certain threatlevel have to be reached and a certain 
+			amount of units or buildings have to be present in the army. The following code snippet shows the main loop of the BuildOrderHandler. 
+			
+				\begin{Sourcecode}[caption=BuildOrderHandler main loop]
+		std::list<BuildOrderItem*> items = _currentBuildOrder->GetBuildOrderItems();
+		(*@\lnote@*)for(std::list<BuildOrderItem*>::iterator item = items.begin();item!=items.end();++item)
+		{
+			bool allConditionsFulfilled = true;
+			std::list<Condition*> conditions = (*item)->GetConditions();
+			for each(Condition* condition in conditions)
+			{
+				if(!condition->IsFulfilled())
+				{
+					allConditionsFulfilled = false;
+					break;
+				}
+			}
+			//If all the conditions of the item was fulfilled we save it to the right list of tasks
+			if(allConditionsFulfilled == true)
+			{
+				SaveAsTask(*item);				
+				_currentBuildOrder->items.remove(*item);
+			}
+		}	
+				\end{Sourcecode}
+			This loop gets the BuildOrderItems in the current buildorder and in the loop at \lnnum{1} we check if all the conditions of the item was 
+			fulfilled. Each condition object inherit from the class Condition, where they inherit it's method called IsFulfilled. Each condition that 
+			overrides the method have then specified when the given condition will be fulfilled. If all the conditions were fulfilled, we convert the 
+			item to a Task and saves it so the ProductionManager can retrieve the Task. The difference between a BuildOrderItem and a Task is that the 
+			item is stripped of all information except for the information that is important in producing the task. 
+			
+		\subsubsection*{Retrieving and executing tasks}
+			The ProductionManager contains a method for retrieving tasks from the BuildOrderHandler. After it has retrieved all the methods it goes on to 
+			try and executing the tasks. If we can afford to do the task it will be passed on to the appropriate method for executing the task. These 
+			methods are called TryProduceUnit, TryConstructBuilding, TryUpgradeTech and TryResearchTech. There is a method for both upgrades and 
+			researching because the BWAPI makes a distinction between these two types, which we do not normally do. The methods all follow the same basic 
+			pattern.
+			\begin{itemize}
+				\item Check if we can afford the task
+				\item Find a building that can execute the task
+				\item If both succeed the task will be executed
+			\end{itemize}
+			The only method that does not follow this pattern is the method TryConstructBuilding. The reason for this is that the ProductionManager is not 
+			able to construct a building without a scv. Because of this we pass this task on to the WorkerManager that will try to construct the building.
+			
+	\subsection{WorkerManager}
+		This manager manages the scvs the bot owns and is also responsible for constructing buildings. When a scv is created it is saved to a list of 
+		scvs and is getting a state. A scv can the following states: Constructing,BeingBuild,MiningGas,MiningMinerals,Defending,Evading,Nothing. When 
+		the scv is completed from the Command Center it will get the state Nothing, then the Update method will determine what the scv should do, usually 
+		it will be set to mine minerals, so it gets the state MiningMinerals. 
+		\subsubsection*{Efficient mining}
+			To ensure that the bot will get the most minerals in relation to how many scvs it has we have implemented a way to ensure a more efficient 
+			way of choosing the mineral patch or refinery to mine. The following code snippet is from the method SendToMineral, which sends a single scv 
+			to a mineral patch.
+			
+				\begin{Sourcecode}[caption=SendToMineral method]
+	int fewestScvs = 100;
+	int distanceToMineral = 10000;
+	BWAPI::Unit* bestMineral;
+
+	(*@\lnote@*)for(std::map<BWAPI::Unit*,int>::iterator m = _workersOnMineral.begin();m != _workersOnMineral.end();m++)
+	{
+		if((*m).second < fewestScvs)
+		{
+			fewestScvs = (*m).second;
+			bestMineral = (*m).first;
+			distanceToMineral=scv->getDistance(bestMineral);
+		}
+		else if((*m).second ==fewestScvs && scv->getDistance((*m).first)<distanceToMineral)
+		{
+			fewestScvs = (*m).second;
+			bestMineral = (*m).first;
+			distanceToMineral=scv->getDistance(bestMineral);
+		}
+	}
+	(*@\lnote@*)_workersOnMineral[bestMineral]++;
+	_scvResourceGoals[scv]=bestMineral;
+	scv->rightClick(bestMineral);
+				\end{Sourcecode}
+			Each mineral patch and refinery are mapped to an int which represents how many scvs are using this patch or refinery. To find the best mineral 
+			patch every mineral patch we are mining from is iterated through \lnnum{1}, and check if there are less scvs than the preceding mineral patch. 
+			The distance to this mineral patch is also saved, because there might be a mineral patch which have as few scvs on the patch, but is closer. 
+			When the best mineral patch is found it is noted\lnnum{2}that an additional scv is working on that mineral patch- After this we save the 
+			mineral to the scv and sends the scv to mine the mineral patch by rightclicking it.
+			
+		\subsubsection*{Constructing buildings}
+			Below is the code that the Production Manager calls when it has a ConstructionTask that need to be executed. The method is called 
+			ConstructBuilding and have the parameters of type UnitType and BuildingPlacement, where BuildingPlacement 
+			is an enum that can have the values MainBase or MainChokepoint.
+			\begin{Sourcecode}[caption=ConstructBuilding method]		
+	(*@\lnote@*)BWAPI::TilePosition position = finder.FindBuildLocation(buildingType,placement);
+
+	(*@\lnote@*)BWAPI::Unit* scv = GetAvailableScvNearPosition(BWAPI::Position(position.x(),position.y()));
+	
+
+	(*@\lnote@*)SwitchState(scv,WorkerManager::Constructing);
+	
+	buildingToConstruct building;	
+	building[position] = buildingType;
+	_workersOnConstruction[scv] = building;
+	scv->build(position,buildingType);
+			\end{Sourcecode}
+			
+			To find a location for the building to be built we use an instance of the class BuildingPlacementFinder called finder (see \lnnum{1}), 
+			which can find a suitable location for a building to be constructed in relation to the enum specified. After this we find a scv for the 
+			task \lnnum{2}, by using the method GetAvailableScvNearPosition, which gets the nearest scv, which is not carring minerals, mining gas or 
+			constructing. With the position and a scv the building can now be constructed. The state of the scv is changed to Constructing \lnnum{3} and 
+			we save the building information such that we are able to try again if it failed constructing the building. After this the scv tries to 
+			construct the building.
+	\subsection{Scouting Manager}
+		Not yet implemented
+	\subsection{Strategy Manager}
+		Not yet implemented
+	\subsection{Tactics Manager}
+		The TacticsManager is responsible for managing the offensive units the bot owns. When units of the same type are near each other they are saved 
+		to a Squad object. The TacticsManager executes all the tactics of the Squad objects in it's Update method. This tactic that the squads execute 
+		are the Reinforcement Learning and Potential fields, which will be explained in the next sections.
+		
+			
+		
+			
+			
+				
+			
+		
