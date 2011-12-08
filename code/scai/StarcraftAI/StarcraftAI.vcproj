@@ -183,6 +183,10 @@
 				RelativePath=".\Source\StarcraftAI.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\StrategyManager.cpp"
+				>
+			</File>
 			<Filter
 				Name="Helpers"
 				>
@@ -350,6 +354,10 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="StrategyManager"
+					>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -443,6 +451,10 @@
 			</File>
 			<File
 				RelativePath=".\State.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StrategyManager.h"
 				>
 			</File>
 			<File
