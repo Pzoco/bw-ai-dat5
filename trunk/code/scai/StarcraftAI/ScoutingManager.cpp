@@ -1,7 +1,7 @@
 #include "ScoutingManager.h"
 #include <BWAPI.h>
 #include <BWTA.h>
-
+//#include "hugin"
 bool analyzed = false;
 
 ScoutingManager* ScoutingManager::scoutingManager = 0;
@@ -45,3 +45,7 @@ void ScoutingManager::Scout(BWAPI::Unit* scv)
 {
 	//Scout the other bases
 }	
+
+int ScoutingManager::MostProbableEnemyPosition()
+{
+}
