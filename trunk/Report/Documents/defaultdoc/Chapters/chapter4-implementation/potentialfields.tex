@@ -98,7 +98,8 @@ edgeQ += (2*_parameters.dc-duc)*useEdge;
 \end{Sourcecode}	
     In \lnnum{1} we use the function \textit{MathHelper::GetDistanceBetweenPositions} to get the distance between the nearest unwalkable position and the current tile. To get the nearest unwalkable position we use the build in function \textit{BWTA::getNearestUnwalkablePosition} which takes as input a position and then find the nerest unwalkable position.
 
-	Normaly \textit{dc} from \lnnum{2} would be calculated in the initialization but because \textit{BWTA::getNearestUnwalkablePosition} should depend on the current tile we have to recalculate it for each tile. The resaon is that for each tile the nearest unwalkable position can differ, and we need to use the same unwalkable position in the calculation of the center tile. If we didnt do this, there could be cases where we took the wrong tiles into consideration. An example could be a corner, where some tile would depend on one side, and other tiles on the other side.
+	Normaly \textit{dc} from \lnnum{2} would be calculated in the initialization but because \\ \textit{BWTA::getNearestUnwalkablePosition} should depend on the current tile we have to recalculate it for each tile. The resaon is that for each tile the nearest unwalkable position can differ, and we need to use the same unwalkable position in the calculation of the center tile. If we didnt do this, there could be cases where 
+	we took the wrong tiles into consideration. An example could be a corner, where some tile would depend on one side, and other tiles on the other side.
 	
 	The \textit{Edges and cliffs} can be seen in figure \ref{fig:EC}
 
