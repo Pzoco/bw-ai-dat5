@@ -191,7 +191,7 @@ void WorkerManager::Update()
 						//If the building is done then set the scv to do something else
 						if(_buildingsUnderConstruction[scv]->getType() == BWAPI::UnitTypes::Terran_Refinery)
 							AddRefinery(_buildingsUnderConstruction[scv]);
-						_buildingsUnderConstruction[scv] = BWAPI::UnitTypes::None;
+						_buildingsUnderConstruction[scv] = NULL;
 						SwitchState(scv,WorkerManager::Nothing);
 					}
 				}
