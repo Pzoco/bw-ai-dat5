@@ -16,6 +16,8 @@ public:
 	void AnalyzeMap();
 	void Update();
 	void Scout(BWAPI::Unit* scv);
+
+	int MostProbableEnemyPosition();
 private:
 	ScoutingManager();
 	static ScoutingManager* scoutingManager;
