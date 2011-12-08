@@ -142,7 +142,7 @@ void WorkerManager::ConstructBuilding(BWAPI::UnitType buildingType,ProductionEnu
 	SwitchState(scv,WorkerManager::Constructing);
 	
 	//Mapping the scv to this building
-	buildingToConstruct building;
+	buildingToConstruct building;	
 	building[position] = buildingType;
 	_workersOnConstruction[scv] = building;
 
@@ -191,7 +191,7 @@ void WorkerManager::Update()
 						//If the building is done then set the scv to do something else
 						if(_buildingsUnderConstruction[scv]->getType() == BWAPI::UnitTypes::Terran_Refinery)
 							AddRefinery(_buildingsUnderConstruction[scv]);
-						_buildingsUnderConstruction[scv] = 0;
+						_buildingsUnderConstruction[scv] = BWAPI::UnitTypes::None;
 						SwitchState(scv,WorkerManager::Nothing);
 					}
 				}
