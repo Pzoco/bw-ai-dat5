@@ -21,7 +21,7 @@ int useSquad = 0;
 		
 		Then in \lnnum{2} we check weather or not to use the \textit{Squad center} which depends on the the distance from the unit, know as \textit{ds}, to the center of the squad. This is used to handle the two cases found in the design of the potential field.
 		
-		Afterwards we calculate the potential in \lnnum{3} where \textit{_variables.FORCESQUAD} is $f_{S}$. Unlike in the design we times useSquad on the end, this is to make it zero if we don't want to use potential field, which would make the entire calculation become zero. This is way to control the use of the potential field is not only used in \textit{Squad center} but also in all the other potential fields.
+		Afterwards we calculate the potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. Unlike in the design we times useSquad on the end, this is to make it zero if we don't want to use potential field, which would make the entire calculation become zero. This is way to control the use of the potential field is not only used in \textit{Squad center} but also in all the other potential fields.
 		
 		\textit{squadQ} in \lnnum{2} will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement} !!!!!!!!!!!!!!!!!!!!!!!! FIX REF !!!!!!!!!!!!!!!
 		
