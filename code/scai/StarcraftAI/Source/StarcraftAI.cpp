@@ -39,7 +39,7 @@ void StarcraftAI::onStart()
 	_thetas.edge = StarcraftAI::reinforcementLearning.GetForceEdge();
 	_thetas.cool = StarcraftAI::reinforcementLearning.GetForceCooldown();
 
-	Broodwar->enableFlag(Flag::CompleteMapInformation);
+	//Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	
 	//scoutingManager.AnalyzeMap();
