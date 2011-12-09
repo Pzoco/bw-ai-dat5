@@ -5,7 +5,6 @@
 bool analyzed = false;
 
 ScoutingManager* ScoutingManager::scoutingManager = 0;
-
 ScoutingManager::ScoutingManager(){}
 ScoutingManager* ScoutingManager::GetInstance()
 {

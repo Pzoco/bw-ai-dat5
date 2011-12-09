@@ -1,0 +1,4764 @@
+/*
+ *
+ * Header file for Hugin C++ API, version 7.5.
+ *
+ * Copyright (C) 2000-2011, Hugin Expert A/S.  All Rights Reserved.
+ *
+ */
+
+# ifndef _HUGIN_
+# define _HUGIN_
+
+
+# ifndef H_DLL
+# ifdef _WIN32
+# define H_DLL __declspec(dllimport)
+# else
+# define H_DLL
+# endif
+# endif
+
+
+# include <string>
+# include <vector>
+# include <cstdio>
+# include <utility>
+
+/** The HAPI namespace holds all Hugin C++ API identifiers. */
+
+namespace HAPI {
+
+  /** The type of floating-point numbers used for table data.
+      If H_DOUBLE is defined, this is double; otherwise, it is float.
+  */
+# ifdef H_DOUBLE
+  typedef double Number;
+# else
+  typedef float Number;
+# endif
+
+  /** The type of indexes (for example, a state index).  A negative
+      index indicates a "nonexisting" index.
+  */
+  typedef ptrdiff_t Index;
+
+  class Domain;
+  class H_DLL Node;
+  class H_DLL DiscreteNode;
+  class H_DLL DiscreteChanceNode;
+  class H_DLL DiscreteDecisionNode;
+  class H_DLL LabelledDCNode;
+  class H_DLL BooleanDCNode;
+  class H_DLL NumberedDCNode;
+  class H_DLL IntervalDCNode;
+  class H_DLL LabelledDDNode;
+  class H_DLL BooleanDDNode;
+  class H_DLL NumberedDDNode;
+  class H_DLL IntervalDDNode;
+  class H_DLL ContinuousChanceNode;
+  class H_DLL UtilityNode;
+  class H_DLL FunctionNode;
+  class H_DLL Table;
+  class H_DLL CGDistribution;
+  class H_DLL Expression;
+  class H_DLL JunctionTree;
+  class H_DLL Clique;
+  class H_DLL ParseListener;
+  class H_DLL ClassParseListener;
+  class H_DLL Attribute;
+
+  class H_DLL ClassCollection;
+  class H_DLL NetworkModel;
+  class H_DLL Class;
+  class H_DLL InstanceNode;
+
+
+  /** Standard C++ Library container for holding Classes.
+  */
+  typedef std::vector<Class*> ClassList;
+
+  /** Standard C++ Library container for holding nodes.
+  */
+  typedef std::vector<Node*> NodeList;
+
+  /** Standard C++ Library container for holding cliques.
+  */
+  typedef std::vector<Clique*> CliqueList;
+
+  /** Standard C++ Library container for holding expressions.
+  */
+  typedef std::vector<Expression*> ExpressionList;
+
+  /** Standard C++ Library container for holding junction trees.
+  */
+  typedef std::vector<JunctionTree*> JunctionTreeList;
+
+  /** Standard C++ Library container for holding attributes.
+  */
+  typedef std::vector<Attribute*> AttributeList;
+
+  /** Standard C++ Library vector of floating-point numbers for
+      holding table data.
+  */
+  typedef std::vector<Number> NumberList;
+
+
+  class IHugin;
+  class IExpression;
+
+
+  /** Node categories.
+      <code>H_CATEGORY_CHANCE</code>, <code>H_CATEGORY_DECISION</code>,
+      <code>H_CATEGORY_UTILITY</code>, <code>H_CATEGORY_FUNCTION</code>,
+      <code>H_CATEGORY_INSTANCE</code>.
+   */
+  enum Category {
+    H_CATEGORY_CHANCE, H_CATEGORY_DECISION, H_CATEGORY_UTILITY,
+    H_CATEGORY_FUNCTION, H_CATEGORY_INSTANCE
+  };
+
+  /** Node kinds.
+      <code>H_KIND_DISCRETE</code>, <code>H_KIND_CONTINUOUS</code>,
+      <code>H_KIND_OTHER</code>
+   */
+  enum Kind { H_KIND_DISCRETE, H_KIND_CONTINUOUS, H_KIND_OTHER };
+
+
+  /** Modes of propagation.
+      <code>H_MODE_NORMAL</code>, <code>H_MODE_FAST_RETRACTION</code>
+   */
+  enum EvidenceMode { H_MODE_NORMAL, H_MODE_FAST_RETRACTION };
+
+  /** Types of equilibrium in the junction trees.
+      <code>H_EQUILIBRIUM_SUM</code>, <code>H_EQUILIBRIUM_MAX</code>
+   */
+  enum Equilibrium { H_EQUILIBRIUM_SUM, H_EQUILIBRIUM_MAX };
+
+
+  /** Triangulation methods.
+      <code>H_TM_CLIQUE_SIZE</code>, <code>H_TM_CLIQUE_WEIGHT</code>,
+      <code>H_TM_FILL_IN_SIZE</code>, <code>H_TM_FILL_IN_WEIGHT</code>,
+      <code>H_TM_BEST_GREEDY</code>, <code>H_TM_TOTAL_WEIGHT</code>
+
+      @see Domain::triangulate ()
+   */
+  enum TriangulationMethod {
+    H_TM_CLIQUE_SIZE, H_TM_CLIQUE_WEIGHT,
+    H_TM_FILL_IN_SIZE, H_TM_FILL_IN_WEIGHT,
+    H_TM_BEST_GREEDY, H_TM_TOTAL_WEIGHT
+  };
+
+
+  /** Constraints used in structure learning.
+      Before performing structure learning, it is possible to
+      impose constraints on the network to be learned.<p>
+      <code>H_CONSTRAINT_NONE</code>,
+      <code>H_CONSTRAINT_EDGE_REQUIRED</code>,
+      <code>H_CONSTRAINT_FORWARD_EDGE_REQUIRED</code>,
+      <code>H_CONSTRAINT_BACKWARD_EDGE_REQUIRED</code>,
+      <code>H_CONSTRAINT_EDGE_FORBIDDEN</code>,
+      <code>H_CONSTRAINT_FORWARD_EDGE_FORBIDDEN</code>,
+      <code>H_CONSTRAINT_BACKWARD_EDGE_FORBIDDEN</code>
+      @see Node::setEdgeConstraint ()
+   */
+  enum Constraint {
+    H_CONSTRAINT_NONE,
+    H_CONSTRAINT_EDGE_REQUIRED,
+    H_CONSTRAINT_FORWARD_EDGE_REQUIRED,
+    H_CONSTRAINT_BACKWARD_EDGE_REQUIRED,
+    H_CONSTRAINT_EDGE_FORBIDDEN,
+    H_CONSTRAINT_FORWARD_EDGE_FORBIDDEN,
+    H_CONSTRAINT_BACKWARD_EDGE_FORBIDDEN
+  };
+
+
+  /** Operators to be used in expressions.
+      @see Expression and sub-classes hereof.
+   */
+  enum Operator {
+    H_OPERATOR_NORMAL,
+    H_OPERATOR_LOGNORMAL,
+    H_OPERATOR_BETA,
+    H_OPERATOR_GAMMA,
+    H_OPERATOR_EXPONENTIAL,
+    H_OPERATOR_WEIBULL,
+    H_OPERATOR_UNIFORM,
+    H_OPERATOR_TRIANGULAR,
+    H_OPERATOR_PERT,
+    H_OPERATOR_BINOMIAL,
+    H_OPERATOR_POISSON,
+    H_OPERATOR_NEGATIVEBINOMIAL,
+    H_OPERATOR_GEOMETRIC,
+    H_OPERATOR_DISTRIBUTION,
+    H_OPERATOR_NOISYOR,
+    H_OPERATOR_TRUNCATE,
+    H_OPERATOR_MIN,
+    H_OPERATOR_MAX,
+    H_OPERATOR_LOG,
+    H_OPERATOR_LOG2,
+    H_OPERATOR_LOG10,
+    H_OPERATOR_EXP,
+    H_OPERATOR_SIN,
+    H_OPERATOR_COS,
+    H_OPERATOR_TAN,
+    H_OPERATOR_SINH,
+    H_OPERATOR_COSH,
+    H_OPERATOR_TANH,
+    H_OPERATOR_SQRT,
+    H_OPERATOR_ABS,
+    H_OPERATOR_FLOOR,
+    H_OPERATOR_CEIL,
+    H_OPERATOR_MOD,
+    H_OPERATOR_IF,
+    H_OPERATOR_AND,
+    H_OPERATOR_OR,
+    H_OPERATOR_NOT,
+    H_OPERATOR_ADD,
+    H_OPERATOR_SUBTRACT,
+    H_OPERATOR_MULTIPLY,
+    H_OPERATOR_DIVIDE,
+    H_OPERATOR_POWER,
+    H_OPERATOR_NEGATE,
+    H_OPERATOR_EQUALS,
+    H_OPERATOR_LESS_THAN,
+    H_OPERATOR_GREATER_THAN,
+    H_OPERATOR_NOT_EQUALS,
+    H_OPERATOR_LESS_THAN_OR_EQUALS,
+    H_OPERATOR_GREATER_THAN_OR_EQUALS,
+    H_OPERATOR_NUMBER,
+    H_OPERATOR_LABEL,
+    H_OPERATOR_NODE,
+    H_OPERATOR_BOOLEAN
+  };
+
+
+  /** The generic Hugin Exception.  All other Hugin specific
+      exceptions are derived from this.
+   */
+
+  class H_DLL ExceptionHugin {
+
+  public:
+
+    virtual ~ExceptionHugin () {}
+
+    /** Get a description of what the problem is
+	@return the description of the exception
+    */
+    virtual const char *what () const throw ();
+
+  };
+
+  /** Represents the cliques in the junction tree.
+
+     @see JunctionTree
+     @see Node
+  */
+  class H_DLL Clique {
+    friend class IHugin;
+
+  private:
+    void *idata;
+    Clique (void *data) : idata (data) {}
+    ~Clique () {}
+
+  public:
+
+    /** Return the JunctionTree to which this Clique belongs.
+     */
+    JunctionTree *getJunctionTree () const;
+
+    /** Return a vector of pointers to Nodes comprising the members of
+	this Clique.
+     */
+    NodeList getMembers () const;
+
+    /** Return a vector of pointers to Cliques comprising the
+	neighbors of this Clique.
+     */
+    CliqueList getNeighbors () const;
+  };
+
+  /** A ClassCollection is one of the principal structures in HUGIN.
+      All classes must be contained in a ClassCollection, and Classes
+      can only contain instances of Classes contained in the same
+      ClassCollection.  That is, each Class may contain instances of
+      other Classes of the ClassCollection, but not of Classes of
+      other ClassCollections.
+
+      @see Class
+  */
+  class H_DLL ClassCollection {
+    friend class IHugin;
+
+  private:
+    void *idata;
+
+  public:
+    /** Construct a new empty ClassCollection object.
+     */
+    ClassCollection ();
+
+    /** Retrieve a ClassList containing all the Classes contained
+	in this ClassCollection.
+	@return A ClassList containing all members of the ClassCollection.
+    */
+    ClassList getMembers () const;
+
+    /** Retrieves a Class from the ClassCollection, identified by its name.
+
+        @param name The name of the Class to return.
+        @return A pointer to the Class with the given name.
+    */
+
+    Class* getClassByName (const std::string& name) const;
+
+    /** Save the ClassCollection as a NET file.  This will write the
+	definition of each Class from the ClassCollection into the
+	same netfile.
+
+	@param fileName The name of the file in which to save the
+	ClassCollection.
+    */
+    void saveAsNet (const std::string& fileName);
+
+    /** Parse the given net into a Class.  This may involve parsing
+	additional nets located in the same file, or in separate
+	files.  All the created Classes are inserted into the
+	ClassCollection.  When the Class to load references other
+	classes, placed in different files, it is the responsibility
+	of the user to provide a function for locating the files for
+	these classes, and insert them into the ClassCollection.  This
+	is done by overloading the insertClass () function in the
+	ClassParseListener class.
+
+	@see ClassParseListener
+    */
+    void parseClasses (const std::string& fileName,
+		       ClassParseListener* listener);
+
+    ~ClassCollection () throw ();
+  };
+
+  /** NetworkModel is the ancestor of both Domain and Class.  Since
+      Class and Domain are, in many ways, conceptually and
+      functionally similar, the NetworkModel class is introduced to
+      capture this similarity.  It contains functionality and
+      variables that are identical for the two classes.
+
+      @see Class
+      @see Domain
+  */
+  class H_DLL NetworkModel {
+    friend class IHugin;
+
+  private:
+    void *idata;
+    void *udata;
+
+  protected:
+    NetworkModel (void *data) : idata (data), udata (0) {}
+
+  public:
+    virtual ~NetworkModel () throw () {}
+
+    /** The infinity value used by Hugin
+	@return infinity, represented as a double
+    */
+    double INFINITY () const;
+
+    /** Write a NET description of this NetworkModel to a file.
+	@param filename The name of the file to save to.
+    */
+    void saveAsNet (const std::string& filename);
+
+    /** Return the file name most recently used for loading or
+	saving this NetworkModel.
+	@return A Standard C++ Library string.
+    */
+    std::string getFileName () const;
+
+    /** Return the Nodes of this NetworkModel.
+	@return NodeList containing the Nodes of this NetworkModel.
+    */
+    NodeList getNodes () const;
+
+    /** Search for a node by name in this NetworkModel.
+	@param name The name of the Node to search for.
+	@return Pointer to the Node with the specified name.  If no
+	such node exists (in this NetworkModel), NULL is returned.
+    */
+    Node *getNodeByName (const std::string& name) const;
+
+    /** Set the user data field of this NetworkModel.  The Hugin API
+	provides a slot within each NetworkModel object for use
+	exclusively by the user/application.  This slot can hold a
+	pointer to arbitrary data, such as a file, a function pointer,
+	etc.  Please note that Hugin does not do anything to the user
+	data.  Data is not even copied.  Only the pointer to the data
+	is stored.
+
+	@param data Pointer to user-defined data associated with
+	this NetworkModel.
+    */
+    void setUserData (void *data) { udata = data; }
+
+    /** Return the value stored within the user data slot of this
+	NetworkModel.  If the stored value is NULL, or if no value has
+	been stored, NULL is returned.  It is the responsibility of
+	the application programmer to ensure that the data is valid,
+	that pointers are accessed correctly, etc.
+
+	Also note that when you delete a NetworkModel, Hugin does not
+	attempt to delete the data pointed to by the user data slot.
+	It is the responsibility of the user.
+
+	@return Pointer to user-defined data associated with this
+	NetworkModel.
+    */
+    void* getUserData () const { return udata; }
+
+    /** Create a nodelist from the data in the given file.  This is
+	typically used together with the triangulation function.
+
+	@param filename The name of the file containing the node list
+	description
+
+	@param errorHandler An instance of a ParseListener for
+	handling errors during the parsing.
+    */
+    NodeList parseNodes
+      (const std::string& filename, ParseListener* errorHandler);
+
+    /** Insert the key/value pair in the attribute list of this
+	NetworkModel.  If the key is already defined, the value is
+	updated.
+    */
+    void setAttribute (const std::string& key, const std::string& value);
+
+    /** Delete the specified attribute from the attribute list of this
+	NetworkModel.  If the key doesn't exist, no action is taken.
+    */
+    void deleteAttribute (const std::string& key);
+
+    /** Test if this NetworkModel has an attribute with the specified
+	key.
+    */
+    bool hasAttribute (const std::string& key) const;
+
+    /** Return the value associated with key in the attribute list of
+	this NetworkModel.
+	@return Standard C++ Library string containing the attribute
+	value.
+    */
+    std::string getAttribute (const std::string& key) const;
+
+    /** Return all the attributes associated with this NetworkModel.
+	@return A vector of all Attributes
+    */
+    AttributeList getAttributes () const;
+
+    /** Set the file to be used for logging by subsequent learning,
+	compilation, triangulation, and table generation operations.
+
+	@param log File pointer to an opene file to be used as log.
+	log must be a text file opened for writing or appending.
+	Writing is done sequentially.
+    */
+    void setLogFile (FILE *log);
+
+    /** Return the size of the displayed nodes.
+	@return Standard C++ Library pair<int,int>.
+    */
+    std::pair<size_t, size_t> getNodeSize () const;
+
+    /** Set the size of the nodes.
+    */
+    void setNodeSize (size_t width, size_t height);
+
+    /** Generate tables for all Nodes, having a Model, in this
+	NetworkModel.  This is done by calling Node::GenerateTable ()
+	for each applicable Node.  The operation is aborted, if table
+	generation fails for some Node.  This may leave the
+	NetworkModel in a state, where some Nodes have got generated
+	Tables, some have not got generated Tables, and one has a
+	partially generated Table.  In this case, an exception is
+	thrown.
+    */
+    void generateTables ();
+
+  };
+
+  /** The Class class is one of the principal structures in HUGIN.
+      When using the Object Oriented features of HUGIN, Classes must
+      be used for creating the networks.  Furthermore, all Classes
+      which are to be used as instances in a given Class must be
+      contained in the same ClassCollection as this.
+
+      Classes cannot, however, be used for inference.  For this
+      purpose, it is necessary to instantiate the Class into a Domain,
+      which can be used for performing inference.
+
+      @see ClassCollection
+      @see Domain
+      @see Node
+  */
+  class H_DLL Class : public NetworkModel {
+    friend class IHugin;
+
+  private:
+    Class (void *data) : NetworkModel (data) {}
+    Class (const Class&);
+
+  public:
+    /** Create a new Class object, contained in the given
+	ClassCollection.
+	@param cColl A pointer to the ClassCollection in which
+	the newly constructed Class should be placed.
+    */
+    explicit Class (ClassCollection *cColl);
+
+    /** Destruct a Class object.
+     */
+    ~Class () throw ();
+
+    /** Set the name of this Class
+	@param name The name which is given to this Class
+    */
+    void setName (const std::string& name);
+
+    /** Set the name of this Class
+	@param name The name which is given to this Class
+    */
+    void setName (const char* name);
+
+    /** Retrieve the name of this Class.  If no name has been assigned
+	to the Class, one will be automatically generated by HUGIN.
+
+	@return The name of this Class
+    */
+    std::string getName ();
+
+    /** Get a list of all Nodes in this Class, which have
+	been added to the inputs of the Class.
+	@return A NodeList containing all input nodes for the Class.
+	@see Node::addToInputs
+    */
+    NodeList getInputs () const;
+
+    /** Get a list of all Nodes in this Class, which have
+	been added to the outputs of the Class.
+	@return A NodeList containing all output nodes for the Class.
+	@see Node::addToOutputs
+    */
+    NodeList getOutputs () const;
+
+    /** Get a list of all InstanceNodes created from this Class.
+	@return A NodeList containing the instances
+	@see InstanceNode
+    */
+    NodeList getInstances () const;
+
+    /** Instantiate this Class to a Domain.  This is required before
+	any inference can be made.  This operation will "unfold" the
+	object oriented parts of the network, so that the Domain will
+	be a standard HUGIN Domain.
+
+	@return The newly constructed Domain.
+    */
+    Domain* createDomain () const;
+
+    /** Return the ClassCollection, in which this Class is contained.
+	A Class can only be contained in a single ClassCollection, so
+	if a given Class definition is needed in more than one
+	ClassCollection, a copy of the Class must be created in each
+	ClassCollection, and changes to one version of the Class will
+	not be reflected in the others.
+	@return The ClassCollection containing this Class
+    */
+    ClassCollection* getClassCollection () const;
+
+  };
+
+
+  /** A domain is the HUGIN representation of a network.  It is one of
+     the principal structures in HUGIN.  It must be constructed before
+     any nodes belonging to the network.
+
+     @see Node
+     @see JunctionTree
+  */
+  class Domain : public NetworkModel {
+    friend class IHugin;
+
+  private:
+    Domain (void *data) : NetworkModel (data) {}
+    Domain (const Domain&);
+
+  public:
+    /** Construct a new, empty Domain object.
+     */
+    H_DLL Domain ();
+
+    /** Construct a domain by loading the corresponding Hugin
+	Knowledge Base from file.
+	@param filename the name of the Hugin KB file
+    */
+    H_DLL explicit Domain (const std::string& filename);
+
+    /** Construct a domain by loading the corresponding password
+	protected Hugin Knowledge Base from file.  If the given
+	password does not match, an exception is thrown.
+
+	@param filename the name of the Hugin KB file
+	@param password the password for the file
+    */
+    H_DLL Domain (const std::string& filename, const std::string& password);
+
+    /** Construct a domain by reading a NET file description.
+	@param filename The name of the NET file.
+	@param pl Pointer to object derived from class ParseListener.
+    */
+    H_DLL Domain (const std::string& filename, ParseListener *pl);
+
+    /** Construct a new domain by cloning an existing domain.
+	@param domain The domain to be cloned.
+    */
+    H_DLL Domain (const Domain *domain);
+
+    /** Construct a runtime domain from the given class.
+	@param cls The Class from which to create the runtime domain.
+    */
+    H_DLL Domain (const Class *cls);
+
+    /** Destruct a Domain object.
+     */
+    H_DLL ~Domain () throw ();
+
+    /** Clone a Domain object.  This function returns a pointer to a
+	copy of this domain.
+     */
+    H_DLL Domain* clone () const;
+
+    /** Adapts this Domain according to the evidence entered.
+     */
+    H_DLL void adapt ();
+
+    /** Remove "near-zero" probabilities from the clique probability
+	tables.  For each Clique object in this domain, a value delta
+	is computed such that the sum of all elements less than delta
+	in the (discrete part) of the clique table is less than
+	epsilon.  These elements (less than delta) are then set to 0.
+
+	@param epsilon The threshold value.  Maximal probability mass
+	to eradicate from each clique.
+
+	@return A double value which is the sum of all entries in
+	clique probability tables that have been zeroed.
+    */
+    H_DLL double approximate (double epsilon);
+
+    /** Test if CG evidence has been propagated for this Domain.
+	@return boolean
+    */
+    H_DLL bool cgEvidenceIsPropagated () const;
+
+    /** Compile this Domain using the default triangulation method.
+	If the domain is already triangulated, nothing is changed.
+	The domain must contain at least one chance or decision
+	node.  */
+    H_DLL void compile ();
+
+    /** Remove the zero entries from the clique and separator tables
+	of the junction trees in this Domain.  Compression can only be
+	applied to (compiled) ordinary belief networks.  Continuous
+	nodes are allowed, but compression only applies to
+	configurations of states of the discrete nodes.
+
+	@return A double value which indicates a measure of
+	compression achieved.  The measure should be less than 1,
+	indicating that the compressed domain requires less space than
+	the uncompressed domain.  An output greater than 1 means that
+	the "compressed" domain requires more space than the
+	uncompressed domain.
+    */
+    H_DLL double compress ();
+
+    /** Enters a case as evidence.  A subsequent propagate operation
+	will perform inference using the case.
+        @param index the index of the case to enter.
+     */
+    H_DLL void enterCase (size_t index);
+
+    /** Test for Equilibrium type.  If the equilibrium of all junction
+	trees of this Domain is eq, return true.
+
+	@param eq Type of Equilibrium to test for.
+    */
+    H_DLL bool equilibriumIs (Equilibrium eq) const;
+
+
+    /** Test if evidence has been propagated for this Domain.
+    */
+    H_DLL bool evidenceIsPropagated () const;
+
+    /** Test for evidence mode.  Test if the equilibrium of all
+	junction trees of this Domain could have been obtained through
+	a propagation using ev as the evidence incorporation mode.
+
+	@param ev Type of EvidenceMode to test for.
+    */
+    H_DLL bool evidenceModeIs (EvidenceMode ev) const;
+
+    /** Return the approximation constant.  The number returned is
+	based on the most recent (explicit or implicit) approximation
+	operation.  An implicit approximation takes place when you
+	change some conditional probability tables of acompressed
+	domain, and then perform a propagation operation.  Since some
+	(discrete) state configurations have been removed from a
+	compressed domain, the probability mass of the remaining
+	configurations will typically be less than 1.  This
+	probability mass is returned by getApproximationConstant ().
+
+	@return A double expressing the probability mass remaining in
+	the approximated domain.
+    */
+    H_DLL double getApproximationConstant () const;
+
+    /** Return the case count associated with case <code>index</code>
+	in this domain.
+     */
+    H_DLL Number getCaseCount (size_t index) const;
+
+    /** Get the current level of concurrency.
+
+        @see setConcurrencyLevel
+    */
+    H_DLL size_t getConcurrencyLevel () const;
+
+    /** Return the conflict value.  The conflict value is valid for
+	this Domain computed during the most recent propagation.  If
+	no propagation has been performed, 1 is returned.  @return A
+	double-precision real value expressing the conflict measure in
+	the domain.
+    */
+    H_DLL double getConflict () const;
+
+    /** Performs a d-separation test and returns a list of d-connected
+        nodes.  Assuming evidence on the specified evidence nodes,
+        this method returns the list of nodes that are d-connected to
+        the specified list of source nodes.
+
+	@return the list of d-connected nodes
+	@param source list of source nodes
+	@param hard list of nodes assumed to be instantiated
+	@param soft list of nodes assumed to have multi-state or
+	likelihood evidence.
+    */
+    H_DLL NodeList getDConnectedNodes (const NodeList& source,
+				       const NodeList& hard,
+				       const NodeList& soft) const;
+
+    /** Performs a d-separation test and returns a list of d-connected
+        nodes.  Assuming evidence on the specified evidence nodes,
+        this method returns the list of nodes that are d-connected to
+        the specified list of source nodes.
+
+	@return the list of d-connected nodes
+	@param source list of source nodes
+	@param evidence list of nodes assumed to be instantiated.
+    */
+    H_DLL NodeList getDConnectedNodes (const NodeList& source,
+				       const NodeList& evidence) const;
+
+    /** Performs a d-separation test and returns a list of d-separated
+        nodes.  Assuming evidence on the specified evidence nodes,
+        this method returns the list of nodes that are d-separated to
+        the specified list of source nodes.
+
+	@return the list of d-separated nodes
+	@param source list of source nodes
+	@param hard list of nodes assumed to be instantiated
+	@param soft list of nodes assumed to have multi-state or
+	likelihood evidence.
+    */
+    H_DLL NodeList getDSeparatedNodes (const NodeList& source,
+				       const NodeList& hard,
+				       const NodeList& soft) const;
+
+    /** Performs a d-separation test and returns a list of d-separated
+        nodes.  Assuming evidence on the specified evidence nodes,
+        this method returns the list of nodes that are d-separated to
+        the specified list of source nodes.
+
+	@return the list of d-separated nodes
+	@param source list of source nodes
+	@param evidence list of nodes assumed to be instantiated.
+    */
+    H_DLL NodeList getDSeparatedNodes (const NodeList& source,
+				       const NodeList& evidence) const;
+
+    /** Return the triangulation order.  A NodeList containing a list
+	of nodes in the order used to triangulate the network of this
+	Domain is returned.  @return NodeList containing Nodes
+	representing the elimination order used.
+    */
+    H_DLL NodeList getEliminationOrder () const;
+
+    /** Return the total expected utility associated with this Domain.
+     */
+    H_DLL Number getExpectedUtility () const;
+
+    /** Return the current value of the grain size parameter.
+
+        @return Positive integer.
+    */
+    H_DLL size_t getGrainSize () const;
+
+    /** Return the JunctionTrees of this Domain.
+
+	@return JunctionTreeList.
+    */
+    H_DLL JunctionTreeList getJunctionTrees () const;
+
+    /** Computes the log-likelihood of the case data. */
+    H_DLL double getLogLikelihood () const;
+
+    /** Computes the AIC score (Akaike's Information Criterion) of the
+	case data.
+     */
+    H_DLL double getAIC () const;
+
+    /** Computes the BIC score (Bayesian Information Criterion) of the
+	case data.
+     */
+    H_DLL double getBIC () const;
+
+    /** Get current setting of the log-likelihood tolerance in this
+	domain.
+     */
+    H_DLL double getLogLikelihoodTolerance () const;
+
+    /** Get current setting of the significance level in this domain.
+     */
+    H_DLL double getSignificanceLevel () const;
+
+    /** Get the logarithm to the normalization constant.
+     */
+    H_DLL double getLogNormalizationConstant () const;
+
+    /** Compute the marginal distribution for the Nodes provided as
+	argument with respect to the (imaginary) joint potential,
+	determined by the current potentials on the junction tree (s)
+	of this Domain.  If <code>nodes</code> contains continuous
+	nodes, they must be last in the list.  This operation is not
+	allowed on compressed domains.
+
+	@param nodes NodeList containing the Node objects over which
+	to compute the marginal.
+	@return A Table which contains the marginal distribution over
+	the nodes provided.
+    */
+    H_DLL Table *getMarginal (const NodeList& nodes) const;
+
+    /** Find all configurations of <code>nodes</code> with probability
+        at least <code>minProbability</code>.  This method uses a
+        Monte Carlo algorithm to solve a generalized form of the
+        <em>maximum a posteriori</em> (MAP) configuration problem: The
+        MAP configuration problem is the problem of finding the most
+        probable configuration of a set of nodes given evidence on
+        some of the remaining nodes.
+     
+        <P> The results of this method are provided by
+        Domain::getNumberOfMAPConfigurations,
+        Domain::getMAPConfiguration, and
+        Domain::getProbabilityOfMAPConfiguration.
+     
+        @param nodes a NodeList containing the DiscreteNodes for which
+        to find configurations.
+
+        @param minProbability configurations with a lower probability
+        than <code>minProbability</code> are ignored.
+     */
+    H_DLL void findMAPConfigurations (const NodeList& nodes,
+				      double minProbability);
+
+    /** Return the number of MAP configurations.  This method returns
+        the number of configurations found by the most recent
+        successful call to Domain::findMAPConfigurations.
+     */
+    H_DLL size_t getNumberOfMAPConfigurations () const;
+
+    /** Return a MAP configuration.  This method returns the
+        configuration identified by <code>index</code> among the
+        configurations with probability at least
+        <code>minProbability</code> &mdash; as specified in the most
+        recent successful call to Domain::findMAPConfigurations.
+     
+        <P> The <code>index</code> argument must be a nonnegative
+        integer less than Domain::getNumberOfMAPConfigurations: 0
+        requests the most probable configuration, 1 the second-most
+        probable configuration, etc.
+     
+        @param index identifies the configuration.
+        @return a vector of state indexes forming the configuration.
+     */
+    H_DLL std::vector<size_t> getMAPConfiguration (size_t index) const;
+
+    /** Return the probability of a MAP configuration.  This method
+        returns the probability of the configuration returned by
+        Domain::getMAPConfiguration (index).
+     
+        @param index identifies the configuration.
+        @return the probability of the specified configuration.
+     */
+    H_DLL double getProbabilityOfMAPConfiguration (size_t index) const;
+
+    /** Retrieve the current maximum number of iterations for the EM
+	algorithm.
+     */
+    H_DLL size_t getMaxNumberOfEMIterations () const;
+
+    /** Retrieve the current maximum number of separators allowed
+	during triangulation.
+     */
+    H_DLL size_t getMaxNumberOfSeparators () const;
+
+    /** Retrieve the normalization constant from the most recent
+	propagation.
+	For sum-propagation, the normalization constant is equal
+	to the probability of the evidence propagated.
+	For max-propagation, the normalization constant is the
+	probability of the most probable configuration with the
+	evidence incorporated.
+    */
+    H_DLL double getNormalizationConstant () const;
+
+    /** Return the number of cases currently allocated for this domain.
+     */
+    H_DLL size_t getNumberOfCases () const;
+
+    /** Compute the constants of the sensitivity functions for the
+        specified output probabilities and all CPT parameters in the
+        network.  The output probabilities are specified using a list
+        of nodes and a list of corresponding states.
+
+	@param nodes the list of (output) nodes
+	@param states a list of states of the nodes in the
+	<code>nodes</code> list
+     */
+    H_DLL void computeSensitivityData (const NodeList& nodes,
+				       const std::vector<size_t>& states);
+
+    /** Return the sensitivity set computed by the most recent call to
+        DiscreteChanceNode::computeSensitivityData.  If the results
+        produced by that call have been invalidated, a usage exception
+        is thrown.
+     */
+    H_DLL NodeList getSensitivitySet () const;
+
+    /** Return the sensitivity set computed by the most recent call to
+	Domain::computeSensitivityData.  If the results produced by
+	that call have been invalidated, a usage exception is thrown.
+	@param output identifies one of the output probabilities
+	specified in the call to Domain::computeSensitivityData.
+     */
+    H_DLL NodeList getSensitivitySet (size_t output) const;
+
+    /** Test if evidence has been entered since last propagation.
+    */
+    H_DLL bool hasEvidenceToPropagate () const;
+
+    /** Test for new node tables.  Are there any nodes in this Domain
+	having (a conditional probability or utility) table that has
+	changed since the most recent compilation or propagation.
+    */
+    H_DLL bool hasTablesToPropagate () const;
+
+    /** Establish the initial values for all tables of this Domain
+	(which must be compiled).  Using this method will erase all
+	evidence previously entered.
+    */
+    H_DLL void initialize ();
+
+
+    /** Learn the structure of a network from data.
+     */
+    H_DLL void learnStructure ();
+
+
+    /** Test whether this Domain is triangulated.  Being "triangulated"
+        means that the junction forest has been created, but not the
+        associated tables.
+    */
+    H_DLL bool isTriangulated () const;
+
+    /** Test whether this Domain is compiled.
+     */
+    H_DLL bool isCompiled () const;
+
+    /** Test whether this Domain is compressed.
+     */
+    H_DLL bool isCompressed () const;
+
+    /** Learn the conditional probability tables for each node in this
+	domain that has an experience table.
+    */
+    H_DLL void learnTables ();
+
+    /** Perform EM learning on an OOBN.  This requires, that the data
+	matches the domain created from the OOBN, and not the OOBN
+	itself.
+    */
+    H_DLL void learnClassTables ();
+
+    /** Test if likelihood eveidence has been propagated for this
+	Domain.
+    */
+    H_DLL bool likelihoodIsPropagated () const;
+
+    /** Allocate storage within this domain to a new case.
+
+        @return New case index.
+    */
+    H_DLL size_t newCase ();
+
+    /** Establish the specified equilibrium using the evidence mode
+	indicated for incorporation of evidence on all junction trees
+	in this Domain.  Also, revised beliefs will be computed for all
+	nodes.
+
+	@param eq Equilibrium type.  Defaults to H_EQUILIBRIUM_SUM.
+	@param ev EvidenceMode type.  Defaults to H_MODE_NORMAL.
+    */
+    H_DLL void propagate (Equilibrium eq = H_EQUILIBRIUM_SUM,
+			  EvidenceMode ev = H_MODE_NORMAL);
+
+    /** Establish the initial state of the inference engine.:
+	sum-equilibrium with no evidence incorporated.  Any propagated
+	findings will thus be removed from the junction tree
+	potentials, but entered findings will still be "registred"
+	(i.e., they will be incorporated in the next propagation).
+    */
+    H_DLL void resetInferenceEngine ();
+
+    /** Update the policy tables of this domain.  The policies of all
+	unmade decisions are updated.  The new policies maximize the
+	overall expected utility.
+    */
+    H_DLL void updatePolicies ();
+
+    /** Retract (all) findings for all nodes in this Domain.
+     */
+    H_DLL void retractFindings ();
+
+    /** Save this Domain as a Hugin Knowledge Base.
+
+	@param filename Name of the file to save the knowledge base
+	into.
+    */
+    H_DLL void saveAsKB (const std::string& filename);
+
+    /** Save this Domain as a password protected Hugin Knowledge Base.
+
+	@param filename Name of the file to save the knowledge base into.
+	@param password The password for the file.
+    */
+    H_DLL void saveAsKB (const std::string& filename,
+			 const std::string& password);
+
+    /** Create a copy in memory of the belief and junction tree tables
+        of this Domain.  This operation can only be performed if the
+        domain is compiled, the current equilibrium is "sum", and no
+        evidence has been incorporated.
+    */
+    H_DLL void saveToMemory ();
+
+    /** Set the case count associated with case <code>index</code> in
+	this domain to <code>count</code>.
+    */
+    H_DLL void setCaseCount (size_t index, Number count);
+
+    /** Set the level of concurrency.  The level of concurrency
+	specifies the maximum number of threads to create when
+	performing a specific table operation.  Setting the level of
+	concurrency to 1 will cause all table operations to be
+	performed sequentially.  The initial parameter value is 1.
+    */
+    H_DLL void setConcurrencyLevel (size_t level);
+
+    /** Set the grains size parameter.  The grain size parameter
+	specifies a lower limit of the tasks to be performed by each
+	thread.  The size of a task is approximately equal to the
+	number of floating-point operations needed to perform the task
+	(e.g., the number of elements to sum when performing a
+	marginalization task).
+
+	The initial value of the grain size parameter is 10000.
+    */
+    H_DLL void setGrainSize (size_t size);
+
+    /** Specify the tolerance of the log-likelihood.  Terminate the EM
+	learning when the relative difference between the
+	log-likelihood of two successive iterations becomes less than
+	tolerance.
+    */
+    H_DLL void setLogLikelihoodTolerance (double tolerance);
+
+    /** Specify the Significance Level used for the structurel
+	learning aglorithm
+    */
+    H_DLL void setSignificanceLevel (double significancelevel);
+
+    /** Set the maximal number of iterations allowed for the EM
+	algorithm.  The algorithm termnates when this number is
+	reached or when the relative improvement becomes lower than
+	the log-likelihood tolerance.
+
+	@param iterations Maximum allowed number of iterations.
+    */
+    H_DLL void setMaxNumberOfEMIterations (size_t iterations);
+
+    /** Set the maximal number of separators allowed during
+	triangulation.
+	@param separators Maximum number of separators allowed durring
+	triangulation.
+    */
+    H_DLL void setMaxNumberOfSeparators (size_t separators);
+
+    /**	Adjust the storage capacity for cases in this domain.
+        @param number Storage capacity.
+    */
+    H_DLL void setNumberOfCases (size_t number);
+
+    /** Sample a configuration for this Domain with respect to the
+	current distribution.  The current distribution must be in
+	sum-equilibrium and with evidence incorporated in normal
+	mode.
+    */
+    H_DLL void simulate ();
+
+    /** Triangulate the graph of this Domain using the specified
+        triangulation method.
+
+	@param tm the TriangulationMethod to use.
+    */
+    H_DLL void triangulate (TriangulationMethod tm = H_TM_BEST_GREEDY);
+
+    /** Triangulates the graph of this Domain using the specified
+        elimination order.  The elimination order must contain each
+        chance and decision node of this Domain exactly once, and
+        continuous nodes must appear before discrete nodes.  <P>
+
+        @param order a NodeList containing the Nodes of the network in
+        the order of elimination
+    */
+    H_DLL void triangulate (const NodeList& order);
+
+    /** Uncompiles this Domain.  The data structures of this Domain
+        produced by a triangulation or a compilation are deleted.
+        Note that pointers to objects within the compiled structure
+        (e.g., Cliques and JunctionTrees) are invalidated.  Also note
+        that many of the editing functions automatically performs an
+        uncompile() operation.  When this happens, the domain must be
+        compiled again before it can be used for inference.
+    */
+    H_DLL void uncompile ();
+
+    /** Seeds the random number generator.  The random number
+	generator, used by HUGIN, generates a sequence of numbers
+	which appears random, but are in fact deterministic.  However,
+	"seeding" the generator will change the starting point within
+	the sequence.
+	@param seed determines the starting point of the random number
+	generator.
+    */
+    H_DLL void seedRandom (unsigned int seed);
+
+    /** Uses the pseudo-random number generator for this Domain to
+        sample a real number from the uniform distribution over the
+        interval [0,1).
+    */
+    H_DLL double getUniformDeviate ();
+
+    /** Uses the pseudo-random number generator for this Domain to
+        sample a real number from a normal (aka Gaussian)
+        distribution.
+	@param mean the mean of the distribution
+	@param variance the variance of the distribution
+    */
+    H_DLL double getNormalDeviate (double mean, double variance);
+
+    /** Saves all evidence entered in this Domain in a file with the
+	given fileName (if the file exists, it is overwritten).
+	@param filename the name of the file in which the case is
+	going to be saved.
+    */
+    H_DLL void saveCase (const std::string& filename);
+
+    /** Parses the case stored in a file with the given filename and
+	enters the associated findings into this Domain.  All existing
+	evidence in the Domain is retracted before entering the case
+	findings.
+	@param filename the name of the file containing the case.
+	@param pl the ParseListener used for handling parse errors.
+    */
+    H_DLL void parseCase (const std::string& filename, ParseListener* pl);
+
+    /** Parses a set of cases, stored in a file with the given
+	filename.  The found cases are entered into the Domain.
+	@param filename the name of the file containing the case.
+	@param pl the ParseListener used for handling parse errors.
+    */
+    H_DLL void parseCases (const std::string& filename, ParseListener* pl);
+
+    /** Saves all cases entered in this Domain in a file with the
+	given fileName.
+
+	@param filename The name of the file in which the cases will
+	be saved (if the file exists, it is overwritten).
+
+	@param nodes A list of the nodes which are to be included in
+	the file.
+
+	@param caseCounts If true, include case counts in the data
+	file.  If false, case counts will not be included.
+
+	@param separator The string used to separate the items in the
+	file.
+
+	@param missingData The string used to represent missing data.
+     */
+    H_DLL void saveCases (const std::string& filename,
+			  const NodeList& nodes,
+			  bool caseCounts,
+			  const std::string& separator,
+			  const std::string& missingData);
+
+    /** Saves the specified cases entered in this Domain in a file
+	with the given fileName.
+
+	@param filename The name of the file in which the cases will
+	be saved (if the file exists, it is overwritten).
+
+	@param nodes A list of the nodes which are to be included in
+	the file.
+
+	@param cases A list of indexes of cases to be included in the
+	file.
+
+	@param caseCounts If true, include case counts in the data
+	file.  If false, case counts will not be included.
+
+	@param separator The string used to separate the items in the
+	file.
+
+	@param missingData The string used to represent missing data.
+     */
+    H_DLL void saveCases (const std::string& filename,
+			  const NodeList& nodes,
+			  const std::vector<size_t>& cases,
+			  bool caseCounts,
+			  const std::string& separator,
+			  const std::string& missingData);
+
+  };
+
+
+  /** An API function was called with an invalid argument (for
+      example, a NULL object was passed to a function that expects a
+      non-NULL argument).
+   */
+
+  class H_DLL ExceptionUsage : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** A fatal error occurred during an input or output operation.
+      This could be a failure to open a specified file, a failure to
+      create a file due to wrong permissions, a failure during a write
+      operation due to the disk running full, etc.
+   */
+  class H_DLL ExceptionIO : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Hugin ran out of memory while carrying out some operation.
+   */
+  class H_DLL ExceptionMemory : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** An attempt has been made to assign a name that is already in use
+      to a node or a class.
+   */
+  class H_DLL ExceptionTwice : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Names used for classes, nodes, and attributes must have the same
+      form as a C identifier.
+   */
+  class H_DLL ExceptionInvalidName : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The true size is too large to represent within type
+      <code>size_t</code>.
+   */
+  class H_DLL ExceptionSizeTooLarge : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Logical relations in the distribution has caused a
+      fast-retraction propagation to fail.
+   */
+  class H_DLL ExceptionFastRetraction : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Zero variance detected during a conditioning operation.
+   */
+  class H_DLL ExceptionZeroVariance : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** No value has been specified (or the specified value has become
+      invalid).
+   */
+  class H_DLL ExceptionNoValue : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Possibly significant floating-point rounding error detected.
+   */
+  class H_DLL ExceptionRounding : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** This Hugin KB file is not supported.  That is, the file was
+      produced by a version of the Hugin API that is either very old
+      or newer than this version.
+   */
+  class H_DLL ExceptionBadKBVersion : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** This file is not a valid Hugin KB file.  Either the file is not
+      a Hugin KB file, or the file has been damaged.
+   */
+  class H_DLL ExceptionBadKBFormat : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The supplied password does not match the password stored in the
+      Hugin KB file.
+   */
+  class H_DLL ExceptionBadKBPassword : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The operation requires a compiled domain.
+   */
+  class H_DLL ExceptionNotCompiled : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** A cycle has been detected in the network of the domain.
+   */
+  class H_DLL ExceptionCyclicNetwork : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The specified elimination sequence is invalid.  Possible causes:
+      a utility node is found, a node appears twice, the nodes are
+      out-of-order, or the sequence is incomplete.
+   */
+  class H_DLL ExceptionEnumeration : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** A negative value or a zero-sum distribution has been found in a
+      probability potential.
+   */
+  class H_DLL ExceptionInvalidProbabilityPotential : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Chain graph: Zero probability found in parent potential.
+   */
+  class H_DLL ExceptionChainGraph : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The junction tree potentials are inconsistent.
+   */
+  class H_DLL ExceptionNoEquilibrium : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Propagation of inconsistent evidence has been attempted. Or
+      perhaps (but unlikely) underflow has occurred.
+   */
+  class H_DLL ExceptionInconsistencyOrUnderflow : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Overflow occurred during propagation.
+   */
+  class H_DLL ExceptionOverflow : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The density of the evidence presented is too low to represent as
+      a positive floating-point number.
+   */
+  class H_DLL ExceptionLowDensity : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** This operation is not supported when the junction tree
+      potentials have CG evidence incorporated.
+   */
+  class H_DLL ExceptionCGEvidenceIncorporated : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Normalization with a zero normalization constant has been
+      attempted.
+   */
+  class H_DLL ExceptionNormalization : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The operation is not supported on compressed domains.
+   */
+  class H_DLL ExceptionCompressed : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The compressed version of some non-clique table is too large.
+   */
+  class H_DLL ExceptionTableTooLarge : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The specified evidence violates the "free will" condition, or
+      evidence on a decision node is not an instantiation.
+   */
+  class H_DLL ExceptionInvalidEvidence : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** A case state index larger than 32767 has been specified.
+   */
+  class H_DLL ExceptionCaseStateTooLarge : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** An error occurred while parsing a NET specification.  If a
+      parsing error handling function was specified, it will have been
+      called with a description of the error and its location in the
+      NET specification.
+   */
+  class H_DLL ExceptionParse : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The Hugin API could not establish the C locale.
+   */
+  class H_DLL ExceptionLocale : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The supplied expression is invalid (for example, wrong type).
+   */
+  class H_DLL ExceptionInvalidExpression : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** A syntax error has been detected while parsing an expression.
+   */
+  class H_DLL ExceptionSyntax : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Division by zero has been attempted.
+   */
+  class H_DLL ExceptionDivisionByZero : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Invalid arguments have been given to a standard mathematical or
+      probability/density function.
+   */
+  class H_DLL ExceptionInappropriateArguments : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The probability/density function could not be computed.
+   */
+  class H_DLL ExceptionComputationFailed : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The state range of the node is insufficient for the chosen
+      standard distribution.
+   */
+  class H_DLL ExceptionInsufficientStateRange : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The state values of a numeric node do not form an increasing
+      sequence.
+   */
+  class H_DLL ExceptionInvalidStateValues : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Attempted to read a value associated with a non-existing
+      attribute.
+   */
+  class H_DLL ExceptionAttribute : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** The NetworkModel does not have a file name associated with it.
+   */
+  class H_DLL ExceptionNoFileName : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Attempted to use a table of wrong dimensions, e.g., while
+      setting data of a table.
+   */
+  class H_DLL ExceptionTableSize : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Attempted to work on domain with invalid license information.
+   */
+  class H_DLL ExceptionInvalidLicense : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** Attempted to work on domain, which exceeds the limits of the
+      demo version.
+   */
+  class H_DLL ExceptionDemo : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** LIMIDs with CG nodes are not supported.
+   */
+  class H_DLL ExceptionCGLIMIDsNotSupported : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** Cyclic hierarchies of class instances are not allowed.
+   */
+  class H_DLL ExceptionCyclicInstanceHierarchy : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** An actual input node is incompatible with the formal input node,
+      or there are multiple occurrences of the same parent.
+   */
+  class H_DLL ExceptionIllegalBinding : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** The time limited evaluation license has expired
+   */
+  class H_DLL ExceptionExpiredLicense : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+  /** This is an impossible error.  It should never occur.  It might
+      be caused by an error in the Hugin API.
+   */
+  class H_DLL ExceptionError : public ExceptionHugin {
+  public:
+    const char *what () const throw ();
+  };
+
+
+  /** Expression is the ancestor of all expression classes.
+      Expression classes are used to build expressions for discrete
+      chance node tables and utility tables (see also class Model).
+  */
+  class H_DLL Expression {
+    friend class Model;
+    friend class IExpression;
+
+  protected:
+
+    IExpression *iExpression;
+    Expression () {}
+
+  public:
+
+    /** Create a new expression from an existing expression
+     * @param exprSrc the existing expression
+     */
+    Expression (const Expression& exprSrc);
+
+    virtual ~Expression () throw ();
+
+    /** Clone this Expression.
+     * @return a clone of this expression
+     */
+    virtual Expression* clone () const = 0;
+
+    /** Test whether this Expression is an instance of CompositeExpression.
+     */
+    virtual bool isCompositeExpression () const = 0;
+
+    /** Test whether this Expression is an instance of ConstantExpression.
+     */
+    virtual bool isConstantExpression () const = 0;
+
+    /** Test whether this Expression is an instance of NodeExpression.
+     */
+    virtual bool isNodeExpression () const = 0;
+
+    /** Assignment operator.
+     */
+    Expression& operator= (const Expression& rightExpr);
+
+    /** Create an Expression from a given string.  To ease the
+	creation of complex expressions, it is possible to specify
+	these as strings, instead of building them with objects.
+
+	Example: The following code
+
+	Expression *result=new IfExpression (new BooleanExpression (true),
+	new NumberExpression (1), new DistributionDistribution
+	(new NumberExpression (1), new NumberExpression (2)));
+
+	can be written like this:
+
+	Expression *result = Expression::stringToExpression
+	("if (true, 1, Distribution (1,2)) ", domain);
+	@param str The string containing a textual representation
+	of the expression
+	@param dom The domain in which the Expression is generated
+    */
+    static Expression* stringToExpression
+      (const std::string& str, const Domain &dom);
+
+    /** Equivalent to stringToExpression (string, Domain) except
+	that it takes a Class as second argument.
+    */
+    static Expression* stringToExpression
+      (const std::string& str, const Class &cls);
+
+    /** Return a string representation of this expression.
+     * @return String describing the expression
+     */
+    std::string toString ();
+
+  };
+
+
+  /** The ancestor of all expression classes representing a constant
+      (label, number, or Boolean).
+   */
+  class H_DLL ConstantExpression : public Expression {
+
+  public:
+
+    /** Test if the expression is a LabelExpression.
+     */
+    virtual bool isLabelExpression () const = 0;
+
+    /** Test if the expression is a NumberExpression.
+     */
+    virtual bool isNumberExpression () const = 0;
+
+    /** Test if the expression is a BooleanExpression.
+     */
+    virtual bool isBooleanExpression () const = 0;
+
+    /** Test if the expression is a ConstantExpression.
+     */
+    bool isConstantExpression () const { return true; }
+
+    /** Test if the expression is a CompositeExpression.
+     */
+    bool isCompositeExpression () const { return false; }
+
+    /** Test if the expression is a NodeExpression.
+     */
+    bool isNodeExpression () const { return false; }
+
+  };
+
+
+  /** An expression representing the value of a discrete chance node
+      or decision node.
+   */
+  class H_DLL NodeExpression : public Expression {
+
+  public:
+
+    NodeExpression (const Node *node);
+
+    /** Clone the NodeExpression.
+     */
+    Expression* clone () const;
+
+    /** Return the node used to build the expression.
+     */
+    Node *getNode () const;
+
+    /** Return the node used to build the expression.
+     */
+    Node *getValue () const { return getNode (); }
+
+    /** Test if the expression is a CompositeExpression.
+     */
+    bool isCompositeExpression () const { return false; }
+
+    /** Test if the expression is a ConstantExpression.
+     */
+    bool isConstantExpression () const { return false; }
+
+    /** Test if the expression is a NodeExpression.
+     */
+    bool isNodeExpression () const { return true; }
+
+  };
+
+
+  /** The base class of all composite expressions (for example
+      arithmetic operators and standard distribution functions).
+   */
+  class CompositeExpression : public Expression {
+
+  private:
+    ExpressionList args;
+
+  protected:
+    /** Create a composite expression from a list of expressions. */
+    H_DLL CompositeExpression (Operator, const ExpressionList&);
+
+    /** Construct a composite expression from a single expression. */
+    H_DLL CompositeExpression (Operator, Expression*);
+
+    /** Construct a composite expression from two expressions. */
+    H_DLL CompositeExpression (Operator, Expression*, Expression*);
+
+    /** Construct a composite expression from three expressions. */
+    H_DLL CompositeExpression
+      (Operator, Expression*, Expression*, Expression*);
+
+    /** Construct a composite expression from four expressions. */
+    H_DLL CompositeExpression
+      (Operator, Expression*, Expression*, Expression*, Expression*);
+
+  public:
+    /** Copy construct a composite expression.
+     */
+    H_DLL CompositeExpression (const CompositeExpression&);
+
+    /** Destruct CompositeExpression.
+     */
+    H_DLL ~CompositeExpression () throw ();
+
+    /** Return an ExpressionList containing the Expressions in the
+	CompositeExpression.
+     */
+    H_DLL ExpressionList getOperands () const { return args; }
+
+    H_DLL virtual Operator getOperator () const = 0;
+
+    /** Test if the expression is a CompositeExpression.
+    */
+    H_DLL bool isCompositeExpression () const { return true; }
+
+    /** Test if the expression is a ConstantExpression.
+     */
+    H_DLL bool isConstantExpression () const { return false; }
+
+    /** Test if the expression is a NodeExpression.
+    */
+    H_DLL bool isNodeExpression () const { return false; }
+
+  };
+
+
+  /** A label constant expression. This type of expression is used to
+      compare with state labels of labelled discrete chance nodes or
+      decision nodes.
+   */
+  class H_DLL LabelExpression : public ConstantExpression {
+
+  public:
+
+    /** Construct a LabelExpression from a string.
+     */
+    LabelExpression (const std::string& label);
+
+    /** Clone the expression.
+     */
+    Expression* clone () const;
+
+    /** Return the label of the expresion.
+     */
+    std::string getLabel () const;
+
+    /** Return the label of the expresion.
+     */
+    std::string getValue () const { return getLabel (); }
+
+    /** Test if the expression is a BooleanExpression.
+     */
+    bool isBooleanExpression () const { return false; }
+
+    /** Test if the expression is a LabelExpression.
+     */
+    bool isLabelExpression () const { return true; }
+
+    /** Test if the expression is a NumberExpression.
+     */
+    bool isNumberExpression () const { return false; }
+
+  };
+
+
+  /** A Boolean constant expression.  This type of expression is used
+      to compare with state values of Boolean discrete chance nodes or
+      decision nodes.
+   */
+  class H_DLL BooleanExpression : public ConstantExpression {
+
+  public:
+
+    /** Construct a BooleanExpression from a boolean value.
+     */
+    BooleanExpression (bool value);
+
+    /** Clone the expression.
+     */
+    Expression* clone () const;
+
+    /** Return the value of the BooleanExpression
+     */
+    bool getBoolean () const;
+
+    /** Return the Operator for this Expression.
+     */
+    Operator getOperator () const { return H_OPERATOR_BOOLEAN; }
+
+    /** Return the value of the Expression.
+     */
+    bool getValue () const { return getBoolean (); }
+
+    /** Test if the expression is a BooleanExpression.
+     */
+    bool isBooleanExpression () const { return true; }
+
+    /** Test if the expression is a LabelExpression.
+     */
+    bool isLabelExpression () const { return false; }
+
+    /** Test if the expression is a NumberExpression.
+     */
+    bool isNumberExpression () const { return false; }
+
+  };
+
+
+  /** A numeric constant expression.  This type of expression is used
+      to compare with state values of numbered or interbal discrete
+      chance nodes or decision nodes.
+   */
+  class H_DLL NumberExpression : public ConstantExpression {
+
+  public:
+
+    /** Create a new NumberExpression representing the given value.
+	@param value the number to represent
+	@return a new NumberExpression
+     */
+    NumberExpression (double value);
+
+    /** Clone the expression.
+     */
+    Expression* clone () const;
+
+    /** Return the number respresented by the expression.
+     */
+    double getNumber () const;
+
+    /** Return the number respresented by the expression.
+     */
+    double getValue () const { return getNumber (); }
+
+    /** Test if the expression is a BooleanExpression.
+     */
+    bool isBooleanExpression () const { return false; }
+
+    /** Test if the expression is a LabelExpression.
+     */
+    bool isLabelExpression () const { return false; }
+
+    /** Test if the expression is a NumberExpression.
+     */
+    bool isNumberExpression () const { return true; }
+
+  };
+
+
+  /** Expression class representing the Normal (also known as the
+      Gaussian) distribution.
+   */
+  class NormalDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    NormalDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_NORMAL, arguments) {}
+  public:
+    /** Construct a new NormalDistribution. */
+    NormalDistribution (Expression *mean, Expression *variance)
+      : CompositeExpression (H_OPERATOR_NORMAL, mean, variance) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new NormalDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_NORMAL; }
+  };
+
+
+  /** Expression class representing the LogNormal distribution.
+   */
+  class LogNormalDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    LogNormalDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_LOGNORMAL, arguments) {}
+  public:
+    /** Construct a new LogNormalDistribution.  If X is a random
+        variable with a log-normal distribution, then log(X) has a
+        normal distribution.
+	@param mean mean of log(X)
+	@param variance variance of log(X) [note: not standard deviation]
+    */
+    LogNormalDistribution (Expression *mean, Expression *variance)
+      : CompositeExpression (H_OPERATOR_LOGNORMAL, mean, variance) {}
+
+    /** Construct a new LogNormalDistribution.  If X is a random
+        variable with a log-normal distribution, then log(X) has a
+        normal distribution.
+	@param mean mean of log(X)
+	@param variance variance of log(X) [note: not standard deviation]
+	@param location minimum value of X [i.e., log(X-location) has a
+	normal distribution]
+    */
+    LogNormalDistribution (Expression *mean, Expression *variance,
+			   Expression *location)
+      : CompositeExpression (H_OPERATOR_LOGNORMAL, mean, variance, location) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new LogNormalDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_LOGNORMAL; }
+  };
+
+
+  /** Expression class representing the Beta distribution. */
+  class BetaDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    BetaDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_BETA, arguments) {}
+  public:
+    /** Construct a new BetaDistribution. */
+    BetaDistribution (Expression *alpha, Expression *beta)
+      : CompositeExpression (H_OPERATOR_BETA, alpha, beta) {}
+
+    /** Construct a new BetaDistribution. */
+    BetaDistribution (Expression *alpha, Expression *beta,
+		      Expression *min, Expression *max)
+      : CompositeExpression (H_OPERATOR_BETA, alpha, beta, min, max) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new BetaDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_BETA; }
+  };
+
+
+  /** Expression class representing the Gamma distribution. */
+  class GammaDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    GammaDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_GAMMA, arguments) {}
+  public:
+    /** Construct a new GammaDistribution. */
+    GammaDistribution (Expression *shape, Expression *scale)
+      : CompositeExpression (H_OPERATOR_GAMMA, shape, scale) {}
+
+    /** Construct a new GammaDistribution. */
+    GammaDistribution (Expression *shape, Expression *scale,
+		       Expression *location)
+      : CompositeExpression (H_OPERATOR_GAMMA, shape, scale, location) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new GammaDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_GAMMA; }
+  };
+
+
+  /** Expression class representing the Exponential distribution.
+   */
+  class ExponentialDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    ExponentialDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_EXPONENTIAL, arguments) {}
+  public:
+    /** Construct a new ExponentialDistribution. */
+    ExponentialDistribution (Expression *scale)
+      : CompositeExpression (H_OPERATOR_EXPONENTIAL, scale) {}
+
+    /** Construct a new ExponentialDistribution. */
+    ExponentialDistribution (Expression *scale, Expression *location)
+      : CompositeExpression (H_OPERATOR_EXPONENTIAL, scale, location) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new ExponentialDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_EXPONENTIAL; }
+  };
+
+
+  /** Expression class representing the Weibull distribution.
+   */
+  class WeibullDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    WeibullDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_WEIBULL, arguments) {}
+  public:
+    /** Construct a new WeibullDistribution. */
+    WeibullDistribution (Expression *shape, Expression *scale)
+      : CompositeExpression (H_OPERATOR_WEIBULL, shape, scale) {}
+
+    /** Construct a new WeibullDistribution. */
+    WeibullDistribution (Expression *shape, Expression *scale,
+			 Expression *location)
+      : CompositeExpression (H_OPERATOR_WEIBULL, shape, scale, location) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new WeibullDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_WEIBULL; }
+  };
+
+
+  /** Expression class representing the Uniform distribution.
+   */
+  class UniformDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    UniformDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_UNIFORM, arguments) {}
+  public:
+    /** Construct a new UniformDistribution. */
+    UniformDistribution (Expression *min, Expression *max)
+      : CompositeExpression (H_OPERATOR_UNIFORM, min, max) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new UniformDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_UNIFORM; }
+  };
+
+
+  /** Expression class representing the Triangular distribution.
+   */
+  class TriangularDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    TriangularDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_TRIANGULAR, arguments) {}
+  public:
+    /** Construct a new TriangularDistribution. */
+    TriangularDistribution (Expression *min, Expression *mode, Expression *max)
+      : CompositeExpression (H_OPERATOR_TRIANGULAR, min, mode, max) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new TriangularDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_TRIANGULAR; }
+  };
+
+
+  /** Expression class representing the PERT distribution.  A PERT
+      distribution is a Beta distribution specified by the minimum,
+      the most likely (also known as the mode), and the maximum value
+      of the distribution.  An extra optional argument can be used to
+      modify the shape of the distribution.
+   */
+  class PERTDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    PERTDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_PERT, arguments) {}
+  public:
+    /** Construct a new PERTDistribution.  This distribution has
+        default shape (corresponding to shape=4).
+    */
+    PERTDistribution (Expression *min, Expression *mode, Expression *max)
+      : CompositeExpression (H_OPERATOR_PERT, min, mode, max) {}
+
+    /** Construct a new PERTDistribution.  The fourth argument (the
+        shape parameter) must be a positive number.
+    */
+    PERTDistribution (Expression *min, Expression *mode, Expression *max,
+		      Expression *shape)
+      : CompositeExpression (H_OPERATOR_PERT, min, mode, max, shape) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new PERTDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_PERT; }
+  };
+
+
+  /** Expression class representing the Binomial distribution.
+   */
+  class BinomialDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    BinomialDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_BINOMIAL, arguments) {}
+  public:
+    /** Construct a new BinomialDistribution. */
+    BinomialDistribution (Expression *N, Expression *p)
+      : CompositeExpression (H_OPERATOR_BINOMIAL, N, p) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new BinomialDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_BINOMIAL; }
+  };
+
+
+  /** Expression class representing the Poisson distribution.
+   */
+  class PoissonDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    PoissonDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_POISSON, arguments) {}
+  public:
+    /** Construct a new PoissonDistribution. */
+    PoissonDistribution (Expression *lambda)
+      : CompositeExpression (H_OPERATOR_POISSON, lambda) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new PoissonDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_POISSON; }
+  };
+
+
+  /** Expression class representing the Negative Binomial distribution.
+   */
+  class NegativeBinomialDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    NegativeBinomialDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_NEGATIVEBINOMIAL, arguments) {}
+  public:
+    /** Construct a new NegativeBinomialDistribution. */
+    NegativeBinomialDistribution (Expression *N, Expression *p)
+      : CompositeExpression (H_OPERATOR_NEGATIVEBINOMIAL, N, p) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new NegativeBinomialDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_NEGATIVEBINOMIAL; }
+  };
+
+
+  /** Expression class representing the Geometric distribution.
+   */
+  class GeometricDistribution : public CompositeExpression {
+    friend class IExpression;
+  private:
+    GeometricDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_GEOMETRIC, arguments) {}
+  public:
+    /** Construct a new GeometricDistribution. */
+    GeometricDistribution (Expression *p)
+      : CompositeExpression (H_OPERATOR_GEOMETRIC, p) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new GeometricDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_GEOMETRIC; }
+  };
+
+
+  /** Expression class representing the Distribution distribution. */
+  class DistributionDistribution : public CompositeExpression {
+  public:
+    /** Construct a new Distribution. */
+    DistributionDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_DISTRIBUTION, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new DistributionDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_DISTRIBUTION; }
+  };
+
+
+  /** Expression class representing the NoisyOr distribution. */
+  class NoisyOrDistribution : public CompositeExpression {
+  public:
+    /** Construct a new NoisyOrDistribution. */
+    NoisyOrDistribution (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_NOISYOR, e1, e2) {}
+
+    /** Construct a new NoisyOrDistribution. */
+    NoisyOrDistribution (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_NOISYOR, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new NoisyOrDistribution (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_NOISYOR; }
+  };
+
+
+  /** Expression class representing the truncate() operator.
+   */
+  class TruncateExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    TruncateExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_TRUNCATE, arguments) {}
+  public:
+    /** Construct a new TruncateExpression.  This constructs a doubly
+        truncated distribution.  Truncation is only supported for
+        continuous distributions.
+	@param low the left truncation point
+	@param distribution the distribution to be truncated
+	@param high the right truncation point
+    */
+    TruncateExpression (Expression *low, Expression *distribution,
+			Expression *high)
+      : CompositeExpression (H_OPERATOR_TRUNCATE, low, distribution, high) {}
+
+    /** Construct a new TruncateExpression.  This constructs a singly
+        truncated distribution.  Truncation is only supported for
+        continuous distributions.  The semantics of the arguments
+        depend on whether the truncation is left or right:
+	@param a the left truncation point or, in case of right
+	truncation, the distribution to be truncated
+        @param b the right truncation point or, in case of left
+        truncation, the distribution to be truncated
+     */
+    TruncateExpression (Expression *a, Expression *b)
+      : CompositeExpression (H_OPERATOR_TRUNCATE, a, b) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new TruncateExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_TRUNCATE; }
+  };
+
+
+  /** Expression class representing the min() function. */
+  class MinExpression : public CompositeExpression {
+  public:
+    /** Construct a new MinExpression. */
+    MinExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_MIN, e1, e2) {}
+
+    /** Construct a new MinExpression. */
+    MinExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_MIN, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new MinExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_MIN; }
+  };
+
+
+  /** Expression class representing the max() function. */
+  class MaxExpression : public CompositeExpression {
+  public:
+    /** Construct a new MaxExpression. */
+    MaxExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_MAX, e1, e2) {}
+
+    /** Construct a new MaxExpression. */
+    MaxExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_MAX, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new MaxExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_MAX; }
+  };
+
+
+  /** Expression class representing the log() function. */
+  class LogExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    LogExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_LOG, arguments) {}
+  public:
+    /** Construct a new LogExpression. */
+    LogExpression (Expression *e) : CompositeExpression (H_OPERATOR_LOG, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new LogExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_LOG; }
+  };
+
+
+  /** Expression class representing the log2() function. */
+  class Log2Expression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    Log2Expression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_LOG2, arguments) {}
+  public:
+    /** Construct a new Log2Expression. */
+    Log2Expression (Expression *e)
+      : CompositeExpression (H_OPERATOR_LOG2, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new Log2Expression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_LOG2; }
+  };
+
+
+  /** Expression class representing the Log10() function. */
+  class Log10Expression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    Log10Expression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_LOG10, arguments) {}
+  public:
+    /** Construct a new Log10Expression. */
+    Log10Expression (Expression *e)
+      : CompositeExpression (H_OPERATOR_LOG10, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new Log10Expression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_LOG10; }
+  };
+
+
+  /** Expression class representing the exp() function. */
+  class ExpExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    ExpExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_EXP, arguments) {}
+  public:
+    /** Construct a new ExpExpression. */
+    ExpExpression (Expression *e) : CompositeExpression (H_OPERATOR_EXP, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new ExpExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_EXP; }
+  };
+
+
+  /** Expression class representing the sin() function. */
+  class SinExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    SinExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_SIN, arguments) {}
+  public:
+    /** Construct a new SinExpression. */
+    SinExpression (Expression *e) : CompositeExpression (H_OPERATOR_SIN, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new SinExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_SIN; }
+  };
+
+
+  /** Expression class representing the cos() function. */
+  class CosExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    CosExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_COS, arguments) {}
+  public:
+    /** Construct a new CosExpression. */
+    CosExpression (Expression *e) : CompositeExpression (H_OPERATOR_COS, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new CosExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_COS; }
+  };
+
+
+  /** Expression class representing the tan() function. */
+  class TanExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    TanExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_TAN, arguments) {}
+  public:
+    /** Construct a new TanExpression. */
+    TanExpression (Expression *e) : CompositeExpression (H_OPERATOR_TAN, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new TanExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_TAN; }
+  };
+
+
+  /** Expression class representing the sinh() function. */
+  class SinhExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    SinhExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_SINH, arguments) {}
+  public:
+    /** Construct a new SinhExpression. */
+    SinhExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_SINH, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new SinhExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_SINH; }
+  };
+
+
+  /** Expression class representing the cosh() function. */
+  class CoshExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    CoshExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_COSH, arguments) {}
+  public:
+    /** Construct a new CoshExpression. */
+    CoshExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_COSH, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new CoshExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_COSH; }
+  };
+
+
+  /** Expression class representing the tanh() function. */
+  class TanhExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    TanhExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_TANH, arguments) {}
+  public:
+    /** Construct a new TanhExpression. */
+    TanhExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_TANH, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new TanhExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_TANH; }
+  };
+
+
+  /** Expression class representing the sqrt() function. */
+  class SqrtExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    SqrtExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_SQRT, arguments) {}
+  public:
+    /** Construct a new SqrtExpression. */
+    SqrtExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_SQRT, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new SqrtExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_SQRT; }
+  };
+
+
+  /** Expression class representing the abs() function. */
+  class AbsExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    AbsExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_ABS, arguments) {}
+  public:
+    /** Construct a new AbsExpression. */
+    AbsExpression (Expression *e) : CompositeExpression (H_OPERATOR_ABS, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new AbsExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_ABS; }
+  };
+
+
+  /** Expression class representing the floor() function. */
+  class FloorExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    FloorExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_FLOOR, arguments) {}
+  public:
+    /** Construct a new FloorExpression. */
+    FloorExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_FLOOR, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new FloorExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_FLOOR; }
+  };
+
+
+  /** Expression class representing the ceil() function. */
+  class CeilExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    CeilExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_CEIL, arguments) {}
+  public:
+    /** Construct a new CeilExpression. */
+    CeilExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_CEIL, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new CeilExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_CEIL; }
+  };
+
+
+  /** Expression class representing the mod() function. */
+  class ModExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    ModExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_MOD, arguments) {}
+  public:
+    /** Construct a new ModExpression. */
+    ModExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_MOD, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new ModExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_MOD; }
+  };
+
+
+  /** Expression class representing a conditional expression.
+   */
+  class IfExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    IfExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_IF, arguments) {}
+  public:
+    /** Construct a new IfExpression. */
+    IfExpression (Expression *condition,
+		  Expression *trueExpr, Expression *falseExpr)
+      : CompositeExpression (H_OPERATOR_IF, condition, trueExpr, falseExpr) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new IfExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_IF; }
+  };
+
+
+  /** Expression class representing the Boolean and() function. */
+  class AndExpression : public CompositeExpression {
+  public:
+    /** Construct a new AndExpression. */
+    AndExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_AND, e1, e2) {}
+
+    /** Construct a new AndExpression. */
+    AndExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_AND, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new AndExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_AND; }
+  };
+
+
+  /** Expression class representing the Boolean or() function. */
+  class OrExpression : public CompositeExpression {
+  public:
+    /** Construct a new OrExpression. */
+    OrExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_OR, e1, e2) {}
+
+    /** Construct a new OrExpression. */
+    OrExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_OR, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new OrExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_OR; }
+  };
+
+
+  /** Expression class representing the Boolean not() function. */
+  class NotExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    NotExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_NOT, arguments) {}
+  public:
+    /** Construct a new NotExpression. */
+    NotExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_NOT, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new NotExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_NOT; }
+  };
+
+
+  /** Expression class representing the + operator.
+   */
+  class AddExpression : public CompositeExpression {
+  public:
+    /** Construct a new AddExpression. */
+    AddExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_ADD, e1, e2) {}
+
+    /** Construct a new AddExpression. */
+    AddExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_ADD, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new AddExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_ADD; }
+  };
+
+
+  /** Expression class representing the binary - operator. */
+  class SubtractExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    SubtractExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_SUBTRACT, arguments) {}
+  public:
+    /** Construct a new SubtractExpression. */
+    SubtractExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_SUBTRACT, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new SubtractExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_SUBTRACT; }
+  };
+
+
+  /** Expression class representing the * operator. */
+  class MultiplyExpression : public CompositeExpression {
+  public:
+    /** Construct a new MultiplicationExpression. */
+    MultiplyExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_MULTIPLY, e1, e2) {}
+
+    /** Construct a new MultiplicationExpression. */
+    MultiplyExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_MULTIPLY, arguments) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new MultiplyExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_MULTIPLY; }
+  };
+
+
+  /** Expression class representing the / operator. */
+  class DivideExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    DivideExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_DIVIDE, arguments) {}
+  public:
+    /** Construct a new DivideExpression. */
+    DivideExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_DIVIDE, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new DivideExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_DIVIDE; }
+  };
+
+
+  /** Expression class representing the ^ operator. */
+  class PowerExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    PowerExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_POWER, arguments) {}
+  public:
+    /** Construct a new PowerExpression. */
+    PowerExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_POWER, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const { return new PowerExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_POWER; }
+  };
+
+
+  /** Expression class representing the unary - operator. */
+  class NegateExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    NegateExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_NEGATE, arguments) {}
+  public:
+    /** Construct a new NegateExpression. */
+    NegateExpression (Expression *e)
+      : CompositeExpression (H_OPERATOR_NEGATE, e) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new NegateExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_NEGATE; }
+  };
+
+
+  /** Expression class representing the == operator. */
+  class EqualsExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    EqualsExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_EQUALS, arguments) {}
+  public:
+    /** Construct a new EqualsExpression. */
+    EqualsExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_EQUALS, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new EqualsExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_EQUALS; }
+  };
+
+
+  /** Expression class representing the < operator. */
+  class LessThanExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    LessThanExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_LESS_THAN, arguments) {}
+  public:
+    /** Construct a new LessThanExpression. */
+    LessThanExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_LESS_THAN, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new LessThanExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_LESS_THAN; }
+  };
+
+
+  /** Expression class representing the > operator. */
+  class GreaterThanExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    GreaterThanExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_GREATER_THAN, arguments) {}
+  public:
+    /** Construct a new GreaterThanExpression. */
+    GreaterThanExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_GREATER_THAN, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new GreaterThanExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_GREATER_THAN; }
+  };
+
+
+  /** Expression class representing the != operator. */
+  class NotEqualsExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    NotEqualsExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_NOT_EQUALS, arguments) {}
+  public:
+    /** Construct a new NotEqualsExpression. */
+    NotEqualsExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_NOT_EQUALS, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new NotEqualsExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_NOT_EQUALS; }
+  };
+
+
+  /** Expression class representing the <= operator. */
+  class LessThanOrEqualsExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    LessThanOrEqualsExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_LESS_THAN_OR_EQUALS, arguments) {}
+  public:
+    /** Construct a new LessThanOrEqualsExpression. */
+    LessThanOrEqualsExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_LESS_THAN_OR_EQUALS, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new LessThanOrEqualsExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_LESS_THAN_OR_EQUALS; }
+  };
+
+
+  /** Expression class representing the >= operator. */
+  class GreaterThanOrEqualsExpression : public CompositeExpression {
+    friend class IExpression;
+  private:
+    GreaterThanOrEqualsExpression (const ExpressionList& arguments)
+      : CompositeExpression (H_OPERATOR_GREATER_THAN_OR_EQUALS, arguments) {}
+  public:
+    /** Construct a new GreaterThanOrEqualsExpression. */
+    GreaterThanOrEqualsExpression (Expression *e1, Expression *e2)
+      : CompositeExpression (H_OPERATOR_GREATER_THAN_OR_EQUALS, e1, e2) {}
+
+    /** Clone the expression. */
+    Expression* clone () const
+      { return new GreaterThanOrEqualsExpression (getOperands ()); }
+
+    /** Return the operator of the expression. */
+    Operator getOperator () const { return H_OPERATOR_GREATER_THAN_OR_EQUALS; }
+  };
+
+
+  /// Thic class represents the junction trees in the compiled domain.
+  class H_DLL JunctionTree {
+    friend class IHugin;
+
+  private:
+    void *idata;
+    JunctionTree (void *data) : idata (data) {}
+    ~JunctionTree () {}
+
+  public:
+    /** Return the Cliques in the junction tree.
+    */
+    CliqueList getCliques () const;
+
+    /** Return the conflict measure of the data inserted in the
+	junction tree.
+     */
+    double getConflict () const;
+
+    /** Get the root clique of the junction tree.
+     */
+    Clique* getRoot () const;
+
+    /** Return the total number of discrete table configurations for
+        this JunctionTree.  Both clique and separator table
+        configurations are counted.  Also, if the junction tree has
+        utility potentials, then the clique and separator
+        configurations will effectively be counted twice.
+    */
+    size_t getTotalSize () const;
+
+    /** Return the total number of CG table entries for this
+        JunctionTree.  Both clique and separator table entries are
+        counted.
+    */
+    size_t getTotalCGSize () const;
+
+    /** Does the junction tree contain evidence that has not been
+	propagated?
+     */
+    bool hasEvidenceToPropagate () const;
+
+    /** Does the junction tree contain updated tables that have not
+	been propagated?
+     */
+    bool hasTablesToPropagate () const;
+
+    /** Was CG evidence propagated through the junction tree?
+     */
+    bool isCGEvidencePropagated () const;
+
+    /** Test the Equilibrium type. Can the equilibrium of the junction
+	tree be obtained through a propagation using eq as the
+	Equilibrium type?
+     */
+    bool isEquilibrium (Equilibrium eq) const;
+
+    /** Test the EvidenceMode. Does the EvidenceMode match the
+	EvidenceMode given as parameter?
+     */
+    bool isEvidenceMode (EvidenceMode em) const;
+
+    /** Was evidence propagated through the junction tree?
+     */
+    bool isEvidencePropagated () const;
+
+    /** Were likelihoods propagated through the junction tree?
+     */
+    bool isLikelihoodPropagated () const;
+
+    /** Propagate evidence in the junction tree.
+	@param eq The type of Equilibrium to reach after the propagation.
+	@param em The EvidenceMode used.
+     */
+    void propagate (Equilibrium eq = H_EQUILIBRIUM_SUM,
+		    EvidenceMode em = H_MODE_NORMAL);
+  };
+
+
+    /** A Model is a compact description of a table. A model consists of
+	a list of discrete nodes and a set of expressions (one expresion
+	per configuration of states in the nodes.
+
+	@see Expression
+	@see Node
+	@see NodeList
+    */
+    class H_DLL Model {
+      friend class IHugin;
+
+    private:
+      void *idata;
+      Model (void *data) : idata (data) {}
+
+    public:
+      /** Construct a model for a discrete node given a set of nodes.
+       */
+      Model (DiscreteNode *belongsToNode, const NodeList& modelNodes);
+
+      /** Construct a model for a utility node given a set of nodes. */
+      Model (UtilityNode *belongsToNode, const NodeList& modelNodes);
+
+      /** Construct a model for a function node given a set of nodes. */
+      Model (FunctionNode *belongsToNode, const NodeList& modelNodes);
+
+      /** Delete the Model */
+      ~Model () throw ();
+
+      /** Return the Expression associated with a pecific
+	  configuration of the Nodes in the Model
+       */
+      Expression* getExpression (size_t index) const;
+
+      /** Return a NodeList containing the Nodes in Model */
+      NodeList getNodes () const;
+
+      /** Associate an Expression with a specific configuration of the
+	  Model Nodes
+       */
+      void setExpression (size_t index, Expression *e);
+
+      /** Return the number of configuration of the Nodes of Model */
+      size_t size () const;
+
+      /** Sets the number of values taken within each bounded interval
+	  of an interval parent when generating the conditional
+	  probability table for a node with interval parents.
+
+	  When generating the conditional probability table for a node
+	  with interval nodes as parents, a number of values are taken
+	  within each bounded interval of an interval parent. By
+	  default, the interval is divided into 25 subintervals, and
+	  the midpoints of these subintervals are then used in the
+	  computation of the value of the child.
+	  @param count The number of subintervals
+      */
+      void setNumberOfSamplesPerInterval (size_t count);
+
+      /** Returns the number of values per interval used when
+	  generating the conditional probability table for a node with
+	  interval parents.
+
+	  @return size_t specifying the number of samples per interval
+      */
+      size_t getNumberOfSamplesPerInterval () const;
+
+    };
+
+
+    /** Nodes are one of the fundamental objects used in the
+	construction of Bayesian networks and LIMIDs.  All nodes need
+	a NetworkModel (i.e., a Class or a Domain); that is, the
+	network must exist before its nodes can be created.
+    */
+    class H_DLL Node {
+      friend class IHugin;
+
+    private:
+      void *idata;
+      void *udata;
+
+    protected:
+      Node (void*);
+      Node (const Node*);
+
+    public:
+      /** Delete Node. The node is deleted from its domain. If the
+	  domain was compiled, the corresponding compiled structure is
+	  deleted. All references and pointers to the node become
+	  invalid.
+      */
+      virtual ~Node () throw ();
+
+      /** Clone this Node object. */
+      virtual Node *clone () const = 0;
+
+      /** Return the value associated with key in the attribute list
+	  of this node.
+	  @return string containing the attribute value.
+      */
+      std::string getAttribute (const std::string& key) const;
+
+      /** Return the node category.
+      */
+      virtual Category getCategory () const = 0;
+
+      /** Return the node kind.
+      */
+      virtual Kind getKind () const = 0;
+
+      /** Add parent as a new parent of this node.  That is, add a
+	  directed link from parent to this node.
+       */
+      void addParent (Node *parent);
+
+      /** Remove the directed link between <code>parent</code> and
+	  this node. The table (if any) is updated such that the
+	  updated table contains the portion of the old table that
+	  corresponds to <code>parent</code> being in its first state
+	  (if <code>parent</code> is discrete).
+
+	  @param parent Pointer to the parent Node that will be
+	  removed.
+      */
+      void removeParent (Node *parent);
+
+      /** Substitute a new parent for an old parent.  The new parent
+	  must be compatible with the old parent: This implies that it
+	  must be of the same class, have the same number of states,
+	  etc.
+       */
+      void switchParent (Node *oldParent, Node *newParent);
+
+      /** Return a NodeList containing the parents of this node.
+      */
+      NodeList getParents () const;
+
+      /** Return a NodeList containing the children of this node.
+      */
+      NodeList getChildren () const;
+
+      /** Return the Domain this Node belongs to.  This Node must
+	  reside in an existing Hugin domain.
+	  @return A pointer to the Domain where this Node resides.
+      */
+      Domain *getDomain () const;
+
+      /** Return the JunctionTree to which this node belongs.
+       */
+      JunctionTree* getJunctionTree () const;
+
+      /** Get the label of this node.
+      */
+      std::string getLabel () const;
+
+      /** Return the table associated with this Node.
+     
+          If the node is a DiscreteChanceNode, the table is the
+          conditional probability table for the node given its
+          parents.
+     
+          If the node is a UtilityNode, the table represents a utility
+          function of the parents of the node.
+      */
+      Table* getTable ();
+
+      /** Return the Model of this Node.
+      */
+      Model* getModel () const;
+
+      /** Retrieve the name of this Node.  If this node has not
+	  previously been assigned a name, a valid name will
+	  automatically be assigned.
+
+	  @return A string containing the name of this node.
+      */
+      std::string getName ();
+
+      /** Return the position of the node.
+      */
+      std::pair<int, int> getPosition () const;
+
+      /** Return the value stored within the user data slot of this
+	  node. If the stored value is NULL, or if no value has been
+	  stored, NULL is returned. It is the responsibility of the
+	  application programmer to ensure that the data is valid,
+	  that pointers are accessed correctly, etc. Also note that
+	  when you delete a node, Hugin does not attempt to delete the
+	  data pointed to by the user data slot. It is the
+	  responsibility of the user.
+      */
+      void* getUserData () const { return udata; }
+
+      /** Retrieve the learning constraint specified for the edge.
+       */
+      Constraint getEdgeConstraint (Node *bNode) const;
+
+      /** Specify constraint for the edge.
+       */
+      void setEdgeConstraint (Node *bNode, Constraint C);
+
+      /** Generate the table for this Node as it is specified by the
+	  model (i.e., the expressions).  If one or more expressions
+	  are illegal in one way or the other, an expression is
+	  thrown.
+       */
+      void generateTable ();
+
+      /** Returns a vector of attributes associated with this Node.
+       */
+      AttributeList getAttributes () const;
+
+      /** Insert the key/value pair in the attribute list of this
+	  Node.  If the key is already defined, the value is updated.
+      */
+      void setAttribute (const std::string& key, const std::string& value);
+
+      /** Delete the specified attribute from the attribute list of
+	  this Node.  If the key doesn't exist, no action is taken.
+      */
+      void deleteAttribute (const std::string& key);
+
+      /** Test if this Node has an attribute with the specified key.
+      */
+      bool hasAttribute (const std::string& key) const;
+
+      /** Set the node label.
+      */
+      void setLabel (const char* label);
+
+      /** Set the node label.
+      */
+      void setLabel (const std::string& label);
+
+      /** Create a copy of name and assign it to this node. name must
+	  be a valid name, i.e., it must follow the rules that govern
+	  the validity of C identifiers, and no other node in the
+	  domain to which <tt>*this</tt> node belongs can have the
+	  same name.
+
+	  @param name A pointer to a zero-terminated string containing
+	  the desired name of the node.
+      */
+      void setName (const char *name);
+
+      /** Create a copy of name and assign it to this node. name must
+	  be a valid name, i.e., it must follow the rules that govern
+	  the validity of C identifiers, and no other node in the
+	  domain to which <tt>*this</tt> node belongs can have the
+	  same name.
+
+	  @param name the desired name of the node.
+      */
+      void setName (const std::string& name);
+
+      /** Set the position of the node.
+	  @param x The desired x coordinate of the node.
+	  @param y The desired y coordinate of the node.
+      */
+      void setPosition (int x, int y);
+
+      /** Set the position of the node.
+      */
+      void setPosition (const std::pair<int, int>& pos);
+
+      /** The Hugin API provides a data slot within each Node object.
+	  This data slot is for use exclusively by the
+	  user/application.  This slot can hold a pointer to arbitrary
+	  data, such as a file, a display window, an input buffer from
+	  hardware sensors, etc.  Please note that Hugin does not do
+	  anything to the user data.  Data is not even copied.  Only the
+	  pointer to the data is stored.
+
+	  @param data Pointer to user-defined data associated with this node.
+      */
+      void setUserData (void *data) { udata = data; }
+
+      /** Get the Domain in which this node is placed. This
+	  function is equivalent to getDomain, and is only here
+	  for consistency with getHomeClass.
+       */
+      Domain* getHomeDomain () const;
+
+      /** Get the class in which this node is placed.
+       */
+      Class* getHomeClass () const;
+
+      // OO functions
+
+      /** Add this Node to the list of input nodes in this Class.
+	  I.e., make this Node an input node.
+       */
+      void addToInputs ();
+
+      /** Add this Node to the list of output nodes in this Class.
+	  I.e., make this Node an output node.
+       */
+      void addToOutputs ();
+
+      /** Remove this Node from the list of input nodes in the Class.
+	  I.e., make this Node an ordinary node again.
+       */
+      void removeFromInputs ();
+
+      /** Remove this Node from the list of output nodes in the Class.
+	  I.e., make this Node an ordinary node again.
+       */
+      void removeFromOutputs ();
+
+      /** Returns the InstanceNode containing this (cloned) output
+	  node. Note that we clone all output nodes when we create an
+	  InstanceNode. This is done in order to make it possible to
+	  specify conditional probability tables involving output
+	  nodes from InstanceNode's.
+	  @return The InstanceNode containing this output clone.
+	  @see InstanceNode
+      */
+      Node* getInstance () const;
+
+      /** Returns the "master" of this (cloned) output Node of an
+	  InstanceNode (i.e., the Node cloned to get this output
+	  Node).  Note that "master" belongs to another Class object.
+	  Note also that we clone all output nodes when we create an
+	  InstanceNode.  This is done in order to make it possible to
+	  specify conditional probability tables involving output
+	  nodes from InstanceNode's.
+	  @return The "master" of this output clone.       */
+      Node* getMaster () const;
+
+      /** Returns a NodeList of Class nodes that identifies this
+	  Domain node.<p>
+
+	  The createDomain method of the Class class unfolds an
+	  object-oriented (nested) specification of a Bayesian network
+	  or a LIMID into a regular Domain object.<p>
+
+	  Nodes in this Domain which originates from nodes residing in
+	  nested sub-networks (via InstanceNodes) can be uniquely
+	  related to a sequence of InstanceNodes and an ordinary Node
+	  of the object-oriented network.<p>
+
+	  @return An ordered NodeList with the InstanceNodes and the
+	  ordinary Node identifying the source of this Node that must
+	  belong to a Domain.  */
+      NodeList getSource () const;
+    };
+
+
+    /// This class is the ancestor of all discrete nodes.
+
+    class H_DLL DiscreteNode : public Node {
+
+    protected:
+      DiscreteNode (void *data) : Node (data) {}
+      DiscreteNode (const DiscreteNode *node) : Node (node) {}
+
+    public:
+      /** Test whether the value of this node in case index currently
+	  is set.
+	  @param index Case index.
+       */
+      bool caseIsSet (size_t index) const;
+
+      /** This method specifies a finding value for the specified
+	  state and all other states are not effected.
+
+	  @param state An integer designating which state to be
+	  selected. States are numbered consecutively from 0 and
+	  upwards.
+
+	  @param value A non-negative real number as the finding value.
+       */
+      void enterFinding (size_t state, Number value);
+
+      /** Retrieve the state value of this node associated with the
+	  case index.
+       */
+      size_t getCaseState (size_t index) const;
+
+      /** Return the node kind.
+	  @return H_KIND_DISCRETE
+      */
+      Kind getKind () const { return H_KIND_DISCRETE; }
+
+      /** Retrieve the finding currently registered at this node for
+	  state.
+	  @param state An integer designating the state to be examined.
+	  @return A real number expressing the entered finding.
+      */
+      Number getEnteredFinding (size_t state) const;
+
+      /** Return the number of states of this node. The states are
+	  numbered from 0 to N-1.
+      */
+      size_t getNumberOfStates () const;
+
+      /** Set the number of states of this node to states. The
+	  underlying domain will be uncompiled.
+      */
+      void setNumberOfStates (size_t states);
+
+      /** Retrieve the propagated finding. That is, retrieve the
+	  finding value incorporated within the current junction tree
+	  potentials for the specified state of this node.
+
+	  @param state An integer designating the state to be examined.
+	  @return A real number expressing the propagated finding.
+      */
+      Number getPropagatedFinding (size_t state) const;
+
+      /** Return the index of the state matching the specified label.
+	  If there is no (unique) state with the specified state
+	  label, -1 is returned.
+
+	  @param label the state label to search for
+	  @return the index of the state having the specified state label.
+      */
+      Index getStateIndex (const std::string& label) const;
+
+      /** Return the index of the state matching the specified label.
+	  If there is no (unique) state with the specified state
+	  label, -1 is returned.
+
+	  @param label the state label to search for
+	  @return the index of the state having the specified state label.
+      */
+      Index getStateIndex (const char *label) const;
+
+      /** Return the label of state. 0 < state < N, where N is the
+	  number of states in the node.
+	  @return Standard C++ Library string.
+      */
+      std::string getStateLabel (size_t state) const;
+
+      /** Test whether evidence is entered into this node.
+      */
+      bool isEvidenceEntered () const;
+
+      /** Test whether evidence has been propagated from this node.
+	  @return Boolean.
+      */
+      bool isEvidencePropagated () const;
+
+      /** Retract all findings for this node.  This is equivalent to
+	  setting the finding value to 1 for all states of this node.
+      */
+      void retractFindings ();
+
+      /** Select the specified state of this node.  This is equivalent
+	  to specifying the finding value 1 for the specified state
+	  and 0 for all other states.
+
+	  @param state An integer designating which state to be
+	  selected. States are numbered consecutively from 0 and
+	  upwards.
+      */
+      void selectState (size_t state);
+
+      /** Specify the case state of this node associated with case
+	  index to be state.
+	  @param index The case index.
+	  @param state The node state.
+      */
+      void setCaseState (size_t index, size_t state);
+
+      /** Set the state label of the node.
+	  @param state The state number.
+	  @param label The desired state label.
+      */
+      void setStateLabel (size_t state, const char *label);
+
+      /** Set the state label of the node.
+	  @param state The state number.
+	  @param label The desired state label.
+      */
+      void setStateLabel (size_t state, const std::string& label);
+
+      /** Specify that the value of this node for case index is unknown.
+      */
+      void unsetCase (size_t index);
+
+      /** Returns the state sampled for this node.
+       */
+      size_t getSampledState () const;
+
+      /** Return the belief of the specified state. Note that if
+	  findings have been entered since the most recent
+	  propagation, the beliefs returned may not be up-to-date.
+
+	  @param state An integer value designating which state to examine.
+       */
+      Number getBelief (size_t state) const;
+
+      /** Return the expected utility associated with the specified state.
+	  @param state An integer value designating which state to examine.
+      */
+      Number getExpectedUtility (size_t state) const;
+
+      /** Compute the entropy of this node.
+       */
+      double getEntropy () const;
+
+      /** Compute the mutual information between this node and the
+	  specified node.
+	  @param node the other node
+       */
+      double getMutualInformation (const DiscreteNode *node) const;
+
+      /** Return the four constants of the specified sensitivity
+          function.  The output probability of the sensitivity
+          function was specified in the preceding call to
+          DiscreteChanceNode::computeSensitivityData.  If the results
+          produced by that call have been invalidated, a usage
+          exception is thrown.
+
+	  @param input specifies a conditional probability (or policy)
+	  parameter of this node (i.e., <code>input</code> is the
+	  index of an entry in the CPT/policy of this node).
+
+	  @return a NumberList of size 4 containing the constants of the
+	  specified sensitivity function.
+       */
+      NumberList getSensitivityConstants (size_t input) const;
+
+      /** Return the four constants of the specified sensitivity
+	  function.  The output probability of this function must be
+	  one of the output probabilities specified in the preceding
+	  call to Domain::computeSensitivityData.  If the results
+	  produced by that call have been invalidated, a usage
+	  exception is thrown.
+
+	  @param input specifies a conditional probability (or policy)
+	  parameter of this node (i.e., <code>input</code> is the
+	  index of an entry in the CPT/policy of this node).
+
+	  @param output identifies one of the output probabilities
+	  specified in the call to Domain::computeSensitivityData.
+
+	  @return an array of size 4 containing the constants of the
+	  specified sensitivity function.
+      */
+      NumberList getSensitivityConstants (size_t input, size_t output) const;
+
+    };
+
+
+    /// This class is the ancestor of all discrete chance nodes.
+
+    class H_DLL DiscreteChanceNode : public DiscreteNode {
+
+    protected:
+      DiscreteChanceNode (void *data) : DiscreteNode (data) {}
+      DiscreteChanceNode (const DiscreteChanceNode *node) : DiscreteNode (node) {}
+
+    public:
+
+      /** Reverse the edge between this node and the specified neighbor.
+       */
+      void reverseEdge (DiscreteChanceNode *neighbor);
+
+      /** Return the node category.
+	  @return H_CATEGORY_CHANCE
+      */
+      Category getCategory () const { return H_CATEGORY_CHANCE; }
+
+      /** Return the experience table.
+       */
+      Table *getExperienceTable ();
+
+      /** Return the fading table.
+       */
+      Table *getFadingTable ();
+
+      /** Check if the node has an experience table.
+       */
+      bool hasExperienceTable () const;
+
+      /** Check whether node has a fading table.
+       */
+      bool hasFadingTable () const;
+
+      /** Compute the constants of the sensitivity functions for the
+          specified output probability and all CPT parameters in the
+          network.
+
+	  This method calls Domain::computeSensitivityData with the
+	  specified output probability as argument.
+
+	  @param state the index of a state of this node &mdash; the
+	  probability of this state is the desired output probability.
+       */
+      void computeSensitivityData (size_t state);
+
+    };
+
+
+    /// Labelled discrete chance node.  This is the most commonly used
+    /// node type.
+    class H_DLL LabelledDCNode : public DiscreteChanceNode {
+      friend class IHugin;
+
+    private:
+      LabelledDCNode (void *data) : DiscreteChanceNode (data) {}
+      LabelledDCNode (const LabelledDCNode *node) : DiscreteChanceNode (node) {}
+
+    public:
+      /** Create a new LabelledDCNode in the given NetworkModel */
+      LabelledDCNode (NetworkModel *nm);
+
+      /** Construct a new LabelledDCNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      LabelledDCNode (DiscreteNode *node);
+
+      /** Clone this LabelledDCNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      LabelledDCNode* clone () const;
+# endif
+    };
+
+
+    /** Numbered discrete chance node.  Each state represents a number. */
+    class H_DLL NumberedDCNode : public DiscreteChanceNode {
+      friend class IHugin;
+
+    private:
+      NumberedDCNode (void *data) : DiscreteChanceNode (data) {}
+      NumberedDCNode (const NumberedDCNode *node) : DiscreteChanceNode (node) {}
+
+    public:
+      /** Create a new NumberedDCNode in the given NetworkModel */
+      NumberedDCNode (NetworkModel *nm);
+
+      /** Construct a new NumberedDCNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      NumberedDCNode (DiscreteNode *node);
+
+      /** Clone this NumberedDCNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      NumberedDCNode* clone () const;
+# endif
+
+      /** Return the index of the state matching the specified value.
+	  If there is no (unique) state with the specified state
+	  value, -1 is returned.
+
+	  @param value the state value of the state to be searched for
+	  @return the index of the state with the specified state value.
+      */
+      Index getStateIndex (double value) const;
+
+      /** Return the value associated with state.
+      */
+      double getStateValue (size_t state) const;
+
+      /** Set the value associated with state.
+      */
+      void setStateValue (size_t state, double value);
+
+    };
+
+
+    /// Boolean discrete chance node.  The node has two states, true and false.
+    class H_DLL BooleanDCNode : public DiscreteChanceNode {
+      friend class IHugin;
+
+    private:
+      BooleanDCNode (void *data) : DiscreteChanceNode (data) {}
+      BooleanDCNode (const BooleanDCNode *node) : DiscreteChanceNode (node) {}
+
+    public:
+      /** Create a new BooleanDCNode in the given NetworkModel */
+      BooleanDCNode (NetworkModel *nm);
+
+      /** Construct a new BooleanDCNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      BooleanDCNode (DiscreteNode *node);
+
+      /** Clone this BooleanDCNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      BooleanDCNode* clone () const;
+# endif
+    };
+
+
+    /// Interval discrete chance node.  Each state represents an interval.
+    class H_DLL IntervalDCNode : public DiscreteChanceNode {
+      friend class IHugin;
+
+    private:
+      IntervalDCNode (void *data) : DiscreteChanceNode (data) {}
+      IntervalDCNode (const IntervalDCNode *node) : DiscreteChanceNode (node) {}
+
+    public:
+      /** Create a new IntervalDCNode in the given NetworkModel */
+      IntervalDCNode (NetworkModel *nm);
+
+      /** Construct a new IntervalDCNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      IntervalDCNode (DiscreteNode *node);
+
+      /** Clone this IntervalDCNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      IntervalDCNode* clone () const;
+# endif
+
+      /** Return the index of the state (interval) matching the
+	  specified value.  If there is no interval containing the
+	  specified value, -1 is returned.
+
+	  @param value an interval containing this value will be
+	  searched for
+	  @return the index of the state (interval) containing the
+	  specified value.
+      */
+      Index getStateIndex (double value) const;
+
+      /** Return the value associated with the specified state.
+      */
+      double getStateValue (size_t state) const;
+
+      /** Associate a value with the specified state.
+	  @param state the state for which the value is specified
+	  @param value the value to specify
+      */
+      void setStateValue (size_t state, double value);
+    };
+
+    /** The Continuous chance node.  This node represents continuous
+        chance nodes with (conditional) Gaussian
+        distributions. Continuous chance nodes are also sometimes
+        called CG nodes (CG for conditional Gaussian). */
+    class H_DLL ContinuousChanceNode : public Node {
+      friend class IHugin;
+
+    private:
+      ContinuousChanceNode (void *data) : Node (data) {}
+      ContinuousChanceNode (const ContinuousChanceNode *node) : Node (node) {}
+
+    public:
+      /** Create a new ContinuousChanceNode in the given NetworkModel */
+      ContinuousChanceNode (NetworkModel *nm);
+
+      /** Clone this ContinuousChanceNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      ContinuousChanceNode* clone () const;
+# endif
+
+      /** Reverse the edge between this node and the specified neighbor.
+       */
+      void reverseEdge (ContinuousChanceNode *neighbor);
+
+      /** Specify that this continuous node has the value value.
+	  @param value A real number as the finding value.
+      */
+      void enterValue (double value);
+
+      /** Retrieve the value of this node assoociated with case index.
+	  @param index Case index.
+      */
+      double getCaseValue (size_t index) const;
+
+      /** Return the node category.
+	  @return H_CATEGORY_CHANCE
+       */
+      Category getCategory () const { return H_CATEGORY_CHANCE; }
+
+      /** Return the node kind.
+	  @return H_KIND_CONTINUOUS
+      */
+      Kind getKind () const { return H_KIND_CONTINUOUS; }
+
+      /** Get the CG distribution associated with this node.
+	  @return CGDistribution*
+      */
+      CGDistribution *getCGDistribution ();
+
+      /** Compute the distribution for this continuous node. The
+	  distribution for a CG node is in general a mixture of
+	  several Gaussian distributions.
+	  ContinuousChanceNode::getDistribution () really computes a
+	  joint distribution of this node and a set of discrete
+	  nodes. These discrete nodes are chosen such that the
+	  computed marginal is a strong marginal, but it is not
+	  necessarily minimal.
+
+	  @return Table* pointer to a Table holding a strong
+	  marginal of this node and a set of discrete nodes.
+      */
+      Table * getDistribution () const;
+
+      /** Retrieve the entered value for this node.
+	  @return A double-precision real number expressing the
+	  entered value.
+      */
+      double getEnteredValue () const;
+
+      /** Return the mean of the marginal distribution of this node.
+	  @return A double-precision real number expressing the mean.
+      */
+      double getMean () const;
+
+      /** Retrieve the finding value. That is, retrieve the finding
+	  value incorporated within the current junction tree
+	  potentials for state of this node.
+
+	  @return A double-precision real number expressing the
+	  propagated value.
+      */
+      double getPropagatedValue () const;
+
+      /** Return the variance of the marginal distribution of this
+	  node.
+	  @return A double-precision real number expressing the
+	  variance.
+      */
+      double getVariance () const;
+
+      /** Return whether or not evidence is entered into this node.
+	  @return Boolean.
+      */
+      bool isEvidenceEntered () const;
+
+      /** Return whether or not evidence has been propagated from this
+	  node.
+	  @return Boolean.
+      */
+      bool isEvidencePropagated () const;
+
+      /** Retract the entered value for this node.
+       */
+      void retractValue ();
+
+      /** Set the value associate with this node in case index to value.
+       */
+      void setCaseValue (size_t index, double value);
+
+      /** Specify that the value of this node for case index is unknown.
+      */
+      void unsetCase (size_t index);
+
+      /** Test whether the value of this node in case index currently is set.
+	  @param index Case index.
+      */
+      bool caseIsSet (size_t index) const;
+
+      /** Returns the value of this ContinuousChanceNode for the
+	  configuration generated by the most recent call to
+	  Domain.simulate().
+
+	  @return The value sampled for this node during the last
+	  invocation of simulate () on the Domain of this node.
+
+	  @see Domain::simulate
+      */
+      double getSampledValue () const;
+
+      /** Return the experience table.
+       */
+      Table *getExperienceTable ();
+
+      /** Check if the node has an experience table.
+       */
+      bool hasExperienceTable () const;
+
+    };
+
+
+    /// The discrete decision node.  Base class for all decision nodes.
+    class H_DLL DiscreteDecisionNode : public DiscreteNode {
+
+    protected:
+      DiscreteDecisionNode (void *data) : DiscreteNode (data) {}
+      DiscreteDecisionNode (const DiscreteDecisionNode *node) : DiscreteNode (node) {}
+
+    public:
+
+      /** Return the node category.
+	  @return H_CATEGORY_DECISION
+       */
+      Category getCategory () const { return H_CATEGORY_DECISION; }
+
+      /** Return a NodeList containing the requisite parents of this
+	  decision node.
+      */
+      NodeList getRequisiteParents () const;
+
+      /** Return a NodeList containing the requisite ancestors of this
+	  decision node.
+
+	  <p>The requisite ancestors are found by augmenting the
+	  network with additional information links as prescribed by
+	  the "no-forgetting" rule (which states that past
+	  observations and decisions are taken into account by all
+	  future decisions) and applying the minimal reduction
+	  algorithm for LIMIDs.
+      */
+      NodeList getRequisiteAncestors () const;
+
+    };
+
+
+    /** Labelled discrete decision node.  This is the kind of
+	DiscreteDecisionNode most often used.
+     */
+    class H_DLL LabelledDDNode : public DiscreteDecisionNode {
+      friend class IHugin;
+
+    private:
+      LabelledDDNode (void *data) : DiscreteDecisionNode (data) {}
+      LabelledDDNode (const LabelledDDNode *node) : DiscreteDecisionNode (node) {}
+
+    public:
+      /** Create a new LabelledDDNode in the given NetworkModel */
+      LabelledDDNode (NetworkModel *nm);
+
+      /** Construct a new LabelledDDNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      LabelledDDNode (DiscreteNode *node);
+
+      /** Clone this LabelledDDNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      LabelledDDNode* clone () const;
+# endif
+    };
+
+
+    /** Numbered discrete decision node.  Each state of an
+	NumberedDDNode represents a number.
+    */
+    class H_DLL NumberedDDNode : public DiscreteDecisionNode {
+      friend class IHugin;
+
+    private:
+      NumberedDDNode (void *data) : DiscreteDecisionNode (data) {}
+      NumberedDDNode (const NumberedDDNode *node) : DiscreteDecisionNode (node) {}
+
+    public:
+      /** Create a new NumberedDDNode in the given NetworkModel */
+      NumberedDDNode (NetworkModel *nm);
+
+      /** Construct a new NumberedDDNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      NumberedDDNode (DiscreteNode *node);
+
+      /** Clone this NumberedDDNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      NumberedDDNode* clone () const;
+# endif
+
+      /** Return the index of the state matching the specified value.
+	  If there is no (unique) state with the specified state
+	  value, -1 is returned.
+
+	  @param value the state value of the state to be searched for
+	  @return the index of the state with the specified state value.
+      */
+      Index getStateIndex (double value) const;
+
+      /** Return the value associated with state.
+      */
+      double getStateValue (size_t state) const;
+
+      /** Set the value associated with state.
+      */
+      void setStateValue (size_t state, double value);
+    };
+
+
+    /** Boolean discrete decision node.  A BooleanDDNode has states
+	false and true.
+     */
+    class H_DLL BooleanDDNode : public DiscreteDecisionNode {
+      friend class IHugin;
+
+    private:
+      BooleanDDNode (void *data) : DiscreteDecisionNode (data) {}
+      BooleanDDNode (const BooleanDDNode *node) : DiscreteDecisionNode (node) {}
+
+    public:
+      /** Create a new BooleanDDNode in the given NetworkModel */
+      BooleanDDNode (NetworkModel *nm);
+
+      /** Construct a new BooleanDDNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      BooleanDDNode (DiscreteNode *node);
+
+      /** Clone this BooleanDDNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      BooleanDDNode* clone () const;
+# endif
+    };
+
+
+    /** Interval discrete decision node.  Each state of an
+	IntervalDDNode represents an interval. */
+    class H_DLL IntervalDDNode : public DiscreteDecisionNode {
+      friend class IHugin;
+
+    private:
+      IntervalDDNode (void *data) : DiscreteDecisionNode (data) {}
+      IntervalDDNode (const IntervalDDNode *node) : DiscreteDecisionNode (node) {}
+
+    public:
+      /** Create a new IntervalDDNode in the given NetworkModel */
+      IntervalDDNode (NetworkModel *nm);
+
+      /** Construct a new IntervalDDNode object corresponding to the
+	  given DiscreteNode object <code>node</code>.  The new object
+	  will be identical to <code>node</code> (that is, same
+	  parents, same table, etc.) except for its type.
+     
+	  <p>As a side-effect, the object <code>node</code> is
+	  deleted.  And if <code>node</code> is an output node, then
+	  all output clone objects associated with the node are also
+	  deleted.
+      */
+      IntervalDDNode (DiscreteNode *node);
+
+      /** Clone this IntervalDDNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      IntervalDDNode* clone () const;
+# endif
+
+      /** Return the index of the state (interval) matching the
+	  specified value.  If there is no interval containing the
+	  specified value, -1 is returned.
+
+	  @param value an interval containing this value will be
+	  searched for
+	  @return the index of the state (interval) containing the
+	  specified value.
+      */
+      Index getStateIndex (double value) const;
+
+      /** Return the value associated with state.
+      */
+      double getStateValue (size_t state) const;
+
+      /** Set the value associated with state.
+      */
+      void setStateValue (size_t state, double value);
+    };
+
+
+    /** A UtilityNode represents a utility function.  The utility
+	function can depend on discrete chance and discrete decision
+	nodes.
+    */
+    class H_DLL UtilityNode : public Node {
+      friend class IHugin;
+
+    private:
+      UtilityNode (void *data) : Node (data) {}
+      UtilityNode (const UtilityNode *node) : Node (node) {}
+
+    public:
+      /** Create a new UtilityNode in the given NetworkModel */
+      UtilityNode (NetworkModel *nm);
+
+      /** Clone this UtilityNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      UtilityNode* clone () const;
+# endif
+
+      /** Return the node category.
+	  @return H_CATEGORY_UTILITY
+      */
+      Category getCategory () const { return H_CATEGORY_UTILITY; }
+
+      /** Return the node kind.
+	  @return H_KIND_OTHER
+       */
+      Kind getKind () const { return H_KIND_OTHER; }
+
+      /** Return the expected utility associated with this
+	  UtilityNode.  This is the utility value computed by the most
+	  recent inference operation.
+       */
+      Number getExpectedUtility () const;
+
+      /** Return the sampled utility associated with this UtilityNode.
+	  This is the utility value determined by the most recent
+	  simulation operation.
+       */
+      Number getSampledUtility () const;
+
+    };
+
+
+    /** A FunctionNode represents a real-valued function.  This
+	function is specified using expressions (which may refer to
+	the values of the parents) in a Model.
+    */
+    class H_DLL FunctionNode : public Node {
+      friend class IHugin;
+
+    private:
+      FunctionNode (void *data) : Node (data) {}
+      FunctionNode (const FunctionNode *node) : Node (node) {}
+
+    public:
+      /** Create a new FunctionNode in the given NetworkModel. */
+      FunctionNode (NetworkModel *nm);
+
+      /** Clone this FunctionNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      FunctionNode* clone () const;
+# endif
+
+      /** Return the node category.
+	  @return H_CATEGORY_FUNCTION
+      */
+      Category getCategory () const { return H_CATEGORY_FUNCTION; }
+
+      /** Return the node kind.
+	  @return H_KIND_OTHER
+       */
+      Kind getKind () const { return H_KIND_OTHER; }
+
+      /** Return the value of this FunctionNode.  The value is
+	  computed using the function associated with the node.  If
+	  the function refers to other nodes, then the values of those
+	  nodes are derived from the results of the most recent
+	  inference operation.
+       */
+      double getValue () const;
+
+      /** Return the sampled value of this FunctionNode.  The value is
+	  computed using the function associated with the node.  If
+	  the function refers to other nodes, then the values of those
+	  nodes are derived from the results of the most recent
+	  simulation operation.
+       */
+      double getSampledValue () const;
+
+    };
+
+
+    /** InstanceNodes are the key building block of object-oriented
+	Bayesian networks and LIMIDs.
+
+	An InstanceNode represents an instance of a Class (i.e., a
+	Bayesian network or a LIMID). In other words, an instance node
+	represents a subnetwork. The Class of which InstanceNodes
+	exist in other Classes can itself contain InstanceNodes,
+	whereby an object-oriented network can be viewed as a
+	hierarchical description of a problem domain. Describing a
+	network in a hierarchical fashion often makes the network much
+	less cluttered, and thus provides a much better means of
+	communicating ideas among knowledge engineers and users.
+
+	As systems often are composed of collections of identical or
+	similar components, models of systems often contain repetitive
+	patterns. The notion of InstanceNodes makes it very easy to
+	construct multiple identical instances of a network fragment.
+
+	An InstanceNode is connected to other nodes via its <i>interface
+	nodes</i>, which are the input Nodes and the output Nodes of the
+	Class of which the InstanceNode is an instance. Chance nodes
+	and decision nodes of the encapsulating Class (i.e., network)
+	as well as output nodes of InstanceNodes of the encapsulating
+	Class can be bound to input nodes of an InstanceNode.
+
+	As the output nodes of an InstanceNode can be parents of
+	non-InstanceNodes, these output nodes are represented in the
+	"home Class" of the InstanceNode as clones of the output nodes
+	of the "instance Class" of the InstanceNode. Therefore, the
+	output nodes of InstanceNodes are sometimes referred to as
+	"output clones".
+    */
+    class H_DLL InstanceNode : public Node {
+      friend class IHugin;
+
+    private:
+      InstanceNode (void *data) : Node (data) {}
+      InstanceNode (const InstanceNode *node) : Node (node) {}
+
+    public:
+      /** Create a new InstanceNode (representing an instance of
+	  master) in the given Class (insertIn).
+	  @param master The class which the InstanceNode is an
+	  instance of
+	  @param insertIn The class in which the InstanceNode is
+	  inserted
+	  @return the new InstanceNode
+      */
+      InstanceNode (Class* master, Class* insertIn);
+
+      /** Clone this InstanceNode object. */
+# if defined (_MSC_VER) && _MSC_VER < 1300
+      Node* clone () const;
+# else
+      InstanceNode* clone () const;
+# endif
+
+      /** Get the class from which this instance was created. */
+      Class* getClass () const;
+
+      /** Change this node to be an instance of newClass.  newClass
+	  must be compatible with the original class (i.e., must have
+	  the same interface).
+       */
+      void substituteClass (Class *newClass);
+
+      /** Return the node category.
+	  @return H_CATEGORY_INSTANCE
+      */
+      Category getCategory () const { return H_CATEGORY_INSTANCE; }
+
+      /** Return the node kind.
+	  @return H_KIND_OTHER
+       */
+      Kind getKind () const { return H_KIND_OTHER; }
+
+      /** Bind an existing node to an input node in an instance.
+	  @param input The input node in the instance which is to be bound.
+	  @param node The node which is bound to the input node.
+      */
+      void setInput (Node* input, Node* node);
+
+      /** Removes a binding to the input node given.
+	  @param input The input node in the instance, which must be unbound
+      */
+      void unsetInput (Node* input);
+
+      /** Returns the node, which is bound to the given input
+
+	  @param input The input node in the instance, whose bound
+	  node is returned.
+      */
+      Node* getInput (Node* input) const;
+
+      /** Returns the output clone from the instance for the given
+	  output node in the class.
+	  @param output An output node from a class, whose output
+	  clone, from an instance, is returned.
+      */
+      Node* getOutput (Node* output) const;
+    };
+
+
+    /** Hugin uses Tables for representing the conditional probability
+	and utility potentials of individual Nodes, the probability
+	and utility potentials on separators and Cliques of
+	JunctionTrees, evidence potentials, etc.
+
+	A potential is a function from the state space of a set of
+	variables into the set of real numbers. A Table is a
+	representation of a potential. */
+    class H_DLL Table {
+      friend class IHugin;
+
+    private:
+      void *idata;
+      Table (void *data) : idata (data) {}
+
+    public:
+      /** Release the memory resources used by the application-owned
+	  Table object.
+       */
+      ~Table () throw ();
+
+      /** Compute the state configuration corresponding to a given
+          table index.  The computed state configuration is stored in
+          the <code>configuration</code> vector: The state index for
+          the k'th node in the node list (see the {@link #getNodes}
+          method) of this table (if the node is discrete) is stored in
+          the k'th entry of the vector.  The size of the vector must
+          be greater than or equal to the number of discrete nodes of
+          this table (extra entries are ignored).
+      */
+      void getConfiguration (std::vector<size_t>& configuration, size_t index)
+	const;
+
+      /** Compute the table index corresponding to a given state
+          configuration.  The state configuration is specified in the
+          <code>configuration</code> vector: A state index for the
+          k'th node in the node list (see the {@link #getNodes}
+          method) of this table (if the node is discrete) must be
+          specified in the k'th entry of the vector.  The size of the
+          vector must be greater than or equal to the number of
+          discrete nodes of this table (extra entries are ignored).
+      */
+      size_t getIndex (const std::vector<size_t>& configuration) const;
+
+      /** Return the covariance of the specified nodes.  The
+	  covariance of the continuous nodes <code>node1</code> and
+	  <code>node2</code> given the discrete state configuration
+	  <code>index</code> is returned.
+      */
+      double getCovariance (size_t index, const ContinuousChanceNode *node1,
+			    const ContinuousChanceNode *node2) const;
+
+      /** Return a vector containing a copy of the discrete data of
+          this Table.  The vector is a row-major representation of the
+          actual multi-dimensional data.  Note that this is a copy of
+          the real data stored in the table.  To update the table, the
+          modified data must be copied back using the setData method.
+      */
+      NumberList getData () const;
+
+      /** Return a region of the discrete data of this Table.  The
+          region is specified by a <code>start</code> position and the
+          number of elements (<code>count</code>) to copy.  The data
+          is copied to the <code>data</code> vector.  Note that since
+          this is a copy of the real data stored in the table, updates
+          will only take place when the data is copied back using the
+          setData method.<P>
+     
+          The indexes <code>start</code>, ...,
+          <code>start+count-1</code> must be valid indexes of this
+          table.  Also, <code>count</code> must be less than or equal
+          to the size of the <code>data</code> vector.<P>
+     
+          @param data vector to hold the extracted data
+          @param start index of the first element to copy
+          @param count number of elements to copy
+      */
+      void getData (NumberList& data, size_t start, size_t count) const;
+
+      /** Return the mean of the specified node.  The mean of the
+	  continuous node <code>node</code> given the discrete state
+	  configuration <code>index</code> is returned.
+      */
+      double getMean (size_t index, const ContinuousChanceNode *node) const;
+
+      /** Return the nodes of this Table.
+	  @return NodeList containing the nodes of this table.
+      */
+      NodeList getNodes () const;
+
+      /** Return the size of this table.
+      */
+      size_t getSize () const;
+
+      /** Return the CG size of this Table.  This is the number of CG
+          data elements stored in the table.
+      */
+      size_t getCGSize () const;
+
+      /** Return the variance of the specified node.  The variance of
+	  the continuous node <code>node</code> given the discrete
+	  state configuration <code>index</code> is returned.
+      */
+      double getVariance (size_t index, const ContinuousChanceNode *node)
+	const;
+
+      /** Reorder the node list of this table to follow the order of
+	  the members in the NodeList.  <code>order</code> must be a
+	  permutation of the node list of this table.
+      */
+      void reorderNodes (const NodeList& order);
+
+      /** Set the discrete data of this Table.  The contents of the
+          <code>data</code> vector are copied to the table.  The size
+          of the vector must equal the size of the table.<P>
+     
+	  @param data vector holding the data to copy to the table
+      */
+      void setData (const NumberList& data);
+
+      /** Set a region of the discrete data of this Table.  The region
+          is specified by a <code>start</code> position and the number
+          of elements (<code>count</code>) to copy.  The data is
+          copied from the <code>data</code> vector to the table.<P>
+     
+          The indexes <code>start</code>, ...,
+          <code>start+count-1</code> must be valid indexes of this
+          table.  Also, <code>count</code> must be less than or equal
+          to the size of the <code>data</code> vector.<P>
+     
+	  @param data vector holding the data to copy to this table
+	  @param start index of the first element to be set
+	  @param count number of elements to copy
+      */
+      void setData (const NumberList& data, size_t start, size_t count);
+    };
+
+
+    /** A CGDistribution encapsulates all information regarding the
+	distribution of a ContinuousChanceNode.
+
+	@see ContinuousChanceNode
+    */
+    class H_DLL CGDistribution {
+      friend class IHugin;
+      friend class ContinuousChanceNode;
+
+    private:
+      void *idata;
+      CGDistribution (ContinuousChanceNode*);
+      ~CGDistribution () {}
+
+    public:
+      /** Return the alpha component of the CG distribution.  The
+          alpha component of the CG distribution given the discrete
+          parent configuration <code>index</code> is returned.
+
+	  @param index the index of the discrete parent configuration
+      */
+      double getAlpha (size_t index) const;
+
+      /** Return the beta component of the CG distribution.  The beta
+	  component associated with the continuous parent
+	  <code>parent</code> in the CG distribution given the
+	  discrete parent configuration <code>index</code> is
+	  returned.
+
+	  @param parent a continuous parent of the node associated
+	  with this CGDistribution
+	  @param index the index of the discrete parent configuration
+      */
+      double getBeta (ContinuousChanceNode *parent, size_t index) const;
+
+      /** Return the gamma component of the CG distribution.  The
+          gamma component of the CG distribution given the discrete
+          parent configuration <code>index</code> is returned.
+
+	  @param index the index of the discrete parent configuration
+      */
+      double getGamma (size_t index) const;
+
+      /** Return the ContinuousChanceNode on which this CGDistribution
+	  is defined.
+	  @return ContinuousChanceNode*
+      */
+      ContinuousChanceNode* getNode () const;
+
+      /** Set the alpha component of the CG distribution.  The alpha
+          component of the CG distribution given the discrete parent
+          configuration <code>index</code> is set to <code>alpha</code>.
+
+	  @param index the index of the discrete parent configuration
+	  @param alpha the new alpha value
+      */
+      void setAlpha (size_t index, double alpha);
+
+      /** Set the beta component of the CG distribution.  The beta
+	  component associated with the continuous parent
+	  <code>parent</code> in the CG distribution given the
+	  discrete parent configuration <code>index</code> is set to
+	  <code>beta</code>.
+
+	  @param parent a continuous parent of the node associated
+	  with this CGDistribution
+	  @param index the index of the discrete parent configuration
+	  @param beta the new beta value
+      */
+      void setBeta (ContinuousChanceNode *parent, size_t index, double beta);
+
+      /** Set the gamma component of the CG distribution.  The gamma
+          component of the CG distribution given the discrete parent
+          configuration <code>index</code> is set to <code>gamma</code>.
+
+	  @param index the index of the discrete parent configuration
+	  @param gamma the new gamma value
+      */
+      void setGamma (size_t index, double gamma);
+    };
+
+
+    /** The ParseListener class is an abstract class, which provides
+	an interface for the other parse listeners to use.
+
+	The parse listener used when one wants to call the Domain
+	constructor should be created by implementing the
+	ParseListener class.
+
+	The parse listener used when calling the parseClasses method
+	of the ClassCollection class should be created by implementing
+	the ClassParseListener subclass.
+    */
+
+    class H_DLL ParseListener {
+    public:
+      ParseListener () {}
+      virtual ~ParseListener () {}
+
+      /** Error handler for parse errors. The parseError method must
+	  be provided by the user in a specialized class derived from
+	  class ParseError.  The error handling itself is determined
+	  by the user.
+
+	  @param line The line number determining where in the NET
+	  file the parse error was encountered
+	  @param msg The message to be issued when encountering the
+	  parse error.  */
+      virtual void parseError (int line, const std::string& msg) = 0;
+    };
+
+
+    /** The ClassParseListener interface is used when one wants to
+	call the <code>parseClasses (String, ParseListener)</code>
+	method of the ClassCollection class.
+
+	You must implement your own subclass of ParseListener with
+	your own <code>parseError</code> and <code>insertClass</code>
+	methods.
+
+	As an alternative to implementing the ParseListener yourself,
+	you may wish to use the DefaultParseListener class.
+
+	@see Domain::Domain (String, ParseListener)
+	@see ClassCollection::parseClasses (String, ParseListener)
+	@see DefaultParseListener
+    */
+    class H_DLL ClassParseListener : public ParseListener {
+    public:
+      ClassParseListener () {}
+
+      /** Whenever the Hugin NET parser encounters a class not defined
+	 in the NET file, the parser calls the
+	 <code>insertClass</code> method of the ParseListener object
+	 provided as an argument to the <code>parseClasses (String,
+	 ParseListener)</code> method.  An implementation of the
+	 <code>insertClass</code> method is required.
+
+	 @param cc A pointer to the ClassCollection object,
+	 in which the parsed classes must be inserted.
+	 @param name The name of the Class which needs to be located and
+	 inserted.
+      **/
+      virtual void insertClass (ClassCollection* cc, std::string name) = 0;
+    };
+
+    /** Provides a simple implementation of the ParseListener
+	class.  It is assumed that that the NET file for a Class for
+	which an instance is required can be found in the directory
+	from which the application program is started.
+    */
+    class H_DLL DefaultParseListener : public ClassParseListener {
+    public:
+      /** This implementation of the <code>parseError</code> method
+          simply prints the line number and parse error message to
+          <code>stderr</code>. */
+      void parseError (int line, const std::string& msg);
+
+      /** This implementation of the <code>insertClass</code> method
+          simply calls the <code>parseClasses (String,
+          ParseListener)</code> method with arguments <code>className
+          + ".net"</code> and <code>this</code>.  Note that this
+          simple implementation requires that the application program
+          is started in the directory where the relevant NET files are
+          stored. */
+      void insertClass (ClassCollection* cc, std::string name);
+    };
+
+    /** Attributes can be used to associate arbitrary data with a node
+        or a NetworkModel (i.e., a Class or a Domain).  Attributes are
+        set using the setAttribute method on the NetworkModel and Node
+        classes.  Each data object must be a string and attributes are
+        read-only objects.  Thus, in order to change the value of a
+        data object or to add a new data object, the setAttribute
+        method must be used.  An attribute associated with a
+        NetworkModel or a Node is removed using deleteAttribute. */
+    class H_DLL Attribute {
+      friend class NetworkModel;
+      friend class Node;
+
+    private:
+      void *idata;
+      Attribute (void *data) : idata (data) {}
+
+    public:
+      /** Returns the key associated with this Attribute.
+	  @return A string containing the key*/
+      std::string getKey () const;
+
+      /** Returns the value associated with this Attribute.
+	  @return A string containing the value*/
+      std::string getValue () const;
+    };
+
+
+  }
+
+# endif
