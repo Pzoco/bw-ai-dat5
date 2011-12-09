@@ -2,20 +2,47 @@
 	
 	\subsection{General structure}
 	%TALK ABOUT 
-	initialization.
+	%initialization.
 	 %_variables
 	 %_parameters
+		
+	\begin{itemize}
+		\item int da; is the distance to closed ally unit.
+		\item int ds;//distance from center of army to unit.
+		\item int sv;//units maximum shooting range. -1 if no weapon for this type.
+		\item int sva;//units maximum shooting range for air. -1 if no weapon for this type.
+		\item int de;//distance to enemy.
+		\item bool wr;//boolean denoting whether or not the weapons are ready to fire.
+		\item int dc;//distance to cliff or edge.
+		\item int dsv;
+		\item int duc;
+		\item int due;
+		\item int dua;
+		\item BWAPI::Position squadPos; //position on the squad
+	\end{itemize}
+
+		\begin{Sourcecode}[caption=Variables]
+double FORCEALLY;
+double FORCESQUAD;
+double FORCEMAXDIST;
+double FORCECOOLDOWN;
+double FORCEEDGE;
+double FORCENEMY;
+int SQUADDISTANCE_CONSTANT;
+int ALLYDISTANCE_CONSTANT;
+int EDGESDISTANCE_CONSTANT;
+\end{Sourcecode}
 	 
 	
 	\subsection{Squad center}	
 		\begin{Sourcecode}[caption=Squad center]
-(*@\lnote@*)int dsv = pos.getApproxDistance(_parameters.squadPos);	
+(*@\lnote@*)_parameters.dsv = pos.getApproxDistance(_parameters.squadPos);	
 int useSquad = 0;
 (*@\lnote@*)if(_parameters.ds > _variables.SQUADDISTANCE_CONSTANT)
 	useSquad = 1;
 
-(*@\lnote@*)squad += ((double)_variables.FORCESQUAD * (2*(double)_parameters.ds-(double)dsv))*useSquad;
-(*@\lnote@*)squadQ += (2*(double)_parameters.ds-(double)dsv)*useSquad;
+(*@\lnote@*)squad += ((double)_variables.FORCESQUAD * (2*(double)_parameters.ds-(double)_parameters.dsv))*useSquad;
+(*@\lnote@*)squadQ += (2*(double)_parameters.ds-(double)_parameters.dsv)*useSquad;
 \end{Sourcecode}
 		In \lnnum{1} we calculate \textit{dsv} by using the build in function getApproxDistance which returns the distance between two tiles as an integer. \textit{pos} is the current tile we want to calculate the potential for and \textit{squadPos} is the tile in the center of the squad.
 		
@@ -32,8 +59,8 @@ int useSquad = 0;
 	\subsection{Maximum distance positioning}
 		\begin{Sourcecode}[caption=Maximum distance]
 (*@\lnote@*)int distanceToEnemyFromUnit = _parameters.de;
-(*@\lnote@*)int due = MathHelper::GetDistanceToNearestEnemy(pos);
-(*@\lnote@*)int correctedDistance = (2*_parameters.de - due);
+(*@\lnote@*)_parameters.due = MathHelper::GetDistanceToNearestEnemy(pos);
+(*@\lnote@*)int correctedDistance = (2*_parameters.de - _parameters.due);
 int useMaxDist = 1;
 if(_parameters.sv > distanceToEnemyFromUnit)
 	useMaxDist = 0;
@@ -43,7 +70,7 @@ maxdistQ += (double)(correctedDistance)*(double)useMaxDist;
 \end{Sourcecode}
 	%TEXT
 	
-	In \textit{Maximum distance positioning} we start by calculating \textit{de} and \textit{due }in \lnnum{1} \lnnum{2}. These are used to calculate $(2*de - due)$ in \lnnum{3}, known in the code as \textit{correctedDistance}. 
+	In \textit{Maximum distance positioning} we start by calculating \textit{de} and \textit{due}in \lnnum{1} \lnnum{2}. These are used to calculate $(2*de - due)$ in \lnnum{3}, known in the code as \textit{correctedDistance}. 
 	
 	\textit{correctedDistance} is being calculated even if we don't use \textit{Maximum distance positioning} because its also used in \textit{Weapon cool down}. 
 	
@@ -71,13 +98,13 @@ coolQ += correctedDistance*toCool;
 
 	\subsection{Ally units}
 		\begin{Sourcecode}[caption=Ally units]
-(*@\lnote@*)int dua = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
+(*@\lnote@*)_parameters.dua = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
 int useAlly = 0;
 if(_parameters.da < _variables.ALLYDISTANCE_CONSTANT)
 	useAlly = 1;
 
-ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - dua)*useAlly;
-allyQ += (double)(2*_parameters.da - dua)*useAlly;
+ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - _parameters.dua)*useAlly;
+allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
 \end{Sourcecode}	
 	In \textit{Ally units} at \lnnum{1} we use a function called \textit{MathHelper::GetDistanceToNearestAlly} which takes as input a tile position and the id of the current unit. We need the unit id because the function iterates trough all our units and we want to avoid calculating the distance to the current unit. If we did not use the unit id we would then always get the distance from the current unit to it self, because the distance would always be less then the distance to other units. \textit{Ally units} can be seen in figure \ref{fig:AU}.
 	
@@ -86,18 +113,19 @@ allyQ += (double)(2*_parameters.da - dua)*useAlly;
 
 	\subsection{Edges and cliffs (Repulsive)}
 	\begin{Sourcecode}[caption=Edges and cliffs]
-(*@\lnote@*)int duc= (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),pos);
+(*@\lnote@*)_parameters.duc= (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),pos);
 (*@\lnote@*)_parameters.dc = (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),_unit->getPosition());
 
 int useEdge = 1;
-if(duc > _variables.EDGESDISTANCE_CONSTANT)
+if(_parameters.duc > _variables.EDGESDISTANCE_CONSTANT)
 	useEdge = 0;
 
-edge += (_variables.FORCEEDGE)*(2*_parameters.dc-duc)*useEdge;
-edgeQ += (2*_parameters.dc-duc)*useEdge;
+edge += (_variables.FORCEEDGE)*(2*_parameters.dc-_parameters.duc)*useEdge;
+edgeQ += (2*_parameters.dc-_parameters.duc)*useEdge;
 \end{Sourcecode}	
     In \lnnum{1} we use the function \textit{MathHelper::GetDistanceBetweenPositions} to get the distance between the nearest unwalkable position and the current tile. To get the nearest unwalkable position we use the build in function \textit{BWTA::getNearestUnwalkablePosition} which takes as input a position and then find the nerest unwalkable position.
 
+	
 	Normaly \textit{dc} from \lnnum{2} would be calculated in the initialization but because \\ \textit{BWTA::getNearestUnwalkablePosition} should depend on the current tile we have to recalculate it for each tile. The resaon is that for each tile the nearest unwalkable position can differ, and we need to use the same unwalkable position in the calculation of the center tile. If we didnt do this, there could be cases where 
 	we took the wrong tiles into consideration. An example could be a corner, where some tile would depend on one side, and other tiles on the other side.
 	
