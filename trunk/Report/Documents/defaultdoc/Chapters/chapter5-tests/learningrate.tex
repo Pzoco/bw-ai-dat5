@@ -1,19 +1,39 @@
 \section{Learning rate}
 This section is about tests with the learning rate of the agent. Here is the explanation about the generalization of the q-learning \ref{qlearning}.
-By changing the $\Gamma$ and $\alpha$ values the agent will learn differently - so we have made a test where we have run between 15000 to 40000 iterations. All the test have been run with 5 vultures against 12 marines.
+By changing the $\Gamma$ and $\alpha$ values the agent will learn differently - so we have made a test where we have run between 15000 to 40000 iterations. All the test have been run with 5 vultures against 12 marines. The graphs from the test can be seen in the appendix \ref{appendix}.
+
+We will make test over how much damage the vultures have dealt and how many units we have lost and how many units we have killed. As mentioned before will these test be performed with different learning values. 
+
+\subsection*{Learning rate test 1.1}
+In this test we are using the values $\alpha$ 9 and $\Gamma$ 2 and the results are.
+
+%Damage given and taken
+\insertmarginfigure{height=3in}{learningrate/A9G2/damage.png}
+			{Alpha 9 Gamma 2 damage - Yellow: Damage given - Red: Damage taken}{fig:a9g2_damage}{-3in}
+
+Everytime the y-axis peaks (yellow line) the agent have killed all of the opponent, and everytime the 
 
 
-\begin{centering}
- \begin{tabular}{|l||c|c|c|c|}
-	\multicolumn{5}{c}{Alpha value 9 and Gamma value 2} \\
-	\hline
-	Players & Produced units & Killed units & Lost units\\
-	\hline
-	\hline
-		Player with vultures & 5 & 9 & 5 \\
-	\hline
-		Player with zerglings & 30 & 9 & 5\\
-	\hline
+%Units killed and units lost
 
-\end{tabular}
-\end{centering}
+
+
+\subsection*{Learning rate test 1.2}
+
+
+%
+%
+%\begin{centering}
+% \begin{tabular}{|l||c|c|c|c|}
+%	\multicolumn{5}{c}{Alpha value 9 and Gamma value 2} \\
+%	\hline
+%	Players & Produced units & Killed units & Lost units\\
+%	\hline
+%	\hline
+%		Player with vultures & 5 & 9 & 5 \\
+%	\hline
+%		Player with zerglings & 30 & 9 & 5\\
+%	\hline
+%
+%\end{tabular}
+%\end{centering}
