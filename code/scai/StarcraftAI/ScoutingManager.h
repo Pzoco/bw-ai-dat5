@@ -11,8 +11,9 @@ class ScoutingManager
 {
 public:
 	static ScoutingManager* GetInstance();
-	InformationEnums::ThreatLevel currentThreatLevel;
 	static bool IsMapAnalyzed();
+	void AddEnemyUnit(BWAPI::Unit* unit);
+	void AddEnemyBuilding(BWAPI::Unit* building);
 	void AnalyzeMap();
 	void Update();
 	void Scout(BWAPI::Unit* scv);
@@ -21,5 +22,7 @@ public:
 	void VisitBase(InformationEnums::Positions position,BWAPI::Unit* scv);
 private:
 	ScoutingManager();
+	std::list<BWAPI::Unit*> enemyUnits;
+	std::list<BWAPI::Unit*> enemyBuildings;
 	static ScoutingManager* scoutingManager;
 };
