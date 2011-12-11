@@ -6,18 +6,54 @@
 	 %_variables
 	 %_parameters
 		
+	
+	The potential field is calculated for individual units. These units belongs to a squad, when we calculate the potential field we allso pass a refrence to the squad because it is needed to calculate \textit{Squad center} and \textit{Ally potential}.
+
+\begin{Sourcecode}[caption=Main loop]	
+(*@\lnote@*)BaseTactic::InitializeParameters(mySquad);
+Position centerPosition = _unit->getPosition();
+(*@\lnote@*)std::list<BWAPI::Position> listOfPositions = MathHelper::GetSurroundingPositions(centerPosition,48);
+BWAPI::Position bestQPosistion = BWAPI::Position(1,1);
+(*@\lnote@*)double centerQ = BaseTactic::CalculateQPotentialField(_unit->getPosition(),false);
+double higestQfound; 
+bool firstCalculation = true;
+(*@\lnote@*)for each(BWAPI::Position position in listOfPositions)
+{
+	double currentQ = BaseTactic::CalculateQPotentialField(position,false);
+	(*@\lnote@*)if(firstCalculation)
+	{
+		firstCalculation = false;
+		higestQfound = currentQ;
+		bestQPosistion = position;
+	} 
+	(*@\lnote@*)if(currentQ > higestQfound)
+	{
+		higestQfound = currentQ;
+		bestQPosistion = position;
+	}
+	(*@\lnote@*)Broodwar->drawTextMap(position.x(),position.y(),"%d",(int)currentQ);
+}
+(*@\lnote@*)if(centerQ == higestQfound)
+{
+	bestQPosistion = _unit->getPosition();
+}
+\end{Sourcecode}	
+	But before we do any calculation we need to find the tiles we want to calculate the potential for. This is done useing the \textit{MathHelper::GetSurroundingPositions} function. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjecent tiles. From this we calculate all tiles arround the unit and and them to a list.
+
+	
+	
 	\begin{itemize}
-		\item int da; is the distance to closed ally unit.
-		\item int ds;//distance from center of army to unit.
-		\item int sv;//units maximum shooting range. -1 if no weapon for this type.
-		\item int sva;//units maximum shooting range for air. -1 if no weapon for this type.
-		\item int de;//distance to enemy.
-		\item bool wr;//boolean denoting whether or not the weapons are ready to fire.
-		\item int dc;//distance to cliff or edge.
-		\item int dsv;
-		\item int duc;
-		\item int due;
-		\item int dua;
+		\item int da - Is the distance to closed ally unit.
+		\item int ds - distance from center of army to unit.
+		\item int sv - units maximum shooting range. -1 if no weapon for this type.
+		\item int sva - units maximum shooting range for air. -1 if no weapon for this type.
+		\item int de - distance to enemy.
+		\item bool wr - boolean denoting whether or not the weapons are ready to fire.
+		\item int dc - istance to cliff or edge.
+		\item int dsv - 
+		\item int duc - 
+		\item int due - 
+		\item int dua - 
 		\item BWAPI::Position squadPos; //position on the squad
 	\end{itemize}
 
