@@ -1,0 +1,206 @@
+net
+{
+    node_size = (80 40);
+    HR_Desc = "";
+    HR_OOBN_CheckConsistency = "1";
+    HR_OOBN_FitExpand = "1";
+    HR_Zoom_ZoomFactor = "100";
+    HR_Groups_GroupColors = "";
+    HR_Groups_GroupNames = "";
+    HR_Groups_UserGroupsNo = "0";
+    HR_Color_Interface = "21";
+    HR_Color_Instance = "0";
+    HR_Color_Function = "4";
+    HR_Color_Utility = "36";
+    HR_Color_Decision = "17";
+    HR_Color_ContinuousChance = "48";
+    HR_Color_DiscreteChance = "16";
+    HR_Monitor_InitSD = "2";
+    HR_Monitor_Utility_Arrange = "0";
+    HR_Monitor_Mean_Variance = "1";
+    HR_Monitor_Chance_Utility = "1";
+    HR_Monitor_InitStates = "5";
+    HR_Monitor_OpenGraph = "0";
+    HR_Monitor_GraphPrecision = "100";
+    HR_Monitor_AutoUpdGraph = "0";
+    HR_Compile_MaxMinimalSeparators = "100000";
+    HR_Compile_ApproxEpsilon = "1.0E-5";
+    HR_Compile_Approximate = "0";
+    HR_Compile_SaveToMemory = "0";
+    HR_Compile_Compress = "0";
+    HR_Compile_TriangMethod = "0";
+    HR_Propagate_AutoNormal = "1";
+    HR_Propagate_AutoSum = "1";
+    HR_Propagate_Auto = "1";
+    HR_Font_Italic = "0";
+    HR_Font_Weight = "400";
+    HR_Font_Size = "-12";
+    HR_Font_Name = "javax.swing.plaf.FontUIResource[family=Tahoma,name=Tahoma,style=plain,size=11]";
+    HR_Grid_GridShow = "0";
+    HR_Grid_GridSnap = "0";
+    HR_Grid_Y = "40";
+    HR_Grid_X = "40";
+}
+
+node HydraliskDen
+{
+    label = "";
+    position = (322 166);
+    states = ("Seen" "NotSeen");
+    HR_LinkMode = "[TwelveHatch:0][ThirdHatch:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node Spire
+{
+    label = "";
+    position = (103 170);
+    states = ("Seen" "NotSeen");
+    HR_LinkMode = "[ThirdHatch:0][TwelveHatch:0]";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+    HR_Group = "0";
+}
+
+node ThirdHatch
+{
+    label = "";
+    position = (209 162);
+    states = ("Seen" "NotSeen");
+    HR_LinkMode = "[TwelveHatch:0]";
+    HR_State_0 = "";
+    HR_State_1 = "";
+    HR_Desc = "";
+    HR_Group = "0";
+}
+
+node EarlyZerglings
+{
+    label = "";
+    position = (452 176);
+    states = ("Seen" "NotSeen");
+    HR_State_0 = "";
+    HR_State_1 = "";
+    HR_Desc = "";
+    HR_Group = "0";
+}
+
+node TwelveHatch
+{
+    label = "";
+    position = (231 55);
+    states = ("Seen" "NotSeen");
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node BuildChosen
+{
+    label = "";
+    position = (226 271);
+    states = ("PoolRush" "ThreeHatchMuta" "TwoHatchMuta" "ThreeHatchLurker");
+    HR_LinkControlPoints = "";
+    HR_LinkMode = "[TwelveHatch:0][TwelveHatch_1:0][ThirdHatch_1:0][ThirdHatch:0][Spire:0][EarlyZerglings:0][HydraliskDen:0]";
+    HR_State_3 = "";
+    HR_State_2 = "";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+potential (HydraliskDen | BuildChosen)
+{
+    data
+     = (( 0 1 )	%  BuildChosen=PoolRush
+	( 0 1 )	%  BuildChosen=ThreeHatchMuta
+	( 0 1 )	%  BuildChosen=TwoHatchMuta
+	( 1 0 ));	%  BuildChosen=ThreeHatchLurker
+}
+
+potential (Spire | BuildChosen)
+{
+    data
+     = (( 0 1 )	%  BuildChosen=PoolRush
+	( 1 0 )	%  BuildChosen=ThreeHatchMuta
+	( 1 0 )	%  BuildChosen=TwoHatchMuta
+	( 0 1 ));	%  BuildChosen=ThreeHatchLurker
+}
+
+potential (ThirdHatch | HydraliskDen Spire BuildChosen)
+{
+    data
+     = (((( 0 1 )	%  HydraliskDen=Seen  Spire=Seen  BuildChosen=PoolRush
+	  ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=Seen  BuildChosen=ThreeHatchMuta
+	  ( 0 1 )	%  HydraliskDen=Seen  Spire=Seen  BuildChosen=TwoHatchMuta
+	  ( 0.908257 0.0917431 ))	%  HydraliskDen=Seen  Spire=Seen  BuildChosen=ThreeHatchLurker
+	 (( 0 1 )	%  HydraliskDen=Seen  Spire=NotSeen  BuildChosen=PoolRush
+	  ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=NotSeen  BuildChosen=ThreeHatchMuta
+	  ( 0 1 )	%  HydraliskDen=Seen  Spire=NotSeen  BuildChosen=TwoHatchMuta
+	  ( 0.908257 0.0917431 )))	%  HydraliskDen=Seen  Spire=NotSeen  BuildChosen=ThreeHatchLurker
+	((( 0 1 )	%  HydraliskDen=NotSeen  Spire=Seen  BuildChosen=PoolRush
+	  ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=Seen  BuildChosen=ThreeHatchMuta
+	  ( 0 1 )	%  HydraliskDen=NotSeen  Spire=Seen  BuildChosen=TwoHatchMuta
+	  ( 0.908257 0.0917431 ))	%  HydraliskDen=NotSeen  Spire=Seen  BuildChosen=ThreeHatchLurker
+	 (( 0 1 )	%  HydraliskDen=NotSeen  Spire=NotSeen  BuildChosen=PoolRush
+	  ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=NotSeen  BuildChosen=ThreeHatchMuta
+	  ( 0 1 )	%  HydraliskDen=NotSeen  Spire=NotSeen  BuildChosen=TwoHatchMuta
+	  ( 0.908257 0.0917431 ))));	%  HydraliskDen=NotSeen  Spire=NotSeen  BuildChosen=ThreeHatchLurker
+}
+
+potential (EarlyZerglings | BuildChosen)
+{
+    data
+     = (( 1 0 )	%  BuildChosen=PoolRush
+	( 0.1 0.9 )	%  BuildChosen=ThreeHatchMuta
+	( 0.1 0.9 )	%  BuildChosen=TwoHatchMuta
+	( 0.1 0.9 ));	%  BuildChosen=ThreeHatchLurker
+}
+
+potential (TwelveHatch | HydraliskDen Spire ThirdHatch BuildChosen)
+{
+    data
+     = ((((( 0 1 )	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=Seen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=Seen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=Seen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 ))	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=Seen  BuildChosen=ThreeHatchLurker
+	  (( 0 1 )	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 )))	%  HydraliskDen=Seen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchLurker
+	 ((( 0 1 )	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 ))	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=ThreeHatchLurker
+	  (( 0 1 )	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 ))))	%  HydraliskDen=Seen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchLurker
+	(((( 0 1 )	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=Seen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=Seen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=Seen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 ))	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=Seen  BuildChosen=ThreeHatchLurker
+	  (( 0 1 )	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 )))	%  HydraliskDen=NotSeen  Spire=Seen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchLurker
+	 ((( 0 1 )	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 ))	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=Seen  BuildChosen=ThreeHatchLurker
+	  (( 0 1 )	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=PoolRush
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchMuta
+	   ( 0.908257 0.0917431 )	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=TwoHatchMuta
+	   ( 0.908257 0.0917431 )))));	%  HydraliskDen=NotSeen  Spire=NotSeen  ThirdHatch=NotSeen  BuildChosen=ThreeHatchLurker
+}
+
+potential (BuildChosen)
+{
+    data = ( 0.25 0.25 0.25 0.25 );
+}
