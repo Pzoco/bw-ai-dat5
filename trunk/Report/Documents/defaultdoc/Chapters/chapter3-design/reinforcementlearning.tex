@@ -68,27 +68,27 @@ So we are left with 5 updating rules for each of the coefficients:
 
 \begin{flushleft}
 Maximum Distance Positioning 
-$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_f_{MDP} (a',s')))-\hat{Q}_f_{MDP} (a,s) ](2de - due)$
+$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{MDP}} (a',s')))-\hat{Q}_{f_{MDP}} (a,s) ](2de - due)$
 \end{flushleft} 
 
 \begin{flushleft}
 Ally Units  \\ 
-$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_f_{AU} (a',s')))-\hat{Q}_f_{AU} (a,s) ](2da - dua)$ 
+$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{AU}} (a',s')))-\hat{Q}_{f_{AU}} (a,s) ](2da - dua)$ 
 \end{flushleft} 
 
 \begin{flushleft}
 Edges and Cliffs
-$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_f_{EAC} (a',s')))-\hat{Q}_f_{EAC} (a,s) ] (2dc - duc)$ 
+$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{EAC}} (a',s')))-\hat{Q}_{f_{EAC}} (a,s) ] (2dc - duc)$ 
 \end{flushleft} 
 
 \begin{flushleft}
 Squad  \\ 
-$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_f_{S} (a',s')))-\hat{Q}_f_{S} (a,s) ] (2ds - dsv)$
+$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{S}} (a',s')))-\hat{Q}_{f_{S}} (a,s) ] (2ds - dsv)$
 \end{flushleft} 
 
 \begin{flushleft}
 Cooldown  \\ 
-$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_f_{CD} (a',s')))-\hat{Q}_f_{CD} (a,s) ](2de - due)$ 
+$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{CD}} (a',s')))-\hat{Q}_{f_{CD}} (a,s) ](2de - due)$ 
 \end{flushleft} 
 
 
