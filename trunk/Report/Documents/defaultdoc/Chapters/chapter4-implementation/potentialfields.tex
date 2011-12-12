@@ -47,16 +47,16 @@ bool firstCalculation = true;
 	
     Next, we need to find the tiles we want to calculate the potential for. This is done using the \textit{MathHelper::GetSurroundingPositions}  function in \lnnum{2}. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjacent tiles. From this we calculate all tiles around the unit and and them to a list.
 
-    Now in \lnnum{3} we calculate the potential for the center tile, this is used in \lnnum{6} to compare it to the best potential found, if the are equal we choose the center tile. This is a rare case and mostly occure when all the potential fields are zero, in that case we don't want to move, if we didn't choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile.
+    Now in \lnnum{3} we calculate the potential for the center tile, this is used in \lnnum{6} to compare it to the best potential found, if the are equal we choose the center tile. This is a rare case and mostly occur when all the potential fields are zero, in that case we don't want to move, if we didn't choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile.
     
-    In \lnnum{4} we have the main loop. This loop iterates trough all the tiles around our unit and selects the highest one. There is one special case in \lnnum{5}, this is the first calculate. In the first calculating we allways select it as the current best option. This is done just so we have something to compare with rather then just set it to an arbitrary tile and number.
+    In \lnnum{4} we have the main loop. This loop iterates trough all the tiles around our unit and selects the highest one. There is one special case in \lnnum{5}, this is the first calculate. In the first calculating we always select it as the current best option. This is done just so we have something to compare with rather then just set it to an arbitrary tile and number.
 	
 	    
-	    In the calculation of the potential field we use three different constantst listed below, these constants are intialized to a parameter we found by trial and error.
-		\begin{itemize
-		    \item _variables.SQUADDISTANCE_CONSTANT - Is set to 150 px.
-		    \item _variables.ALLYDISTANCE_CONSTANT - Is set to 50 px.
-		    \item _variables.EDGESDISTANCE_CONSTANT - Is set to 250 px.
+	    In the calculation of the potential field we use three different constants listed below, these constants are initialized to a parameter we found by trial and error.
+		\begin{itemize}
+		    \item \_variables.SQUADDISTANCE\_CONSTANT - Is set to $150$ px.
+		    \item \_variables.ALLYDISTANCE\_CONSTANT - Is set to $50$ px.
+		    \item \_variables.EDGESDISTANCE\_CONSTANT - Is set to $250$ px.
 		\end{itemize}
 		
 		
@@ -74,7 +74,7 @@ int useSquad = 0;
 		
 		Then in \lnnum{2} we check weather or not to use the \textit{Squad center} which depends on the distance from the unit, know as \textit{ds}, to the center of the squad. This is used to handle the two cases found in the design of the potential field. 
 		
-		Afterwards we calculate the potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. \textit{\_variables.FORCESQUAD} is learned by the reinforcement leraning in section \ref{section:reinforcement} !!!!!!!!!!!!!!!!!!!!!!!! FIX REF !!!!!!!!!!!!!!!. 
+		Afterwards we calculate the potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. \textit{\_variables.FORCESQUAD} is learned by the reinforcement learning in section \ref{section:reinforcement} !!!!!!!!!!!!!!!!!!!!!!!! FIX REF !!!!!!!!!!!!!!!. 
 		Unlike in the design we times useSquad on the end, this is to make it zero if we don't want to use potential field, which would make the entire calculation become zero. This is way to control the use of the potential field is not only used in \textit{Squad center} but also in all the other potential fields.
 		
 		\textit{squadQ} in \lnnum{4} and likewise will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement} !!!!!!!!!!!!!!!!!!!!!!!! FIX REF !!!!!!!!!!!!!!!
