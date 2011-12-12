@@ -9,6 +9,7 @@
 #include "ProductionFocusTask.h"
 #include "UpgradeTask.h"
 #include "ResearchTask.h"
+#include "ScoutingManager.h"
 
 class BuildOrderHandler
 {

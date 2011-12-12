@@ -10,6 +10,7 @@
 #include "SupplyCondition.h"
 #include "ProductionTask.h"
 #include "ResearchItem.h"
+#include "ScoutItem.h"
 
 
 BuildOrderHandler::BuildOrderHandler(void)
@@ -23,6 +24,7 @@ void BuildOrderHandler::InitiateBuildOrders()
 	twoFactVultures->AddItem(new ProductionFocusItem(ProductionEnums::Focus_Workers,new SupplyCondition(4)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(8)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Barracks,ProductionEnums::Placement_MainBase,new SupplyCondition(11)));
+	twoFactVultures->AddItem(new ScoutItem(new SupplyCondition(11)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Refinery,ProductionEnums::Placement_MainBase,new SupplyCondition(12)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Factory,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
@@ -97,6 +99,10 @@ void BuildOrderHandler::SaveAsTask(BuildOrderItem* item)
 	{
 		ProductionFocusItem* pi = dynamic_cast<ProductionFocusItem*>(item);
 		productionFocusTasks.push_back(new ProductionFocusTask(pi->productionFocus));
+	}
+	else if(item->GetType() == "ScoutItem")
+	{
+		ScoutingManager::GetInstance()->Scout();
 	}
 	
 }

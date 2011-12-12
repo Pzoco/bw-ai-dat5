@@ -42,10 +42,10 @@ void ScoutingManager::AnalyzeMap()
 void ScoutingManager::Update()
 {
 	//Broodwar->printf("Update");
-	if(!isScouting)
+	/*if(!isScouting)
 	{
 		Scout();
-	}
+	}*/
 	if(!enemyBaseFound)
 	{
 		std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
