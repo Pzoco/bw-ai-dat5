@@ -1,6 +1,9 @@
 #pragma once
 #include <BWAPI.h>
 #include "hugin"
+#include <iostream>
+#include <string>
+#include <algorithm>
 
 using namespace HAPI;
 

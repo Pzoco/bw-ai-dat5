@@ -4,30 +4,22 @@
 BuildOrderPredictor::BuildOrderPredictor()
 {
 }
-void Update()
-{
-
-}
 void BuildOrderPredictor::InitializePredictionNetwork(InformationEnums::Matchup matchup)
 {
 	
 	if(matchup == InformationEnums::MatchupTvP)
 	{
-		predictionNetwork = BayesianNetwork("C:/tvpprediction.net");
+		predictionNetwork = new BayesianNetwork("C:/tvpprediction.net");
 	}
 	else if(matchup == InformationEnums::MatchupTvT)
 	{
-		predictionNetwork = BayesianNetwork("C:/tvtprediction.net");
+		predictionNetwork = new BayesianNetwork("C:/tvtprediction.net");
 	}
 	else if(matchup == InformationEnums::MatchupTvZ)
 	{
-		predictionNetwork = BayesianNetwork("C:/tvzprediction.net");
+		predictionNetwork = new BayesianNetwork("C:/tvzprediction.net");
 	}
-	predictionNetwork.PrintNodes();
-	float f = predictionNetwork.GetProbability("Barracks1","Seen");
-	BWAPI::Broodwar->printf("%f",f);
-	//UpdateTvTNetwork(BWAPI::UnitTypes::Terran_Barracks);
-	//UpdateTvTNetwork(BWAPI::UnitTypes::Terran_Barracks);
+	BuildOrderPredictor::matchup = matchup;
 }
 
 void BuildOrderPredictor::UpdatePredictionNetwork(BWAPI::UnitType building)
@@ -46,43 +38,54 @@ void BuildOrderPredictor::UpdateTvPNetwork(BWAPI::UnitType building)
 }
 void BuildOrderPredictor::UpdateTvTNetwork(BWAPI::UnitType building)
 {
-	enemyBuildingsOwned[building]++;
-	//DiscreteChanceNode* d = GetNodeAsDCN("Barracks1",&predictionNetwork);
-	//d->selectState(0);
-	if(building == BWAPI::UnitTypes::Terran_Barracks)
+	if((building == BWAPI::UnitTypes::Terran_Academy || 
+			building == BWAPI::UnitTypes::Terran_Starport ||
+			building == BWAPI::UnitTypes::Terran_Barracks ||
+			building == BWAPI::UnitTypes::Terran_Factory)&& 
+			enemyBuildingsOwned[building]==1)
 	{
-		switch(enemyBuildingsOwned[building])
-		{
-			//case 1: ->selectState(0);break;
-			//case 2: GetNodeAsDCN("Barracks2")->selectState(0);break;
-		}
+		//Converts the building type to how the nodes are written
+		std::string nodeName = building.getName();
+		nodeName.erase(0,7);
+		std::remove(nodeName.begin(), nodeName.end(), ' ');
+		char buffer [2];
+		std::string nodeNumber = itoa(1,buffer,10);	
+		predictionNetwork->EnterEvidence((nodeName+nodeNumber),"Seen");
 	}
-	/*DiscreteChanceNode* build = GetNodeAsDCN("BuildChosen");
-	build->generateTable();
-	BWAPI::Broodwar->printf("The States are now: \n");
-	for(int i = 0;i<build->getNumberOfStates();i++)
+	else if((building == BWAPI::UnitTypes::Terran_Barracks ||
+			building == BWAPI::UnitTypes::Terran_Command_Center || 
+			building == BWAPI::UnitTypes::Terran_Factory) &&
+			enemyBuildingsOwned[building]==2)
 	{
-		BWAPI::Broodwar->printf("State %s",build->getStateLabel(i).c_str());
-	}*/
+		//Converts the building type to how the nodes are written
+		std::string nodeName = building.getName();
+		nodeName.erase(0,7);
+		std::remove(nodeName.begin(), nodeName.end(), ' ');
+		char buffer [2];
+		std::string nodeNumber = itoa(2,buffer,10);
+		predictionNetwork->EnterEvidence((nodeName+nodeNumber),"Seen");
+	}
+
 }
 void BuildOrderPredictor::UpdateTvZNetwork(BWAPI::UnitType building)
 {
-
-}
-DiscreteChanceNode* BuildOrderPredictor::GetNodeAsDCN(std::string name,Domain *domain)
-{
-	
-	NodeList nodes = domain->getNodes();
-	DiscreteChanceNode* returnNode;
-	for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
-    {
-		Node* node = *it;
-		if(name == node->getName())
-		{
-			BWAPI::Broodwar->printf("name: %s",node->getLabel().c_str());
-			returnNode = dynamic_cast<DiscreteChanceNode*>(node);
-			break;
-		}
+	if(building == BWAPI::UnitTypes::Zerg_Hatchery && 
+		(enemyBuildingsOwned[building]==2 || enemyBuildingsOwned[building]==3))
+	{
+		std::string nodeName = building.getName();
+		nodeName.erase(0,5);
+		std::remove(nodeName.begin(), nodeName.end(), ' ');
+		char buffer [2];
+		std::string nodeNumber = itoa(enemyBuildingsOwned[building],buffer,10);
+		predictionNetwork->EnterEvidence((nodeName+nodeNumber),"Seen");
 	}
-	return (returnNode);
+	else if(building == BWAPI::UnitTypes::Zerg_Spire && 
+			building == BWAPI::UnitTypes::Zerg_Hydralisk_Den &&
+			enemyBuildingsOwned[building]==1)
+	{
+		std::string nodeName = building.getName();
+		std::remove(nodeName.begin(), nodeName.end(), ' ');
+		nodeName.erase(0,3);
+		predictionNetwork->EnterEvidence((nodeName),"Seen");
+	}
 }

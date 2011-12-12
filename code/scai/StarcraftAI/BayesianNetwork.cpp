@@ -26,6 +26,7 @@ float BayesianNetwork::GetProbability(std::string nodeName,std::string stateName
 }
 void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName)
 {
+	domain->uncompile();
 	NodeList nodes = domain->getNodes();
 	DiscreteChanceNode* evidenceNode;
 	for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
@@ -48,7 +49,7 @@ void BayesianNetwork::PrintNodes()
     for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
     {
 		Node *node = *it;
-		BWAPI::Broodwar->printf("name: %s",node->getName().c_str());
+		BWAPI::Broodwar->printf("Node: %s",node->getName().c_str());
 	}
 }
 
