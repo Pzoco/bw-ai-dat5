@@ -59,6 +59,9 @@ Notice that there are forces that are dependant on the exact same variables, lik
 We use the updating rule or Q-learning equation that evolves from Widrow-Huff rule or Delta Rule reducing the temporal difference between successive states:  \cite[p779]{rl} \\ 
  
 $\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma maxQ_\Theta(a',s')-Q_\Theta(a,s) ] \frac{d}{d\Theta_i}(Q_\Theta(a,s))$ \\ 
+
+%explain each clause fo the formula
+
 \begin{flushleft}
 So we are left with 5 updating rules for each of the coefficients:
 \end{flushleft} 
@@ -89,16 +92,18 @@ $f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma max(Q_f_{CD} (a',s'))-Q_f_{
 \end{flushleft} 
 
 
+%convergence guarantees
+
 \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl}
 
-%convergence paragraph
 
 \subsubsection{Reward Function}
 
-We created a reward function that \\ 
+We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes through. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is. \\ 
 
-$R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills$ \\ 
+$R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$ \\ 
 
+We ensure that the reward complies with the convergence restriction that
 
 
 
