@@ -1,5 +1,6 @@
 // BayesianNetworkTest.cpp : main project file.
 #include<iostream>
+#include <windows.h>
 #include "BayesianNetwork.h"
 #include "Node.h"
 #include "ProbabilityHelper.h"
@@ -65,6 +66,8 @@ int main()
 		}
 		cout<<endl;
 	}
+
+	Sleep(5000);
 
     return 0;
 }
