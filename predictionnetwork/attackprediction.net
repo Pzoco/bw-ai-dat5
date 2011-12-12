@@ -42,11 +42,38 @@ net
     HR_Grid_X = "40";
 }
 
+node Attack
+{
+    label = "";
+    position = (354 301);
+    states = ("Yes" "No");
+    HR_LinkMode = "[TrustInPrediction:0][AttackPrediction:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node TrustInPrediction
+{
+    label = "";
+    position = (294 225);
+    states = ("Trust" "DontTrust");
+    HR_LinkControlPoints = "";
+    HR_LinkMode = "[InformationGained:0][TimeSinceScout:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
 node InformationGained
 {
     label = "";
-    position = (338 163);
+    position = (214 100);
     states = ("1" "2" "3");
+    HR_LinkControlPoints = "";
+    HR_LinkMode = "";
     HR_State_0 = "";
     HR_State_1 = "";
     HR_Desc = "";
@@ -58,8 +85,10 @@ node InformationGained
 node AttackPrediction
 {
     label = "";
-    position = (458 163);
+    position = (416 220);
     states = ("Yes" "No");
+    HR_LinkControlPoints = "";
+    HR_LinkMode = "";
     HR_Group = "0";
     HR_Desc = "";
     HR_State_1 = "";
@@ -69,8 +98,10 @@ node AttackPrediction
 node TimeSinceScout
 {
     label = "";
-    position = (579 159);
+    position = (359 99);
     states = ("<1min" "1min" "2min" "3min");
+    HR_LinkControlPoints = "";
+    HR_LinkMode = "";
     HR_State_3 = "";
     HR_State_2 = "";
     HR_Group = "0";
@@ -79,40 +110,35 @@ node TimeSinceScout
     HR_State_0 = "";
 }
 
-node Attack
+potential (Attack)
 {
-    label = "";
-    position = (483 313);
-    states = ("Yes" "No");
-    HR_LinkMode = "[InformationGained:0][AttackPrediction:0][TimeSinceScout:0]";
-    HR_Group = "0";
-    HR_Desc = "";
-    HR_State_1 = "";
-    HR_State_0 = "";
+    data = ( 0.9 0.1 );
 }
 
-potential (InformationGained | Attack)
+potential (TrustInPrediction | Attack)
 {
     data
-     = (( 0.15 0.25 0.6 )	%  Attack=Yes
-	( 0.6 0.25 0.15 ));	%  Attack=No
+     = (( 0.9 0.1 )	%  Attack=Yes
+	( 0.1 0.9 ));	%  Attack=No
+}
+
+potential (InformationGained | TrustInPrediction)
+{
+    data
+     = (( 0.15 0.25 0.6 )	%  TrustInPrediction=Trust
+	( 0.6 0.25 0.15 ));	%  TrustInPrediction=DontTrust
 }
 
 potential (AttackPrediction | Attack)
 {
     data
-     = (( 0.8 0.2 )	%  Attack=Yes
-	( 0.2 0.8 ));	%  Attack=No
+     = (( 0.9 0.1 )	%  Attack=Yes
+	( 0.1 0.9 ));	%  Attack=No
 }
 
-potential (TimeSinceScout | Attack)
+potential (TimeSinceScout | TrustInPrediction)
 {
     data
-     = (( 0.904762 0.047619 0.0285714 0.0190476 )	%  Attack=Yes
-	( 0.0190476 0.0285714 0.047619 0.904762 ));	%  Attack=No
-}
-
-potential (Attack)
-{
-    data = ( 0.5 0.5 );
+     = (( 0.904762 0.047619 0.0285714 0.0190476 )	%  TrustInPrediction=Trust
+	( 0.0103093 0.0206186 0.0412371 0.927835 ));	%  TrustInPrediction=DontTrust
 }
