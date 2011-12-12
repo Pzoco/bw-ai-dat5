@@ -1,6 +1,6 @@
 \section{Agent Learning}\label{agent_learning}
 %introduce the two and mention we choosed RL
-This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our proyect. Then the reinforecement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analized to evaluate its relevance. 
+This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analized to evaluate its relevance. 
 
 \subsection*{Neural Networks}			 
 			
@@ -8,10 +8,10 @@ This section addresses various different learning techniques and methods that co
 
 \subsection*{Reinforcement Learning}
 
-Reinforcement learning  [RL] is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
+Reinforcement learning  [RL] is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. 
 
 % used algorithm for the lack of a better word...
-There are diferent RL techniques that depend on the amout of information we have avaliable for learning. They can be cassified into passive and active RL methods. In passive RL the agents policy is fixed and the task is to learn the utilities of each state \cite[p764]{rl}. This implies that the enviroment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl}. So the agent basicaly explores considering that it can't look ahead for more than a move or predict the efects of its actions in the future. 
+There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. In passive RL the agents policy is fixed and the task is to learn the utilities of each state \cite[p764]{rl}. This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future. 
 
 %Paragraph about how active reinforcement learning can grow exponentialy in complexity and space -> therefore DP
 
@@ -21,21 +21,19 @@ There are diferent RL techniques that depend on the amout of information we have
 
 The choice of using reinforcement learning was based on the necessity to train our AI to improve after every match or test. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
 
-Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. This function is viewed as aproximate because it might not be the case that the true utility or Q-function can be represented in the chosen form \cite[p777]{rl}. 
+Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form \cite[p777]{rl}. 
 
 \subsection{Q-Learning functions}
 
-The starcraft enviroment has several factors that could be considered important for defining a moment in time; units, time, enemies, distances, map elements, etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the enviroment as closely as possible without incresing the size and computability time of each calculation. 
+The starcraft environment has several factors that could be considered important for defining a moment in time; units, time, enemies, distances, map elements, etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. 
 
-\textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off betewwn the size of te hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good aproximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}
+\textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off betewwn the size of te hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good approximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}
 
-We combine the generalization of Q-learning with the potential fields to obtain a resonable model of the starcraft enviroment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
+We combine the generalization of Q-learning with the potential fields to obtain a reasonable model of the starcraft environment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
 
 \subsubsection{State - Hypothesis Space}
 
-We define a state in our enviroment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. 
-
-\\
+We define a state in our environment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. \\
 \begin{displaymath}
                        State = \begin{cases}
                          da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
@@ -60,7 +58,7 @@ We use the updating rule or Q-learning equation that evolves from Widrow-Huff ru
  
 $\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma maxQ_\Theta(a',s')-Q_\Theta(a,s) ] \frac{d}{d\Theta_i}(Q_\Theta(a,s))$ \\ 
 
-%explain each clause fo the formula
+%explain each clause for the formula
 
 \begin{flushleft}
 So we are left with 5 updating rules for each of the coefficients:
@@ -68,40 +66,40 @@ So we are left with 5 updating rules for each of the coefficients:
 
 \begin{flushleft}
 Maximum Distance Positioning 
-$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma max(Q_f_{MDP} (a',s'))-Q_f_{MDP} (a,s) ](2de - due)$
+$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma max({Q_f}_MDP (a',s'))-{Q_f}_{MDP} (a,s) ](2de - due)$
 \end{flushleft} 
 
 \begin{flushleft}
 Ally Units  \\ 
-$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma max(Q_f_{AU} (a',s'))-Q_f_{AU} (a,s) ](2da - dua)$ 
+$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma max({Q_f}_{AU} (a',s'))-{Q_f}_{AU} (a,s) ](2da - dua)$ 
 \end{flushleft} 
 
 \begin{flushleft}
 Edges and Cliffs
-$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma max(Q_f_{EAC} (a',s'))-Q_f_{EAC} (a,s) ] (2dc - duc)$ 
+$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma max({Q_f}_{EAC} (a',s'))-{Q_f}_{EAC} (a,s) ] (2dc - duc)$ 
 \end{flushleft} 
 
 \begin{flushleft}
 Squad  \\ 
-$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma max(Q_f_{S} (a',s'))-Q_f_{S} (a,s) ] (2ds - dsv)$
+$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma max({Q_f}_{S} (a',s'))-{Q_f}_{S} (a,s) ] (2ds - dsv)$
 \end{flushleft} 
 
 \begin{flushleft}
 Cooldown  \\ 
-$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma max(Q_f_{CD} (a',s'))-Q_f_{CD} (a,s) ](2de - due)$ 
+$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma max({Q_f}_{CD} (a',s'))-{Q_f}_{CD} (a,s) ](2de - due)$ 
 \end{flushleft} 
 
 
 %convergence guarantees
 
-\textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl}
+\textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters \cite[p779]{rl}. }
 
 
 \subsubsection{Reward Function}
 
 We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes through. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is. \\ 
 
-$R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$ \\ 
+$R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$
 
 We ensure that the reward complies with the convergence restriction that
 
