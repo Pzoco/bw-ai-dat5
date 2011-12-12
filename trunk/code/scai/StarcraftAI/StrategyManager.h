@@ -13,6 +13,7 @@ public:
 	void Update();
 private:
 	static bool initialized;
+	std::list<BWAPI::Unit*> enemyUnits;
 	InformationEnums::ThreatLevel currentThreatLevel;
 	InformationEnums::Matchup matchup;
 	static StrategyManager* strategyManager;
