@@ -1,6 +1,7 @@
 #include "ScoutingManager.h"
 #include <BWAPI.h>
 #include <BWTA.h>
+
 bool analyzed = false;
 
 ScoutingManager* ScoutingManager::scoutingManager = 0;
