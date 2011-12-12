@@ -1,0 +1,176 @@
+net
+{
+    node_size = (80 40);
+    HR_ToolBar_CDVT = "0";
+    HR_Html_Desc = "0";
+    HR_HTML_Desc = "";
+    HR_Groups_IDs = "";
+    HR_Node_Label_Style = "0";
+    HR_Desc = "";
+    HR_OOBN_CheckConsistency = "1";
+    HR_OOBN_FitExpand = "1";
+    HR_Zoom_ZoomFactor = "100";
+    HR_Groups_GroupColors = "";
+    HR_Groups_GroupNames = "";
+    HR_Groups_UserGroupsNo = "0";
+    HR_Color_Interface = "21";
+    HR_Color_Instance = "0";
+    HR_Color_Function = "4";
+    HR_Color_Utility = "36";
+    HR_Color_Decision = "17";
+    HR_Color_ContinuousChance = "48";
+    HR_Color_DiscreteChance = "16";
+    HR_Monitor_InitSD = "2";
+    HR_Monitor_Utility_Arrange = "0";
+    HR_Monitor_Mean_Variance = "1";
+    HR_Monitor_Chance_Utility = "1";
+    HR_Monitor_InitStates = "5";
+    HR_Monitor_OpenGraph = "0";
+    HR_Monitor_GraphPrecision = "100";
+    HR_Monitor_AutoUpdGraph = "0";
+    HR_Compile_MaxMinimalSeparators = "100000";
+    HR_Compile_ApproxEpsilon = "1.0E-5";
+    HR_Compile_Approximate = "0";
+    HR_Compile_SaveToMemory = "0";
+    HR_Compile_Compress = "0";
+    HR_Compile_TriangMethod = "0";
+    HR_Propagate_AutoNormal = "1";
+    HR_Propagate_AutoSum = "1";
+    HR_Propagate_Auto = "1";
+    HR_Font_Italic = "0";
+    HR_Font_Weight = "400";
+    HR_Font_Size = "-12";
+    HR_Font_Name = "javax.swing.plaf.FontUIResource[family=Tahoma,name=Tahoma,style=plain,size=11]";
+    HR_Grid_GridShow = "0";
+    HR_Grid_GridSnap = "0";
+    HR_Grid_Y = "40";
+    HR_Grid_X = "40";
+}
+
+node Nexus
+{
+    label = "";
+    position = (458 283);
+    states = ("Seen" "NotSeen");
+    HR_HTML_Desc = "";
+    HR_LinkMode = "[TwoGate2:0][GateGate2:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node CyberneticsCore
+{
+    label = "";
+    position = (218 116);
+    states = ("Seen" "NotSeen");
+    HR_LinkMode = "[TwoGate2:0][GateGate2:0]";
+    HR_NodeSize = "(114, 51)";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node Assimilator
+{
+    label = "";
+    position = (219 194);
+    states = ("Seen" "NoSeen");
+    HR_LinkMode = "[CyberneticsCore:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node GateGate2
+{
+    label = "";
+    position = (356 67);
+    states = ("Seen" "NotSeen");
+    HR_HTML_Desc = "";
+    HR_State_0 = "";
+    HR_State_1 = "";
+    HR_Desc = "";
+    HR_Group = "0";
+}
+
+node Gateway1
+{
+    label = "";
+    position = (322 256);
+    states = ("Seen" "NotSeen");
+    HR_HTML_Desc = "";
+    HR_LinkMode = "[TwoGate1_1:0][Assimilator:0][GateGate2:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node BuildChosen
+{
+    label = "";
+    position = (258 360);
+    states = ("TwoGate" "BasicOrder" "10/15" "14Nexus");
+    HR_State_3 = "";
+    HR_State_2 = "";
+    HR_LinkMode = "[TwoGate1:0][Nexus:0][Gateway1:0]";
+    HR_NodeSize = "(100, 50)";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+potential (Nexus | BuildChosen)
+{
+    data
+     = (( 0 1 )	%  BuildChosen=TwoGate
+	( 0 1 )	%  BuildChosen=BasicOrder
+	( 0 1 )	%  BuildChosen=10/15
+	( 1 0 ));	%  BuildChosen=14Nexus
+}
+
+potential (CyberneticsCore | Assimilator)
+{
+    data
+     = (( 0.9 0.6 )	%  Assimilator=Seen
+	( 0.1 1 ));	%  Assimilator=NoSeen
+}
+
+potential (Assimilator | Gateway1)
+{
+    data
+     = (( 0.7 0.7 )	%  Gateway1=Seen
+	( 0.3 1 ));	%  Gateway1=NotSeen
+}
+
+potential (GateGate2 | Nexus CyberneticsCore Gateway1)
+{
+    data
+     = (((( 1 0 )	%  Nexus=Seen  CyberneticsCore=Seen  Gateway1=Seen
+	  ( 0 1 ))	%  Nexus=Seen  CyberneticsCore=Seen  Gateway1=NotSeen
+	 (( 1 0 )	%  Nexus=Seen  CyberneticsCore=NotSeen  Gateway1=Seen
+	  ( 0 1 )))	%  Nexus=Seen  CyberneticsCore=NotSeen  Gateway1=NotSeen
+	((( 1 0 )	%  Nexus=NotSeen  CyberneticsCore=Seen  Gateway1=Seen
+	  ( 0 1 ))	%  Nexus=NotSeen  CyberneticsCore=Seen  Gateway1=NotSeen
+	 (( 1 0 )	%  Nexus=NotSeen  CyberneticsCore=NotSeen  Gateway1=Seen
+	  ( 0 1 ))));	%  Nexus=NotSeen  CyberneticsCore=NotSeen  Gateway1=NotSeen
+}
+
+potential (Gateway1 | BuildChosen)
+{
+    data
+     = (( 1 0 )	%  BuildChosen=TwoGate
+	( 1 0 )	%  BuildChosen=BasicOrder
+	( 1 0 )	%  BuildChosen=10/15
+	( 0 1 ));	%  BuildChosen=14Nexus
+}
+
+potential (BuildChosen)
+{
+    data = ( 0.1 0.4 0.4 0.1 );
+}
