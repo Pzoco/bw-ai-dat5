@@ -7,7 +7,7 @@ typedef std::map<BWAPI::TilePosition,BWAPI::UnitType> buildingToConstruct;
 class WorkerManager
 {
 public:
-	enum ScvState{Constructing,BeingBuild,MiningGas,MiningMinerals,Defending,Evading,Nothing};
+	enum ScvState{Constructing,BeingBuild,MiningGas,MiningMinerals,Defending,Evading,Scouting,Nothing};
 	static WorkerManager* GetInstance();
 	void AddMineralLine(std::set<BWAPI::Unit*> minerals);
 	void AddRefinery(BWAPI::Unit* refinery);
@@ -15,6 +15,8 @@ public:
 	void ScvKilled(BWAPI::Unit* scv);
 	void Update();
 	void ConstructBuilding(BWAPI::UnitType buildingType,ProductionEnums::BuildingPlacement placement);
+	BWAPI::Unit* RequestSCV();
+	void ReturnSCV(BWAPI::Unit* scv);
 private:
 	BWAPI::Unit* _newRefinery;
 	std::list<BWAPI::Unit*> _scvs;
@@ -32,4 +34,5 @@ private:
 	void SendToGas(BWAPI::Unit* scv);
 	BWAPI::Unit* GetScvNearPosition(BWAPI::Position position);
 	BWAPI::Unit* GetAvailableScvNearPosition(BWAPI::Position position);
+
 };

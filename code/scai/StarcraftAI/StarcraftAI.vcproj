@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="StarcraftAI"
 	ProjectGUID="{2E63AE74-758A-4607-9DE4-D28E814A6E13}"
 	RootNamespace="ExampleAIModule"
@@ -368,6 +368,14 @@
 					</Filter>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="BayesianNetwork"
+				>
+				<File
+					RelativePath=".\BayesianNetwork.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -376,6 +384,10 @@
 			>
 			<File
 				RelativePath=".\BaseTactic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BayesianNetwork.h"
 				>
 			</File>
 			<File

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <BWAPI.h>
 namespace InformationEnums
 {
 	enum ThreatLevel {ThreatLow,ThreatMedium,ThreatHigh};
