@@ -1,4 +1,5 @@
 \section{Implementing potential fields}
+	In this section we are going to take a look at the implementation of the potential field. First we will look at the main loop and the general structure. Then move on to each part of the potential field it self.
 	
 	\subsection{General structure}
 	The potential field is calculated for individual units. These units belongs to a squad, when we calculate the potential field we also pass a reference to the squad, called \textit{mySquad}, because it is needed to calculate \textit{Squad center} and \textit{Ally potential}.
@@ -52,12 +53,12 @@ bool firstCalculation = true;
     In \lnnum{4} we have the main loop. This loop iterates trough all the tiles around our unit and selects the highest one. There is one special case in \lnnum{5}, this is the first calculate. In the first calculating we always select it as the current best option. This is done just so we have something to compare with rather then just set it to an arbitrary tile and number.
 	
 	    
-	    In the calculation of the potential field we use three different constants listed below, these constants are initialized to a parameter we found by trial and error.
-		\begin{itemize}
-		    \item \_variables.SQUADDISTANCE\_CONSTANT - Is set to $150$ px.
-		    \item \_variables.ALLYDISTANCE\_CONSTANT - Is set to $50$ px.
-		    \item \_variables.EDGESDISTANCE\_CONSTANT - Is set to $250$ px.
-		\end{itemize}
+	In the calculation of the potential field we use three different constants listed below, these constants are initialized to a parameter we found by trial and error.
+	\begin{itemize}
+		\item \_variables.SQUADDISTANCE\_CONSTANT - Is set to $150$ px.
+		\item \_variables.ALLYDISTANCE\_CONSTANT - Is set to $50$ px.
+		\item \_variables.EDGESDISTANCE\_CONSTANT - Is set to $250$ px.
+	\end{itemize}
 		
 		
 	\subsection{Squad center}	
