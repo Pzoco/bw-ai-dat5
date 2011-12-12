@@ -85,7 +85,7 @@ node Assimilator
     HR_State_0 = "";
 }
 
-node GateGate2
+node Gateway2
 {
     label = "";
     position = (356 67);
@@ -148,7 +148,7 @@ potential (Assimilator | Gateway1)
 	( 0.3 1 ));	%  Gateway1=NotSeen
 }
 
-potential (GateGate2 | Nexus CyberneticsCore Gateway1)
+potential (Gateway2 | Nexus CyberneticsCore Gateway1)
 {
     data
      = (((( 1 0 )	%  Nexus=Seen  CyberneticsCore=Seen  Gateway1=Seen
