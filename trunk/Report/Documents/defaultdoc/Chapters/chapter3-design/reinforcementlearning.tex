@@ -13,6 +13,8 @@ Reinforcement learning  [RL] is a method used to build models or functions that 
 % used algorithm for the lack of a better word...
 There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. In passive RL the agents policy is fixed and the task is to learn the utilities of each state \cite[p764]{rl}. This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future. 
 
+%Direct Utility estimation - Bellman rules
+
 % Normal Q learning
 
 %Paragraph about how active reinforcement learning can grow exponentialy in complexity and space -> therefore DP
@@ -25,7 +27,7 @@ The choice of using reinforcement learning was based on the necessity to train o
 
 Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form \cite[p777]{rl}. 
 
-\subsection{Q-Learning functions}
+\subsection{Q-Learning Functions}
 
 The starcraft environment has several factors that could be considered important for defining a moment in time; units, time, enemies, distances, map elements, etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. 
 
@@ -42,7 +44,7 @@ We define a state in our environment as a combination of the most important fact
                       \end{cases}
 \end{displaymath}
 
-The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+\\The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
 
 \subsubsection{Function Approximation}
 
@@ -60,37 +62,63 @@ We use the updating rule or Q-learning equation that evolves from Widrow-Huff ru
  
 $\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma(max\hat{Q}_\Theta(a',s'))-\hat{Q}_\Theta(a,s) ] \frac{\partial \hat{Q}_\Theta(a,s)}{\partial\Theta_i}$ \\ 
 
-%explain each clause of the formula
+\begin{flushleft}
+Where $\Theta_i$ is each one of the coefficients in the Q-approximation. In the context of our  $\hat{Q}_f$ function, it would represent the forces: $f_{MDP}$, $f_{AU}$, $f_{EAC}$, $f_{S}}$, $f_{CD}$. 
+\end{flushleft} 
 
 \begin{flushleft}
-So we are left with 5 updating rules for each of the coefficients:
+$R(S)$ -  represents the reward function for the current state.
+\end{flushleft} 
+
+\begin{flushleft}
+$\hat{Q}_\Theta(a,s)$ - Is the value of the $\hat{Q}$ function for the next position (one step ahead). The next position depends on the current state $s$ and the action $a$ performed by the agent from that state.
+\end{flushleft} 
+
+\begin{flushleft}
+$max(\hat{Q}_\Theta(a',s'))$ - Is the highest possible $\hat{Q}$ value calculated from the next position (two steps ahead). The highest possible option (for every $a'$) once the current state $s$ has performed an action $a$ and is in a new state $s' = \delta(a,s)$. 
+\end{flushleft} 
+
+\begin{flushleft}
+$\frac{\partial \hat{Q}_\Theta(a,s)}{\partial\Theta_i}$  - Is the partial derivative of the $\hat{Q}$ function with respect to the current $\Theta_i$, in other words the variables or factors that afect only that coefficient $\Theta_i$. And in the case of our  linear $\hat{Q}$ function, always a constant representing some distances in a certain state. 
+\end{flushleft} 
+
+\begin{flushleft}
+$\alpha$  - Is the learning rate, which basically means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation; how much it learns from each visit to every state. It is a number, $0 < \alpha < 1$, that in a normal temporal difference equation (REFERENCE!!!!!) would (optimaly) decrease according to how many times a state is visited. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn every specific case.
+\end{flushleft} 
+
+\begin{flushleft}
+$\gamma$  - Is the discount factor
+\end{flushleft} 
+
+
+\begin{flushleft}
+So we are left with the following updating rules for each of the coefficients/forces:
 \end{flushleft} 
 
 \begin{flushleft}
 Maximum Distance Positioning 
-$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{MDP}} (a',s')))-\hat{Q}_{f_{MDP}} (a,s) ](2de - due)$
+$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)$
 \end{flushleft} 
 
 \begin{flushleft}
 Ally Units  \\ 
-$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{AU}} (a',s')))-\hat{Q}_{f_{AU}} (a,s) ](2da - dua)$ 
+$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2da - dua)$ 
 \end{flushleft} 
 
 \begin{flushleft}
 Edges and Cliffs
-$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{EAC}} (a',s')))-\hat{Q}_{f_{EAC}} (a,s) ] (2dc - duc)$ 
+$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2dc - duc)$ 
 \end{flushleft} 
 
 \begin{flushleft}
 Squad  \\ 
-$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{S}} (a',s')))-\hat{Q}_{f_{S}} (a,s) ] (2ds - dsv)$
+$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2ds - dsv)$
 \end{flushleft} 
 
 \begin{flushleft}
 Cooldown  \\ 
-$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{CD}} (a',s')))-\hat{Q}_{f_{CD}} (a,s) ](2de - due)$ 
+$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)$ 
 \end{flushleft} 
-
 
 %convergence guarantees
 
@@ -99,10 +127,12 @@ $f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f_{CD}} (a',s
 
 \subsubsection{Reward Function}
 
-We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes through. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is. \\ 
+We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes by. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is. \\ 
 
 $R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$ \\ 
 
 We ensure that the reward complies with the convergence restriction of the Q-learning theorem (REFERENCE!!!!). 
 
 %\textit{}\ref{}
+
+\subsection{Q-Learning Conclusions}
