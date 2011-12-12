@@ -95,7 +95,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			CharacterSet="1"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -117,8 +117,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS"
+				AdditionalIncludeDirectories="&quot;E:\Programmer\Hugin lite\HDE7.5CPP\Include&quot;;../include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;EXAMPLEAIMODULE_EXPORTS;Add H_DOUBLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -136,9 +136,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../lib/BWAPI.lib ../lib/BWTA.lib ../lib/tinyxml.lib ../lib/CGAL-vc90-mt.lib ../lib/libboost_thread-vc90-mt-1_40.lib ../lib/gmp-vc90-mt.lib ../lib/mpfr-vc90-mt.lib ../VC9/Release/hugincpp-7.5-vc9.lib"
+				AdditionalDependencies="../lib/BWAPI.lib ../lib/BWTA.lib ../lib/tinyxml.lib ../lib/CGAL-vc90-mt.lib ../lib/libboost_thread-vc90-mt-1_40.lib ../lib/gmp-vc90-mt.lib ../lib/mpfr-vc90-mt.lib ../VC9/Release/hugincpp-7.5-vc9.lib ../VC9/Release/hugincpp2-7.5-vc9.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../VC9\Release"
+				AdditionalLibraryDirectories="&quot;E:\Programmer\Hugin lite\HDE7.5CPP\Lib\VC9\Release&quot;;../VC9\Release"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -187,6 +187,10 @@
 			<Filter
 				Name="Helpers"
 				>
+				<File
+					RelativePath=".\BayesianNetwork.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\MathHelper.cpp"
 					>
@@ -355,17 +359,13 @@
 					Name="StrategyManager"
 					>
 					<File
+						RelativePath=".\BuildOrderPredictor.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\StrategyManager.cpp"
 						>
 					</File>
-					<Filter
-						Name="PredictionNetworks"
-						>
-						<File
-							RelativePath=".\tvtprediction.net"
-							>
-						</File>
-					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -408,6 +408,10 @@
 			</File>
 			<File
 				RelativePath=".\BuildOrderItem.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BuildOrderPredictor.h"
 				>
 			</File>
 			<File

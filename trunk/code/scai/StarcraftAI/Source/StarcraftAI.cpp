@@ -9,6 +9,7 @@
 #include "../ScoutingManager.h"
 #include "../ProductionManager.h"
 #include "../WorkerManager.h"
+#include "../StrategyManager.h"
 
 using namespace BWAPI;
 int gameCount = 1;
@@ -26,9 +27,7 @@ struct StarcraftAI::Thetas
 
 void StarcraftAI::onStart()
 {
-	HAPI::DefaultParseListener pl;
-	HAPI::Domain domain("C:/tvtprediction.net",&pl);
-	BWAPI::Broodwar->printf("loaded with %d nodes",domain.getNodes().size());
+	
 
 
 	/*remove( "C:/rewards.txt");
@@ -73,12 +72,13 @@ void StarcraftAI::onEnd(bool isWinner)
 
 void StarcraftAI::onFrame()
 {
-	/*
+	
 	TacticsManager::GetInstance()->Update();
 	ScoutingManager::GetInstance()->Update();
 	ProductionManager::GetInstance()->Update();
 	WorkerManager::GetInstance()->Update();
-
+	StrategyManager::GetInstance()->Update();
+/*
 	//TESTING:
 	BWAPI::Broodwar->drawTextScreen(50,300,"Game Count is: = %d",gameCount);
 	//TESTING:
@@ -189,7 +189,7 @@ void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 {
-	/*
+	
 	if(unit->getPlayer() == BWAPI::Broodwar->self())
 	{
 		//Assigns the units to the different managers
@@ -207,7 +207,6 @@ void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 			ProductionManager::GetInstance()->BuildingConstructed(unit);
 		}
 	}
-	*/
 }
 
 void StarcraftAI::onUnitHide(BWAPI::Unit* unit)
@@ -221,7 +220,6 @@ void StarcraftAI::onUnitCreate(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 {
-	/*
 	if(unit->getPlayer() == BWAPI::Broodwar->self())
 	{
 		//Assigns the units to the different managers
@@ -238,7 +236,6 @@ void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 			ProductionManager::GetInstance()->BuildingDestroyed(unit);
 		}
 	}
-	*/
 }
 
 void StarcraftAI::onUnitMorph(BWAPI::Unit* unit)
