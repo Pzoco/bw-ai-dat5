@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "hugin"
 #include "../TacticsManager.h"
 #include "../ScoutingManager.h"
 #include "../ProductionManager.h"
@@ -25,7 +26,12 @@ struct StarcraftAI::Thetas
 
 void StarcraftAI::onStart()
 {
-	remove( "C:/rewards.txt");
+	HAPI::DefaultParseListener pl;
+	HAPI::Domain domain("C:/tvtprediction.net",&pl);
+	BWAPI::Broodwar->printf("loaded with %d nodes",domain.getNodes().size());
+
+
+	/*remove( "C:/rewards.txt");
 	StarcraftAI::reinforcementLearning.LoadWeightsFromFile();
 
 	//BWAPI::Broodwar->sendText("war aint what it used to be");
@@ -42,92 +48,32 @@ void StarcraftAI::onStart()
 	//Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	
-	//scoutingManager.AnalyzeMap();
+	//scoutingManager.AnalyzeMap();*/
+
+
+
+	/*
+		HUGIN STUFF
+	*/
+
+
+
+
 }
 
 void StarcraftAI::onEnd(bool isWinner)
 {	
 
-	StarcraftAI::reinforcementLearning.SaveCurrentWeightsToFile(); 
+	/*StarcraftAI::reinforcementLearning.SaveCurrentWeightsToFile(); 
 
-	/*StarcraftAI::reinforcementLearning.WriteValueToBuffer(0,true);
-
-	
-
-	try
-	{
-		std::ifstream file("C:/rewards.txt"); 
-		std::string line; 
-
-		double edge, cool, mde, squad, ally; 
-		double currQ; 
-		double nextQ; 
-		double reward; 
-		
-		for(int i = 0; std::getline(file,line); i++) 
-		{
-			if(i >= 8*5)
-			{
-				switch(i%8)
-				{
-					case 0:
-						ally = atof(line.c_str());
-						break; 
-					case 1:
-						squad = atof(line.c_str());
-						break; 
-					case 2:
-						mde = atof(line.c_str());
-						break;
-					case 3:
-						cool = atof(line.c_str());
-						break; 
-					case 4:
-						edge = atof(line.c_str());
-						break; 
-					case 5:
-						currQ = (-1)*atof(line.c_str());
-						break; 
-					case 6:
-						nextQ = (-1)*atof(line.c_str());
-						break; 
-					case 7:
-						reward = atof(line.c_str());
-						_thetas.edge = ReinforcementLearning::CalculateTheta(_thetas.edge,reward,currQ,nextQ,edge);
-						_thetas.cool = ReinforcementLearning::CalculateTheta(_thetas.cool,reward,currQ,nextQ,cool);
-						_thetas.mde = ReinforcementLearning::CalculateTheta(_thetas.mde,reward,currQ,nextQ,mde);
-						_thetas.squad = ReinforcementLearning::CalculateTheta(_thetas.squad,reward,currQ,nextQ,squad);
-						_thetas.ally = ReinforcementLearning::CalculateTheta(_thetas.ally,reward,currQ,nextQ,ally);
-						
-						break;
-					default:
-						break; 
-				}
-			}
-		}
-
-		ReinforcementLearning::SetForceAlly(_thetas.ally);
-		ReinforcementLearning::SetForceSquad(_thetas.squad);
-		ReinforcementLearning::SetForceMaxDist(_thetas.mde);
-		ReinforcementLearning::SetForceCooldown(_thetas.cool);
-		ReinforcementLearning::SetForceEdge(_thetas.edge);
-		ReinforcementLearning::SaveCurrentWeightsToFile(); 
-		file.close(); 
-
-	}
-	catch(char *c)
-	{
-		BWAPI::Broodwar->printf("File could not be opened");
-		std::cout << "File could not be opened -" << c << "\n";
-	}*/
 	gameCount++;
-	BWAPI::Broodwar->restartGame();
+	BWAPI::Broodwar->restartGame();*/
 }
 
 
 void StarcraftAI::onFrame()
 {
-	
+	/*
 	TacticsManager::GetInstance()->Update();
 	ScoutingManager::GetInstance()->Update();
 	ProductionManager::GetInstance()->Update();
@@ -207,7 +153,8 @@ void StarcraftAI::onFrame()
 	ReinforcementLearning::SetForceMaxDist(_thetas.mde);
 	ReinforcementLearning::SetForceCooldown(_thetas.cool);
 	ReinforcementLearning::SetForceEdge(_thetas.edge);
-	
+	*/
+
 }
 
 void StarcraftAI::onSendText(std::string text)
@@ -242,6 +189,7 @@ void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 {
+	/*
 	if(unit->getPlayer() == BWAPI::Broodwar->self())
 	{
 		//Assigns the units to the different managers
@@ -259,6 +207,7 @@ void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 			ProductionManager::GetInstance()->BuildingConstructed(unit);
 		}
 	}
+	*/
 }
 
 void StarcraftAI::onUnitHide(BWAPI::Unit* unit)
@@ -272,6 +221,7 @@ void StarcraftAI::onUnitCreate(BWAPI::Unit* unit)
 
 void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 {
+	/*
 	if(unit->getPlayer() == BWAPI::Broodwar->self())
 	{
 		//Assigns the units to the different managers
@@ -288,6 +238,7 @@ void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 			ProductionManager::GetInstance()->BuildingDestroyed(unit);
 		}
 	}
+	*/
 }
 
 void StarcraftAI::onUnitMorph(BWAPI::Unit* unit)

@@ -1,0 +1,8 @@
+add
+
+hugincpp2-7.5-vc9.dll
+hugincpp2-7.5-vc9.lib
+hugincpp-7.5-vc9.dll
+hugincpp-7.5-vc9.lib
+
+to the windows folder
