@@ -1,18 +1,17 @@
-In this Chapter we will describe the test results of mirco battles to test our AI. We have two test maps, which all our test are going to be performed in. The first map is  zerglings against vultures and the other map is marines against vultures. We use the first map with zerglings because zerglings have a lower movement speed than vultures, so the vultures should be able to win the battle without any units lost. The second map is more interesting because the marines are ranged units, this means we can see how well our bot do compared with the built-in bot. The maps are  designed so that the player with the vultures are weaker then the zerglings on the one map or the marines on the other. This means our bot can improve and should be better than the built-in bot. In the first map it is 20 marines against 5 vultures, which should be a win to the marines if they were controlled by a human, and the other map is 30 zerglings against 5 vultures. Each test will be performed on both maps. \\
+In this Chapter we will describe the test results of mirco battles to test our AI. We have two test maps, which all our test are going to be performed in. The first map is  zerglings against vultures and the other map is marines against vultures. We use the first map with zerglings because zerglings have a lower movement speed than vultures, so the vultures should be able to win the battle without any units lost. The second map is more interesting because the marines are ranged units, this means we can see how well our bot do compared with the built-in bot. The maps are  designed so that the player with the vultures are weaker than the zerglings on the one map or the marines on the other. This means our bot can improve and should be better than the built-in bot. In the first map it is 20 marines against 5 vultures, which should be a win to the marines if they were controlled by a human, and the other map is 30 zerglings against 5 vultures. Each test will be performed on both maps. \\
 
 
 In the first test we will make the build-in AI fight itself, to know how the vultures are doing, and have a base case to compare with. This will help us understand how strong the two armies are compared with each other and what losses we can expect. The other test will test the potential fields and what effect they have on the result.
 In order to test this we will look at the difference with potential fields and without them. The last test we will test reinforcement learning on a map with 5 vultures against 12 marines, and see how fast the bot will improve over time. We will do this by comparing several test runs.
 
 \section{First Test} % VvsZ without RL and PF
-In this test the two forces are just attacking each other. This means the vultures are losing in both maps, which they should so we can prove that if a unit is being controlled rightly a win is possible. Below is a list of the results from the test
-in the two maps.\\
+In this test the two forces are just attacking each other without any use of potential fields or reinforcement learning, this is without any micromanagement control. This means the vultures are losing in both maps, which they should so we can prove that if a unit is being controlled rightly a win is possible. Below is a list of the results from the test in the two maps.\\
 
 \begin{centering}
- \begin{tabular}{|l||c|c|c|c|}
-	\multicolumn{5}{c}{First test results from first map} \\
+ \begin{tabular}{|l||c|c|c|}
+	\multicolumn{4}{c}{Test results from first map} \\
 	\hline
-	Players & Produced units & Killed units & Lost units\\
+		Players & Produced units & Killed units & Lost units\\
 	\hline
 	\hline
 		Player with vultures & 5 & 9 & 5 \\
@@ -22,10 +21,12 @@ in the two maps.\\
 
 \end{tabular}
 \end{centering}
+\newpage
 %VvsM
+
 \begin{centering}
- \begin{tabular}{|l||c|c|c|c|}
-	\multicolumn{5}{c}{First test results from second map} \\
+ \begin{tabular}{|l||c|c|c|}
+	\multicolumn{4}{c}{Test results from second map} \\
 	\hline
 	Players & Produced units & Killed units & Lost units\\
 	\hline
@@ -40,11 +41,11 @@ in the two maps.\\
 After this first test we know how weak the player with the vultures are compared to the opponent.
 \newpage
 \section{Second Test} %map is VvsZNew - with use of PF and NOT RL
-This is the first test where we test our bot with only potential fields fight against the built-in bot.\\
+This is the first test where we test our bot with only potential fields fighting the built-in bot. There are not used any reinforcement learning in this test.\\
 
 \begin{centering}
- \begin{tabular}{|l||c|c|c|c|}
-	\multicolumn{5}{c}{First test results from second map} \\
+ \begin{tabular}{|l||c|c|c|}
+	\multicolumn{4}{c}{Test results from second map} \\
 	\hline
 	Players & Produced units & Killed units & Lost units\\
 	\hline
@@ -60,8 +61,8 @@ This is the first test where we test our bot with only potential fields fight ag
 Out bot get this impressive result by not overextending itself and thereby only be in sight of a few zerglings. This forced some zerglings out of the group and made them a easy target. This test went better as expected that it took out some zerglings at a time and won the match with 5 vultures with full health.\\
 
 \begin{centering}
- \begin{tabular}{|l||c|c|c|c|}
-	\multicolumn{5}{c}{First test results from second map} \\
+ \begin{tabular}{|l||c|c|c|}
+	\multicolumn{4}{c}{Test results from second map} \\
 	\hline
 	Players & Produced units & Killed units & Lost units\\
 	\hline
@@ -77,10 +78,6 @@ Out bot get this impressive result by not overextending itself and thereby only 
 
 The result from this test wasn't as good as one would expect. The result of the vultures moving back and forth should be way better then static movement. But the fact is that the vultures only killed one more marine. The reason why this is the case is that the vultures couldn't use the same attack pattern as effective as with the zerglings, because the marines range attack sometimes dealt damage to the vultures. So the vultures is getting to close before attacking.
 We see from this test that potential fields in itself is not enough, if we like to win or have less loss then the opponent. In the next test we will test if there is an improvement by using reinforcement learning on the bot.
-
-\section{Third Test}
-In this test we will be testing the reinforcement learning. As we have seen in the previous sections is that 5 vultures against 20 marines or 30 zerglings would make the vultures loose if they are just fighting each other without any controlling. Here we will try to make the bot learn by using the reinforcement learning explained in \ref{rl} 
-
 
 
 
