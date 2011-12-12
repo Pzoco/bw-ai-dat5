@@ -15,6 +15,8 @@ There are diferent RL techniques that depend on the amout of information we have
 
 %Paragraph about how active reinforcement learning can grow exponentialy in complexity and space -> therefore DP
 
+%you are missing a lot about temporal difference learners 
+
 \section{Generalization of Q-Learning}	\label{qlearning}
 
 The choice of using reinforcement learning was based on the necessity to train our AI to improve after every match or test. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
@@ -25,23 +27,58 @@ Generalization in reinforcement learning takes into consideration huge state spa
 
 The starcraft enviroment has several factors that could be considered important for defining a moment in time; units, time, enemies, distances, map elements, etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the enviroment as closely as possible without incresing the size and computability time of each calculation. 
 
-We combine the generalization of Q-learning with the potential fields to obtain a resonable model of the starcraft enviroment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame in the game. We define a state in our enviroment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. 
+\textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off betewwn the size of te hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good aproximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}
 
+We combine the generalization of Q-learning with the potential fields to obtain a resonable model of the starcraft enviroment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
+
+\subsubsection{State - Hypothesis Space}
+
+We define a state in our enviroment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. 
+
+\\
 \begin{displaymath}
                        State = \begin{cases}
-                         da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills
+                         da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
                       \end{cases}
 \end{displaymath}
 
-The description of every one of the distances is mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
 
-After defining a state in the game we created a linear function that 
+\subsubsection{Function Approximation}
+
+After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function basically takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the Q function. \\ 
+
+$Q = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due)$ \\ 
+
+This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controling each unit's movement separately and optimaly (micro).
+
+Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and througout different moments in the game. 
+
+\subsubsection{Updating Rules}
+
+We use the updating rule \\ 
+ 
+$\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma maxQ_\Theta(a',s')-Q_\Theta(a,s) ] \frac{d}{d\Theta_i}(Q_\Theta(a,s))$ \\ 
+
+Maximum Distance Positioning
+
+Ally Units
+
+Edges and Cliffs
+
+Squad
+
+Cooldown
 
 
+%convergence paragraph
 
-The function basically takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the Q function. 
+\subsubsection{Reward Function}
 
-$Q = f_{MDP} (2de - due)+f_{AU} (2da - dua+f_{EAC} (2dc - duc)+f_{S}  (2ds - dsv)+f_{CD} (2de - due)$
+We created a reward function that \\ 
+
+$R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills$ \\ 
+
 
 
 
