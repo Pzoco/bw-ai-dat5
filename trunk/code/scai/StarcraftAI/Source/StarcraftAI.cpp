@@ -179,7 +179,20 @@ void StarcraftAI::onNukeDetect(BWAPI::Position target)
 
 void StarcraftAI::onUnitDiscover(BWAPI::Unit* unit)
 {
-  
+
+	if(	unit->getPlayer()!=Broodwar->self() &&
+		(unit->getType() == BWAPI::UnitTypes::Terran_Command_Center ||
+		unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery ||
+		unit->getType() == BWAPI::UnitTypes::Zerg_Lair ||
+		unit->getType() == BWAPI::UnitTypes::Zerg_Hive ||
+		unit->getType() == BWAPI::UnitTypes::Protoss_Nexus ||
+		unit->getType() == BWAPI::UnitTypes::Terran_SCV ||
+		unit->getType() == BWAPI::UnitTypes::Zerg_Drone ||
+		unit->getType() == BWAPI::UnitTypes::Protoss_Probe))
+	{
+		ScoutingManager::GetInstance()->UnitFound(unit);
+	}
+
 }
 
 void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
