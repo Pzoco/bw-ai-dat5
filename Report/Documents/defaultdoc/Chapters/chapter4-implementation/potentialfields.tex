@@ -26,51 +26,37 @@ bool firstCalculation = true;
 		higestQfound = currentQ;
 		bestQPosistion = position;
 	} 
-	(*@\lnote@*)if(currentQ > higestQfound)
+	if(currentQ > higestQfound)
 	{
 		higestQfound = currentQ;
 		bestQPosistion = position;
 	}
-	(*@\lnote@*)Broodwar->drawTextMap(position.x(),position.y(),"%d",(int)currentQ);
+	//used to print the potential arround the unit
+	Broodwar->drawTextMap(position.x(),position.y(),"%d",(int)currentQ); 
 }
 (*@\lnote@*)if(centerQ == higestQfound)
 {
-	bestQPosistion = _unit->getPosition();
+	bestQPosistion = centerPosition;
 }
 \end{Sourcecode}	
-	In \lnnum{1} we initialize all the parameters that we only need to calculate ones for all tiles,
-	
-	But before we do any calculation we need to find the tiles we want to calculate the potential for. This is done useing the \textit{MathHelper::GetSurroundingPositions} function. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjecent tiles. From this we calculate all tiles arround the unit and and them to a list.
-
-	
-	
+	In \lnnum{1} we initialize all the parameters that we only need to calculate ones for all tiles:
 	\begin{itemize}
-		\item int da - Is the distance to closed ally unit.
-		\item int ds - distance from center of army to unit.
-		\item int sv - units maximum shooting range. -1 if no weapon for this type.
-		\item int sva - units maximum shooting range for air. -1 if no weapon for this type.
-		\item int de - distance to enemy.
-		\item bool wr - boolean denoting whether or not the weapons are ready to fire.
-		\item int dc - istance to cliff or edge.
-		\item int dsv - 
-		\item int duc - 
-		\item int due - 
-		\item int dua - 
-		\item BWAPI::Position squadPos; //position on the squad
+	    \item int da - Is the distance to closed ally unit.
+		\item int ds - The distance from center of army to unit.
+		\item int sv - The units maximum shooting range. -1 if there is no weapon for this type.
+		\item int sva - The eunits maximum shooting range for air. -1 if there is no weapon for this type.
+		\item int de - Distance to nerest known enemy.
+		\item bool wr - A boolean denoting whether or not the weapons are ready to fire.
+		\item BWAPI::Position squadPos - The center of the squad.
 	\end{itemize}
+	
+	
+    Next, we need to find the tiles we want to calculate the potential for. This is done useing the \textit{MathHelper::GetSurroundingPositions}  function in \lnnum{2}. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjecent tiles. From this we calculate all tiles arround the unit and and them to a list.
 
-		\begin{Sourcecode}[caption=Variables]
-double FORCEALLY;
-double FORCESQUAD;
-double FORCEMAXDIST;
-double FORCECOOLDOWN;
-double FORCEEDGE;
-double FORCENEMY;
-int SQUADDISTANCE_CONSTANT;
-int ALLYDISTANCE_CONSTANT;
-int EDGESDISTANCE_CONSTANT;
-\end{Sourcecode}
-	 
+    Now in \lnnum{3} we calculate the potential for the center tile, this is used in \lnnum{6} to compare it to the best potential found, if the are equal we choose the center tile. This is a rare case and mostly accure when all the potential fields are zero, in that case we dont want to move, if we didnt choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile.
+    
+    In \lnnum{4} we have the main loop. This loop iterates trough all the tiles arround our unit and selects the highest one. There is one special case in \lnnum{5}, this is the first calculate. In the first calculaten we allways select it as the current best option. This is done just so we have something to compare with rather then just set it to an arbitrary tile and number.
+	
 	
 	\subsection{Squad center}	
 		\begin{Sourcecode}[caption=Squad center]
