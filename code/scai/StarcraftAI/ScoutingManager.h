@@ -34,7 +34,4 @@ private:
 	std::list<BWAPI::Unit*> enemyUnits;
 	std::list<BWAPI::Unit*> enemyBuildings;
 	static ScoutingManager* scoutingManager;
-	InformationEnums::Positions PositionToEnum(BWAPI::Position position);
-	BWAPI::Position EnumToPosition(InformationEnums::Positions);
-	std::string EnumToString(InformationEnums::Positions);
 };
