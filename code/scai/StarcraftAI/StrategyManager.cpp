@@ -1,6 +1,8 @@
 #include "StrategyManager.h"
+#include "BuildOrderPredictor.h"
 
-
+BuildOrderPredictor buildOrderPredictor;
+bool StrategyManager::initialized= false;
 StrategyManager* StrategyManager::strategyManager = 0;
 StrategyManager* StrategyManager::GetInstance()
 {
@@ -10,38 +12,23 @@ StrategyManager* StrategyManager::GetInstance()
 	}
 	return strategyManager;
 }
-StrategyManager::StrategyManager(void)
+StrategyManager::StrategyManager()
 {
 }
 
 void StrategyManager::Update()
 {
-	if(initialized)
+	if(StrategyManager::initialized)
 	{
+		
 	}
 	else
 	{
-		InitializePredictionNetwork();
-		currentThreatLevel = InformationEnums::ThreatLow;
-	}
-}
-void StrategyManager::InitializePredictionNetwork()
-{
-	networksFilePath = ExePath();
-	DefaultParseListener pl;
-	if(BWAPI::Broodwar->enemy()->getRace() == BWAPI::Races::Zerg)
-	{
-		StrategyManager::matchup = InformationEnums::MatchupTvZ;
-		this->predictionNetwork = Domain(networksFilePath+"tvtprediction.net",&pl);
-	}
-	else if(BWAPI::Broodwar->enemy()->getRace() == BWAPI::Races::Protoss)
-	{
-		StrategyManager::matchup = InformationEnums::MatchupTvP;
-		this->predictionNetwork = Domain(networksFilePath+"tvtprediction.net",&pl);
-	}
-	else if(BWAPI::Broodwar->enemy()->getRace() == BWAPI::Races::Terran)
-	{
-		StrategyManager::matchup = InformationEnums::MatchupTvT;
-		this->predictionNetwork = Domain(networksFilePath+"tvtprediction.net",&pl);
+		if(BWAPI::Broodwar->enemy()->getRace() == BWAPI::Races::Zerg){matchup = InformationEnums::MatchupTvZ;}
+		else if(BWAPI::Broodwar->enemy()->getRace() == BWAPI::Races::Protoss){matchup = InformationEnums::MatchupTvP;}
+		else if(BWAPI::Broodwar->enemy()->getRace() == BWAPI::Races::Terran){matchup = InformationEnums::MatchupTvT;}
+
+		buildOrderPredictor.InitializePredictionNetwork(matchup);
+		StrategyManager::initialized = true;
 	}
 }
