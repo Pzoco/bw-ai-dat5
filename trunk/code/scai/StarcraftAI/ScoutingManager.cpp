@@ -62,6 +62,10 @@ void ScoutingManager::AnalyzeMap()
 void ScoutingManager::Update()
 {
 	//Broodwar->printf("Update");	
+	if(!isScouting)
+	{
+		Scout();
+	}
 	if(!enemyBaseFound)
 	{
 		std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
@@ -74,9 +78,14 @@ void ScoutingManager::Update()
 				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Lair
 				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Hive)
 			{
-
-				
-				spawnPredictor.EnterEvidence("EnemySpawn",EnumToString(PositionToEnum((*i)->getPosition())));				
+				if((*i)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()<Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","NE");				
+				if((*i)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()>=Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","SE");
+				if((*i)->getTilePosition().x()<Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()>=Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","SW");
+				if((*i)->getTilePosition().x()<Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()<Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","NW");
 				EnemyBaseFound((*i)->getTilePosition());
 			}
 			if((*i)->getType() == BWAPI::UnitTypes::Terran_SCV 
@@ -120,7 +129,7 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 	//BWAPI::Broodwar->printf("insertWorkerEvidence");
 	BWAPI::Position workerPosition=worker->getPosition();
 
-	/*
+	
 	int time = BWAPI::Broodwar->elapsedTime();
 	if(time<InformationEnums::AlmostNone)
 	{
@@ -184,7 +193,7 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 	else
 		BWAPI::Broodwar->printf("NON");
 
-*/
+
 }
 void ScoutingManager::VisitBase(InformationEnums::Positions position,BWAPI::Unit* scv)
 {
@@ -230,15 +239,26 @@ void ScoutingManager::Scout()
 	scoutingSCV=WorkerManager::GetInstance()->RequestSCV();
 	
 	//move to the most probable location
-	scoutingSCV->move(EnumToPosition(MostProbableEnemyPosition()));
-	//std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
-	//for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
+	BWAPI::Broodwar->printf("OutsideMostProbable");
+	InformationEnums::Positions currentBest=MostProbableEnemyPosition();
+	scoutingSCV->move(Position(1,1));
+	std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
+	for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
 	{
-		
+		Broodwar->printf("Width:%d  Height:%d   Map%d  %d",(*i).x(),(*i).y(), Broodwar->mapWidth(),Broodwar->mapHeight());
+		if((currentBest==InformationEnums::NE && (*i).x() >= Broodwar->mapWidth() && (*i).y()<Broodwar->mapHeight())
+			||(currentBest==InformationEnums::SE && (*i).x() >= Broodwar->mapWidth() && (*i).y()>=Broodwar->mapHeight())
+			||(currentBest==InformationEnums::SW && (*i).x() < Broodwar->mapWidth() && (*i).y()>=Broodwar->mapHeight())
+			||(currentBest==InformationEnums::NW && (*i).x() < Broodwar->mapWidth() && (*i).y()<Broodwar->mapHeight()))
+		{
+			Broodwar->printf("Scouting Somewhere");
+			Position tempPosition(*i);
+			scoutingSCV->move(Position(1,1),true);
+		}
 	}
 	isScouting=true;
 	//Scout the other bases
-	//get most probable enemy position and send the scout to it
+	//get mostg probable enemy position and send the scout to it
 	//currently going to all bases in order
 	//if there are equal probability ones we can send it to the closer one
 }	
@@ -249,94 +269,28 @@ InformationEnums::Positions ScoutingManager::MostProbableEnemyPosition()
 	InformationEnums::Positions position;
 	float highest;
 	highest=spawnPredictor.GetProbability("EnemyBase","NE");
+	printf("IN MostPRobableEnemyPosition   %d", highest);
+
 	position=InformationEnums::NE;
 	if(highest<spawnPredictor.GetProbability("EnemyBase","SE"))
 	{
 		highest=spawnPredictor.GetProbability("EnemyBase","SE");
 		position=InformationEnums::SE;
+		Broodwar->printf("SE");
 	}
 	if(highest<spawnPredictor.GetProbability("EnemyBase","SW"))
 	{
+		Broodwar->printf("SW");
 		highest=spawnPredictor.GetProbability("EnemyBase","SW");
 		position=InformationEnums::SW;
+
 	}
 	if(highest<spawnPredictor.GetProbability("EnemyBase","NW"))
 	{
+		Broodwar->printf("NW");
 		highest=spawnPredictor.GetProbability("EnemyBase","NW");
 		position=InformationEnums::NW;
 	}
 
 	return position;
-}
-
-InformationEnums::Positions ScoutingManager::PositionToEnum(BWAPI::Position position)
-{
-	if(position.x()>= Broodwar->mapWidth()/2 && position.y()< Broodwar->mapHeight()/2)
-	{
-		return InformationEnums::NE;
-	}
-	else if(position.x()>= Broodwar->mapWidth()/2 && position.y()>= Broodwar->mapHeight()/2) 
-	{
-		return InformationEnums::SE;
-	}
-	else if(position.x()< Broodwar->mapWidth()/2 && position.y()>= Broodwar->mapHeight()/2)
-	{
-		return InformationEnums::SW;
-	}
-	else if(position.x()< Broodwar->mapWidth()/2 && position.y()< Broodwar->mapHeight()/2)
-	{
-		return InformationEnums::NW;
-	}
-	else
-	{
-		Broodwar->printf("Position to enums error");
-		return InformationEnums::NE;
-	}
-}
-
-BWAPI::Position ScoutingManager::EnumToPosition(InformationEnums::Positions enumPosition)
-{
-	Position tempPosition;
-	std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
-	for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
-	{
-		
-		if(enumPosition==InformationEnums::NE && (*i).x()>=Broodwar->mapWidth()/2 && (*i).y()<Broodwar->mapWidth()/2)
-		{
-			tempPosition = Position((*i));
-			return tempPosition;
-		}
-		else if(enumPosition==InformationEnums::SE && (*i).x()>=Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapWidth()/2)
-		{
-			tempPosition = Position((*i));
-			return tempPosition;
-		}
-		else if(enumPosition==InformationEnums::SW && (*i).x()<Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapWidth()/2)
-		{
-			tempPosition = Position((*i));
-			return tempPosition;
-		}
-		else if(enumPosition==InformationEnums::SE && (*i).x()<Broodwar->mapWidth()/2 && (*i).y()<Broodwar->mapWidth()/2)
-		{
-			tempPosition = Position((*i));
-			return tempPosition;
-		}
-
-	}
-
-			Broodwar->printf("EnumToPositionConversion Error");
-			tempPosition = Position(0,0);
-			return tempPosition;
-}
-
-std::string ScoutingManager::EnumToString(InformationEnums::Positions position)
-{
-	if(position==InformationEnums::NE)
-		return "NE";
-	else if(position==InformationEnums::SE)
-		return "SE";
-	else if(position==InformationEnums::SW)
-		return "SW";
-	else
-		return "NW";
 }
