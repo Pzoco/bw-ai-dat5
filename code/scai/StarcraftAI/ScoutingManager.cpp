@@ -28,7 +28,7 @@ ScoutingManager::ScoutingManager()
 		spawnPredictor.EnterEvidence("OurSpawn","NW");
 	}
 
-	spawnPredictor.PrintNodes();
+	//spawnPredictor.PrintNodes();
 }
 ScoutingManager* ScoutingManager::GetInstance()
 {
@@ -241,21 +241,39 @@ void ScoutingManager::Scout()
 	//move to the most probable location
 	BWAPI::Broodwar->printf("OutsideMostProbable");
 	InformationEnums::Positions currentBest=MostProbableEnemyPosition();
-	scoutingSCV->move(Position(1,1));
+	//scoutingSCV->move(Position(1,1));
 	std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
+	if(currentBest==InformationEnums::NE)
+	{
+		Broodwar->printf("NE");
+	}
+	else if(currentBest==InformationEnums::NE)
+	{
+		Broodwar->printf("SE");
+	}
+	else if(currentBest==InformationEnums::NE)
+	{
+		Broodwar->printf("SW");
+	}
+	else if(currentBest==InformationEnums::NE)
+	{
+		Broodwar->printf("NW");
+	}
+	else
+		Broodwar->printf("HMMM?");
+
 	for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
 	{
 		Broodwar->printf("Width:%d  Height:%d   Map%d  %d",(*i).x(),(*i).y(), Broodwar->mapWidth(),Broodwar->mapHeight());
-		if((currentBest==InformationEnums::NE && (*i).x() >= Broodwar->mapWidth() && (*i).y()<Broodwar->mapHeight())
-			||(currentBest==InformationEnums::SE && (*i).x() >= Broodwar->mapWidth() && (*i).y()>=Broodwar->mapHeight())
-			||(currentBest==InformationEnums::SW && (*i).x() < Broodwar->mapWidth() && (*i).y()>=Broodwar->mapHeight())
-			||(currentBest==InformationEnums::NW && (*i).x() < Broodwar->mapWidth() && (*i).y()<Broodwar->mapHeight()))
+		if((currentBest==InformationEnums::NE && (*i).x() >= Broodwar->mapWidth()/2 && (*i).y()<Broodwar->mapHeight()/2)
+			||(currentBest==InformationEnums::SE && (*i).x() >= Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapHeight()/2)
+			||(currentBest==InformationEnums::SW && (*i).x() < Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapHeight()/2)
+			||(currentBest==InformationEnums::NW && (*i).x() < Broodwar->mapWidth()/2 && (*i).y()<Broodwar->mapHeight()/2))
 		{
-			Broodwar->printf("Scouting Somewhere");
-			Position tempPosition(*i);
-			scoutingSCV->move(Position(1,1),true);
+			scoutingSCV->move(Position((*i)));
 		}
 	}
+
 	isScouting=true;
 	//Scout the other bases
 	//get mostg probable enemy position and send the scout to it
