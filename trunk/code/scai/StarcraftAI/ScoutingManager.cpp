@@ -1,11 +1,14 @@
 #include "ScoutingManager.h"
 #include <BWAPI.h>
 #include <BWTA.h>
-//#include "hugin"
 bool analyzed = false;
 
 ScoutingManager* ScoutingManager::scoutingManager = 0;
-ScoutingManager::ScoutingManager(){}
+ScoutingManager::ScoutingManager()
+{
+	isScouting=false;
+	enemyBaseFound=false;
+}
 ScoutingManager* ScoutingManager::GetInstance()
 {
 	if(scoutingManager==NULL)
@@ -37,28 +40,49 @@ void ScoutingManager::AnalyzeMap()
 }
 void ScoutingManager::Update()
 {
-	std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
-
-	for(std::set<BWAPI::Unit*>::iterator i=enemyUnits.begin();i!=enemyUnits.end();i++)
+	//Broodwar->printf("Update");
+	if(!isScouting)
 	{
-		if((*i)->getType() == BWAPI::UnitTypes::Terran_SCV 
-			||(*i)->getType() == BWAPI::UnitTypes::Zerg_Drone
-			||(*i)->getType() == BWAPI::UnitTypes::Protoss_Probe)
+		Scout();
+	}
+	if(!enemyBaseFound)
+	{
+		std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
+		for(std::set<BWAPI::Unit*>::iterator i=enemyUnits.begin();i!=enemyUnits.end();i++)
 		{
-			//BWAPI::Broodwar->printf("Found Worker");
-			InsertWorkerEvidence(*i);
+			Broodwar->printf("Searching...");
+			if((*i)->getType() == BWAPI::UnitTypes::Terran_SCV 
+				||(*i)->getType() == BWAPI::UnitTypes::Zerg_Drone
+				||(*i)->getType() == BWAPI::UnitTypes::Protoss_Probe)
+			{
+				BWAPI::Broodwar->printf("Found Worker");
+				InsertWorkerEvidence(*i);
+			}
+			if((*i)->getType() == BWAPI::UnitTypes::Terran_Command_Center
+				|| (*i)->getType() == BWAPI::UnitTypes::Protoss_Nexus
+				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
+				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Lair
+				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Hive)
+			{
+				EnemyBaseFound((*i)->getTilePosition());
+			}
 		}
 	}
 	
 }
-
+void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
+{
+	enemyBaseFound=true;
+	WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
+	Broodwar->printf("Found base");
+}
 void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 {
 	//BWAPI::Broodwar->printf("insertWorkerEvidence");
 	BWAPI::Position workerPosition=worker->getPosition();
 
 	
-	int time = BWAPI::Broodwar->getFrameCount();
+	int time = BWAPI::Broodwar->elapsedTime();
 	if(time<InformationEnums::AlmostNone)
 	{
 		BWAPI::Broodwar->printf("Almost None");
@@ -152,12 +176,27 @@ void ScoutingManager::VisitBase(InformationEnums::Positions position,BWAPI::Unit
 	}
 
 }
-void ScoutingManager::Scout(BWAPI::Unit* scv)
+void ScoutingManager::Scout()
 {
 
-	scv->move(BWAPI::Position(1,1));
+	Broodwar->printf("Scout");
+	scoutingSCV=WorkerManager::GetInstance()->RequestSCV();
+
+	//move to the most probable location
+
+	//BWAPI::Position tempPosition(BWAPI::TilePosition(Broodwar->mapWidth(),Broodwar->mapHeight()));
+	std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
+	for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
+	{
+		if((*i)!= Broodwar->self()->getStartLocation())
+		{
+			scoutingSCV->move(Position(*i),true);
+		}
+	}
+	isScouting=true;
 	//Scout the other bases
 	//get most probable enemy position and send the scout to it
+	//currently going to all bases in order
 	//if there are equal probability ones we can send it to the closer one
 }	
 

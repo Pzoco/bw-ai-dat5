@@ -244,7 +244,7 @@ BWAPI::Unit* WorkerManager::GetAvailableScvNearPosition(BWAPI::Position position
 	{
 		int distance = scv->getDistance(position);
 		if(closestDistance > distance && !(scv->isCarryingGas() || scv->isCarryingMinerals() || !scv->isCompleted())
-			&& _scvStates[scv] != WorkerManager::Constructing && _scvStates[scv] != WorkerManager::MiningGas)
+			&& _scvStates[scv] != WorkerManager::Constructing && _scvStates[scv] != WorkerManager::MiningGas &&_scvStates[scv] != WorkerManager::Scouting)
 		{
 			closestDistance = distance;
 			closestScv = scv;
@@ -267,4 +267,16 @@ void WorkerManager::SwitchState(BWAPI::Unit* scv,ScvState newState)
 		_workersOnConstruction[scv].clear();
 	}
 	_scvStates[scv] = newState;
+}
+
+BWAPI::Unit* WorkerManager::RequestSCV()
+{
+	Unit* scv=GetAvailableScvNearPosition(BWAPI::Position(BWAPI::TilePosition(BWAPI::Broodwar->self()->getStartLocation())));
+	_scvStates[scv]=WorkerManager::Scouting;
+	return scv;
+}
+
+void WorkerManager::ReturnSCV(BWAPI::Unit* unit)
+{
+	_scvStates[unit]=WorkerManager::Nothing;
 }
