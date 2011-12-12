@@ -1,11 +1,11 @@
 \section{Learning rate}
-This section is about tests with the learning rate of the agent. Here is the explanation about the generalization of the q-learning \ref{qlearning}.
-By changing the $\Gamma$ and $\alpha$ values the agent will learn differently - so we have made a test where we have run between 15000 to 40000 iterations. All the test have been run with 5 vultures against 12 marines. The graphs from the test can be seen in the appendix \ref{appendix}.
+This section is about tests with the learning rate of the agent. The more thorough explanation of the generalization can be read here \ref{qlearning}.
+By changing the $\Gamma$ and $\alpha$ values the agent will learn differently - so we have made a test where we have run between 15000 to 100000 iterations. All the test have been run with 5 vultures against 12 marines. The graphs from the test can be seen in the appendix \ref{appendix}.
 
-We will make test over how much damage the vultures have dealt and how many units we have lost and how many units we have killed. As mentioned before will these test be performed with different learning values. 
+We will make test over how much damage the vultures have dealt and how many units we have lost and how many units we have killed. As mentioned before will these test be performed with different learning values. It is worth mentioning that 5 vultures against 12 marines is a very hard battle for the vultures and the marines are favoured to win that battle.
 
 \subsection*{Learning rate test 1.1}
-In this test we are using the values $\alpha$ 9 and $\Gamma$ 2 and the results are.
+In this test we are using the values $\alpha$ 9 and $\Gamma$ 2. In this test the agent has run 40182 iterations
 
 
 \textit{The figures showing in the test, can be watched full sized in the appendix \ref{appendix}} 
@@ -13,31 +13,26 @@ In this test we are using the values $\alpha$ 9 and $\Gamma$ 2 and the results a
 \insertmarginfigure{height=3in}{learningrate/A9G2/damage.png}
 			{Alpha 9 Gamma 2 Damage - Yellow: Damage given - Red: Damage taken}{fig:a9g2_damage}{-3in}
 
-On figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow line) the agent have killed all of the opponent, and every time the 
+In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow graph) the agent have killed all of the opponent as we have hoped for. The red graph is damage taken, if it's on 400 all the 5 vultures have died and the agent have had a lost.
 
 
 %Units killed and units lost
 \insertmarginfigure{height=3in}{learningrate/A9G2/units_lost_and_killed.png}
-			{Alpha 9 Gamma 2 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a9g2_lak}{-3in}
-
+			{Alpha 9 Gamma 2 Lost and killed - Yellow: Enemies killed - Red: Vultures left}{fig:a9g2_lak}{-3in}
+In figure \ref{fig:a9g2_lak} the yellow graph is how many marines was killed, and when it peaks to the 12 mark our agent have won a battle
 
 
 \subsection*{Learning rate test 1.2}
+In this test we are using the values $\alpha$ 6 and $\Gamma$ 4. In this test the agent has run 17992 iterations. Here we try with different values in the learning algorithm, to see what would fit the best and which values the agent learns or converges the fastest.
 
 
-%
-%
-%\begin{centering}
-% \begin{tabular}{|l||c|c|c|c|}
-%	\multicolumn{5}{c}{Alpha value 9 and Gamma value 2} \\
-%	\hline
-%	Players & Produced units & Killed units & Lost units\\
-%	\hline
-%	\hline
-%		Player with vultures & 5 & 9 & 5 \\
-%	\hline
-%		Player with zerglings & 30 & 9 & 5\\
-%	\hline
-%
-%\end{tabular}
-%\end{centering}
+%Damage given and taken
+\insertmarginfigure{height=3in}{learningrate/A6G4/damage.png}
+			{Alpha 6 Gamma 4 Damage - Yellow: Damage given - Red: Damage taken}{fig:a6g4_damage}{-3in}
+
+In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $\Gamma$ values the agents graph over it's performance.
+
+
+%Units killed and units lost
+
+\insertmarginfigure{height=3in}{learningrate/A6G4/units_lost_and_killed.png}{Alpha 6 Gamma 4 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a6g4_lak}{-3in}\\
