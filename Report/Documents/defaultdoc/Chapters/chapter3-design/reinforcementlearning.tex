@@ -52,24 +52,44 @@ $Q = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2d
 
 This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controling each unit's movement separately and optimaly (micro).
 
-Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and througout different moments in the game. 
+Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and througout different moments in the game. This is furthered explained in the implementation decumentation (REFERENCE!!!!). 
 
 \subsubsection{Updating Rules}
 
-We use the updating rule \\ 
+We use the updating rule or Q-learning equation that evolves from Widrow-Huff rule or Delta Rule reducing the temporal difference between successive states:  \cite[p779]{rl} \\ 
  
 $\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma maxQ_\Theta(a',s')-Q_\Theta(a,s) ] \frac{d}{d\Theta_i}(Q_\Theta(a,s))$ \\ 
+\begin{flushleft}
+So we are left with 5 updating rules for each of the coefficients:
+\end{flushleft} 
 
-Maximum Distance Positioning
+\begin{flushleft}
+Maximum Distance Positioning 
+$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma max(Q_f_{MDP} (a',s'))-Q_f_{MDP} (a,s) ](2de - due)$
+\end{flushleft} 
 
-Ally Units
+\begin{flushleft}
+Ally Units  \\ 
+$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma max(Q_f_{AU} (a',s'))-Q_f_{AU} (a,s) ](2da - dua)$ 
+\end{flushleft} 
 
+\begin{flushleft}
 Edges and Cliffs
+$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma max(Q_f_{EAC} (a',s'))-Q_f_{EAC} (a,s) ] (2dc - duc)$ 
+\end{flushleft} 
 
-Squad
+\begin{flushleft}
+Squad  \\ 
+$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma max(Q_f_{S} (a',s'))-Q_f_{S} (a,s) ] (2ds - dsv)$
+\end{flushleft} 
 
-Cooldown
+\begin{flushleft}
+Cooldown  \\ 
+$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma max(Q_f_{CD} (a',s'))-Q_f_{CD} (a,s) ](2de - due)$ 
+\end{flushleft} 
 
+
+\textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl}
 
 %convergence paragraph
 
