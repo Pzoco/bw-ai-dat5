@@ -64,7 +64,7 @@ void ScoutingManager::Update()
 	//Broodwar->printf("Update");	
 	if(!isScouting)
 	{
-		Scout();
+	//	Scout();
 	}
 	if(!enemyBaseFound)
 	{
