@@ -254,6 +254,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\ScoutItem.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\UnitProductionItem.cpp"
 							>
 						</File>
@@ -460,6 +464,10 @@
 			</File>
 			<File
 				RelativePath=".\ScoutingManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ScoutItem.h"
 				>
 			</File>
 			<File

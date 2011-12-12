@@ -272,7 +272,7 @@ void WorkerManager::SwitchState(BWAPI::Unit* scv,ScvState newState)
 BWAPI::Unit* WorkerManager::RequestSCV()
 {
 	Unit* scv=GetAvailableScvNearPosition(BWAPI::Position(BWAPI::TilePosition(BWAPI::Broodwar->self()->getStartLocation())));
-	_scvStates[scv]=WorkerManager::Scouting;
+	SwitchState(scv,WorkerManager::Scouting);
 	return scv;
 }
 
