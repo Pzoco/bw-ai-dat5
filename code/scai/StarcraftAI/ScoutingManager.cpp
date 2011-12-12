@@ -62,7 +62,7 @@ void ScoutingManager::AnalyzeMap()
 
 void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 {
-						if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
+			if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
 				|| (unit)->getType() == BWAPI::UnitTypes::Protoss_Nexus
 				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
 				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Lair
@@ -240,7 +240,6 @@ void ScoutingManager::Scout()
 	scoutingSCV=WorkerManager::GetInstance()->RequestSCV();
 	
 	//move to the most probable location
-	BWAPI::Broodwar->printf("OutsideMostProbable");
 	InformationEnums::Positions currentBest=MostProbableEnemyPosition();
 	//scoutingSCV->move(Position(1,1));
 	std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
