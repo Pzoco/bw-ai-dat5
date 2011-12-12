@@ -25,6 +25,7 @@ public:
 	void InsertWorkerEvidence(BWAPI::Unit *worker);
 	void VisitBase(InformationEnums::Positions position,BWAPI::Unit* scv);
 	void EnemyBaseFound(BWAPI::TilePosition enemyBase);
+	void UnitFound(Unit* unit);
 private:
 	Unit* scoutingSCV;
 	BayesianNetwork spawnPredictor;

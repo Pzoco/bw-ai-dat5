@@ -59,6 +59,35 @@ void ScoutingManager::AnalyzeMap()
 	//Code borrowed from ExampleAIModule
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)AnalyzeThread, NULL, 0, NULL);
 }
+
+void ScoutingManager::UnitFound(BWAPI::Unit* unit)
+{
+						if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
+				|| (unit)->getType() == BWAPI::UnitTypes::Protoss_Nexus
+				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
+				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Lair
+				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hive)
+			{
+				if((unit)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()<Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","NE");				
+				if((unit)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()>=Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","SE");
+				if((unit)->getTilePosition().x()<Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()>=Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","SW");
+				if((unit)->getTilePosition().x()<Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()<Broodwar->mapHeight()/2)
+					spawnPredictor.EnterEvidence("EnemySpawn","NW");
+				EnemyBaseFound((unit)->getTilePosition());
+			}
+			if((unit)->getType() == BWAPI::UnitTypes::Terran_SCV 
+				||(unit)->getType() == BWAPI::UnitTypes::Zerg_Drone
+				||(unit)->getType() == BWAPI::UnitTypes::Protoss_Probe)
+			{
+				BWAPI::Broodwar->printf("Found Worker");
+				//InsertWorkerEvidence(*i);
+			}
+}
+
+
 void ScoutingManager::Update()
 {
 	//Broodwar->printf("Update");	
@@ -68,35 +97,7 @@ void ScoutingManager::Update()
 	}
 	if(!enemyBaseFound)
 	{
-		std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
-		for(std::set<BWAPI::Unit*>::iterator i=enemyUnits.begin();i!=enemyUnits.end();i++)
-		{
-			Broodwar->printf("Searching...");
-						if((*i)->getType() == BWAPI::UnitTypes::Terran_Command_Center
-				|| (*i)->getType() == BWAPI::UnitTypes::Protoss_Nexus
-				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
-				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Lair
-				|| (*i)->getType() == BWAPI::UnitTypes::Zerg_Hive)
-			{
-				if((*i)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()<Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","NE");				
-				if((*i)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()>=Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","SE");
-				if((*i)->getTilePosition().x()<Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()>=Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","SW");
-				if((*i)->getTilePosition().x()<Broodwar->mapWidth()/2 && (*i)->getTilePosition().y()<Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","NW");
-				EnemyBaseFound((*i)->getTilePosition());
-			}
-			if((*i)->getType() == BWAPI::UnitTypes::Terran_SCV 
-				||(*i)->getType() == BWAPI::UnitTypes::Zerg_Drone
-				||(*i)->getType() == BWAPI::UnitTypes::Protoss_Probe)
-			{
-				BWAPI::Broodwar->printf("Found Worker");
-				//InsertWorkerEvidence(*i);
-			}
-
-		}
+		//std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
 	}
 	
 	
