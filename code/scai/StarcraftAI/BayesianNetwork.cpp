@@ -35,10 +35,12 @@ void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName)
 		{
 			evidenceNode = dynamic_cast<DiscreteChanceNode*>(node);
 			size_t index = evidenceNode->getStateIndex(stateName);
-			evidenceNode->selectState(index);			
+			evidenceNode->selectState(index);
 			break;
 		}
 	}
+	domain->compile();
+	domain->propagate(H_EQUILIBRIUM_SUM, H_MODE_NORMAL);
 }
 void BayesianNetwork::PrintNodes()
 {
