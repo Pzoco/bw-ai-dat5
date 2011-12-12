@@ -7,7 +7,7 @@
 	 %_parameters
 		
 	
-	The potential field is calculated for individual units. These units belongs to a squad, when we calculate the potential field we allso pass a refrence to the squad, called \textit{mySquad}, because it is needed to calculate \textit{Squad center} and \textit{Ally potential}.
+	The potential field is calculated for individual units. These units belongs to a squad, when we calculate the potential field we also pass a reference to the squad, called \textit{mySquad}, because it is needed to calculate \textit{Squad center} and \textit{Ally potential}.
 
 \begin{Sourcecode}[caption=Main loop]	
 (*@\lnote@*)BaseTactic::InitializeParameters(mySquad);
@@ -31,7 +31,7 @@ bool firstCalculation = true;
 		higestQfound = currentQ;
 		bestQPosistion = position;
 	}
-	//used to print the potential arround the unit
+	//used to print the potential around the unit
 	Broodwar->drawTextMap(position.x(),position.y(),"%d",(int)currentQ); 
 }
 (*@\lnote@*)if(centerQ == higestQfound)
@@ -44,18 +44,18 @@ bool firstCalculation = true;
 	    \item int da - Is the distance to closed ally unit.
 		\item int ds - The distance from center of army to unit.
 		\item int sv - The units maximum shooting range. -1 if there is no weapon for this type.
-		\item int sva - The eunits maximum shooting range for air. -1 if there is no weapon for this type.
-		\item int de - Distance to nerest known enemy.
+		\item int sva - The units maximum shooting range for air. -1 if there is no weapon for this type.
+		\item int de - Distance to nearest known enemy.
 		\item bool wr - A boolean denoting whether or not the weapons are ready to fire.
 		\item BWAPI::Position squadPos - The center of the squad.
 	\end{itemize}
 	
 	
-    Next, we need to find the tiles we want to calculate the potential for. This is done useing the \textit{MathHelper::GetSurroundingPositions}  function in \lnnum{2}. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjecent tiles. From this we calculate all tiles arround the unit and and them to a list.
+    Next, we need to find the tiles we want to calculate the potential for. This is done using the \textit{MathHelper::GetSurroundingPositions}  function in \lnnum{2}. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjacent tiles. From this we calculate all tiles around the unit and and them to a list.
 
-    Now in \lnnum{3} we calculate the potential for the center tile, this is used in \lnnum{6} to compare it to the best potential found, if the are equal we choose the center tile. This is a rare case and mostly accure when all the potential fields are zero, in that case we dont want to move, if we didnt choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile.
+    Now in \lnnum{3} we calculate the potential for the center tile, this is used in \lnnum{6} to compare it to the best potential found, if the are equal we choose the center tile. This is a rare case and mostly occure when all the potential fields are zero, in that case we don't want to move, if we didn't choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile.
     
-    In \lnnum{4} we have the main loop. This loop iterates trough all the tiles arround our unit and selects the highest one. There is one special case in \lnnum{5}, this is the first calculate. In the first calculaten we allways select it as the current best option. This is done just so we have something to compare with rather then just set it to an arbitrary tile and number.
+    In \lnnum{4} we have the main loop. This loop iterates trough all the tiles around our unit and selects the highest one. There is one special case in \lnnum{5}, this is the first calculate. In the first calculating we allways select it as the current best option. This is done just so we have something to compare with rather then just set it to an arbitrary tile and number.
 	
 	
 	\subsection{Squad center}	
@@ -147,10 +147,10 @@ if(_parameters.duc > _variables.EDGESDISTANCE_CONSTANT)
 edge += (_variables.FORCEEDGE)*(2*_parameters.dc-_parameters.duc)*useEdge;
 edgeQ += (2*_parameters.dc-_parameters.duc)*useEdge;
 \end{Sourcecode}	
-    In \lnnum{1} we use the function \textit{MathHelper::GetDistanceBetweenPositions} to get the distance between the nearest unwalkable position and the current tile. To get the nearest unwalkable position we use the build in function \textit{BWTA::getNearestUnwalkablePosition} which takes as input a position and then find the nerest unwalkable position.
+    In \lnnum{1} we use the function \textit{MathHelper::GetDistanceBetweenPositions} to get the distance between the nearest unwalkable position and the current tile. To get the nearest unwalkable position we use the build in function \textit{BWTA::getNearestUnwalkablePosition} which takes as input a position and then find the nearest unwalkable position.
 
 	
-	Normaly \textit{dc} from \lnnum{2} would be calculated in the initialization but because \\ \textit{BWTA::getNearestUnwalkablePosition} should depend on the current tile we have to recalculate it for each tile. The resaon is that for each tile the nearest unwalkable position can differ, and we need to use the same unwalkable position in the calculation of the center tile. If we didnt do this, there could be cases where 
+	Normally \textit{dc} from \lnnum{2} would be calculated in the initialization but because \\ \textit{BWTA::getNearestUnwalkablePosition} should depend on the current tile we have to recalculate it for each tile. The reason is that for each tile the nearest unwalkable position can differ, and we need to use the same unwalkable position in the calculation of the center tile. If we didn't do this, there could be cases where 
 	we took the wrong tiles into consideration. An example could be a corner, where some tile would depend on one side, and other tiles on the other side.
 	
 	The \textit{Edges and cliffs} can be seen in figure \ref{fig:EC}
