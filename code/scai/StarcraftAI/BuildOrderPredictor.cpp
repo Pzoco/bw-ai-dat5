@@ -89,3 +89,4 @@ void BuildOrderPredictor::UpdateTvZNetwork(BWAPI::UnitType building)
 		predictionNetwork->EnterEvidence((nodeName),"Seen");
 	}
 }
+

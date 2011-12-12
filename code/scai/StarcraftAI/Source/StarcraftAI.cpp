@@ -238,19 +238,4 @@ void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 	}
 }
 
-void StarcraftAI::onUnitMorph(BWAPI::Unit* unit)
-{
-
-}
-
-void StarcraftAI::onUnitRenegade(BWAPI::Unit* unit)
-{
-
-}
-
-void StarcraftAI::onSaveGame(std::string gameName)
-{
-
-}
-
 

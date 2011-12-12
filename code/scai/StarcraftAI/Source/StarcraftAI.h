@@ -28,9 +28,4 @@ public:
 	virtual void onUnitHide(BWAPI::Unit* unit);
 	virtual void onUnitCreate(BWAPI::Unit* unit);
 	virtual void onUnitDestroy(BWAPI::Unit* unit);
-	virtual void onUnitMorph(BWAPI::Unit* unit);
-	virtual void onUnitRenegade(BWAPI::Unit* unit);
-	virtual void onSaveGame(std::string gameName);
-	bool containsUtilities (const NodeList&);
-	void printBeliefsAndUtilities (Domain*);
 };
