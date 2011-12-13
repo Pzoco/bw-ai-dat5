@@ -90,17 +90,6 @@ void StarcraftAI::onNukeDetect(BWAPI::Position target)
 {
 
 }
-
-void StarcraftAI::onUnitDiscover(BWAPI::Unit* unit)
-{
-
-	if(	unit->getPlayer()!=Broodwar->self())
-	{
-		ScoutingManager::GetInstance()->UnitFound(unit);
-	}
-
-}
-
 void StarcraftAI::onUnitEvade(BWAPI::Unit* unit)
 {
   
@@ -125,6 +114,10 @@ void StarcraftAI::onUnitShow(BWAPI::Unit* unit)
 		{
 			ProductionManager::GetInstance()->BuildingConstructed(unit);
 		}
+	}
+	else if(unit->getPlayer() == BWAPI::Broodwar->enemy())
+	{
+		ScoutingManager::GetInstance()->UnitFound(unit);
 	}
 }
 

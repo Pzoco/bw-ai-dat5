@@ -47,6 +47,7 @@ void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName)
 void BayesianNetwork::PrintNodes()
 {
 	NodeList nodes = (domain)->getNodes();
+	BWAPI::Broodwar->printf("Node: ff");
     for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
     {
 		DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(*it);
