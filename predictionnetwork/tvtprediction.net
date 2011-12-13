@@ -59,7 +59,7 @@ node BuildChosen
     HR_State_0 = "";
 }
 
-node CommandCenter1
+node CommandCenter2
 {
     label = "";
     position = (524 96);
@@ -155,7 +155,7 @@ potential (BuildChosen)
     data = ( 0.1 0.6 0.1 0.2 0.2 );
 }
 
-potential (CommandCenter1 | BuildChosen)
+potential (CommandCenter2 | BuildChosen)
 {
     data
      = (( 0 1 )	%  BuildChosen=StimRush
@@ -185,89 +185,89 @@ potential (Factory2 | BuildChosen)
 	( 0 1 ));	%  BuildChosen=OneStarportWraith
 }
 
-potential (Barracks1 | BuildChosen CommandCenter1 Factory1 Barracks2 Academy)
+potential (Barracks1 | BuildChosen CommandCenter2 Factory1 Barracks2 Academy)
 {
     data
-     = (((((( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 ))))	%  BuildChosen=StimRush  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	 (((( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))))	%  BuildChosen=StimRush  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	((((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 ))))	%  BuildChosen=OneFactoryExpand  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	 (((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))))	%  BuildChosen=OneFactoryExpand  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	((((( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 ))))	%  BuildChosen=Proxy  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	 (((( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 0.1 0.9 )))))	%  BuildChosen=Proxy  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	((((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 ))))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	 (((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))))	%  BuildChosen=TwoFactoryPressure  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	((((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 ))))	%  BuildChosen=OneStarportWraith  CommandCenter1=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
-	 (((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 )))	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
-	  ((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
-	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
-	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
-	    ( 1 0 ))))));	%  BuildChosen=OneStarportWraith  CommandCenter1=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+     = (((((( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 ))))	%  BuildChosen=StimRush  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	 (((( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))))	%  BuildChosen=StimRush  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	((((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 ))))	%  BuildChosen=OneFactoryExpand  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	 (((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))))	%  BuildChosen=OneFactoryExpand  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	((((( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 ))))	%  BuildChosen=Proxy  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	 (((( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 0.1 0.9 )))))	%  BuildChosen=Proxy  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	((((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 ))))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	 (((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))))	%  BuildChosen=TwoFactoryPressure  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	((((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 ))))	%  BuildChosen=OneStarportWraith  CommandCenter2=Seen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
+	 (((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 )))	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=Seen  Barracks2=NotSeen  Academy=NotSeen
+	  ((( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=Seen
+	    ( 1 0 ))	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=Seen  Academy=NotSeen
+	   (( 1 0 )	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=Seen
+	    ( 1 0 ))))));	%  BuildChosen=OneStarportWraith  CommandCenter2=NotSeen  Factory1=NotSeen  Barracks2=NotSeen  Academy=NotSeen
 }
 
 potential (Barracks2 | BuildChosen)
@@ -290,15 +290,15 @@ potential (Academy | BuildChosen)
 	( 0 1 ));	%  BuildChosen=OneStarportWraith
 }
 
-potential (Factory1 | Starport1 CommandCenter1 Factory2)
+potential (Factory1 | Starport1 CommandCenter2 Factory2)
 {
     data
-     = (((( 1 0 )	%  Starport1=Seen  CommandCenter1=Seen  Factory2=Seen
-	  ( 1 0 ))	%  Starport1=Seen  CommandCenter1=Seen  Factory2=NotSeen
-	 (( 1 0 )	%  Starport1=Seen  CommandCenter1=NotSeen  Factory2=Seen
-	  ( 1 0 )))	%  Starport1=Seen  CommandCenter1=NotSeen  Factory2=NotSeen
-	((( 1 0 )	%  Starport1=NotSeen  CommandCenter1=Seen  Factory2=Seen
-	  ( 1 0 ))	%  Starport1=NotSeen  CommandCenter1=Seen  Factory2=NotSeen
-	 (( 1 0 )	%  Starport1=NotSeen  CommandCenter1=NotSeen  Factory2=Seen
-	  ( 0.7 0.3 ))));	%  Starport1=NotSeen  CommandCenter1=NotSeen  Factory2=NotSeen
+     = (((( 1 0 )	%  Starport1=Seen  CommandCenter2=Seen  Factory2=Seen
+	  ( 1 0 ))	%  Starport1=Seen  CommandCenter2=Seen  Factory2=NotSeen
+	 (( 1 0 )	%  Starport1=Seen  CommandCenter2=NotSeen  Factory2=Seen
+	  ( 1 0 )))	%  Starport1=Seen  CommandCenter2=NotSeen  Factory2=NotSeen
+	((( 1 0 )	%  Starport1=NotSeen  CommandCenter2=Seen  Factory2=Seen
+	  ( 1 0 ))	%  Starport1=NotSeen  CommandCenter2=Seen  Factory2=NotSeen
+	 (( 1 0 )	%  Starport1=NotSeen  CommandCenter2=NotSeen  Factory2=Seen
+	  ( 0.7 0.3 ))));	%  Starport1=NotSeen  CommandCenter2=NotSeen  Factory2=NotSeen
 }
