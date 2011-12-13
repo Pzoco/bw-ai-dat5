@@ -5,18 +5,23 @@
 class ReinforcementLearning
 {
 public:
-	static struct Weights;
+	
+	//Actual reinforcement learning
 	static double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative);
 	static double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad);
+
+	//Load/Save weights
+	static struct Weights;
 	static void ReinforcementLearning::LoadWeightsFromFile();
+	static void ReinforcementLearning::SaveCurrentWeightsToFile();
+
+	//Buffer
 	static double* ReinforcementLearning::GetLiveBuffer(); 
 	static int ReinforcementLearning::GetLiveCount(); 
 	static void ReinforcementLearning::WriteLiveValue(double value); 
 	static void ReinforcementLearning::ClearLiveBuffer();
-	static void ReinforcementLearning::WriteValueToBuffer(double value, bool writeThrough); 
-	static void ReinforcementLearning::SaveCurrentWeightsToFile();
-	static void ReinforcementLearning::WriteRewardFile(double doubleToFile);
-	static void ReinforcementLearning::WriteArrayToRewardFile(double doubleArray[]);
+
+	//Getters and setters
 	static double ReinforcementLearning::GetForceAlly();
 	static double ReinforcementLearning::GetForceSquad();
 	static double ReinforcementLearning::GetForceMaxDist();
@@ -27,4 +32,7 @@ public:
 	static void ReinforcementLearning::SetForceMaxDist(double mde1);
 	static void ReinforcementLearning::SetForceCooldown(double cool);
 	static void ReinforcementLearning::SetForceEdge(double edge);
+
+	//Gamedata
+	static void ReinforcementLearning::WriteToDataFiles();
 };

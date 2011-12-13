@@ -8,12 +8,6 @@ public:
 	BaseTactic();
 	virtual struct Variables;
 	virtual struct PotentialFieldParameters;
-	virtual double BaseTactic::CalculateAllyPotential(BWAPI::Position);
-	virtual double BaseTactic::CalculateSquadCenterPotential(BWAPI::Position);
-	virtual double BaseTactic::CalculateMaximumDistancePotential(BWAPI::Position pos);
-	virtual double BaseTactic::CalculateWeaponCoolDownPotential(BWAPI::Position pos);
-	virtual double BaseTactic::CalculateEdgesPotential(BWAPI::Position pos);
-	virtual double BaseTactic::CalculatePotentialField(BWAPI::Position pos);
 	virtual double BaseTactic::CalculateQPotentialField(BWAPI::Position pos, bool print);
 	virtual void BaseTactic::InitializeParameters(std::set<BWAPI::Unit*> myUnits);
 	virtual BWAPI::Position BaseTactic::GetBestPositionBasedOnPotential(std::set<BWAPI::Unit*> myUnits);

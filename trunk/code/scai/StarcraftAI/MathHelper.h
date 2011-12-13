@@ -5,7 +5,7 @@ class MathHelper
 {
 public:
 	virtual struct ReturningUnit;
-	static bool MathHelper::IsTileValid(BWAPI::Position unitPos, BWAPI::Position pos, std::set<BWAPI::Unit*> mySquad);
+	static bool MathHelper::IsTileValid(BWAPI::Position unitPos, BWAPI::Position pos, int unitID);
 	static std::list<BWAPI::Position> GetSurroundingPositions(BWAPI::Position pos, int tileSize);
 	static BWAPI::Position GetPositionFromAngle(BWAPI::Position pos, int angle, int length);
 	static int GetDistanceToNearestEnemy(BWAPI::Position pos);

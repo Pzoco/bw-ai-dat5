@@ -11,7 +11,12 @@
 #include "../WorkerManager.h"
 #include "../StrategyManager.h"
 
+
+#include "math.h"
+
+
 using namespace BWAPI;
+using namespace HAPI;
 int gameCount = 1;
 ReinforcementLearning reinforcementLearning = ReinforcementLearning();
 
@@ -25,9 +30,94 @@ struct StarcraftAI::Thetas
 } _thetas; 
 
 
+bool containsUtilities (const NodeList& list)
+{
+    for (size_t i = 0, n = list.size(); i < n; i++)
+	if (list[i]->getCategory() == H_CATEGORY_UTILITY)
+	    return true;
+
+    return false;
+}
+
 void StarcraftAI::onStart()
 {
 	
+
+	//Printing network
+	HAPI::NodeList nodes = domain.getNodes();
+
+	bool hasUtilities = containsUtilities (nodes);
+
+	for (HAPI::NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
+    {
+		HAPI::Node *node = *it;
+		//BWAPI::Broodwar->printf("%s",node->getName().c_str());
+		
+		
+		Category category = node->getCategory();
+		char type = (category == H_CATEGORY_CHANCE ? 'C'
+				 : category == H_CATEGORY_DECISION ? 'D'
+				 : category == H_CATEGORY_UTILITY ? 'U' : 'F');
+
+		BWAPI::Broodwar->printf("[%c] %s",type,node->getName().c_str());
+
+
+		if (category == H_CATEGORY_UTILITY)
+		{ 
+			UtilityNode *uNode = dynamic_cast<UtilityNode*> (node);
+			std::cout << "  - Expected utility: " << uNode->getExpectedUtility() << std::endl;
+		}
+		else if (category == H_CATEGORY_FUNCTION)
+		{
+			try
+			{
+			FunctionNode *fNode = dynamic_cast<FunctionNode*> (node);
+			double value = fNode->getValue ();
+			std::cout << "  - Value: " << value << std::endl;
+			}
+			catch (const ExceptionHugin& e)
+			{
+			std::cout << "  - Value: N/A\n";
+			}
+		}
+		else if (node->getKind() == H_KIND_DISCRETE)
+		{
+			DiscreteNode *dNode = dynamic_cast<DiscreteNode*> (node);
+
+			for (size_t i = 0, n = dNode->getNumberOfStates(); i < n; i++)
+			{
+			std::cout << "  - " << dNode->getStateLabel (i)
+				 << " " << dNode->getBelief (i);
+			if (hasUtilities)
+				std::cout << " (" << dNode->getExpectedUtility (i) << ")";
+			std::cout << std::endl;
+			}
+		}
+		else
+		{
+			ContinuousChanceNode *ccNode
+			= dynamic_cast<ContinuousChanceNode*> (node);
+
+			std::cout << "  - Mean : " << ccNode->getMean() << std::endl;
+			std::cout << "  - SD   : " << sqrt (ccNode->getVariance()) << std::endl;
+		}
+
+	}
+
+
+	
+
+
+
+	//ADDIND NODE TEST
+	
+
+
+
+
+
+
+
 
 
 	/*remove( "C:/rewards.txt");
