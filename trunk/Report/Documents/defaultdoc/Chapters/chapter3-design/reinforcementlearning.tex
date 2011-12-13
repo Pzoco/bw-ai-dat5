@@ -1,31 +1,44 @@
 \section{Agent Learning}\label{agent_learning}
-%introduce the two and mention we choosed RL
 This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analized to evaluate its relevance. 
 
 \subsection*{Neural Networks}			 
 			
 
 
+
+
 \subsection*{Reinforcement Learning}
 
-Reinforcement learning  [RL] is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
+Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
 
 % used algorithm for the lack of a better word...
-There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. In passive RL the agents policy is fixed and the task is to learn the utilities of each state \cite[p764]{rl}. This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future. 
+There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.
 
-%Direct Utility estimation - Bellman rules
+\subsubsection{Markov Desicion Process} \label{mdp}
 
-% Normal Q learning
+Addressing only active RL then, we need a way to formulate the task of finding a policy (that selects which action to take). 
 
-%Paragraph about how active reinforcement learning can grow exponentialy in complexity and space -> therefore DP
+\textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$ , the agent senses the current state $s_t$ , chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+l}= \delta (s_t,a_t)$.Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} 
 
-%you are missing a lot about temporal difference learners 
+
+\subsubsection{Direct Utility Estimation \& Bellman Rules}
+
+
+\subsubsection{Q Learning}
+
+
+\subsubsection{Temporal Difference Learning}
+
+
+\subsubsection{Q Learning Complexity}
+
+
 
 \section{Generalization of Q-Learning}	\label{qlearning}
 
 The choice of using reinforcement learning was based on the necessity to train our AI to improve after every match or test. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
 
-Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form \cite[p777]{rl}. 
+Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. \textit{This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form} \cite[p777]{rl}. 
 
 \subsection{Q-Learning Functions}
 
@@ -58,7 +71,7 @@ Notice that there are forces that are dependant on the exact same variables, lik
 
 \subsubsection{Updating Rules}
 
-We use the updating rule or Q-learning equation that evolves from Widrow-Huff rule or Delta Rule reducing the temporal difference between successive states:  \cite[p779]{rl} \\ 
+We use the updating rule or Q-learning equation that evolves from Widrow-Huff rule or Delta Rule reducing the temporal difference between successive states:  \cite{rl} \\ 
  
 $\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma(max\hat{Q}_\Theta(a',s'))-\hat{Q}_\Theta(a,s) ] \frac{\partial \hat{Q}_\Theta(a,s)}{\partial\Theta_i}$ \\ 
 
@@ -67,7 +80,7 @@ Where $\Theta_i$ is each one of the coefficients in the Q-approximation. In the 
 \end{flushleft} 
 
 \begin{flushleft}
-$\alpha$  - Is the learning rate, which basically means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (REFERENCE!!!!!) would (optimaly) decrease according to how many times a state is visited \cite[p769]{rl}. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
+$\alpha$  - Is the learning rate, which basically means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimaly) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
 \end{flushleft} 
 
 \begin{flushleft}
@@ -119,10 +132,12 @@ Cooldown  \\
 $f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)$ 
 \end{flushleft} 
 
-%convergence guarantees
+% \ref{mdp}
+These updating rules should eventually converge to values that are very close to the optimal Q function, considering all the restrictions for convergence. In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov desicion process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
 
-\textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl}
 
+
+The only difference between this process and our aproximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl} Then, the final result should be the perfect magnitud for the potential fields to guide every unit's movement.
 
 \subsubsection{Reward Function}
 
@@ -130,8 +145,6 @@ We created a reward function that takes into consideration all the factors to gr
 
 $R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$ \\ 
 
-We ensure that the reward complies with the convergence restriction of the Q-learning theorem (REFERENCE!!!!). 
-
-%\textit{}\ref{}
+We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 maximumTime$, and $maximumTime$ being the number of time frames for a manually defined limit (20-30 seconds). 
 
 \subsection{Q-Learning Conclusions}
