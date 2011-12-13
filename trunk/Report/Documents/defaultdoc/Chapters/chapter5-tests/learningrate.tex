@@ -25,7 +25,7 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 	\hline
 		392,71 & 337,26 & 4,79 & 7,51 \\
 	\hline
-
+\label{test1.1}
 \end{tabular}
 \end{centering}
 
@@ -72,7 +72,7 @@ In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $
 	\hline
 		392,35 & 334,26 & 4,79 & 7,44 \\
 	\hline
-
+\label{test1.2}
 \end{tabular}
 \end{centering}
 %%%AVERAGE%%%
@@ -111,7 +111,7 @@ In figure \ref{fig:a4g6_damage} just as before but with different $\alpha$ and $
 	\hline
 		395,51 & 338,29 & 4,86 & 7,52 \\
 	\hline
-
+\label{test1.3}
 \end{tabular}
 \end{centering}
 %%%AVERAGE%%%
@@ -144,7 +144,10 @@ In figure \ref{fig:a2g9_damage} just as before but with different $\alpha$ and $
 	\hline
 		398,78 & 282,28 & 4,96 & 6,31 \\
 	\hline
-
+\label{test1.4}
 \end{tabular}
 \end{centering}
 %%%AVERAGE%%%
+
+
+Comparing tests \ref{test1.4} and \ref{test1.3} where the 1.3 test has run 135936 iterations one can clearly see that the average damage dealt is higher than from the test 1.4 where the iterations are 30852 times. To make the agent converge is has to run even more iterations. If we cut the test \ref{test1.3} down to 30852 iterations and compare the numbers again it has an average of \textit{Damage taken: 396,05 - Damage given: 324,81} which is closely to the tests with few iterations.
