@@ -1,0 +1,240 @@
+class tvpprediction
+{
+    inputs = ();
+    outputs = ();
+    node_size = (80 40);
+    HR_Desc = "";
+    HR_OOBN_CheckConsistency = "1";
+    HR_OOBN_FitExpand = "1";
+    HR_Zoom_ZoomFactor = "100";
+    HR_Groups_GroupColors = "";
+    HR_Groups_GroupNames = "";
+    HR_Groups_UserGroupsNo = "0";
+    HR_Color_Interface = "21";
+    HR_Color_Instance = "0";
+    HR_Color_Function = "4";
+    HR_Color_Utility = "36";
+    HR_Color_Decision = "17";
+    HR_Color_ContinuousChance = "48";
+    HR_Color_DiscreteChance = "16";
+    HR_Monitor_InitSD = "2";
+    HR_Monitor_Utility_Arrange = "0";
+    HR_Monitor_Mean_Variance = "1";
+    HR_Monitor_Chance_Utility = "1";
+    HR_Monitor_InitStates = "5";
+    HR_Monitor_OpenGraph = "0";
+    HR_Monitor_GraphPrecision = "100";
+    HR_Monitor_AutoUpdGraph = "0";
+    HR_Compile_MaxMinimalSeparators = "100000";
+    HR_Compile_ApproxEpsilon = "1.0E-5";
+    HR_Compile_Approximate = "0";
+    HR_Compile_SaveToMemory = "0";
+    HR_Compile_Compress = "0";
+    HR_Compile_TriangMethod = "0";
+    HR_Propagate_AutoNormal = "1";
+    HR_Propagate_AutoSum = "1";
+    HR_Propagate_Auto = "1";
+    HR_Font_Italic = "0";
+    HR_Font_Weight = "400";
+    HR_Font_Size = "-12";
+    HR_Font_Name = "javax.swing.plaf.FontUIResource[family=Tahoma,name=Tahoma,style=plain,size=11]";
+    HR_Grid_GridShow = "0";
+    HR_Grid_GridSnap = "0";
+    HR_Grid_Y = "40";
+    HR_Grid_X = "40";
+
+    node FleetBeacon
+    {
+	label = "";
+	position = (918 186);
+	states = ("Seen" "NotSeen");
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node RoboticsSupportBay
+    {
+	label = "";
+	position = (584 193);
+	states = ("Seen" "NotSeen");
+	HR_LinkMode = "[RoboticsFacility:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node Observatorium
+    {
+	label = "";
+	position = (695 191);
+	states = ("Seen" "NotSeen");
+	HR_LinkMode = "[RoboticsFacility:0]";
+	HR_State_0 = "";
+	HR_State_1 = "";
+	HR_Desc = "";
+	HR_Group = "0";
+    }
+
+    node DragoonRange
+    {
+	label = "";
+	position = (292 345);
+	states = ("Seen" "NotSeen");
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node Stargate
+    {
+	label = "";
+	position = (816 188);
+	states = ("Seen" "NotSeen");
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node Nexus1
+    {
+	label = "";
+	position = (388 351);
+	states = ("Seen" "NotSeen");
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node BuildChosen
+    {
+	label = "";
+	position = (740 92);
+	states = ("TwoBaseArbiter" "TwoBaseCarrier" "TwoBaseReaver");
+	HR_State_3 = "";
+	HR_LinkControlPoints = "";
+	HR_LinkMode = "[Stargate:0][CyberneticsCore:0][Stargate_1:0][RoboticsSupportBay:0][FleetBeacon:0]";
+	HR_State_2 = "";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node Opening
+    {
+	label = "";
+	position = (441 227);
+	states = ("OneGateTech" "TwoGateRange" "NexusFirst");
+	HR_LinkControlPoints = "";
+	HR_State_2 = "";
+	HR_LinkMode = "[RoboticsFacility:0][Gateways:0][Nexus1:0][DragoonRange:0]";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node Gateways
+    {
+	label = "";
+	position = (489 356);
+	states = ("1" "2" "3");
+	HR_State_2 = "";
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    node RoboticsFacility
+    {
+	label = "";
+	position = (612 357);
+	states = ("Seen" "NotSeen");
+	HR_Group = "0";
+	HR_Desc = "";
+	HR_State_1 = "";
+	HR_State_0 = "";
+    }
+
+    potential (FleetBeacon | BuildChosen)
+    {
+	data = (( 0 1 )	%  BuildChosen=TwoBaseArbiter
+		( 1 0 )	%  BuildChosen=TwoBaseCarrier
+		( 0 1 ));	%  BuildChosen=TwoBaseReaver
+    }
+
+    potential (RoboticsSupportBay | BuildChosen)
+    {
+	data = (( 0 1 )	%  BuildChosen=TwoBaseArbiter
+		( 0.1 0.9 )	%  BuildChosen=TwoBaseCarrier
+		( 1 0 ));	%  BuildChosen=TwoBaseReaver
+    }
+
+    potential (Observatorium | BuildChosen)
+    {
+	data = (( 0.1 0.9 )	%  BuildChosen=TwoBaseArbiter
+		( 0.1 0.9 )	%  BuildChosen=TwoBaseCarrier
+		( 0.9 0.1 ));	%  BuildChosen=TwoBaseReaver
+    }
+
+    potential (DragoonRange | Opening)
+    {
+	data = (( 0.5 0.5 )	%  Opening=OneGateTech
+		( 1 0 )	%  Opening=TwoGateRange
+		( 0.1 0.9 ));	%  Opening=NexusFirst
+    }
+
+    potential (Stargate | BuildChosen)
+    {
+	data = (( 1 0 )	%  BuildChosen=TwoBaseArbiter
+		( 1 0 )	%  BuildChosen=TwoBaseCarrier
+		( 0 1 ));	%  BuildChosen=TwoBaseReaver
+    }
+
+    potential (Nexus1 | Opening)
+    {
+	data = (( 0 1 )	%  Opening=OneGateTech
+		( 0 1 )	%  Opening=TwoGateRange
+		( 1 0 ));	%  Opening=NexusFirst
+    }
+
+    potential (BuildChosen)
+    {
+	data = ( 1 1 1 );
+    }
+
+    potential (Opening)
+    {
+	data = ( 1 1 1 );
+    }
+
+    potential (Gateways | Opening)
+    {
+	data = (( 1 0 0 )	%  Opening=OneGateTech
+		( 0 1 0 )	%  Opening=TwoGateRange
+		( 0.8 0.2 0 ));	%  Opening=NexusFirst
+    }
+
+    potential (RoboticsFacility | RoboticsSupportBay Observatorium Opening)
+    {
+	data = (((( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=Seen  Opening=OneGateTech
+		  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=Seen  Opening=TwoGateRange
+		  ( 1 0 ))	%  RoboticsSupportBay=Seen  Observatorium=Seen  Opening=NexusFirst
+		 (( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=NotSeen  Opening=OneGateTech
+		  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=NotSeen  Opening=TwoGateRange
+		  ( 1 0 )))	%  RoboticsSupportBay=Seen  Observatorium=NotSeen  Opening=NexusFirst
+		((( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatorium=Seen  Opening=OneGateTech
+		  ( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatorium=Seen  Opening=TwoGateRange
+		  ( 1 0 ))	%  RoboticsSupportBay=NotSeen  Observatorium=Seen  Opening=NexusFirst
+		 (( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatorium=NotSeen  Opening=OneGateTech
+		  ( 0 1 )	%  RoboticsSupportBay=NotSeen  Observatorium=NotSeen  Opening=TwoGateRange
+		  ( 0 1 ))));	%  RoboticsSupportBay=NotSeen  Observatorium=NotSeen  Opening=NexusFirst
+    }
+} % class tvpprediction
