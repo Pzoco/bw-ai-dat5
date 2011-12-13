@@ -7,34 +7,31 @@ struct MathHelper::ReturningUnit
 	BWAPI::Unit* ClosestEnemy;
 	bool exist;
 };
-bool MathHelper::IsTileValid(BWAPI::Position unitPos, BWAPI::Position pos, std::set<BWAPI::Unit*> mySquad)
+bool MathHelper::IsTileValid(BWAPI::Position unitPos, BWAPI::Position pos, int unitID)
 {
+	bool isValid = true;
 	if(ScoutingManager::IsMapAnalyzed())
 	{
 		if(!unitPos.hasPath(pos))
 		{
-			return false;
+			isValid = false;
 		}
 		
-		bool squadsNotInTheWay = false;
-		for(std::set<BWAPI::Unit*>::const_iterator u = mySquad.begin(); u != mySquad.end(); u++)
+		std::set<BWAPI::Unit*> allUnits = BWAPI::Broodwar->getAllUnits();
+		for(std::set<BWAPI::Unit*>::const_iterator u = allUnits.begin(); u != allUnits.end(); u++)
 		{
-			if(((*u)->getPosition().x() == pos.x()) && ((*u)->getPosition().x() == pos.x()))
+			if(unitID != (*u)->getID())
 			{
-				squadsNotInTheWay = true;
+				
+				if((*u)->getPosition().getDistance(pos) < 25)
+				{
+					//BWAPI::Broodwar->printf("%f",(*u)->getPosition().getDistance(pos));
+					isValid = false;
+				}
 			}
 		}
-		//check if the squad is in the way
-		if(squadsNotInTheWay)
-		{
-			BWAPI::Position target = MathHelper::CalculateNextTileInLine(unitPos,pos);
-			if(!unitPos.hasPath(target))
-			{
-				return false;
-			}
-		} 
 	}
-	return true;
+	return isValid;
 }
 BWAPI::Position MathHelper::GetPositionFromAngle(BWAPI::Position pos, int angle, int length)
 {
@@ -155,7 +152,7 @@ int MathHelper::GetDistanceToNearestAlly(BWAPI::Position pos, int unitID)
 	//Iterating trough them, and calculating the distance to the closest one
 	for(std::set<BWAPI::Unit*>::const_iterator i = myUnits.begin(); i != myUnits.end(); i++)
 	{
-		if((*i)->getID() != unitID && (*i)->getType().isBuilding() == false && (*i)->exists())
+		if(((*i)->getID() != unitID) && ((*i)->getType().isBuilding() == false) && ((*i)->exists()))
 		{
 			int getDist = (*i)->getDistance(pos);
 			if(getDist < distance)
