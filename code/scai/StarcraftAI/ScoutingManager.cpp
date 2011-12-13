@@ -79,8 +79,9 @@ void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 	}
 	if(unit->getType().isBuilding())
 	{
+		BWAPI::Broodwar->printf("FOUND ENEMY BUILDING LOL");
+		StrategyManager::GetInstance()->NewEnemyFound(unit);
 		enemyBuildings[unit->getType()].push_back(unit);
-
 	}
 	else
 	{
@@ -91,18 +92,21 @@ void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 
 void ScoutingManager::Update()
 {
-	if(isScouting && scoutingSCV->getDistance(scoutingGoal)<5 && !enemyBaseFound)
+	if(scoutingSCV != NULL)
 	{
-		isScouting = false;
-		if(currentBest == InformationEnums::NE)//NE
-			spawnPredictor.EnterEvidence("EnemyNotAtNE","True");
-		else if(currentBest == InformationEnums::SE) //SE
-			spawnPredictor.EnterEvidence("EnemyNotAtSE","True");
-		else if(currentBest == InformationEnums::SW)//SW
-			spawnPredictor.EnterEvidence("EnemyNotAtSW","True");
-		else if(currentBest == InformationEnums::NW)//NW
-			spawnPredictor.EnterEvidence("EnemyNotAtNW","True");
-		Scout();
+		if(isScouting && scoutingSCV->getDistance(scoutingGoal)<5 && !enemyBaseFound && scoutingSCV->exists())
+		{
+			isScouting = false;
+			if(currentBest == InformationEnums::NE)//NE
+				spawnPredictor.EnterEvidence("EnemyNotAtNE","True");
+			else if(currentBest == InformationEnums::SE) //SE
+				spawnPredictor.EnterEvidence("EnemyNotAtSE","True");
+			else if(currentBest == InformationEnums::SW)//SW
+				spawnPredictor.EnterEvidence("EnemyNotAtSW","True");
+			else if(currentBest == InformationEnums::NW)//NW
+				spawnPredictor.EnterEvidence("EnemyNotAtNW","True");
+			Scout();
+		}
 	}
 }
 void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
@@ -126,6 +130,7 @@ void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
 	}
 	enemyBaseFound=true;
 	WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
+	scoutingSCV = NULL;
 
 }
 void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
@@ -138,44 +143,44 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 	if(time<InformationEnums::AlmostNone)
 	{
 		spawnPredictor.EnterEvidence("TimingSeenTo","AlmostNone");
-		BWAPI::Broodwar->printf("Almost None");
+		//BWAPI::Broodwar->printf("Almost None");
 	}
 	else if(time<InformationEnums::Fast)
 	{
 		spawnPredictor.EnterEvidence("TimingSeenTo","Early");
-		BWAPI::Broodwar->printf("Early");
+		//BWAPI::Broodwar->printf("Early");
 	}
 	else if(time<InformationEnums::Middle)
 	{
 		spawnPredictor.EnterEvidence("TimingSeenTo","Middle");
-		BWAPI::Broodwar->printf("Middle");
+		//BWAPI::Broodwar->printf("Middle");
 	}
 	else if(time<InformationEnums::Long)
 	{
 		spawnPredictor.EnterEvidence("TimingSeenTo","Late");
-		BWAPI::Broodwar->printf("Late");
+		//BWAPI::Broodwar->printf("Late");
 	}
 	else
 	{
-		BWAPI::Broodwar->printf("Really Long");
+		//BWAPI::Broodwar->printf("Really Long");
 	}
 	//workerPosition.x
 	InformationEnums::Positions sector;
 	sector=InformationEnums::NE;
 	//BWAPI::Broodwar->printf("%d\n",sector);
-	BWAPI::Broodwar->printf("%d,%d     %d",workerPosition.x()/32,workerPosition.y()/32,BWAPI::Broodwar->mapWidth());
+	//BWAPI::Broodwar->printf("%d,%d     %d",workerPosition.x()/32,workerPosition.y()/32,BWAPI::Broodwar->mapWidth());
 	if(workerPosition.x()/32<=BWAPI::Broodwar->mapWidth()/2)//West
 	{
 		if(workerPosition.y()/32<=BWAPI::Broodwar->mapHeight()/2)//North
 		{
 			sector= InformationEnums::NW;
-			BWAPI::Broodwar->printf("NW");
+			//BWAPI::Broodwar->printf("NW");
 			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
 		}
 		if(workerPosition.y()/32>BWAPI::Broodwar->mapHeight()/2)//South
 		{
 			sector = InformationEnums::SW;
-			BWAPI::Broodwar->printf("SW");
+			//BWAPI::Broodwar->printf("SW");
 			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
 		}
 	}
@@ -184,18 +189,16 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 		if(workerPosition.y()/32<=BWAPI::Broodwar->mapHeight()/2)//North
 		{
 			sector = InformationEnums::NE;
-			BWAPI::Broodwar->printf("NE");
+			//BWAPI::Broodwar->printf("NE");
 			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
 		}
 		if(workerPosition.y()/32>BWAPI::Broodwar->mapHeight()/2)//South
 		{
 			sector = InformationEnums::SE;
-			BWAPI::Broodwar->printf("SE");
+			//BWAPI::Broodwar->printf("SE");
 			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
 		}
 	}
-	else
-		BWAPI::Broodwar->printf("NON");
 
 
 }
@@ -249,7 +252,7 @@ void ScoutingManager::Scout()
 
 	for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
 	{
-		Broodwar->printf("Width:%d  Height:%d   Map%d  %d",(*i).x(),(*i).y(), Broodwar->mapWidth(),Broodwar->mapHeight());
+		//Broodwar->printf("Width:%d  Height:%d   Map%d  %d",(*i).x(),(*i).y(), Broodwar->mapWidth(),Broodwar->mapHeight());
 		if((currentBest==InformationEnums::NE && (*i).x() >= Broodwar->mapWidth()/2 && (*i).y()<Broodwar->mapHeight()/2)
 			||(currentBest==InformationEnums::SE && (*i).x() >= Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapHeight()/2)
 			||(currentBest==InformationEnums::SW && (*i).x() < Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapHeight()/2)

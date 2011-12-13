@@ -6,6 +6,7 @@
 #include "InformationEnums.h"
 #include "WorkerManager.h"
 #include "BayesianNetwork.h"
+#include "StrategyManager.h"
 //#include <string>
 
 using namespace BWAPI;
