@@ -18,8 +18,7 @@ float BayesianNetwork::GetProbability(std::string nodeName,std::string stateName
 		{
 			probabilityNode = dynamic_cast<DiscreteChanceNode*>(node);
 			size_t index = probabilityNode->getStateIndex(stateName);
-			return (float)probabilityNode->getBelief(index);		
-			break;
+			return (float)probabilityNode->getBelief(index);	
 		}
 	}
 	BWAPI::Broodwar->printf("Node %s not found",nodeName);
