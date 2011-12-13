@@ -5,7 +5,7 @@ This section will document the implementation of the different managers mentione
 	a method called Update which will be called on each frame, used for running their code.
 	\subsection{Production Manager}
 		The production manager is responsible for producing units, constructing buildings and researching tech. Every time a new production facility or 
-		a research facility is produced it will be saved here, so we are able to use them for later. The tasks the manager have to do are passed from a 
+		a research facility is produced it will be saved here, so we are able to use them later. The tasks the production manager have to do are passed from a 
 		class called BuildOrderHandler, which is responsible for handling buildorders.
 		\subsubsection*{BuildOrderHandler}
 			This class contains the buildorders the bot can use and passes the items as tasks for the production manager. A BuildOrder contains a list of 
@@ -58,7 +58,7 @@ This section will document the implementation of the different managers mentione
 			
 	\subsection{WorkerManager}
 		This manager manages the scvs the bot owns and is also responsible for constructing buildings. When a scv is created it is saved to a list of 
-		scvs and is getting a state. A scv can the following states: Constructing,BeingBuild,MiningGas,MiningMinerals,Defending,Evading,Nothing. When 
+		scvs and is getting a state. A scv can the following states: Constructing, BeingBuild, MiningGas, MiningMinerals, Defending, Evading, Nothing. When 
 		the scv is completed from the Command Center it will get the state Nothing, then the Update method will determine what the scv should do, usually 
 		it will be set to mine minerals, so it gets the state MiningMinerals. 
 		\subsubsection*{Efficient mining}
