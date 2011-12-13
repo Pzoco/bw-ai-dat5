@@ -5,7 +5,8 @@ This section will document the implementation of the different managers mentione
 	a method called Update which will be called on each frame, used for running their code.
 	\subsection{Production Manager}
 		The production manager is responsible for producing units, constructing buildings and researching tech. Every time a new production facility or 
-		a research facility is produced it will be saved here, so we are able to use them later. The tasks the production manager have to do are passed from a 
+		a research facility is produced it will be saved here, so we are able to use them later. 
+		The tasks the production manager have to do are passed from a 
 		class called BuildOrderHandler, which is responsible for handling buildorders.
 		\subsubsection*{BuildOrderHandler}
 			This class contains the buildorders the bot can use and passes the items as tasks for the production manager. A BuildOrder contains a list of 
@@ -108,7 +109,7 @@ This section will document the implementation of the different managers mentione
 
 	(*@\lnote@*)SwitchState(scv,WorkerManager::Constructing);
 	
-	buildingToConstruct building;	
+	(*@\lnote@*)buildingToConstruct building;	
 	building[position] = buildingType;
 	_workersOnConstruction[scv] = building;
 	scv->build(position,buildingType);
@@ -118,7 +119,8 @@ This section will document the implementation of the different managers mentione
 			which can find a suitable location for a building to be constructed in relation to the enum specified. After this we find a scv for the 
 			task \lnnum{2}, by using the method GetAvailableScvNearPosition, which gets the nearest scv, which is not carring minerals, mining gas or 
 			constructing. With the position and a scv the building can now be constructed. The state of the scv is changed to Constructing \lnnum{3} and 
-			we save the building information such that we are able to try again if it failed constructing the building. After this the scv tries to 
+			we save the building information such that we are able to try again if it failed constructing the building. \lnnum{4} is a type containing 
+			a map between a position and a building type. After this the scv tries to 
 			construct the building.
 	\subsection{Scouting Manager}
 		Not yet implemented
