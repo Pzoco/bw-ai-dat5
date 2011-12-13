@@ -32,7 +32,6 @@ void BuildOrderPredictor::UpdatePredictionNetwork(BWAPI::UnitType building)
 	else if(matchup == InformationEnums::MatchupTvZ)
 		UpdateTvZNetwork(building);
 	
-	predictionNetwork->PrintMostProbableState("BuildChosen");
 }
 void BuildOrderPredictor::UpdateTvPNetwork(BWAPI::UnitType building)
 {
@@ -54,6 +53,7 @@ void BuildOrderPredictor::UpdateTvTNetwork(BWAPI::UnitType building)
 		std::string nodeNumber = itoa(1,buffer,10);	
 		predictionNetwork->EnterEvidence((nodeName+nodeNumber),"Seen");
 		BWAPI::Broodwar->printf("Updated the prediction network");
+		predictionNetwork->PrintMostProbableState("BuildChosen");
 	}
 	else if((building == BWAPI::UnitTypes::Terran_Barracks ||
 			building == BWAPI::UnitTypes::Terran_Command_Center || 
@@ -68,6 +68,7 @@ void BuildOrderPredictor::UpdateTvTNetwork(BWAPI::UnitType building)
 		std::string nodeNumber = itoa(2,buffer,10);
 		predictionNetwork->EnterEvidence((nodeName+nodeNumber),"Seen");
 		BWAPI::Broodwar->printf("Updated the prediction network");
+		predictionNetwork->PrintMostProbableState("BuildChosen");
 	}
 
 }
