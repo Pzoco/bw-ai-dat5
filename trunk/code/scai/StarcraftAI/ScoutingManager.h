@@ -28,11 +28,13 @@ public:
 	void UnitFound(Unit* unit);
 private:
 	Unit* scoutingSCV;
+	Position scoutingGoal;
 	BayesianNetwork spawnPredictor;
+	InformationEnums::Positions currentBest;
 	bool enemyBaseFound;
 	bool isScouting;
 	ScoutingManager();
-	std::list<BWAPI::Unit*> enemyUnits;
-	std::list<BWAPI::Unit*> enemyBuildings;
+	std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> enemyUnits;
+	std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> enemyBuildings;
 	static ScoutingManager* scoutingManager;
 };
