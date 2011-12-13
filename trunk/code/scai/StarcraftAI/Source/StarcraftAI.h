@@ -6,9 +6,6 @@
 #include "../Squad.h"
 #include "../BaseTactic.h"
 #include "../UnitHelper.h"
-#include "hugin"
-
-using namespace HAPI;
 
 class StarcraftAI : public BWAPI::AIModule
 {
