@@ -48,16 +48,6 @@ void StarcraftAI::onStart()
 	Broodwar->enableFlag(Flag::UserInput);
 	
 	//scoutingManager.AnalyzeMap();*/
-
-
-
-	/*
-		HUGIN STUFF
-	*/
-
-
-
-
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -78,82 +68,6 @@ void StarcraftAI::onFrame()
 	ProductionManager::GetInstance()->Update();
 	WorkerManager::GetInstance()->Update();
 	StrategyManager::GetInstance()->Update();
-/*
-	//TESTING:
-	BWAPI::Broodwar->drawTextScreen(50,300,"Game Count is: = %d",gameCount);
-	//TESTING:
-	BWAPI::Broodwar->drawTextScreen(10,10,"Ally = %f",reinforcementLearning.GetForceAlly());
-	BWAPI::Broodwar->drawTextScreen(10,20,"Edge = %f",reinforcementLearning.GetForceEdge());
-	BWAPI::Broodwar->drawTextScreen(10,30,"MaxDist = %f",reinforcementLearning.GetForceMaxDist());
-	BWAPI::Broodwar->drawTextScreen(10,40,"Squad = %f",reinforcementLearning.GetForceSquad());
-	BWAPI::Broodwar->drawTextScreen(10,50,"Cooldown = %f",reinforcementLearning.GetForceCooldown());
-
-	if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
-		
-		double* liveBufferPointer = StarcraftAI::reinforcementLearning.GetLiveBuffer(); 
-		int liveCount = StarcraftAI::reinforcementLearning.GetLiveCount(); 
-		StarcraftAI::reinforcementLearning.ClearLiveBuffer(); 
-	
-		double edge, cool, mde, squad, ally; 
-		double currQ; 
-		double nextQ; 
-		double reward; 
-
-		for(int i=0; i<liveCount; i++){
-			
-			switch(i%8)
-				{
-				case 0:
-					ally = liveBufferPointer[i];
-					break; 
-				case 1:
-					squad = liveBufferPointer[i];
-					//BWAPI::Broodwar->printf("%f - %f",squad,liveBufferPointer[i]);
-					break; 
-				case 2:
-					mde = liveBufferPointer[i];;
-					break;
-				case 3:
-					cool = liveBufferPointer[i];
-					break; 
-				case 4:
-					edge = liveBufferPointer[i];
-					break; 
-				case 5:
-					currQ = (-1)*liveBufferPointer[i];
-					break; 
-				case 6:
-					nextQ = (-1)*liveBufferPointer[i];
-					break; 
-				case 7:
-					reward = liveBufferPointer[i];
-
-					_thetas.edge = ReinforcementLearning::CalculateTheta(_thetas.edge,reward,currQ,nextQ,edge);
-					_thetas.cool = ReinforcementLearning::CalculateTheta(_thetas.cool,reward,currQ,nextQ,cool);
-					_thetas.mde = ReinforcementLearning::CalculateTheta(_thetas.mde,reward,currQ,nextQ,mde);
-					_thetas.squad = ReinforcementLearning::CalculateTheta(_thetas.squad,reward,currQ,nextQ,squad);
-					_thetas.ally = ReinforcementLearning::CalculateTheta(_thetas.ally,reward,currQ,nextQ,ally);
-					break;
-				default:
-					break; 
-			}
-		}
-		std::ofstream file;
-		file.open("C:/test.lgdat", std::ios::out | std::ios::app);
-		file << _thetas.ally
-			<< ";" << _thetas.squad
-			<< ";"<< _thetas.mde
-			<< ";"<< _thetas.cool 
-			<< ";"<< _thetas.edge
-			<< "\n";
-		file.close();
-	}
-	ReinforcementLearning::SetForceAlly(_thetas.ally);
-	ReinforcementLearning::SetForceSquad(_thetas.squad);
-	ReinforcementLearning::SetForceMaxDist(_thetas.mde);
-	ReinforcementLearning::SetForceCooldown(_thetas.cool);
-	ReinforcementLearning::SetForceEdge(_thetas.edge);
-	*/
 
 }
 
@@ -180,15 +94,7 @@ void StarcraftAI::onNukeDetect(BWAPI::Position target)
 void StarcraftAI::onUnitDiscover(BWAPI::Unit* unit)
 {
 
-	if(	unit->getPlayer()!=Broodwar->self() &&
-		(unit->getType() == BWAPI::UnitTypes::Terran_Command_Center ||
-		unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery ||
-		unit->getType() == BWAPI::UnitTypes::Zerg_Lair ||
-		unit->getType() == BWAPI::UnitTypes::Zerg_Hive ||
-		unit->getType() == BWAPI::UnitTypes::Protoss_Nexus ||
-		unit->getType() == BWAPI::UnitTypes::Terran_SCV ||
-		unit->getType() == BWAPI::UnitTypes::Zerg_Drone ||
-		unit->getType() == BWAPI::UnitTypes::Protoss_Probe))
+	if(	unit->getPlayer()!=Broodwar->self())
 	{
 		ScoutingManager::GetInstance()->UnitFound(unit);
 	}

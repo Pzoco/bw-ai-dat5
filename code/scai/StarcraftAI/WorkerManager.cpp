@@ -280,5 +280,5 @@ BWAPI::Unit* WorkerManager::RequestSCV()
 
 void WorkerManager::ReturnSCV(BWAPI::Unit* unit)
 {
-	_scvStates[unit]=WorkerManager::Nothing;
+	SwitchState(unit,WorkerManager::Nothing);
 }

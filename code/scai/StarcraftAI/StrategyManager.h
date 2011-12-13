@@ -10,6 +10,7 @@ class StrategyManager
 {
 public:
 	static StrategyManager* GetInstance();
+	void NewEnemyFound(BWAPI::Unit* unit);
 	void Update();
 private:
 	static bool initialized;

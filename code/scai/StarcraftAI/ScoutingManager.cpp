@@ -27,8 +27,7 @@ ScoutingManager::ScoutingManager()
 	{
 		spawnPredictor.EnterEvidence("OurSpawn","NW");
 	}
-
-	//spawnPredictor.PrintNodes();
+	scoutingSCV = NULL;
 }
 ScoutingManager* ScoutingManager::GetInstance()
 {
@@ -62,45 +61,49 @@ void ScoutingManager::AnalyzeMap()
 
 void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 {
-			if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
-				|| (unit)->getType() == BWAPI::UnitTypes::Protoss_Nexus
-				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
-				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Lair
-				|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hive)
-			{
-				if((unit)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()<Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","NE");				
-				if((unit)->getTilePosition().x()>=Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()>=Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","SE");
-				if((unit)->getTilePosition().x()<Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()>=Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","SW");
-				if((unit)->getTilePosition().x()<Broodwar->mapWidth()/2 && (unit)->getTilePosition().y()<Broodwar->mapHeight()/2)
-					spawnPredictor.EnterEvidence("EnemySpawn","NW");
-				EnemyBaseFound((unit)->getTilePosition());
-			}
-			if((unit)->getType() == BWAPI::UnitTypes::Terran_SCV 
-				||(unit)->getType() == BWAPI::UnitTypes::Zerg_Drone
-				||(unit)->getType() == BWAPI::UnitTypes::Protoss_Probe)
-			{
-				BWAPI::Broodwar->printf("Found Worker");
-				//InsertWorkerEvidence(*i);
-			}
+	if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
+		|| (unit)->getType() == BWAPI::UnitTypes::Protoss_Nexus
+		|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
+		|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Lair
+		|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hive)
+	{
+		EnemyBaseFound((unit)->getTilePosition());
+		enemyBuildings[unit->getType()].push_back(unit);
+	}
+	if((unit)->getType() == BWAPI::UnitTypes::Terran_SCV 
+		||(unit)->getType() == BWAPI::UnitTypes::Zerg_Drone
+		||(unit)->getType() == BWAPI::UnitTypes::Protoss_Probe)
+	{
+		//BWAPI::Broodwar->printf("Found Worker");
+		InsertWorkerEvidence(unit);
+	}
+	if(unit->getType().isBuilding())
+	{
+		enemyBuildings[unit->getType()].push_back(unit);
+
+	}
+	else
+	{
+		enemyUnits[unit->getType()].push_back(unit);
+	}
 }
 
 
 void ScoutingManager::Update()
 {
-	//Broodwar->printf("Update");	
-	if(!isScouting)
+	if(isScouting && scoutingSCV->getDistance(scoutingGoal)<5 && !enemyBaseFound)
 	{
-	//	Scout();
+		isScouting = false;
+		if(currentBest == InformationEnums::NE)//NE
+			spawnPredictor.EnterEvidence("EnemyNotAtNE","True");
+		else if(currentBest == InformationEnums::SE) //SE
+			spawnPredictor.EnterEvidence("EnemyNotAtSE","True");
+		else if(currentBest == InformationEnums::SW)//SW
+			spawnPredictor.EnterEvidence("EnemyNotAtSW","True");
+		else if(currentBest == InformationEnums::NW)//NW
+			spawnPredictor.EnterEvidence("EnemyNotAtNW","True");
+		Scout();
 	}
-	if(!enemyBaseFound)
-	{
-		//std::set<BWAPI::Unit*> enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
-	}
-	
-	
 }
 void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
 {
@@ -130,7 +133,7 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 	//BWAPI::Broodwar->printf("insertWorkerEvidence");
 	BWAPI::Position workerPosition=worker->getPosition();
 
-	
+
 	int time = BWAPI::Broodwar->elapsedTime();
 	if(time<InformationEnums::AlmostNone)
 	{
@@ -235,32 +238,14 @@ void ScoutingManager::VisitBase(InformationEnums::Positions position,BWAPI::Unit
 }
 void ScoutingManager::Scout()
 {
-	
+
 	Broodwar->printf("Scout");
-	scoutingSCV=WorkerManager::GetInstance()->RequestSCV();
-	
+	if(scoutingSCV==NULL)
+		scoutingSCV=WorkerManager::GetInstance()->RequestSCV();
+
 	//move to the most probable location
-	InformationEnums::Positions currentBest=MostProbableEnemyPosition();
-	//scoutingSCV->move(Position(1,1));
+	currentBest=MostProbableEnemyPosition();
 	std::set<BWAPI::TilePosition> startPositions = BWAPI::Broodwar->getStartLocations();
-	if(currentBest==InformationEnums::NE)
-	{
-		Broodwar->printf("NE");
-	}
-	else if(currentBest==InformationEnums::NE)
-	{
-		Broodwar->printf("SE");
-	}
-	else if(currentBest==InformationEnums::NE)
-	{
-		Broodwar->printf("SW");
-	}
-	else if(currentBest==InformationEnums::NE)
-	{
-		Broodwar->printf("NW");
-	}
-	else
-		Broodwar->printf("HMMM?");
 
 	for(std::set<BWAPI::TilePosition>::iterator i=startPositions.begin();i!=startPositions.end();i++)
 	{
@@ -270,6 +255,7 @@ void ScoutingManager::Scout()
 			||(currentBest==InformationEnums::SW && (*i).x() < Broodwar->mapWidth()/2 && (*i).y()>=Broodwar->mapHeight()/2)
 			||(currentBest==InformationEnums::NW && (*i).x() < Broodwar->mapWidth()/2 && (*i).y()<Broodwar->mapHeight()/2))
 		{
+			scoutingGoal = Position(*i);
 			scoutingSCV->move(Position((*i)));
 		}
 	}
@@ -286,27 +272,27 @@ InformationEnums::Positions ScoutingManager::MostProbableEnemyPosition()
 	//get the most probable enemyposition
 	InformationEnums::Positions position;
 	float highest;
-	highest=spawnPredictor.GetProbability("EnemyBase","NE");
+	highest=spawnPredictor.GetProbability("EnemySpawn","NE");
 	printf("IN MostPRobableEnemyPosition   %d", highest);
 
 	position=InformationEnums::NE;
-	if(highest<spawnPredictor.GetProbability("EnemyBase","SE"))
+	if(highest<spawnPredictor.GetProbability("EnemySpawn","SE"))
 	{
-		highest=spawnPredictor.GetProbability("EnemyBase","SE");
+		highest=spawnPredictor.GetProbability("EnemySpawn","SE");
 		position=InformationEnums::SE;
 		Broodwar->printf("SE");
 	}
-	if(highest<spawnPredictor.GetProbability("EnemyBase","SW"))
+	if(highest<spawnPredictor.GetProbability("EnemySpawn","SW"))
 	{
 		Broodwar->printf("SW");
-		highest=spawnPredictor.GetProbability("EnemyBase","SW");
+		highest=spawnPredictor.GetProbability("EnemySpawn","SW");
 		position=InformationEnums::SW;
 
 	}
-	if(highest<spawnPredictor.GetProbability("EnemyBase","NW"))
+	if(highest<spawnPredictor.GetProbability("EnemySpawn","NW"))
 	{
 		Broodwar->printf("NW");
-		highest=spawnPredictor.GetProbability("EnemyBase","NW");
+		highest=spawnPredictor.GetProbability("EnemySpawn","NW");
 		position=InformationEnums::NW;
 	}
 

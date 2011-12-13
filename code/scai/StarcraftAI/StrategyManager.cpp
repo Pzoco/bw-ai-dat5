@@ -32,3 +32,9 @@ void StrategyManager::Update()
 		StrategyManager::initialized = true;
 	}
 }
+
+
+void StrategyManager::NewEnemyFound(BWAPI::Unit* unit)
+{
+	buildOrderPredictor->UpdatePredictionNetwork(unit->getType());
+}
