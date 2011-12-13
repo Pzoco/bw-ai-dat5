@@ -83,11 +83,11 @@ $\frac{\partial \hat{Q}_\Theta(a,s)}{\partial\Theta_i}$  - Is the partial deriva
 \end{flushleft} 
 
 \begin{flushleft}
-$\alpha$  - Is the learning rate, which basically means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation; how much it learns from each visit to every state. It is a number, $0 < \alpha < 1$, that in a normal temporal difference equation (REFERENCE!!!!!) would (optimaly) decrease according to how many times a state is visited. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn every specific case.
+$\alpha$  - Is the learning rate, which basically means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (REFERENCE!!!!!) would (optimaly) decrease according to how many times a state is visited \cite[p769]{rl}. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
 \end{flushleft} 
 
 \begin{flushleft}
-$\gamma$  - Is the discount factor
+$\gamma$  - Is the discount factor, this determines the importance of the future rewards. Its a number, $0 < \gamma < 1$, the closest $\gamma$ gets to 1 the more it takes into account future rewards. A $\gamma$ value close to cero would maximize the immediate rewards. 
 \end{flushleft} 
 
 
