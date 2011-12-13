@@ -148,22 +148,22 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 	int time = BWAPI::Broodwar->elapsedTime();
 	if(time<InformationEnums::AlmostNone)
 	{
-		spawnPredictor.EnterEvidence("TimingSeenTo","AlmostNone");
+		spawnPredictor.EnterEvidence("TimingSeen","AlmostNone");
 		//BWAPI::Broodwar->printf("Almost None");
 	}
 	else if(time<InformationEnums::Fast)
 	{
-		spawnPredictor.EnterEvidence("TimingSeenTo","Early");
+		spawnPredictor.EnterEvidence("TimingSeen","Early");
 		//BWAPI::Broodwar->printf("Early");
 	}
 	else if(time<InformationEnums::Middle)
 	{
-		spawnPredictor.EnterEvidence("TimingSeenTo","Middle");
+		spawnPredictor.EnterEvidence("TimingSeen","Middle");
 		//BWAPI::Broodwar->printf("Middle");
 	}
 	else if(time<InformationEnums::Long)
 	{
-		spawnPredictor.EnterEvidence("TimingSeenTo","Late");
+		spawnPredictor.EnterEvidence("TimingSeen","Late");
 		//BWAPI::Broodwar->printf("Late");
 	}
 	else
@@ -181,13 +181,13 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 		{
 			sector= InformationEnums::NW;
 			//BWAPI::Broodwar->printf("NW");
-			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
+			spawnPredictor.EnterEvidence("WorkerScoutPosition","NW");	
 		}
 		if(workerPosition.y()/32>BWAPI::Broodwar->mapHeight()/2)//South
 		{
 			sector = InformationEnums::SW;
 			//BWAPI::Broodwar->printf("SW");
-			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
+			spawnPredictor.EnterEvidence("WorkerScoutPosition","SW");	
 		}
 	}
 	else if(workerPosition.x()/32>BWAPI::Broodwar->mapWidth()/2)//East
@@ -196,13 +196,13 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 		{
 			sector = InformationEnums::NE;
 			//BWAPI::Broodwar->printf("NE");
-			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
+			spawnPredictor.EnterEvidence("WorkerScoutPosition","NE");	
 		}
 		if(workerPosition.y()/32>BWAPI::Broodwar->mapHeight()/2)//South
 		{
 			sector = InformationEnums::SE;
 			//BWAPI::Broodwar->printf("SE");
-			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
+			spawnPredictor.EnterEvidence("WorkerScoutPosition","SE");	
 		}
 	}
 }
