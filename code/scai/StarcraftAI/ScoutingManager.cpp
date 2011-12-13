@@ -9,6 +9,7 @@ ScoutingManager::ScoutingManager()
 {
 	isScouting=false;
 	enemyBaseFound=false;
+	enemyScoutFound=false;
 	spawnPredictor=BayesianNetwork("C:\\SpawnPrediction.net");
 	TilePosition position(Broodwar->self()->getStartLocation());
 	if(position.x()>=Broodwar->mapWidth()/2 && position.y()<Broodwar->mapWidth()/2)
@@ -61,25 +62,30 @@ void ScoutingManager::AnalyzeMap()
 
 void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 {
-	if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
-		|| (unit)->getType() == BWAPI::UnitTypes::Protoss_Nexus
-		|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
-		|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Lair
-		|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hive)
+	if(!enemyBaseFound)
 	{
-		EnemyBaseFound((unit)->getTilePosition());
-		enemyBuildings[unit->getType()].push_back(unit);
-	}
-	if((unit)->getType() == BWAPI::UnitTypes::Terran_SCV 
-		||(unit)->getType() == BWAPI::UnitTypes::Zerg_Drone
-		||(unit)->getType() == BWAPI::UnitTypes::Protoss_Probe)
-	{
-		//BWAPI::Broodwar->printf("Found Worker");
-		InsertWorkerEvidence(unit);
+		if((unit)->getType() == BWAPI::UnitTypes::Terran_Command_Center
+			|| (unit)->getType() == BWAPI::UnitTypes::Protoss_Nexus
+			|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hatchery
+			|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Lair
+			|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hive)
+		{
+			EnemyBaseFound((unit)->getTilePosition());
+			enemyBuildings[unit->getType()].push_back(unit);
+		}
+		if((unit)->getType() == BWAPI::UnitTypes::Terran_SCV 
+			||(unit)->getType() == BWAPI::UnitTypes::Zerg_Drone
+			||(unit)->getType() == BWAPI::UnitTypes::Protoss_Probe)
+		{
+			if(!enemyScoutFound)
+			{
+				enemyScoutFound = true;
+				InsertWorkerEvidence(unit);
+			}
+		}
 	}
 	if(unit->getType().isBuilding())
 	{
-		BWAPI::Broodwar->printf("FOUND ENEMY BUILDING LOL");
 		StrategyManager::GetInstance()->NewEnemyFound(unit);
 		enemyBuildings[unit->getType()].push_back(unit);
 	}
@@ -164,7 +170,7 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 	{
 		//BWAPI::Broodwar->printf("Really Long");
 	}
-	//workerPosition.x
+
 	InformationEnums::Positions sector;
 	sector=InformationEnums::NE;
 	//BWAPI::Broodwar->printf("%d\n",sector);
@@ -199,8 +205,6 @@ void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
 			spawnPredictor.EnterEvidence("WorkerScoutPositionTo","NW");	
 		}
 	}
-
-
 }
 void ScoutingManager::VisitBase(InformationEnums::Positions position,BWAPI::Unit* scv)
 {
@@ -276,8 +280,7 @@ InformationEnums::Positions ScoutingManager::MostProbableEnemyPosition()
 	InformationEnums::Positions position;
 	float highest;
 	highest=spawnPredictor.GetProbability("EnemySpawn","NE");
-	printf("IN MostPRobableEnemyPosition   %d", highest);
-
+	
 	position=InformationEnums::NE;
 	if(highest<spawnPredictor.GetProbability("EnemySpawn","SE"))
 	{

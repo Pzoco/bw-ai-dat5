@@ -33,6 +33,7 @@ private:
 	BayesianNetwork spawnPredictor;
 	InformationEnums::Positions currentBest;
 	bool enemyBaseFound;
+	bool enemyScoutFound;
 	bool isScouting;
 	ScoutingManager();
 	std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> enemyUnits;
