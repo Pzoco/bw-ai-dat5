@@ -125,7 +125,13 @@ This section will document the implementation of the different managers mentione
 	\subsection{Scouting Manager}
 		Not yet implemented
 	\subsection{Strategy Manager}
-		Not yet implemented
+		This manager is responsible for making high level decisions for the bot. In order to make some of these decisions it needs some way of 
+		analysing what the current situation is. For this it uses the class BuildOrderPredictor.
+		\subsubsection{Build Order Predictor class}
+			This class uses a Bayesian network to analysis what buildorder the enemy is currently doing, which is related to the current threatlevel. 
+			The class is instantiated by loading the proper prediction network in relation to the matchup and saving the matchup. Then the methods of the 
+			class is only called when the networks needs to be updated, which is every time a new type of unit is getting produced. To keep track of which 
+			enemy types we have seen a map between unit type and an int is counting how many units we have seen. 
 	\subsection{Tactics Manager}
 		The TacticsManager is responsible for managing the offensive units the bot owns. When units of the same type are near each other they are saved 
 		to a Squad object. The TacticsManager executes all the tactics of the Squad objects in it's Update method. This tactic that the squads execute 
