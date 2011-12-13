@@ -1,6 +1,6 @@
 \section{Bayesian Network}\label{bayesian_network}
 
-Here will be a description of how we have modelled our Bayesian network.
+Here will be a description of how we have modeled our Bayesian network.
 
 \subsection{Bayesian Network}			 
 			
@@ -12,7 +12,7 @@ The purpose of our Bayesian network is to find our opponent's spawning position.
 This is the main value we are trying to discover. Ultimately, all of the evidence we collect, will be use to find this value. This is the reason we put it as the head node in the network (TimeSeenFrom and TimeSeenTo could be considered heads, but they only effect one variable each). Most of the other variable have direct links from this node. Once we know the value of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other values.
 
 \subsubsection*{OurSpawn}
-This node is a child of EnemySpawn. We can use the values in this node to determine where the enemy does not spawn. We simply say that the enemy cannot spawn where we spawn at. At the beginning of a match we know where we spawn and can instantly put evidence on the OurSpawn node. This instantly reduces the change for our opponent to be at any other spawning location to 33%.
+This node is a child of EnemySpawn. We can use the values in this node to determine where the enemy does not spawn. We simply say that the enemy cannot spawn where we spawn at. At the beginning of a match we know where we spawn and can instantly put evidence on the OurSpawn node. This instantly reduces the change for our opponent to be at any other spawning location to 33\%.
 
 \subsubsection*{EnemyNotAt(NE,SE,SW,NW)}
 These nodes are used to keep track of positions we know our opponent did not spawn. Since a node can only be in one state at a time, we made four nodes that can influence the probabilities in enemy spawn. Ways we would generally get these values could be our own scouts arriving at a position and not finding our opponent.
@@ -27,3 +27,37 @@ These nodes are used to keep track of positions we know our opponent did not spa
 
 \subsubsection*{OverlordDirection} This node is fairly simple and contributes a lot in predicting the spawn location. Since overlords are so slow, a player will be able to use the direction the overlord is coming from to predict the spawn location. By the time an overlord would have visited two bases we probably already know where the enemy's base is. This variable may seem really useful, but it only helps when fighting against zerg players. The overlord can take a while to get to even its first base, and by then we might have already needed to know where our opponent is. EnemySpawn is a parent of OverlordDirection. Once we know the direction the overlord is coming from we gain a lot of information on the enemy's spawn position.
 
+\subsection{Build Order Prediction}
+We will now explain how we have used Bayesian networks to predict the opponents build order. there are a different model for each match up our bot
+can in counter. We will start be expleining terran versus terran, then terran versus protoss and at the end terran versus zerg.
+
+\subsubsection{terran versus terran}
+  
+\subsubsection{terran versus protoss}
+This model consists of six nodes, named BuildChosen, GateWay1, Nexus, Assimilator, CyberneticsCore and Gateway2. These six nodes are chosen  because they are the required buildings in order to do four will known build orders. The four build orders are TwoGate, Basic Order, 10/15 and 14 Nexus.
+The two gate tactic is building two early gateways and there by making a early attack. The Basic build is a gateway at 10 supply, an assimilator at 12 and a cybernetics core at 14. The build order 10/15 is where you build a Gateway at 10 supply, an assimilator at 11 a cybernetics core at 13  and a 
+another gateway at 15. The build order 14 Nexus is named so because the protoss waits until 14 supply to build a nexus as the first building. \\
+As seen in the figure, there is a parent node BuildChosen this node have the four build orders as states, so by putting evidence on some of the child nodes, the bot will know the probability of the different build orders. So if the scout finds a new nexus the opponent is probably using the build order
+14 Nexus. If the scout on the other hand see two gateways without cybernetics core the probability is high that it is a two gate build order. It is more unclear what the build order is if the scout see a Gateway, an assimilator and a cybernetics core. Because it could be a  
+
+%NEED figure
+
+\subsubsection{terran versus zerg}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
