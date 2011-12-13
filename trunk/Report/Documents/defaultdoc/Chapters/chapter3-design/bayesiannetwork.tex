@@ -1,8 +1,8 @@
 \section{Bayesian Network}\label{bayesian_network}
+This section will describe the Bayesian networks we made to predict the enemy's spawning position, what build order they are doing and what the current 
+threatlevel is. The next subsection describes the network created for predicting the enemy spawn position.
 
-Here will be a description of how we have modeled our Bayesian network.
-
-\subsection{Bayesian Network}			 
+\subsection{Prediction of enemy spawn position}			 
 			
 The purpose of our Bayesian network is to find our opponent's spawning position. Some factors we will take into account are our spawn position, enemy scouts, and time into account to help us predict this. We wanted to make this network fairly general so it can be used on any  map. We represent time as almost none, early, middle, and late in order to compensate the different timings for different maps. We will use in game code which will take into account map layout for these times. 
 %Why do we represent time as almost none, early, middle, and late?
@@ -28,12 +28,17 @@ These nodes are used to keep track of positions we know our opponent did not spa
 \subsubsection*{OverlordDirection} This node is fairly simple and contributes a lot in predicting the spawn location. Since overlords are so slow, a player will be able to use the direction the overlord is coming from to predict the spawn location. By the time an overlord would have visited two bases we probably already know where the enemy's base is. This variable may seem really useful, but it only helps when fighting against zerg players. The overlord can take a while to get to even its first base, and by then we might have already needed to know where our opponent is. EnemySpawn is a parent of OverlordDirection. Once we know the direction the overlord is coming from we gain a lot of information on the enemy's spawn position.
 
 \subsection{Build Order Prediction}
-We will now explain how we have used Bayesian networks to predict the opponents build order. there are a different model for each match up our bot
-can in counter. We will start be expleining terran versus terran, then terran versus protoss and at the end terran versus zerg.
+This subsection describes the Bayesian networks that was created for predicting that buildorder the enemy is doing. There are three different networks, one each for every race that the bot can encounter: Terran versus Terran, Terran versus Protoss and Terran vs Zerg.
 
-\subsubsection{terran versus terran}
-  
-\subsubsection{terran versus protoss}
+\subsubsection{Terran versus Terran}
+	This network will try to predict the following buildorders: Proxy Rush, 2 Factory Vulture Pressure, 1 Factory Expand, 1 Starport Wraith and Stim Rush. 
+	Every building which is used in the buildorders are put as a node in the network. The numbers in the node names are how many of the given unit the 
+	enemy have, e.g. Barracks2 means the second barracks the bot scouts. The order in which the buildings come is also modelled with the arrows, 
+	e.g. the node for Factory2 points to the node for Factory1. Each of the building nodes have the states Seen and NotSeen, though Seen is only used when 
+	presenting evidence, because the bot will never be able to prove that the enemy building does not exist. As the evidence is presenting the buildorder 
+	probabilities rises according to how many buildings it needs have evidence on them, this gives a prediction of the given buildorders.
+	
+\subsubsection{Terran versus Protoss}
 This model consists of six nodes, named BuildChosen, GateWay1, Nexus, Assimilator, CyberneticsCore and Gateway2. These six nodes are chosen  because they are the required buildings in order to do four will known build orders. The four build orders are TwoGate, Basic Order, 10/15 and 14 Nexus.
 The two gate tactic is building two early gateways and there by making a early attack. The Basic build is a gateway at 10 supply, an assimilator at 12 and a cybernetics core at 14. The build order 10/15 is where you build a Gateway at 10 supply, an assimilator at 11 a cybernetics core at 13  and a 
 another gateway at 15. The build order 14 Nexus is named so because the protoss waits until 14 supply to build a nexus as the first building. \\
@@ -42,9 +47,20 @@ As seen in the figure, there is a parent node BuildChosen this node have the fou
 
 %NEED figure
 
-\subsubsection{terran versus zerg}
+\subsubsection{Terran vs Zerg}
+	This network will try to predict the following buildorders: 2 Hatch Muta, 3 Hatch Muta, 3 Hatch Lurker and Early Pool Rush, 
+	where Early Pool Rush is a 4pool or 5pool. Every building which is used in the buildorders are put as a node in the network. 
+	The numbers in the node names are how many of the given unit the enemy have, e.g. Hatchery2 means the second hatchery the bot scouts. 
+	The order in which the buildings come is also modelled with the arrows, 
+	e.g. the node for Hatchery3 points to the node for Hatchery2. Each of the building nodes have the states Seen and NotSeen, 
+	though Seen is only used when presenting evidence, because the bot will never be able to prove that the 
+	enemy building does not exist. As the evidence is presenting the buildorder 
+	probabilities rises according to how many buildings it needs have evidence on them, this gives a prediction of the given buildorders.
 
-
+\subsection{Threat Level Prediction}
+	This prediction is closely related to the prediction of the buildorder the enemy is doing. A buildorder have a certain time where it is effective 
+	or where it hits. So determine what the current threatlevel is two nodes have to be added to each of the buildorder prediction networks, ThreatLevel 
+	and Time. PUT FIGURE OF THIS HERE.
 
 
 
