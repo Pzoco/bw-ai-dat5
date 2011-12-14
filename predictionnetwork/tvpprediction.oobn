@@ -46,7 +46,7 @@ class tvpprediction
     node FleetBeacon
     {
 	label = "";
-	position = (918 186);
+	position = (945 224);
 	states = ("Seen" "NotSeen");
 	HR_Group = "0";
 	HR_Desc = "";
@@ -57,7 +57,7 @@ class tvpprediction
     node RoboticsSupportBay
     {
 	label = "";
-	position = (584 193);
+	position = (660 220);
 	states = ("Seen" "NotSeen");
 	HR_LinkMode = "[RoboticsFacility:0]";
 	HR_Group = "0";
@@ -69,7 +69,7 @@ class tvpprediction
     node Observatorium
     {
 	label = "";
-	position = (695 191);
+	position = (764 226);
 	states = ("Seen" "NotSeen");
 	HR_LinkMode = "[RoboticsFacility:0]";
 	HR_State_0 = "";
@@ -92,7 +92,7 @@ class tvpprediction
     node Stargate
     {
 	label = "";
-	position = (816 188);
+	position = (850 224);
 	states = ("Seen" "NotSeen");
 	HR_Group = "0";
 	HR_Desc = "";
@@ -114,11 +114,11 @@ class tvpprediction
     node BuildChosen
     {
 	label = "";
-	position = (740 92);
+	position = (780 93);
 	states = ("TwoBaseArbiter" "TwoBaseCarrier" "TwoBaseReaver");
 	HR_State_3 = "";
 	HR_LinkControlPoints = "";
-	HR_LinkMode = "[Stargate:0][CyberneticsCore:0][Stargate_1:0][RoboticsSupportBay:0][FleetBeacon:0]";
+	HR_LinkMode = "[Stargate:0][CyberneticsCore:0][Stargate_1:0][RoboticsSupportBay:0][FleetBeacon:0][Observatorium:0]";
 	HR_State_2 = "";
 	HR_Group = "0";
 	HR_Desc = "";
@@ -143,8 +143,8 @@ class tvpprediction
     node Gateways
     {
 	label = "";
-	position = (489 356);
-	states = ("1" "2" "3");
+	position = (492 350);
+	states = ("1" "2");
 	HR_State_2 = "";
 	HR_Group = "0";
 	HR_Desc = "";
@@ -155,7 +155,7 @@ class tvpprediction
     node RoboticsFacility
     {
 	label = "";
-	position = (612 357);
+	position = (589 347);
 	states = ("Seen" "NotSeen");
 	HR_Group = "0";
 	HR_Desc = "";
@@ -217,9 +217,9 @@ class tvpprediction
 
     potential (Gateways | Opening)
     {
-	data = (( 1 0 0 )	%  Opening=OneGateTech
-		( 0 1 0 )	%  Opening=TwoGateRange
-		( 0.8 0.2 0 ));	%  Opening=NexusFirst
+	data = (( 1 0 )	%  Opening=OneGateTech
+		( 0 1 )	%  Opening=TwoGateRange
+		( 0.8 0.2 ));	%  Opening=NexusFirst
     }
 
     potential (RoboticsFacility | RoboticsSupportBay Observatorium Opening)
