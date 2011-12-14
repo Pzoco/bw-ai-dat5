@@ -77,19 +77,15 @@ void BayesianNetwork::PrintMostProbableState(std::string nodeName)
 void BayesianNetwork::PrintToFile(std::string nodeName)
 {
 
-		std::ofstream gameData;
 	DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(domain->getNodeByName(nodeName));
-	
-	gameData.open("C:/spawnPredictor.lgdat", std::ios::out | std::ios::app);
-	gameData
-		<< "Frame: "<< BWAPI::Broodwar->getFrameCount() << "\n";
-
+	std::ofstream gameData2;
+	gameData2.open("C:/spawnPredictor.lgdat", std::ios::out | std::ios::app);
 	for(int i =0;i<(int)node->getNumberOfStates();i++)
 	{
-		gameData << "-State " << node->getStateLabel(i).c_str() << "- probability "<< node->getBelief(i) <<"\n";
+		gameData2 << node->getBelief(i) <<"; ";
 	
 	}
-	gameData << "\n";
-	gameData.close();
+	gameData2 << "0 \n";
+	gameData2.close();
 	
 }
