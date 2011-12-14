@@ -97,14 +97,17 @@ void BayesianNetwork::PrintToFile(std::string nodeName)
 	NodeList nodes = (domain)->getNodes();
 	for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
 	{
-		DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(*it);
-		gameData 
-			<< "\nNode: %s" << node->getName().c_str();
-		for(int i =0;i<(int)node->getNumberOfStates();i++)
+		if(node->getName() == "EnemySpawn")
 		{
+			DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(*it);
 			gameData 
-			<< "\n -State "<< node->getStateLabel(i).c_str()
-			<< " - probability: " << node->getBelief(i);
+				<< "\nNode: %s" << node->getName().c_str();
+			for(int i =0;i<(int)node->getNumberOfStates();i++)
+			{
+				gameData 
+				<< "\n -State "<< node->getStateLabel(i).c_str()
+				<< " - probability: " << node->getBelief(i) << "\n";
+			}
 		}
 	}
 
