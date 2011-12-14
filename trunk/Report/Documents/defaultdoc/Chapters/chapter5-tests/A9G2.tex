@@ -28,49 +28,44 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 	\hline
 		392,71 & 337,26 & 4,79 & 7,51 \\
 	\hline
-\label{test1.1}
 \end{tabular}
 \end{centering}
 %%%AVERAGE%%%
 
-Comparing the potential field data in winning streaks could tell us how the agent reacts when it wins.
+Comparing the potential field data in winning streaks could tell us how the agent reacts when it wins. Damage taken and damage given are self-explanatory, but the rest are all values of the potential fields. Ally is how far away each of our own vultures can be from each other, a negative value mean repulsive and a positive value mean attractive. The squad value is similar to the ally value but the squad means the center point in the group of units. The maximum distance is the distance to an enemy, the value is only for the potential fields and not real distance to the enemies. Cooldown is when the vultures have fired they use the cooldown value if they should be attracted to the enemy or not and lastly the edges are how attractive or repulsed the vultures are to the edges, and just as before, negative values means repulse and positive values mean attractive. 
 \newpage
 %%Comparing the winning streak%%%
 \begin{centering}
  \begin{tabular}{|c||c|c|c|c|c|c|}
 	\multicolumn{4}{c}{Winning streaks 1.1} \\
 	\hline
-		Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
+	Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
 	\hline
 	
-	252&	480&	910558&	444338&	-306553&	316093&	432800\\
-	400&	240&	910605&	444187&	-305894&	316093&	433077\\
-	326&	480&	910560&	443930&	-306492&	316093&	432797\\
-	400&	380&	910425&	443572&	-307812&	316093&	431980\\
-	258&	480&	910220&	443116&	-309341&	316093&	430732\\
-	292&	480&	909916&	442564&	-310620&	315902&	428863\\
-	374&	480&	909862&	442487&	-310731&	315761&	428523\\
-	312&	480&	910054&	442688&	-310426&	316235&	429738\\
-	374&	480&	910113&	442768&	-310431&	316379&	430099\\
-	400&	320&	910320&	442768&	-310431&	316935&	431369\\
-	306&	480&	910355&	442491&	-310431&	316812&	431296\\
-	400&	380&	910380&	442491&	-310431&	316852&	431531\\
-	400&	300&	910352&	442491&	-310431&	316546&	430904\\
-	392&	480&	910352&	442491&	-310431&	316085&	429879\\
-	400&	420&	910352&	442491&	-310431&	315663&	428999\\
-	312&	480&	910618&	443021&	-310431&	315663&	428999\\
-	338&	480&	910636&	443043&	-310159&	315663&	428999\\
-	362&	480&	911106&	443531&	-301755&	315663&	428999\\
-	306&	480&	911550&	444136&	-291521&	315663&	428999\\
-	
-	
-	
-	
+	252&		480&			910558&	444338&	-306553&			316093&	432800\\
+	400&		240&			910605&	444187&	-305894&			316093&	433077\\
+	326&		480&			910560&	443930&	-306492&			316093&	432797\\
+	400&		380&			910425&	443572&	-307812&			316093&	431980\\
+	258&		480&			910220&	443116&	-309341&			316093&	430732\\
+	292&		480&			909916&	442564&	-310620&			315902&	428863\\
+	374&		480&			909862&	442487&	-310731&			315761&	428523\\
+	312&		480&			910054&	442688&	-310426&			316235&	429738\\
+	374&		480&			910113&	442768&	-310431&			316379&	430099\\
+	400&		320&			910320&	442768&	-310431&			316935&	431369\\
+	306&		480&			910355&	442491&	-310431&			316812&	431296\\
+	400&		380&			910380&	442491&	-310431&			316852&	431531\\
+	400&		300&			910352&	442491&	-310431&			316546&	430904\\
+	392&		480&			910352&	442491&	-310431&			316085&	429879\\
+	400&		420&			910352&	442491&	-310431&			315663&	428999\\
+	312&		480&			910618&	443021&	-310431&			315663&	428999\\
+	338&		480&			910636&	443043&	-310159&			315663&	428999\\
+	362&		480&			911106&	443531&	-301755&			315663&	428999\\
+	306&		480&			911550&	444136&	-291521&			315663&	428999\\
 	\hline
-\label{test1.1}
+	\label{winning_streak_1.1}
 \end{tabular}
 \end{centering}
-
+The table \ref{winning_streak_1.1} shows some numbers when the agent have had a winning streak. One can see that the damage given are very high and the ones with 480 in damage given is when the vultures have won over the 12 marines. The values have been saved from the agent in the iterations 39484 to 39502. By looking at the numbers in ally and squad we can see that the units like to stick to each other, in other words they like to team up. The reinforcement learning have changed the values and it have found out that sticking together is better than dealing with a bunch of marines on it's own. The maximum distance, which means the attractive level towards the marines, are very high in a negative value which makes them very attracted towards the marines and in other words very aggressive. 
 
 
 
