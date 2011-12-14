@@ -1,13 +1,21 @@
-
 %%%% TEST WITH A9 G2 %%%%
 \subsection*{Learning rate test 1.1}
 In this test we are using the values $\alpha$ 9 and $\gamma$ 2 and the agent has run 40182 iterations
 
 
 \textit{The figures showing in the test, can be watched full sized in the appendix \ref{appendix}} 
+
 %Damage given and taken
 \insertmarginfigure{height=3in}{learningrate/A9G2/damage.png}
 			{Alpha 9 Gamma 2 Damage - Yellow: Damage given - Red: Damage taken}{fig:a9g2_damage}{-3in}
+
+%Units killed and units lost
+\insertmarginfigure{height=3in}{learningrate/A9G2/units_lost_and_killed.png}
+			{Alpha 9 Gamma 2 Lost and killed - Yellow: Enemies killed - Red: Vultures left}{fig:a9g2_lak}{-3in}
+In figure \ref{fig:a9g2_lak} the yellow graph is how many marines was killed, and when it peaks to the 12 mark our agent have won a battle
+
+
+
 
 In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow graph) the agent have killed all of the opponent as we have hoped for. The red graph is damage taken, if it's on 400 all the 5 vultures have died and the agent have had a lost.
 
@@ -23,15 +31,47 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 \label{test1.1}
 \end{tabular}
 \end{centering}
-
 %%%AVERAGE%%%
 
+Comparing the potential field data in winning streaks could tell us how the agent reacts when it wins.
+
+%%Comparing the winning streak%%%
+\begin{centering}
+ \begin{tabular}{|c||c|c|c|c|c|c|}
+	\multicolumn{4}{c}{Winning streaks 1.1} \\
+	\hline
+		Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
+	\hline
+	
+	252&	480&	910558&	444338&	-306553&	316093&	432800\\
+	400&	240&	910605&	444187&	-305894&	316093&	433077\\
+	326&	480&	910560&	443930&	-306492&	316093&	432797\\
+	400&	380&	910425&	443572&	-307812&	316093&	431980\\
+	258&	480&	910220&	443116&	-309341&	316093&	430732\\
+	292&	480&	909916&	442564&	-310620&	315902&	428863\\
+	374&	480&	909862&	442487&	-310731&	315761&	428523\\
+	312&	480&	910054&	442688&	-310426&	316235&	429738\\
+	374&	480&	910113&	442768&	-310431&	316379&	430099\\
+	400&	320&	910320&	442768&	-310431&	316935&	431369\\
+	306&	480&	910355&	442491&	-310431&	316812&	431296\\
+	400&	380&	910380&	442491&	-310431&	316852&	431531\\
+	400&	300&	910352&	442491&	-310431&	316546&	430904\\
+	392&	480&	910352&	442491&	-310431&	316085&	429879\\
+	400&	420&	910352&	442491&	-310431&	315663&	428999\\
+	312&	480&	910618&	443021&	-310431&	315663&	428999\\
+	338&	480&	910636&	443043&	-310159&	315663&	428999\\
+	362&	480&	911106&	443531&	-301755&	315663&	428999\\
+	306&	480&	911550&	444136&	-291521&	315663&	428999\\
+	
+	
+	
+	
+	\hline
+\label{test1.1}
+\end{tabular}
+\end{centering}
 
 
 
 
-%Units killed and units lost
-\insertmarginfigure{height=3in}{learningrate/A9G2/units_lost_and_killed.png}
-			{Alpha 9 Gamma 2 Lost and killed - Yellow: Enemies killed - Red: Vultures left}{fig:a9g2_lak}{-3in}
-In figure \ref{fig:a9g2_lak} the yellow graph is how many marines was killed, and when it peaks to the 12 mark our agent have won a battle
-
+%%Comparing the winning streak%%%
