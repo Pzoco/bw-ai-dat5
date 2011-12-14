@@ -65,10 +65,10 @@ node RoboticsSupportBay
     HR_State_0 = "";
 }
 
-node Observatorium
+node Observatory
 {
     label = "";
-    position = (764 218);
+    position = (759 224);
     states = ("Seen" "NotSeen");
     HR_LinkMode = "[RoboticsFacility:0]";
     HR_State_0 = "";
@@ -80,7 +80,7 @@ node Observatorium
 node DragoonRange
 {
     label = "";
-    position = (292 99);
+    position = (292 93);
     states = ("Seen" "NotSeen");
     HR_Group = "0";
     HR_Desc = "";
@@ -99,7 +99,7 @@ node Stargate
     HR_State_0 = "";
 }
 
-node Nexus1
+node Nexus
 {
     label = "";
     position = (388 93);
@@ -178,7 +178,7 @@ potential (RoboticsSupportBay | BuildChosen)
 	( 1 0 ));	%  BuildChosen=TwoBaseReaver
 }
 
-potential (Observatorium | BuildChosen)
+potential (Observatory | BuildChosen)
 {
     data
      = (( 0.1 0.9 )	%  BuildChosen=TwoBaseArbiter
@@ -202,7 +202,7 @@ potential (Stargate | BuildChosen)
 	( 0 1 ));	%  BuildChosen=TwoBaseReaver
 }
 
-potential (Nexus1 | Opening)
+potential (Nexus | Opening)
 {
     data
      = (( 0 1 )	%  Opening=OneGateTech
@@ -228,19 +228,19 @@ potential (Gateways | Opening)
 	( 0.8 0.2 ));	%  Opening=NexusFirst
 }
 
-potential (RoboticsFacility | RoboticsSupportBay Observatorium Opening)
+potential (RoboticsFacility | RoboticsSupportBay Observatory Opening)
 {
     data
-     = (((( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=Seen  Opening=OneGateTech
-	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=Seen  Opening=TwoGateRange
-	  ( 1 0 ))	%  RoboticsSupportBay=Seen  Observatorium=Seen  Opening=NexusFirst
-	 (( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=NotSeen  Opening=OneGateTech
-	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatorium=NotSeen  Opening=TwoGateRange
-	  ( 1 0 )))	%  RoboticsSupportBay=Seen  Observatorium=NotSeen  Opening=NexusFirst
-	((( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatorium=Seen  Opening=OneGateTech
-	  ( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatorium=Seen  Opening=TwoGateRange
-	  ( 1 0 ))	%  RoboticsSupportBay=NotSeen  Observatorium=Seen  Opening=NexusFirst
-	 (( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatorium=NotSeen  Opening=OneGateTech
-	  ( 0 1 )	%  RoboticsSupportBay=NotSeen  Observatorium=NotSeen  Opening=TwoGateRange
-	  ( 0 1 ))));	%  RoboticsSupportBay=NotSeen  Observatorium=NotSeen  Opening=NexusFirst
+     = (((( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=OneGateTech
+	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=TwoGateRange
+	  ( 1 0 ))	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=NexusFirst
+	 (( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=OneGateTech
+	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=TwoGateRange
+	  ( 1 0 )))	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=NexusFirst
+	((( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=OneGateTech
+	  ( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=TwoGateRange
+	  ( 1 0 ))	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=NexusFirst
+	 (( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=OneGateTech
+	  ( 0 1 )	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=TwoGateRange
+	  ( 0 1 ))));	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=NexusFirst
 }
