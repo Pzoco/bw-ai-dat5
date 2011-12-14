@@ -73,3 +73,31 @@ void BayesianNetwork::PrintMostProbableState(std::string nodeName)
 	}
 	BWAPI::Broodwar->printf("Highest probability of %s is state %s with the probability %f",nodeName.c_str(),stateName.c_str(),highest);
 }
+
+void BayesianNetwork::PrintToFile(std::string nodeName)
+{
+
+		std::ofstream gameData;
+
+		float highest = 0.0;
+	std::string stateName = "";
+	DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(domain->getNodeByName(nodeName));
+	for(int i =0;i<(int)node->getNumberOfStates();i++)
+	{
+		if((float)node->getBelief(i) > highest)
+		{
+			stateName = node->getStateLabel(i);
+			highest = (float)node->getBelief(i);
+		}
+	}
+	gameData.open("C:/spawnPredictor.lgdat", std::ios::out | std::ios::app);
+	gameData
+		<< "Frame: "<< BWAPI::Broodwar->getFrameCount()
+		<< "\n" <<"Highest probability of " << nodeName.c_str()
+		<<" is state " << stateName.c_str() << "with the probability " << highest << "\n\n";
+
+
+
+	gameData.close();
+	
+}
