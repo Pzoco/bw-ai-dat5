@@ -1,0 +1,32 @@
+%%%% TEST WITH A2 G9 %%%%
+\subsection*{Learning rate test 1.4}
+In this test we are using the values $\alpha$ 2 and $\gamma$ 9. In this test the agent has run 30852 iterations.
+
+
+%Damage given and taken
+\insertmarginfigure{height=3in}{learningrate/A2G9/damage.png}
+			{Alpha 2 gamma 9 Damage - Yellow: Damage given - Red: Damage taken}{fig:a2g9_damage}{-3in}
+
+In figure \ref{fig:a2g9_damage} just as before but with different $\alpha$ and $\gamma$ values the agents graph over it's performance.
+
+
+%Units killed and units lost
+
+\insertmarginfigure{height=3in}{learningrate/A2G9/units_lost_and_units_killed.png}{Alpha 2 Gamma 9 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a2g9_lak}{-3in}
+
+%%%%%AVERAGE%%%%%
+\begin{centering}
+ \begin{tabular}{|l||c|c|c|}
+	\multicolumn{4}{c}{Average results from test 1.4} \\
+	\hline
+		Damage taken & Damage given & Units lost & Enemies killed\\
+	\hline
+		398,78 & 282,28 & 4,96 & 6,31 \\
+	\hline
+\label{test1.4}
+\end{tabular}
+\end{centering}
+%%%AVERAGE%%%
+
+
+Comparing tests 1.4 and 1.3 where the 1.3 test has run 135936 iterations one can clearly see that the average damage dealt is higher than from the test 1.4 where the iterations are 30852 times. To make the agent converge is has to run even more iterations. If we cut the test 1.3 down to 30852 iterations and compare the numbers again it has an average of \textit{Damage taken: 396,05 - Damage given: 324,81} which is closely to the tests with few iterations.

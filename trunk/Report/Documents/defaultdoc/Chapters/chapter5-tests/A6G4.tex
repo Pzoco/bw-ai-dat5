@@ -1,0 +1,38 @@
+%%%% TEST WITH A6 G4 %%%%
+\subsection*{Learning rate test 1.2}
+In this test we are using the values $\alpha$ 6 and $\gamma$ 4. In this test the agent has run 17992 iterations. Here we try with different values in the learning algorithm, to see what would fit the best and which values the agent learns or converges the fastest.
+
+
+%Damage given and taken
+\insertmarginfigure{height=3in}{learningrate/A6G4/damage.png}
+			{Alpha 6 gamma 4 Damage - Yellow: Damage given - Red: Damage taken}{fig:a6g4_damage}{-3in}
+
+In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $\gamma$ values the agents graph over it's performance.
+
+
+%Units killed and units lost
+
+\insertmarginfigure{height=3in}{learningrate/A6G4/units_lost_and_killed.png}{Alpha 6 Gamma 4 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a6g4_lak}{-3in}
+
+
+
+%%%%%AVERAGE%%%%%
+\begin{centering}
+ \begin{tabular}{|l||c|c|c|}
+	\multicolumn{4}{c}{Average results from test 1.2} \\
+	\hline
+		Damage taken & Damage given & Units lost & Enemies killed\\
+	\hline
+		392,35 & 334,26 & 4,79 & 7,44 \\
+	\hline
+\label{test1.2}
+\end{tabular}
+\end{centering}
+%%%AVERAGE%%%
+
+
+
+
+
+Comparing the tests one can see that the agent needs several more iterations than it has right now, since it's not converging from just 40000 iterations. The next tests will be with around 100000 iterations and by that we can be more sure that it's near converging. The average values are almost the same, and what that tells us is that either it needs way more iterations or the small change in the values does not give a huge difference.
+
