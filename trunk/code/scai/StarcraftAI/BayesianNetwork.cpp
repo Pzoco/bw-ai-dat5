@@ -92,10 +92,21 @@ void BayesianNetwork::PrintToFile(std::string nodeName)
 	}
 	gameData.open("C:/spawnPredictor.lgdat", std::ios::out | std::ios::app);
 	gameData
-		<< "Frame: "<< BWAPI::Broodwar->getFrameCount()
-		<< "\n" <<"Highest probability of " << nodeName.c_str()
-		<<" is state " << stateName.c_str() << "with the probability " << highest << "\n\n";
+		<< "Frame: "<< BWAPI::Broodwar->getFrameCount();
 
+	NodeList nodes = (domain)->getNodes();
+	for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
+	{
+		DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(*it);
+		gameData 
+			<< "\nNode: %s" << node->getName().c_str();
+		for(int i =0;i<(int)node->getNumberOfStates();i++)
+		{
+			gameData 
+			<< "\n -State "<< node->getStateLabel(i).c_str()
+			<< " - probability: " << node->getBelief(i);
+		}
+	}
 
 
 	gameData.close();
