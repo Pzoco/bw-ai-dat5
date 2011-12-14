@@ -123,7 +123,7 @@ This section will document the implementation of the different managers mentione
 			a map between a position and a building type. After this the scv tries to 
 			construct the building.
 	\subsection{Scouting Manager}
-		Not yet implemented
+	The scouting manager is used to find the opponents base and obtain information on what the opponent is doing. It uses a Bayesian network to find the most probable location for the enemy base. At the beginning of the match evidence is instantly inserted on the "OurSpawn" node of the Bayesian network. Whenever an opponent's worker is found, evidence for the worker location and current game time are placed as evidence in the Bayesian network and ouf sofkdf is sent to the new most probable worker location. Once the scout finally finds the opponent's base, it gathers information on which buildings the opponent has in order to help predict the build order.
 	\subsection{Strategy Manager}
 		This manager is responsible for making high level decisions for the bot. In order to make some of these decisions it needs some way of 
 		analysing what the current situation is. For this it uses the class BuildOrderPredictor.

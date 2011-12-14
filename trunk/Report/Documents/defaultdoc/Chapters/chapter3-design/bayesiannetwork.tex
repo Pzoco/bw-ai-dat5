@@ -9,7 +9,7 @@ The purpose of our Bayesian network is to find our opponent's spawning position.
 %actual time for these times - refrace.
 
 \subsubsection*{EnemySpawn}
-This is the main value we are trying to discover. Ultimately, all of the evidence we collect, will be use to find this value. This is the reason we put it as the head node in the network (TimeSeenFrom and TimeSeenTo could be considered heads, but they only effect one variable each). Most of the other variable have direct links from this node. Once we know the value of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other values.
+This is the main value we are trying to discover. Ultimately, all of the evidence we collect, will be use to find this value. This is the reason we put it as the head node in the network (TimeSeen could be considered a heads, but it only effect one variable). Most of the other variable have direct links from this node. Once we know the value of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other values.
 
 \subsubsection*{OurSpawn}
 This node is a child of EnemySpawn. We can use the values in this node to determine where the enemy does not spawn. We simply say that the enemy cannot spawn where we spawn at. At the beginning of a match we know where we spawn and can instantly put evidence on the OurSpawn node. This instantly reduces the change for our opponent to be at any other spawning location to 33\%.
@@ -17,13 +17,10 @@ This node is a child of EnemySpawn. We can use the values in this node to determ
 \subsubsection*{EnemyNotAt(NE,SE,SW,NW)}
 These nodes are used to keep track of positions we know our opponent did not spawn. Since a node can only be in one state at a time, we made four nodes that can influence the probabilities in enemy spawn. Ways we would generally get these values could be our own scouts arriving at a position and not finding our opponent.
 
-\subsubsection*{WorkerScoutPositionFrom} This is one of the most important variables. When we observe a worker coming from a certain position we can influence our belief on our opponents spawn position. TimingSeenFrom is a parent of this node. We use the information from this node to help our prediction. Just seeing an enemy at a certain position isn't enough. We need the time we see the enemy scout to help us form our beliefs. Whenever we obtain evidence on WorkerScoutPositionFrom we will also always gather information on TimingSeenFrom.
+\subsubsection*{WorkerScoutPosition} This is one of the most important variables. When we observe an enemy worker at a certain position we can influence our belief on our opponents spawn position. TimingSeen is a parent of this node. We use the information from this node to help our prediction. Just seeing an enemy at a certain position isn't enough. We need the time we see the enemy scout to help us form our beliefs. Whenever we obtain evidence on WorkerScoutPosition we will also always gather information on TimingSeen.
 
-\subsubsection*{TimingSeenFrom} This node is used to help us use the information from WorkerScoutPositionFrom. It has the values: Almost None, Early, Middle, and Late. These values are the times we may see the opponent's scout. If we see it earlier then our beliefs will be different than if we see it later.
+\subsubsection*{TimingSeen} This node is used to help us use the information from WorkerScoutPosition. It has the values: Almost None, Early, Middle, and Late. These values are the times we may see the opponent's scout. If we see it earlier then our beliefs will be different than if we see it later.
 
-\subsubsection*{WorkerScoutPositionTo} Similar to WorkerScoutPositionFrom, but we are checking if we see the enemy scout going to a potential base.
-
-\subsubsection*{TimingSeenTo} Similar to TimingSeenFrom, but we are checking the time we see the opponent scout go to a potential base.
 
 \subsubsection*{OverlordDirection} This node is fairly simple and contributes a lot in predicting the spawn location. Since overlords are so slow, a player will be able to use the direction the overlord is coming from to predict the spawn location. By the time an overlord would have visited two bases we probably already know where the enemy's base is. This variable may seem really useful, but it only helps when fighting against zerg players. The overlord can take a while to get to even its first base, and by then we might have already needed to know where our opponent is. EnemySpawn is a parent of OverlordDirection. Once we know the direction the overlord is coming from we gain a lot of information on the enemy's spawn position.
 
