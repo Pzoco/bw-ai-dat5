@@ -1,13 +1,8 @@
 \section{Agent Learning}\label{agent_learning}
-This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analized to evaluate its relevance. 
-
-\subsection*{Neural Networks}			 
-
-% !!!!!!!!
+This section will explain some of the different reinforcement learning techniques;  each one explained briefly and analyzed to evaluate its relevance. 
 
 \subsection*{Reinforcement Learning}
-
-Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
+Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
 
 There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.
 
@@ -17,6 +12,7 @@ Addressing only active RL then, we need a way to focus the task of finding a pol
 
 With this we almost have enough information to build the problem structure of the agent. Finally, if we also need to consider a function that describes the  \emph{total cummulative reward} of a set of actions. It could be any function: dicounted cummulative reward ($\sum^{\infty}_{i=0}\gamma^ir_{t+i}$), average reward($\lim_{h\to\infty}\frac{1}{h}\sum^{h}_{i=0}r_{t+i}$), finite horizon reward ($\sum^{h}_{i=0}r_{t+i}$). And then, we can define that the agent's learning task is to find a policy that maximizes this function's value, the \emph{optimal policy}.\cite{ml_tom_mitchel}
 
+%Need to define y and explain cummulative reward, average reward and finite horizon.
 
 \subsubsection{Direct Utility Estimation \& Bellman Rules}
 
@@ -65,6 +61,8 @@ $\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_
 This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
 
 Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (REFERENCE!!!!). 
+
+%explain f.au and f.eac and ref it to PF.
 
 \subsubsection{Updating Rules}
 
@@ -132,9 +130,10 @@ $f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-
 % \ref{mdp}
 These updating rules should eventually converge to values that are very close to the optimal Q function, considering all the restrictions for convergence. In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov desicion process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
 
-
-
 The only difference between this process and our aproximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl} Then, the final result should be the perfect magnitud for the potential fields to guide every unit's movement.
+
+%explain Widrow-Huff rule and Delta Rule. maybe Q-learning equation, if it is not explained before.
+% Talk about the elements i the equetion, why do it look like this? what effect do the elements have(why we go one step into the futur). 
 
 \subsubsection{Reward Function}
 

@@ -2,6 +2,8 @@
 This section will describe the Bayesian networks we made to predict the enemy's spawning position, what build order they are doing and what the current 
 threatlevel is. The next subsection describes the network created for predicting the enemy spawn position.
 
+%give me a figure of the graf
+
 \subsection{Prediction of enemy spawn position}			 
 			
 The purpose of our Bayesian network is to find our opponent's spawning position. Some factors we will take into account are our spawn position, enemy scouts, and time into account to help us predict this. We wanted to make this network fairly general so it can be used on any  map. We represent time as almost none, early, middle, and late in order to compensate the different timings for different maps. We will use in game code which will take into account map layout for these times. 
@@ -9,7 +11,7 @@ The purpose of our Bayesian network is to find our opponent's spawning position.
 %actual time for these times - refrace.
 
 \subsubsection*{EnemySpawn}
-This is the main value we are trying to discover. Ultimately, all of the evidence we collect, will be use to find this value. This is the reason we put it as the head node in the network (TimeSeen could be considered a heads, but it only effect one variable). Most of the other variable have direct links from this node. Once we know the value of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other values.
+This is the main value we are trying to discover. Ultimately, all of the evidence we collect, will be used to find this value. This is the reason we put it as the head node in the network (TimeSeen could be considered a heads, but it only effect one variable). Most of the other variable have direct links from this node. Once we know the value of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other values.
 
 \subsubsection*{OurSpawn}
 This node is a child of EnemySpawn. We can use the values in this node to determine where the enemy does not spawn. We simply say that the enemy cannot spawn where we spawn at. At the beginning of a match we know where we spawn and can instantly put evidence on the OurSpawn node. This instantly reduces the change for our opponent to be at any other spawning location to 33\%.
@@ -59,8 +61,10 @@ As seen in the figure, there is a parent node BuildChosen this node have the fou
 	or where it hits. So determine what the current threatlevel is two nodes have to be added to each of the buildorder prediction networks, ThreatLevel 
 	and Time. PUT FIGURE OF THIS HERE.
 
-
-
+\subsection{Conclusion of Bayesion Network}
+	We can apply Bayesion networks to the scouting and threat level prediction, by analyzing the opponent's army and build order. To calculate the predictions, we hat to take race into account. By doing this one can calculate what to expect and
+	thereby have a advantage over the opponent. In order to build the Bayesion network, one had to create the necessary nodes for spawns and scouting.
+	
 
 
 
