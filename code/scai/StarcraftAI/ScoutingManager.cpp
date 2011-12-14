@@ -98,8 +98,11 @@ void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 
 void ScoutingManager::Update()
 {
-	if(Broodwar->getFrameCount()%50)
+	if(Broodwar->getFrameCount()%50 == 0)
+	{
 		spawnPredictor.PrintToFile("EnemySpawn");
+		BWAPI::Broodwar->printf("Predicting now! 'frame %d",Broodwar->getFrameCount());
+	}
 	if(scoutingSCV != NULL)
 	{
 		if(isScouting && scoutingSCV->getDistance(scoutingGoal)<5 && !enemyBaseFound && scoutingSCV->exists())
@@ -137,8 +140,8 @@ void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
 		spawnPredictor.EnterEvidence("EnemySpawn","NW");
 	}
 	enemyBaseFound=true;
-	WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
-	scoutingSCV = NULL;
+	//WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
+	//scoutingSCV = NULL;
 
 }
 void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
