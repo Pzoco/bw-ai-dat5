@@ -2,23 +2,20 @@
 This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analized to evaluate its relevance. 
 
 \subsection*{Neural Networks}			 
-			
 
-
-
+% !!!!!!!!
 
 \subsection*{Reinforcement Learning}
 
 Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
 
-% used algorithm for the lack of a better word...
 There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.
 
 \subsubsection{Markov Desicion Process} \label{mdp}
 
-Addressing only active RL then, we need a way to formulate the task of finding a policy (that selects which action to take). 
+Addressing only active RL then, we need a way to focus the task of finding a policy (that selects which action to take). A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+l}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} 
 
-\textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$ , the agent senses the current state $s_t$ , chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+l}= \delta (s_t,a_t)$.Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} 
+With this we almost have enough information to build the problem structure of the agent. Finally, if we also need to consider a function that describes the  \emph{total cummulative reward} of a set of actions. It could be any function: dicounted cummulative reward ($\sum^{\infty}_{i=0}\gamma^ir_{t+i}$), average reward($\lim_{h\to\infty}\frac{1}{h}\sum^{h}_{i=0}r_{t+i}$), finite horizon reward ($\sum^{h}_{i=0}r_{t+i}$). And then, we can define that the agent's learning task is to find a policy that maximizes this function's value, the \emph{optimal policy}.\cite{ml_tom_mitchel}
 
 
 \subsubsection{Direct Utility Estimation \& Bellman Rules}
