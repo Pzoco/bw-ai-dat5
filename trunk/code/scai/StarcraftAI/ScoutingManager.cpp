@@ -98,6 +98,8 @@ void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 
 void ScoutingManager::Update()
 {
+	if(Broodwar->getFrameCount()%50)
+		spawnPredictor.PrintToFile("EnemySpawn");
 	if(scoutingSCV != NULL)
 	{
 		if(isScouting && scoutingSCV->getDistance(scoutingGoal)<5 && !enemyBaseFound && scoutingSCV->exists())
