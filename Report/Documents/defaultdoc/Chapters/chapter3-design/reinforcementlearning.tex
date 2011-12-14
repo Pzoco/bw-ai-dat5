@@ -52,13 +52,13 @@ We define a state in our environment as a combination of the most important fact
                        State = \begin{cases}
                          da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
                       \end{cases}
-\end{displaymath}
+\end{displaymath}\\
 
-\\The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
 
 \subsubsection{Function Approximation}
 
-After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function basically takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the \hat{Q} function. \\ 
+After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function basically takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
 
 $\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due)$ \\ 
 
@@ -73,7 +73,7 @@ We use the updating rule or Q-learning equation that evolves from Widrow-Huff ru
 $\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma(max\hat{Q}_\Theta(a',s'))-\hat{Q}_\Theta(a,s) ] \frac{\partial \hat{Q}_\Theta(a,s)}{\partial\Theta_i}$ \\ 
 
 \begin{flushleft}
-Where $\Theta_i$ is each one of the coefficients in the Q-approximation. In the context of our  $\hat{Q}_f$ function, it would represent the forces: $f_{MDP}$, $f_{AU}$, $f_{EAC}$, $f_{S}}$, $f_{CD}$. 
+Where $\Theta_i$ is each one of the coefficients in the Q-approximation. In the context of our  $\hat{Q}_f$ function, it would represent the forces: $f_{MDP}$, $f_{AU}$, $f_{EAC}$, $f_{S}$, $f_{CD}$. 
 \end{flushleft} 
 
 \begin{flushleft}
