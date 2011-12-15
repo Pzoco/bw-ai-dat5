@@ -11,9 +11,12 @@ public:
 	BuildOrderPredictor();
 	void InitializePredictionNetwork(InformationEnums::Matchup matchup);
 	void UpdatePredictionNetwork(BWAPI::UnitType building);
+	void UpdatePredictionNetwork(BWAPI::UpgradeType upgrade);
+	InformationEnums::ThreatLevel GetCurrentThreatLevel();
 private:
+	bool protossOpeningDone;
 	InformationEnums::Matchup matchup;
-	BayesianNetwork *predictionNetwork;
+	BayesianNetwork predictionNetwork;
 	std::map<BWAPI::UnitType,int> enemyBuildingsOwned;
 	void UpdateTvTNetwork(BWAPI::UnitType building);
 	void UpdateTvPNetwork(BWAPI::UnitType building);
