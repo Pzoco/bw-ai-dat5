@@ -36,29 +36,25 @@ The combination of the previous two methods, \textit{using the observed transiti
 
 $U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))$\\
 
-This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$) it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases \cite{rl}. 
+This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$) it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. \cite{rl} 
 
 The second is the appearance of $\alpha$, also known as the learning rate parameter; how much it learns from an specific trial. Normaly the value of  $\alpha$ would be something like: $\frac{1}{1+numberOfVisits(s,a)}$ \cite[p382]{ml_tom_mitchel}. Which then decreases the magnitude of the update proportionally to how many times you visited a state-action pair. 
 
 \subsubsection{Q Learning}
 
-All the previous methods have been explained considering there is a fixed policy that determines the behavior of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need and active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is basically:
+All the previous methods have been explained considering there is a fixed policy that determines the behavior of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need and active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is basically:s\cite{rl}
 
-\begin{flushleft}
+\begin{center}
 $U(s) = max_a(Q(s,a))$
-\end{flushleft}
+\end{center}
 
-Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule: 
+Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule:\cite{rl} 
 
-\begin{flushleft}
-$Q(a,s) \leftarrow  Q(a,s)  + \alpha [ R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]$
-\end{flushleft}
+\begin{center}
+$Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]$
+\end{center}
 
-Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}.
-
-
-
-
+Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}. It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent \cite[p776]{rl} . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
 
 \section{Generalization of Q-Learning}	\label{qlearning}
 
