@@ -42,10 +42,45 @@ net
     HR_Grid_X = "40";
 }
 
+node Gateway2
+{
+    label = "";
+    position = (284 101);
+    states = ("Seen" "NotSeen");
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+    HR_LinkMode = "[Gateway1:0][CyberneticsCore:0]";
+}
+
+node Assimilator
+{
+    label = "";
+    position = (333 62);
+    states = ("Seen" "NotSeen");
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
+node CyberneticsCore
+{
+    label = "";
+    position = (152 125);
+    states = ("Seen" "NotSeen");
+    HR_LinkMode = "[Gateways:0][Gateway1:0]";
+    HR_Group = "0";
+    HR_Desc = "";
+    HR_State_1 = "";
+    HR_State_0 = "";
+}
+
 node FleetBeacon
 {
     label = "";
-    position = (945 220);
+    position = (810 168);
     states = ("Seen" "NotSeen");
     HR_Group = "0";
     HR_Desc = "";
@@ -56,7 +91,7 @@ node FleetBeacon
 node RoboticsSupportBay
 {
     label = "";
-    position = (660 224);
+    position = (534 167);
     states = ("Seen" "NotSeen");
     HR_LinkMode = "[RoboticsFacility:0]";
     HR_Group = "0";
@@ -68,7 +103,7 @@ node RoboticsSupportBay
 node Observatory
 {
     label = "";
-    position = (759 224);
+    position = (628 168);
     states = ("Seen" "NotSeen");
     HR_LinkMode = "[RoboticsFacility:0]";
     HR_State_0 = "";
@@ -80,8 +115,9 @@ node Observatory
 node DragoonRange
 {
     label = "";
-    position = (292 93);
+    position = (153 210);
     states = ("Seen" "NotSeen");
+    HR_LinkMode = "[CyberneticsCore:0]";
     HR_Group = "0";
     HR_Desc = "";
     HR_State_1 = "";
@@ -91,7 +127,7 @@ node DragoonRange
 node Stargate
 {
     label = "";
-    position = (850 220);
+    position = (721 169);
     states = ("Seen" "NotSeen");
     HR_Group = "0";
     HR_Desc = "";
@@ -102,7 +138,7 @@ node Stargate
 node Nexus
 {
     label = "";
-    position = (388 93);
+    position = (419 60);
     states = ("Seen" "NotSeen");
     HR_Group = "0";
     HR_Desc = "";
@@ -113,11 +149,12 @@ node Nexus
 node BuildChosen
 {
     label = "";
-    position = (780 351);
+    position = (666 257);
     states = ("TwoBaseArbiter" "TwoBaseCarrier" "TwoBaseReaver");
+    HR_State_4 = "";
     HR_State_3 = "";
     HR_LinkControlPoints = "";
-    HR_LinkMode = "[Stargate:0][CyberneticsCore:0][Stargate_1:0][RoboticsSupportBay:0][FleetBeacon:0][Observatorium:0]";
+    HR_LinkMode = "[Stargate:0][Stargate_1:0][RoboticsSupportBay:0][FleetBeacon:0][Observatorium:0][Observatory:0][Opening:0]";
     HR_State_2 = "";
     HR_Group = "0";
     HR_Desc = "";
@@ -128,22 +165,23 @@ node BuildChosen
 node Opening
 {
     label = "";
-    position = (441 217);
-    states = ("OneGateTech" "TwoGateRange" "NexusFirst");
+    position = (375 208);
+    states = ("OneGateTech" "TwoGateRange" "NexusFirst" "TwoGateZealotRush");
+    HR_State_3 = "";
     HR_LinkControlPoints = "";
     HR_State_2 = "";
-    HR_LinkMode = "[RoboticsFacility:0][Gateways:0][Nexus1:0][DragoonRange:0]";
+    HR_LinkMode = "[RoboticsFacility:0][Gateways:0][Nexus1:0][DragoonRange:0][Nexus:0][CyberneticsCore:0][Assimilator:0][C1:0][Gateway1:0][Gateway2:0]";
     HR_Group = "0";
     HR_Desc = "";
     HR_State_1 = "";
     HR_State_0 = "";
 }
 
-node Gateways
+node Gateway1
 {
     label = "";
-    position = (492 94);
-    states = ("1" "2");
+    position = (151 58);
+    states = ("Seen" "NotSeen");
     HR_State_2 = "";
     HR_Group = "0";
     HR_Desc = "";
@@ -154,12 +192,51 @@ node Gateways
 node RoboticsFacility
 {
     label = "";
-    position = (589 97);
+    position = (508 56);
     states = ("Seen" "NotSeen");
     HR_Group = "0";
     HR_Desc = "";
     HR_State_1 = "";
     HR_State_0 = "";
+}
+
+potential (Gateway2 | Opening)
+{
+    data
+     = (( 0 1 )	%  Opening=OneGateTech
+	( 1 0 )	%  Opening=TwoGateRange
+	( 0 1 )	%  Opening=NexusFirst
+	( 1 0 ));	%  Opening=TwoGateZealotRush
+}
+
+potential (Assimilator | Opening)
+{
+    data
+     = (( 0.99 0.01 )	%  Opening=OneGateTech
+	( 0.99 0.01 )	%  Opening=TwoGateRange
+	( 0.2 0.8 )	%  Opening=NexusFirst
+	( 0 1 ));	%  Opening=TwoGateZealotRush
+}
+
+potential (CyberneticsCore | Gateway2 Opening DragoonRange)
+{
+    data
+     = (((( 1 0 )	%  Gateway2=Seen  Opening=OneGateTech  DragoonRange=Seen
+	  ( 0.5 0.5 ))	%  Gateway2=Seen  Opening=OneGateTech  DragoonRange=NotSeen
+	 (( 1 0 )	%  Gateway2=Seen  Opening=TwoGateRange  DragoonRange=Seen
+	  ( 1 0 ))	%  Gateway2=Seen  Opening=TwoGateRange  DragoonRange=NotSeen
+	 (( 1 0 )	%  Gateway2=Seen  Opening=NexusFirst  DragoonRange=Seen
+	  ( 0.1 0.9 ))	%  Gateway2=Seen  Opening=NexusFirst  DragoonRange=NotSeen
+	 (( 1 0 )	%  Gateway2=Seen  Opening=TwoGateZealotRush  DragoonRange=Seen
+	  ( 0 1 )))	%  Gateway2=Seen  Opening=TwoGateZealotRush  DragoonRange=NotSeen
+	((( 1 0 )	%  Gateway2=NotSeen  Opening=OneGateTech  DragoonRange=Seen
+	  ( 1 0 ))	%  Gateway2=NotSeen  Opening=OneGateTech  DragoonRange=NotSeen
+	 (( 1 0 )	%  Gateway2=NotSeen  Opening=TwoGateRange  DragoonRange=Seen
+	  ( 1 0 ))	%  Gateway2=NotSeen  Opening=TwoGateRange  DragoonRange=NotSeen
+	 (( 1 0 )	%  Gateway2=NotSeen  Opening=NexusFirst  DragoonRange=Seen
+	  ( 0.1 0.9 ))	%  Gateway2=NotSeen  Opening=NexusFirst  DragoonRange=NotSeen
+	 (( 1 0 )	%  Gateway2=NotSeen  Opening=TwoGateZealotRush  DragoonRange=Seen
+	  ( 0 1 ))));	%  Gateway2=NotSeen  Opening=TwoGateZealotRush  DragoonRange=NotSeen
 }
 
 potential (FleetBeacon | BuildChosen)
@@ -189,9 +266,10 @@ potential (Observatory | BuildChosen)
 potential (DragoonRange | Opening)
 {
     data
-     = (( 0.5 0.5 )	%  Opening=OneGateTech
+     = (( 1 0 )	%  Opening=OneGateTech
 	( 1 0 )	%  Opening=TwoGateRange
-	( 0.1 0.9 ));	%  Opening=NexusFirst
+	( 0.1 0.9 )	%  Opening=NexusFirst
+	( 0 1 ));	%  Opening=TwoGateZealotRush
 }
 
 potential (Stargate | BuildChosen)
@@ -207,25 +285,42 @@ potential (Nexus | Opening)
     data
      = (( 0 1 )	%  Opening=OneGateTech
 	( 0 1 )	%  Opening=TwoGateRange
-	( 1 0 ));	%  Opening=NexusFirst
+	( 1 0 )	%  Opening=NexusFirst
+	( 0 1 ));	%  Opening=TwoGateZealotRush
 }
 
 potential (BuildChosen)
 {
-    data = ( 1 1 1 );
+    data = ( 0.333333 0.333333 0.333333 );
 }
 
-potential (Opening)
-{
-    data = ( 1 1 1 );
-}
-
-potential (Gateways | Opening)
+potential (Opening | BuildChosen)
 {
     data
-     = (( 1 0 )	%  Opening=OneGateTech
-	( 0 1 )	%  Opening=TwoGateRange
-	( 0.8 0.2 ));	%  Opening=NexusFirst
+     = (( 0.25 0.25 0.25 0.25 )	%  BuildChosen=TwoBaseArbiter
+	( 0.25 0.25 0.25 0.25 )	%  BuildChosen=TwoBaseCarrier
+	( 0.25 0.25 0.25 0.25 ));	%  BuildChosen=TwoBaseReaver
+}
+
+potential (Gateway1 | Gateway2 CyberneticsCore Opening)
+{
+    data
+     = (((( 1 0 )	%  Gateway2=Seen  CyberneticsCore=Seen  Opening=OneGateTech
+	  ( 1 0 )	%  Gateway2=Seen  CyberneticsCore=Seen  Opening=TwoGateRange
+	  ( 0.8 0.2 )	%  Gateway2=Seen  CyberneticsCore=Seen  Opening=NexusFirst
+	  ( 0.5 0.5 ))	%  Gateway2=Seen  CyberneticsCore=Seen  Opening=TwoGateZealotRush
+	 (( 1 0 )	%  Gateway2=Seen  CyberneticsCore=NotSeen  Opening=OneGateTech
+	  ( 1 0 )	%  Gateway2=Seen  CyberneticsCore=NotSeen  Opening=TwoGateRange
+	  ( 0.8 0.2 )	%  Gateway2=Seen  CyberneticsCore=NotSeen  Opening=NexusFirst
+	  ( 1 0 )))	%  Gateway2=Seen  CyberneticsCore=NotSeen  Opening=TwoGateZealotRush
+	((( 1 0 )	%  Gateway2=NotSeen  CyberneticsCore=Seen  Opening=OneGateTech
+	  ( 1 0 )	%  Gateway2=NotSeen  CyberneticsCore=Seen  Opening=TwoGateRange
+	  ( 0.8 0.2 )	%  Gateway2=NotSeen  CyberneticsCore=Seen  Opening=NexusFirst
+	  ( 1 0 ))	%  Gateway2=NotSeen  CyberneticsCore=Seen  Opening=TwoGateZealotRush
+	 (( 1 0 )	%  Gateway2=NotSeen  CyberneticsCore=NotSeen  Opening=OneGateTech
+	  ( 0 1 )	%  Gateway2=NotSeen  CyberneticsCore=NotSeen  Opening=TwoGateRange
+	  ( 0.8 0.2 )	%  Gateway2=NotSeen  CyberneticsCore=NotSeen  Opening=NexusFirst
+	  ( 1 0 ))));	%  Gateway2=NotSeen  CyberneticsCore=NotSeen  Opening=TwoGateZealotRush
 }
 
 potential (RoboticsFacility | RoboticsSupportBay Observatory Opening)
@@ -233,14 +328,18 @@ potential (RoboticsFacility | RoboticsSupportBay Observatory Opening)
     data
      = (((( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=OneGateTech
 	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=TwoGateRange
-	  ( 1 0 ))	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=NexusFirst
+	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=NexusFirst
+	  ( 1 0 ))	%  RoboticsSupportBay=Seen  Observatory=Seen  Opening=TwoGateZealotRush
 	 (( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=OneGateTech
 	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=TwoGateRange
-	  ( 1 0 )))	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=NexusFirst
+	  ( 1 0 )	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=NexusFirst
+	  ( 1 0 )))	%  RoboticsSupportBay=Seen  Observatory=NotSeen  Opening=TwoGateZealotRush
 	((( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=OneGateTech
 	  ( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=TwoGateRange
-	  ( 1 0 ))	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=NexusFirst
+	  ( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=NexusFirst
+	  ( 1 0 ))	%  RoboticsSupportBay=NotSeen  Observatory=Seen  Opening=TwoGateZealotRush
 	 (( 1 0 )	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=OneGateTech
 	  ( 0 1 )	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=TwoGateRange
-	  ( 0 1 ))));	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=NexusFirst
+	  ( 0 1 )	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=NexusFirst
+	  ( 1 0 ))));	%  RoboticsSupportBay=NotSeen  Observatory=NotSeen  Opening=TwoGateZealotRush
 }
