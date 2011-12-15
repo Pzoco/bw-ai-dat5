@@ -8,22 +8,40 @@ There are different RL techniques that depend on the amount of information we ha
 
 \subsubsection{Markov Desicion Process} \label{mdp}
 
-Addressing only active RL then, we need a way to focus the task of finding a policy (that selects which action to take). A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+l}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} 
+With the intent of further expanding on the RL capabilities, we need a way to define the task of the agent. A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+l}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} 
 
-With this we almost have enough information to build the problem structure of the agent. Finally, if we also need to consider a function that describes the  \emph{total cummulative reward} of a set of actions. It could be any function: dicounted cummulative reward ($\sum^{\infty}_{i=0}\gamma^ir_{t+i}$), average reward($\lim_{h\to\infty}\frac{1}{h}\sum^{h}_{i=0}r_{t+i}$), finite horizon reward ($\sum^{h}_{i=0}r_{t+i}$). And then, we can define that the agent's learning task is to find a policy that maximizes this function's value, the \emph{optimal policy}.\cite{ml_tom_mitchel}
+With this we almost have enough information to build the problem structure of the agent. Then we need to consider a function that describes the  \emph{total cummulative reward} of a set of actions. It could be any function: dicounted cummulative reward ($\sum^{\infty}_{i=0}\gamma^ir_{t+i}$), average reward($\lim_{h\to\infty}\frac{1}{h}\sum^{h}_{i=0}r_{t+i}$), finite horizon reward ($\sum^{h}_{i=0}r_{t+i}$). This reward function %!!!!!!!!!!!!!
+
+And then, we can define the agent's learning task. In passive RL it is to find a \emph{utility function} or how good a certain policy is. In active RL is to find a policy that maximizes this reward function's value, in other words, finding the \emph{optimal policy}.\cite{ml_tom_mitchel}
 
 %Need to define y and explain cummulative reward, average reward and finite horizon.
 
 \subsubsection{Direct Utility Estimation \& Bellman Rules}
 
+In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. Then, at the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It basically a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy \cite{rl}:\\
 
-\subsubsection{Q Learning}
+$U^\pi(s) = R(s)+\gamma\sum_{s'}T(s,\pi(s),s') U^\pi(s')$\\
 
+The problem with this technique is that it ignores the relationship between the states (they are not independent form each other), and it only learns at the end of a trial, therefore missing several oportunities for learning and converging very slowly\cite{rl}.
+
+\subsubsection{Adaptive Dynamic Programming}
+
+Searching for a way of considering the constraints between states, we come accross Adaptive Dynamic Programming. This is an agent that learns the transition model for an enviroment while solving the MDP. In a fully observable enviroment, this means that you use a transition model and the observed rewards into the Bellman equations to calculate the utilities of a state. In simpler terms, it means that while learning each step (state-action pair) you keep track of the outcome and then save it into a table of probabilities. At the end you have a comprehensive probability table for all the transitions, in this way you know a reliable model for knowing what is going to happen with every state-action pair\cite{rl}.
+
+The problem is it is impossible to calculate for large state spaces, specially if you have to run several trials to exhaust every resonable possiblity for every transition. Therefore not usable for our agent. 
 
 \subsubsection{Temporal Difference Learning}
 
+The combination of the previous two methods, \textit{using the observed transitions to adjust the values of the observed states so that they agree with the constrait equations}\cite[p767]{rl}, produces the following rule (to be applied every time a transition occurs form state $s$ to $s'$):\\
 
-\subsubsection{Q Learning Complexity}
+$U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))$\\
+
+This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. 
+
+
+\subsubsection{Q Learning}
+
+\subsubsection{Complexity Problems}
 
 
 
