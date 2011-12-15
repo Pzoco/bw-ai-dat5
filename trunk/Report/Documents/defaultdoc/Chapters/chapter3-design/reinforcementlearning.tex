@@ -36,12 +36,27 @@ The combination of the previous two methods, \textit{using the observed transiti
 
 $U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))$\\
 
-This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. 
+This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$) it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases \cite{rl}. 
 
+The second is the appearance of $\alpha$, also known as the learning rate parameter; how much it learns from an specific trial. Normaly the value of  $\alpha$ would be something like: $\frac{1}{1+numberOfVisits(s,a)}$ \cite[p382]{ml_tom_mitchel}. Which then decreases the magnitude of the update proportionally to how many times you visited a state-action pair. 
 
 \subsubsection{Q Learning}
 
-\subsubsection{Complexity Problems}
+All the previous methods have been explained considering there is a fixed policy that determines the behavior of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need and active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is basically:
+
+\begin{flushleft}
+$U(s) = max_a(Q(s,a))$
+\end{flushleft}
+
+Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule: 
+
+\begin{flushleft}
+$Q(a,s) \leftarrow  Q(a,s)  + \alpha [ R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]$
+\end{flushleft}
+
+Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}.
+
+
 
 
 
@@ -93,7 +108,7 @@ Where $\Theta_i$ is each one of the coefficients in the Q-approximation. In the 
 \end{flushleft} 
 
 \begin{flushleft}
-$\alpha$  - Is the learning rate, which basically means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimaly) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
+$\alpha$  - Is the learning rate, as mentioned before it means how much you modify the value of the coefficient $\theta_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimaly) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited inifinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
 \end{flushleft} 
 
 \begin{flushleft}
