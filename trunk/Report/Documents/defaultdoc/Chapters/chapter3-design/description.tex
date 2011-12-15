@@ -1,0 +1,13 @@
+\subsection*{Description of bot}
+	The purpose of the bot is to be able to out macro humans in combat, to limit the scope we will only look at vultures. 
+	To do this but should be able to play a full Starcraft game. Tis implies the following:
+	\begin{itemize}
+		\item Construction the necessary buildings to produce vultures.
+		\item Construct a squad of vultures.
+		\item Scout and find the enemies base.
+		\item Move the squad to the enemies base and attack.
+	\end{itemize}
+	
+	To control the squad in combat we will use potential fields learned useing reinforcement learning.
+	To construct the buildings, produce vultures, move to the enemies and scout we will be using a series of manages, some of which will be equipped with Bayesian networks, to make predictions of spawn location and tactics.
+	Each of these parts will be designed, implemented and test separately, then merged at the end to make a full bot.
