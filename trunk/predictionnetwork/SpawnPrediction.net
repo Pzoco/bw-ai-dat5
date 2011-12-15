@@ -45,7 +45,7 @@ net
 node TimingSeen
 {
     label = "";
-    position = (984 248);
+    position = (808 180);
     states = ("AlmostNone" "Early" "Middle" "Late");
     HR_LinkMode = "[WorkerScout:0][WorkerScoutPositionFrom:0][WorkerScoutPositionFrom_1:0][WorkerScoutPositionTo:0][WorkerScoutPosition:0]";
     HR_State_0 = "";
@@ -61,7 +61,7 @@ node TimingSeen
 node WorkerScoutPosition
 {
     label = "";
-    position = (771 246);
+    position = (621 180);
     states = ("NE" "SE" "SW" "NW");
     HR_State_0 = "";
     HR_State_1 = "";
@@ -77,7 +77,7 @@ node WorkerScoutPosition
 node EnemyNotAtNW
 {
     label = "";
-    position = (463 64);
+    position = (487 64);
     states = ("True" "False");
     HR_NodeSize = "(128, 33)";
     HR_State_0 = "";
@@ -89,7 +89,7 @@ node EnemyNotAtNW
 node EnemyNotAtSW
 {
     label = "";
-    position = (432 66);
+    position = (423 93);
     states = ("True" "False");
     HR_NodeSize = "(107, 36)";
     HR_State_0 = "";
@@ -101,7 +101,7 @@ node EnemyNotAtSW
 node EnemyNotAtSE
 {
     label = "";
-    position = (404 67);
+    position = (350 126);
     states = ("True" "False");
     HR_NodeSize = "(104, 38)";
     HR_State_0 = "";
@@ -113,7 +113,7 @@ node EnemyNotAtSE
 node EnemyNotAtNE
 {
     label = "";
-    position = (380 65);
+    position = (319 169);
     states = ("True" "False");
     HR_NodeSize = "(99, 43)";
     HR_Group = "0";
@@ -125,7 +125,7 @@ node EnemyNotAtNE
 node OverloardDirection
 {
     label = "";
-    position = (215 292);
+    position = (324 294);
     states = ("From NE" "From SE" "From SW" "From NW");
     HR_LinkControlPoints = "";
     HR_LinkMode = "";
@@ -141,7 +141,7 @@ node OverloardDirection
 node OurSpawn
 {
     label = "";
-    position = (608 66);
+    position = (699 320);
     states = ("NE" "SE" "SW" "NW");
     HR_LinkControlPoints = "";
     HR_LinkMode = "[C1:0]";
@@ -157,7 +157,7 @@ node OurSpawn
 node EnemySpawn
 {
     label = "";
-    position = (515 360);
+    position = (515 329);
     states = ("NE" "SE" "SW" "NW");
     HR_LinkControlPoints = "";
     HR_LinkMode = "[OverloardDirection:0][OurSpawn:0][WorkerScout:0][WorkerScoutPositionFrom:0][C1:0][EnemyNotAtNE:0][EnemyNotAtSE:0][EnemyNotAtSW:0][EnemyNotAtNW:0][WorkerScoutPositionFrom_1:0][WorkerScoutPositionTo:0][WorkerScoutPosition:0]";
