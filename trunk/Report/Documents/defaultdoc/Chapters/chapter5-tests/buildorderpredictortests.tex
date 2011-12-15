@@ -1,1 +1,6 @@
 \section{Build Order Prediction Test}
+During these tests we had a human player play against our bot. The human player would play using a specific build order that the bot should be able to predict. Once the bot scouted it would use the information obtained from the buildings seen and print out the build order. We keep a list of all of the enemy buildings we have seen once we see a new building we added to our list and update our Bayesian network.\\
+The bot did successful predict the build orders. It did not always predict the build order with a high certainty though. For example after seeing a factory and the second command center the bot only predicted a 52.6\% chance that the build order was a one factory expand. In reality we would be almost 100\% sure that one factory expand would be the opponent's selected build. Some factors we have not taken into consideration are enemy unit composition and building positioning. These could further influence our beliefs that the opponent is doing a certain build.
+
+\insertmarginfigure{height=3in}{BuildOrderPredictorTest/Predicting.png}
+			{Predicting one fact expand build upon seeing second command center}{fig:predicting}{-3in}
