@@ -31,7 +31,7 @@ void StarcraftAI::onStart()
 	
 	//Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
-	
+	reinforcementLearning.LoadWeightsFromFile();
 	//scoutingManager.AnalyzeMap();*/
 }
 

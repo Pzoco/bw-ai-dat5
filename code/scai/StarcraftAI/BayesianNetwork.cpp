@@ -24,11 +24,27 @@ float BayesianNetwork::GetProbability(std::string nodeName,std::string stateName
 	BWAPI::Broodwar->printf("Node %s not found",nodeName);
 	return 0.0;
 }
+std::string BayesianNetwork::GetMostProbableState(std::string nodeName)
+{
+	float highest = 0.0;
+	std::string stateName = "";
+	DiscreteChanceNode* node = dynamic_cast<DiscreteChanceNode*>(domain->getNodeByName(nodeName));
+	for(int i =0;i<(int)node->getNumberOfStates();i++)
+	{
+		if((float)node->getBelief(i) > highest)
+		{
+			stateName = node->getStateLabel(i);
+			highest = (float)node->getBelief(i);
+		}
+	}
+	return stateName;
+}
 void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName)
 {
 	domain->uncompile();
 	NodeList nodes = domain->getNodes();
 	DiscreteChanceNode* evidenceNode;
+	
 	for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
 	{
 		Node* node = *it;
@@ -40,6 +56,14 @@ void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName)
 			break;
 		}
 	}
+	domain->compile();
+	domain->propagate(H_EQUILIBRIUM_SUM, H_MODE_NORMAL);
+}
+void BayesianNetwork::RetractEvidence(std::string nodeName)
+{
+	domain->uncompile();
+	DiscreteChanceNode* evidenceNode = dynamic_cast<DiscreteChanceNode*>(domain->getNodeByName(nodeName));
+	evidenceNode->retractFindings();
 	domain->compile();
 	domain->propagate(H_EQUILIBRIUM_SUM, H_MODE_NORMAL);
 }

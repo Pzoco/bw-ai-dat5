@@ -11,6 +11,7 @@ ScoutingManager::ScoutingManager()
 	enemyBaseFound=false;
 	enemyScoutFound=false;
 	spawnPredictor=BayesianNetwork("C:\\SpawnPrediction.net");
+
 	TilePosition position(Broodwar->self()->getStartLocation());
 	if(position.x()>=Broodwar->mapWidth()/2 && position.y()<Broodwar->mapWidth()/2)
 	{
@@ -71,7 +72,6 @@ void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 			|| (unit)->getType() == BWAPI::UnitTypes::Zerg_Hive)
 		{
 			EnemyBaseFound((unit)->getTilePosition());
-			enemyBuildings[unit->getType()].push_back(unit);
 		}
 		if((unit)->getType() == BWAPI::UnitTypes::Terran_SCV 
 			||(unit)->getType() == BWAPI::UnitTypes::Zerg_Drone
