@@ -1,24 +1,15 @@
-\section{Q-Learning}	\label{qlearning}
-Just to give an example of how large state spaces easily can get we can take a look at some well known games chess and backgammon. They are a tiny subset of the real world and their state spaces contain on the order of $10^{50}$ and $10^{120}$ states, and if the agent should visit all these states to learn how to play the game it will run i an absurd long time \cite[p. 777]{rl}. That's why we are going to use function approximation, which basicly means that we don't show the function as a table.
+\section{$ \hat{Q}$-Learning}
 
-$\hat{U}_\Theta(s) = \Theta_1 f_1(s) + \Theta_2 f_2(s) + ... + \Theta_n f_n(s) $
+In this section we'll address the implementation of the Reinforcement Learning Aproximation. First we'll explain the ReinforcementLearning class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. 
 
-The parameters $\Theta = \Theta_1, ..., \Theta_n$ so the evaluation function above $\hat{U}_\Theta$ approximates the utility function. Instead of the explanation above with the state space of $10^{120}$ values in a table.
-
-The approximation looks like:
-%NEEDS AN ACCENT DAN!!!
-$\Theta_i \leftarrow \Theta_i + \alpha [ R(s) + \gamma maxQ_\Theta(a',s')-Q_\Theta(a,s) ] \frac{d}{d\Theta_i}(Q_\Theta(a,s))$
-
-
-and using our variables:\\
-First we define what a state can contain:\\
-$s = {(da, ds, dsv, de, due, wv, dc, dua, numberOfUnits, healthLost, damageDone, fallenEnemies)}$
-The description of these variables can be read here \ref{cha3_variables}\\
-$R(s) = C_1 numberOfUnits - C_2 healthLost +  C_3 damageGiven +  C_4 numberOfFallenEnemies$\\
-
-$Q = f_{MDP1} (2de - due)-f_{AN}(da)-f_{WCD}(2de-due)-f_{EAC}(de)+f_s(ds-dsv)-f_{MDP2}(2de-due)$
-
-We are going to use approximation of Q-Learning, so it can handle a huge state space
+\subsection{ReinforcementLearning Class}
 
 
 
+
+
+
+
+
+
+\subsubsection{$ \hat{Q}$ Methods}
