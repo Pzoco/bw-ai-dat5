@@ -86,8 +86,24 @@ void ScoutingManager::UnitFound(BWAPI::Unit* unit)
 	}
 	if(unit->getType().isBuilding())
 	{
-		StrategyManager::GetInstance()->NewEnemyFound(unit);
-		enemyBuildings[unit->getType()].push_back(unit);
+
+
+		bool found=false;
+		for each (BWAPI::Unit* building in enemyBuildings[unit->getType()])
+		{
+			if(building->getID()==unit->getID())
+			{
+				found=true;
+				break;
+			}
+		}
+		if(!found)
+		{
+			Broodwar->printf("The unit is %s",unit->getType().getName().c_str());
+			StrategyManager::GetInstance()->NewEnemyFound(unit);
+			enemyBuildings[unit->getType()].push_back(unit);
+		}
+
 	}
 	else
 	{
@@ -101,7 +117,7 @@ void ScoutingManager::Update()
 	if(Broodwar->getFrameCount()%50 == 0)
 	{
 		spawnPredictor.PrintToFile("EnemySpawn");
-		BWAPI::Broodwar->printf("Predicting now! 'frame %d",Broodwar->getFrameCount());
+		//BWAPI::Broodwar->printf("Predicting now! 'frame %d",Broodwar->getFrameCount());
 	}
 	if(scoutingSCV != NULL)
 	{
@@ -140,6 +156,7 @@ void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
 		spawnPredictor.EnterEvidence("EnemySpawn","NW");
 	}
 	enemyBaseFound=true;
+
 	//WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
 	//scoutingSCV = NULL;
 
