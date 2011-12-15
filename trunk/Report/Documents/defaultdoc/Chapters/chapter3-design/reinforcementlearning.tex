@@ -1,5 +1,10 @@
 \section{Agent Learning}\label{agent_learning}
-This section will explain some of the different reinforcement learning techniques;  each one explained briefly and analyzed to evaluate its relevance. 
+
+This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our proyect. Then the reinforecement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analized to evaluate its relevance. 
+
+\subsection*{Neural Networks}
+
+% I know this is missing. 
 
 \subsection*{Reinforcement Learning}
 Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accompishing something. 
@@ -170,8 +175,3 @@ $R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numbe
 We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 maximumTime$, and $maximumTime$ being the number of time frames for a manually defined limit (20-30 seconds). 
 
 \subsection{Q-Learning Conclusions}
-
-
-
-
-
