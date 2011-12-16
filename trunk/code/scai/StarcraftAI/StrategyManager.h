@@ -10,6 +10,7 @@ class StrategyManager
 {
 public:
 	static StrategyManager* GetInstance();
+	BWAPI::Position EnemieBasePosision;
 	void NewEnemyFound(BWAPI::Unit* unit);
 	void Update();
 private:
@@ -19,4 +20,6 @@ private:
 	InformationEnums::Matchup matchup;
 	static StrategyManager* strategyManager;
 	StrategyManager();
+	bool StrategyManager::DecideToAttackOrNot();
+
 };

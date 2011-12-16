@@ -13,6 +13,7 @@ public:
 	void AssignToSquad(BWAPI::Unit* unit);
 	void AssignToSquads(std::set<BWAPI::Unit*> units);
 	void UnitKilled(BWAPI::Unit* unit);
+	void MoveSquad(BWAPI::Position pos,BWAPI::UnitType type);
 	int static GetNumberOfUnits(BWAPI::UnitType type);
 private:
 	TacticsManager();

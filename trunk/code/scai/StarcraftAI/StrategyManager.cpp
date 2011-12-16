@@ -1,5 +1,7 @@
 #include "StrategyManager.h"
 #include "BuildOrderPredictor.h"
+#include "TacticsManager.h"
+#include "ScoutingManager.h"
 
 BuildOrderPredictor *buildOrderPredictor;
 bool StrategyManager::initialized= false;
@@ -14,6 +16,7 @@ StrategyManager* StrategyManager::GetInstance()
 }
 StrategyManager::StrategyManager()
 {
+	EnemieBasePosision = BWAPI::Position(1,1);
 }
 
 void StrategyManager::Update()
@@ -31,10 +34,33 @@ void StrategyManager::Update()
 		buildOrderPredictor->InitializePredictionNetwork(matchup);
 		StrategyManager::initialized = true;
 	}
+	
+	if(DecideToAttackOrNot())
+	{
+		TacticsManager::GetInstance()->MoveSquad(EnemieBasePosision,BWAPI::UnitTypes::Terran_Vulture);
+	}
+	//TacticsManager::GetInstance();
 }
 
 
 void StrategyManager::NewEnemyFound(BWAPI::Unit* unit)
 {
 	buildOrderPredictor->UpdatePredictionNetwork(unit->getType());
+}
+bool StrategyManager::DecideToAttackOrNot()
+{
+	if(EnemieBasePosision.x() != 1 && EnemieBasePosision.y() != 1)
+	{
+		int numberOfVultures = TacticsManager::GetInstance()->GetNumberOfUnits(BWAPI::UnitTypes::Terran_Vulture);
+
+		if(numberOfVultures >= 5)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return false;
 }

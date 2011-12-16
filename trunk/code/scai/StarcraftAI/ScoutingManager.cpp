@@ -156,7 +156,7 @@ void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
 		spawnPredictor.EnterEvidence("EnemySpawn","NW");
 	}
 	enemyBaseFound=true;
-
+	StrategyManager::GetInstance()->EnemieBasePosision = BWAPI::Position(basePosition);
 	//WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
 	//scoutingSCV = NULL;
 
