@@ -19,7 +19,7 @@ void BuildOrderPredictor::InitializePredictionNetwork(InformationEnums::Matchup 
 	}
 	else if(matchup == InformationEnums::MatchupTvZ)
 	{
-		predictionNetwork = BayesianNetwork("C:/tvzprediction.net");
+		predictionNetwork = BayesianNetwork("C:/tvzpredictionthreat.net");
 	}
 	BuildOrderPredictor::matchup = matchup;
 }
@@ -27,16 +27,15 @@ void BuildOrderPredictor::InitializePredictionNetwork(InformationEnums::Matchup 
 InformationEnums::ThreatLevel BuildOrderPredictor::GetCurrentThreatLevel()
 {
 	//Get the current time and current most probable build
-	std::string build = predictionNetwork.GetMostProbableState("BuildChosen");
 	std::string currentTime = "";
 	int timeInSeconds = BWAPI::Broodwar->elapsedTime();
-	if(timeInSeconds < 359){currentTime="0-5min";}
-	else if(timeInSeconds > 360 && timeInSeconds < 539){currentTime="6-8min";}
-	else if(timeInSeconds > 539){currentTime="9-11min";}
-	
+	if(timeInSeconds < 359){currentTime="ZerotoFivemin";}
+	else if(timeInSeconds > 360 && timeInSeconds < 539){currentTime="SixtoEightmin";}
+	else if(timeInSeconds > 539){currentTime="NinetoElevenmin";}
+	BWAPI::Broodwar->printf("Time is %d",timeInSeconds);
+	BWAPI::Broodwar->printf("Time is %s",currentTime.c_str());
 	//Enter the evidence of the current most probable build and the current time
 	predictionNetwork.EnterEvidence("Time",currentTime);
-	predictionNetwork.EnterEvidence("BuildChosen",build);
 	std::string threatLevel = predictionNetwork.GetMostProbableState("ThreatLevel");
 
 	//Convert the string to an enum
@@ -44,10 +43,11 @@ InformationEnums::ThreatLevel BuildOrderPredictor::GetCurrentThreatLevel()
 	if(threatLevel == "Low"){currentThreatLevel = InformationEnums::ThreatLow;}
 	else if(threatLevel == "Medium"){currentThreatLevel = InformationEnums::ThreatMedium;}
 	else if(threatLevel == "High"){currentThreatLevel = InformationEnums::ThreatHigh;}
-
+	
+	predictionNetwork.PrintMostProbableState("ThreatLevel");
 	//Retract the evidence of the build and time as this might change
 	predictionNetwork.RetractEvidence("Time");
-	predictionNetwork.RetractEvidence("BuildChosen");
+	
 
 	return currentThreatLevel;
 }
@@ -146,9 +146,9 @@ void BuildOrderPredictor::UpdateTvTNetwork(BWAPI::UnitType building)
 		predictionNetwork.EnterEvidence((nodeName+nodeNumber),"Seen");
 		BWAPI::Broodwar->printf("Updated the prediction network");
 		predictionNetwork.PrintMostProbableState("BuildChosen");
+		predictionNetwork.PrintNodes();
 	}
-	else if((building == BWAPI::UnitTypes::Terran_Barracks ||
-			building == BWAPI::UnitTypes::Terran_Command_Center || 
+	else if((building == BWAPI::UnitTypes::Terran_Barracks || 
 			building == BWAPI::UnitTypes::Terran_Factory) &&
 			enemyBuildingsOwned[building]==2)
 	{
@@ -162,6 +162,13 @@ void BuildOrderPredictor::UpdateTvTNetwork(BWAPI::UnitType building)
 		BWAPI::Broodwar->printf("Updated the prediction network");
 		predictionNetwork.PrintMostProbableState("BuildChosen");
 	}
+	else if(building == BWAPI::UnitTypes::Terran_Command_Center &&
+			enemyBuildingsOwned[building]==2)
+	{
+		predictionNetwork.EnterEvidence("CommandCenter2","Seen");
+		BWAPI::Broodwar->printf("Updated the prediction network");
+		predictionNetwork.PrintMostProbableState("BuildChosen");
+	}
 
 }
 void BuildOrderPredictor::UpdateTvZNetwork(BWAPI::UnitType building)
@@ -169,20 +176,27 @@ void BuildOrderPredictor::UpdateTvZNetwork(BWAPI::UnitType building)
 	if(building == BWAPI::UnitTypes::Zerg_Hatchery && 
 		(enemyBuildingsOwned[building]==2 || enemyBuildingsOwned[building]==3))
 	{
-		std::string nodeName = building.getName();
-		nodeName.erase(0,5);
-		std::remove(nodeName.begin(), nodeName.end(), ' ');
 		char buffer [2];
 		std::string nodeNumber = itoa(enemyBuildingsOwned[building],buffer,10);
-		predictionNetwork.EnterEvidence((nodeName+nodeNumber),"Seen");
+		predictionNetwork.EnterEvidence(("Hatchery"+nodeNumber),"Seen");
+		BWAPI::Broodwar->printf("Updated the prediction network");
+		predictionNetwork.PrintMostProbableState("BuildChosen");
+		GetCurrentThreatLevel();
 	}
 	else if(building == BWAPI::UnitTypes::Zerg_Spire && 
-			building == BWAPI::UnitTypes::Zerg_Hydralisk_Den &&
 			enemyBuildingsOwned[building]==1)
 	{
-		std::string nodeName = building.getName();
-		std::remove(nodeName.begin(), nodeName.end(), ' ');
-		nodeName.erase(0,5);
-		predictionNetwork.EnterEvidence((nodeName),"Seen");
+		predictionNetwork.EnterEvidence("Spire","Seen");
+		BWAPI::Broodwar->printf("Updated the prediction network");
+		predictionNetwork.PrintMostProbableState("BuildChosen");
+		GetCurrentThreatLevel();
+	}
+	else if(building == BWAPI::UnitTypes::Zerg_Hydralisk_Den &&
+			enemyBuildingsOwned[building]==1)
+	{
+		predictionNetwork.EnterEvidence("HydraliskDen","Seen");
+		BWAPI::Broodwar->printf("Updated the prediction network");
+		predictionNetwork.PrintMostProbableState("BuildChosen");
+		GetCurrentThreatLevel();
 	}
 }

@@ -147,7 +147,7 @@ void WorkerManager::ConstructBuilding(BWAPI::UnitType buildingType,ProductionEnu
 	_workersOnConstruction[scv] = building;
 
 	//Sets it to build the building
-	BWAPI::Broodwar->printf("Tries to build %s at %d , %d",buildingType.getName().c_str(),position.x(),position.y());
+	//BWAPI::Broodwar->printf("Tries to build %s at %d , %d",buildingType.getName().c_str(),position.x(),position.y());
 	scv->build(position,buildingType);
 }
 void WorkerManager::Update()
