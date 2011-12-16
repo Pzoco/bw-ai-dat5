@@ -31,6 +31,25 @@ void BuildOrderHandler::InitiateBuildOrders()
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Machine_Shop,ProductionEnums::Placement_MainBase,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Factory,1)));	
 	twoFactVultures->AddItem(new UpgradeItem(BWAPI::UpgradeTypes::Ion_Thrusters,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,1)));	
 	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,5,new Condition()));
+	
+	
+	//vultures
+	twoFactVultures->AddItem(new ProductionFocusItem(ProductionEnums::Focus_CombatUnits,new SupplyCondition(16)));
+
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+
 
 	_availableBuildOrders.push_back(twoFactVultures);
 }
