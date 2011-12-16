@@ -1,8 +1,7 @@
 
-%%Comparing the winning streak%%%
-\begin{centering}
+%%Comparing the winning streak%%% done!!
  \begin{tabular}{|c||c|c|c|c|c|c|}
-	\multicolumn{4}{c}{Winning streaks 1.1} \\
+	\multicolumn{7}{c}{Winning streaks 1.1} \\
 	\hline
 	Damage taken &			 Damage given &		 Ally &		 Squad &		 Maximum distance &		 Cooldown & 		Edge \\
 	\hline
@@ -17,7 +16,6 @@
 	\hline
 	\label{winning_streak_1.1}
 \end{tabular}
-\end{centering}
 The table \ref{winning_streak_1.1} shows some numbers when the agent have had a winning streak. All the values get saved after every iteration, and the last 5 values are the potential fields, and the first 2 values shows when the vultures have won a match. One can see that the damage given are very high and the ones with 480 in damage given is when the vultures have won over the 12 marines. The values are taken from iterations 214385 to 214392. By looking at the numbers in ally and squad we can see that the units like to stick to each other, in other words they like to team up. The reinforcement learning have changed the values and it have found out that sticking together is better than dealing with a bunch of marines on it's own. The maximum distance, which means the attractive level towards the marines, are very high in a negative value which makes them very attracted towards the marines and in other words very aggressive. The cooldown is a high positive value which means that when the vultures have fired they're weapons they use the potential field of cooldown, which means the get repulsed by the enemies when they're in a cooldown. 
 
 
