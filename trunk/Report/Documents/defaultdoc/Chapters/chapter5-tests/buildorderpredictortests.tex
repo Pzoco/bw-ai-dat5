@@ -7,3 +7,10 @@ The build order predictor works fairly well, but still has some needed improveme
 
 \insertmarginfigure{height=3in}{BuildOrderPredictorTest/Predicting.png}
 			{Predicting one fact expand build upon seeing second command center}{fig:predicting}{-3in}
+	\subsection{Prediction of threatlevel}
+		The prediction of the threatlevel is an expansion of the builder order prediction network, with a node called time and a node called threat level. 
+		When the bot wants to know the current threatlevel, evidence is put on the time and the current threatlevel be read. An example is shown below. 
+		Here the buildorder is predicted to be 3HatchMuta, which is first threatening later in the game. 
+	
+		\insertmarginfigure{height=3in}{BuildOrderPredictorTest/threatlevel.png}
+			{Predicting the current threatlevel}{fig:predicting}{-3in}
