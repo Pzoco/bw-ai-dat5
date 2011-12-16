@@ -60,7 +60,7 @@ node Time
 {
     label = "";
     position = (399 446);
-    states = ("0-5min" "6-8min" "9-11min");
+    states = ("ZerotoFivemin" "SixtoEightmin" "NinetoElevenmin");
     HR_State_0 = "";
     HR_State_1 = "";
     HR_Desc = "";
@@ -240,13 +240,13 @@ potential (Hatchery2 | HydraliskDen Spire Hatchery3 BuildChosen)
 potential (BuildChosen | Time ThreatLevel)
 {
     data
-     = ((( 0 0.4 0.2 0.4 )	%  Time=0-5min  ThreatLevel=Low
-	 ( 0.9 0 0.1 0 )	%  Time=0-5min  ThreatLevel=Medium
-	 ( 1 0 0 0 ))	%  Time=0-5min  ThreatLevel=High
-	(( 0.333444 0.333111 0 0.333444 )	%  Time=6-8min  ThreatLevel=Low
-	 ( 0 0.333333 0.333333 0.333333 )	%  Time=6-8min  ThreatLevel=Medium
-	 ( 0 0.2 0.6 0.2 ))	%  Time=6-8min  ThreatLevel=High
-	(( 1 0 0 0 )	%  Time=9-11min  ThreatLevel=Low
-	 ( 0 0.4 0.2 0.4 )	%  Time=9-11min  ThreatLevel=Medium
-	 ( 0 0.4 0.2 0.2 )));	%  Time=9-11min  ThreatLevel=High
+     = ((( 0 0.4 0.2 0.4 )	%  Time=ZerotoFivemin  ThreatLevel=Low
+	 ( 0.9 0 0.1 0 )	%  Time=ZerotoFivemin  ThreatLevel=Medium
+	 ( 1 0 0 0 ))	%  Time=ZerotoFivemin  ThreatLevel=High
+	(( 0.333444 0.333111 0 0.333444 )	%  Time=SixtoEightmin  ThreatLevel=Low
+	 ( 0 0.333333 0.333333 0.333333 )	%  Time=SixtoEightmin  ThreatLevel=Medium
+	 ( 0 0.2 0.6 0.2 ))	%  Time=SixtoEightmin  ThreatLevel=High
+	(( 1 0 0 0 )	%  Time=NinetoElevenmin  ThreatLevel=Low
+	 ( 0 0.4 0.2 0.4 )	%  Time=NinetoElevenmin  ThreatLevel=Medium
+	 ( 0 0.5 0.25 0.25 )));	%  Time=NinetoElevenmin  ThreatLevel=High
 }

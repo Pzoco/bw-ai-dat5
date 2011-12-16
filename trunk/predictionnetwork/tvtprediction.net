@@ -48,7 +48,7 @@ node BuildChosen
     position = (394 336);
     states = ("StimRush" "OneFactoryExpand" "Proxy" "TwoFactoryPressure" "OneStarportWraith");
     HR_LinkControlPoints = "";
-    HR_LinkMode = "[Barracks2:0][Academy:0][Factory2:0][Starport:0][Barracks:0][CommandCenter:0][Barracks1:0][Starport1:0][CommandCenter1:0][CommandCenter2:0]";
+    HR_LinkMode = "[Barracks2:0][Academy:0][Factory2:0][Starport:0][Barracks:0][CommandCenter:0][Barracks1:0][Starport1:0][CommandCenter1:0][CommandCenter2:0][Academy1:0]";
     HR_NodeSize = "(120, 40)";
     HR_State_4 = "";
     HR_State_3 = "";

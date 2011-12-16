@@ -308,18 +308,18 @@ InformationEnums::Positions ScoutingManager::MostProbableEnemyPosition()
 	{
 		highest=spawnPredictor.GetProbability("EnemySpawn","SE");
 		position=InformationEnums::SE;
-		Broodwar->printf("SE");
+		//Broodwar->printf("SE");
 	}
 	if(highest<spawnPredictor.GetProbability("EnemySpawn","SW"))
 	{
-		Broodwar->printf("SW");
+		//Broodwar->printf("SW");
 		highest=spawnPredictor.GetProbability("EnemySpawn","SW");
 		position=InformationEnums::SW;
 
 	}
 	if(highest<spawnPredictor.GetProbability("EnemySpawn","NW"))
 	{
-		Broodwar->printf("NW");
+		//Broodwar->printf("NW");
 		highest=spawnPredictor.GetProbability("EnemySpawn","NW");
 		position=InformationEnums::NW;
 	}
