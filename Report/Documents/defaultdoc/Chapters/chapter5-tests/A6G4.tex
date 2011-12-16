@@ -1,32 +1,32 @@
 %%%% TEST WITH A6 G4 %%%%
 \subsection*{Learning rate test 1.2}
-In this test we are using the values $\alpha$ 6 and $\gamma$ 4. In this test the agent has run 17992 iterations. Here we try with different values in the learning algorithm, to see what would fit the best and which values the agent learns or converges the fastest.
+In this test we are using the values $\alpha$ 0.6 and $\gamma$ 0.4. In this test the agent has run 17992 iterations. Here we try with different values in the learning algorithm, to see what would fit the best and which values the agent learns or converges the fastest.
 
 
 %Damage given and taken
 \insertmarginfigure{height=3in}{learningrate/A6G4/damage.png}
-			{Alpha 6 gamma 4 Damage - Yellow: Damage given - Red: Damage taken}{fig:a6g4_damage}{-3in}
+			{Alpha 0.6 gamma 0.4 Damage - Yellow: Damage given - Red: Damage taken}{fig:a6g4_damage}{-3in}
 
 In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $\gamma$ values the agents graph over it's performance.
 
 
 %Units killed and units lost
 
-\insertmarginfigure{height=3in}{learningrate/A6G4/units_lost_and_killed.png}{Alpha 6 Gamma 4 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a6g4_lak}{-3in}
+\insertmarginfigure{height=3in}{learningrate/A6G4/units_lost_and_killed.png}{Alpha 0.6 Gamma 0.4 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a6g4_lak}{-3in}
 
 
 
 %%%%%AVERAGE%%%%%
 \begin{centering}
- \begin{tabular}{|l||c|c|c|}
+ \begin{tabular}{|l|c|c|c|}
 	\multicolumn{4}{c}{Average results from test 1.2} \\
 	\hline
 		Damage taken & Damage given & Units lost & Enemies killed\\
 	\hline
 		392,35 & 334,26 & 4,79 & 7,44 \\
 	\hline
-\label{test1.2}
 \end{tabular}
+\label{test1.2}
 \end{centering}
 %%%AVERAGE%%%
 
@@ -46,7 +46,7 @@ Comparing the tests one can see that the agent needs several more iterations tha
 \newpage
 %%Comparing the winning streak%%%
 \begin{centering}
- \begin{tabular}{|c||c|c|c|c|c|c|}
+ \begin{tabular}{|c|c|c|c|c|c|c|}
 	\multicolumn{4}{c}{Winning streaks 1.1} \\
 	\hline
 	Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
@@ -72,8 +72,8 @@ Comparing the tests one can see that the agent needs several more iterations tha
 	362&		480&			911106&	443531&	-301755&			315663&	428999\\
 	306&		480&			911550&	444136&	-291521&			315663&	428999\\
 	\hline
-	\label{winning_streak_2.1}
 \end{tabular}
+	\label{winning_streak_2.1}
 \end{centering}
 
 
@@ -83,7 +83,7 @@ Comparing the tests one can see that the agent needs several more iterations tha
 
 
 \begin{centering}
- \begin{tabular}{|c||c|c|c|c|c|c|}
+ \begin{tabular}{|c|c|c|c|c|c|c|}
 	\multicolumn{4}{c}{Winning streaks 1.2} \\
 	\hline
 	Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
@@ -105,8 +105,8 @@ Comparing the tests one can see that the agent needs several more iterations tha
 	312&		480&			4461.54& 155541&	6465.99&		13310.4&	-82465.4\\
 	386&		480&			4703.64& 156124&	6465.99&		13310.4&	-82465.4\\
 	\hline
-	\label{winning_streak_2.2}
 \end{tabular}
+	\label{winning_streak_2.2}
 \end{centering}
 
 %%Comparing the winning streak%%%
