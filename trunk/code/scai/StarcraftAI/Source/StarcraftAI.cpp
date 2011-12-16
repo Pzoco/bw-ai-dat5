@@ -128,7 +128,7 @@ void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 		{
 			WorkerManager::GetInstance()->ScvKilled(unit);
 		}
-		else if(unit->getType().isBuilding() && unit->getType().canProduce())
+		else if(unit->getType().isBuilding() && (unit->getType().canProduce() || UnitHelper::CanResearch(unit)))
 		{
 			ProductionManager::GetInstance()->BuildingDestroyed(unit);
 		}
