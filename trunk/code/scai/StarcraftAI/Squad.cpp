@@ -81,7 +81,15 @@ void Squad::ExecuteTactics()
 }
 int Squad::GetSize()
 {
-	return _units.size();
+	int number = 0;
+	for(std::set<BWAPI::Unit*>::iterator u = _units.begin(); u != _units.end(); u++)
+	{
+		if((*u)->exists())
+		{
+			number++;
+		}
+	}
+	return number;
 }
 BWAPI::UnitType Squad::GetUnitType()
 {

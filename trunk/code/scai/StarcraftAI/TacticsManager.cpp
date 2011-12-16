@@ -100,7 +100,7 @@ int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
 		int number= 0;
 		for each(Squad squad in squads[type])
 		{
-			number+=squad.GetSize();
+			number += squad.GetSize();
 		}
 		return number;
 	}
