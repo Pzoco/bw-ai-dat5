@@ -18,20 +18,21 @@ struct Weights
 
 double const alpha = 0.2;
 double const gamma = 0.9;
-//Manually change these when training______________
+//Manually change these when training__________
 double const startingEnemies = 10;
 double const startingEnemyMaxHealth = 40;
 double const startingUnits = 5;
 double const startingUnitMaxHealth = 80;
-//_________________________________________________
+//_____________________________________________
 
-//REWARD COEFICIENTS___________________
-double const c1 = -180;	//Our units		-180 (startingUnitMaxHealth*2+20) for dying, 20 is because we care more about us then them
-double const c2 = -1;	//Our health	-1 for damage taken
-double const c3 = 2;	//Their health   2 for damage
-double const c4 = 40;	//Their units	40 (startingEnemies * 2) for killing
-double const c5 = -0.025;	//Time
-//_____________________________________
+//REWARD COEFICIENTS___________________________
+
+double const c1 = -180;	//numberOfUnits	
+double const c2 = -1;	//unitsHealth
+double const c3 = 2;	//enemiesHealth
+double const c4 = 40;	//enemyUnits
+double const c5 = -0.025;	//time
+//____________________________________________
 
 /*
 	The following functions is handling the reinforcement learning

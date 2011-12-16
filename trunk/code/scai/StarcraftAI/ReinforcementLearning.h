@@ -21,6 +21,9 @@ public:
 	static void ReinforcementLearning::WriteLiveValue(double value); 
 	static void ReinforcementLearning::ClearLiveBuffer();
 
+	//Gamedata
+	static void ReinforcementLearning::WriteToDataFiles();
+    
 	//Getters and setters
 	static double ReinforcementLearning::GetForceAlly();
 	static double ReinforcementLearning::GetForceSquad();
@@ -33,6 +36,4 @@ public:
 	static void ReinforcementLearning::SetForceCooldown(double cool);
 	static void ReinforcementLearning::SetForceEdge(double edge);
 
-	//Gamedata
-	static void ReinforcementLearning::WriteToDataFiles();
 };
