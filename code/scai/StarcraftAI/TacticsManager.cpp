@@ -106,3 +106,14 @@ int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
 	}
 	return 0;
 }
+void TacticsManager::MoveSquad(BWAPI::Position pos,BWAPI::UnitType type)
+{
+	if(UnitHelper::IsOffensiveType(type))
+	{
+		for each(Squad squad in squads[type])
+		{
+			squad.LocationToMoveTo = pos;
+		}
+	}		
+
+}

@@ -83,7 +83,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		file.close(); 
 	
 		long int diff = (uiNow - timeFromFile);
-		if(diff > 10)
+		if(diff > 15)
 		{	
 			cout << "TimeOut: "<< diff << "sec." << endl;
 
@@ -97,13 +97,13 @@ int _tmain(int argc, _TCHAR* argv[])
 			KillProcess(pid2);
 			
 			//Starting Chaoslauncher
-			WinExec("C:\\StarCraft\\Chaoslauncher\\Chaoslauncher.exe",SW_SHOW);
+			WinExec("C:\\Games\\StarCraft\\Chaoslauncher\\Chaoslauncher.exe",SW_SHOW);
 
 			//Emulating keyboard to start starcraft
-			Sleep(1000);
+			Sleep(4000);
 			keybd_event(VkKeyScan('\n'),0,0,0);
 			// s e \n u up up up up up up \n \n \n
-			Sleep(1000);
+			Sleep(4000);
 			keybd_event(VkKeyScan('s'),0,0,0);
 			Sleep(1000);
 			keybd_event(VkKeyScan('e'),0,0,0);
@@ -122,7 +122,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 			
 		
-		Sleep(2000); //Message Sleep for X ms
+		Sleep(5000); //Message Sleep for X ms
 	}
 	return 0;
 }

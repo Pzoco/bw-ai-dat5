@@ -2,6 +2,7 @@
 #include <BWAPI.h>
 #include <BWTA.h>
 #include "BaseTactic.h"
+#include "MathHelper.h"
 
 std::set<BWAPI::Unit*> _units;
 BWAPI::UnitType _unitType;
@@ -9,7 +10,7 @@ BaseTactic _tactic;
 
 Squad::Squad()
 {
-
+	LocationToMoveTo = BWAPI::Position(1,1);
 }
 Squad::Squad(std::set<BWAPI::Unit*> units,BaseTactic tactic)
 {
@@ -39,11 +40,42 @@ void Squad::RemoveUnit(BWAPI::Unit* unit)
 }
 void Squad::ExecuteTactics()
 {
+	int minimumDistToEnemies = 100000;	
+	for(std::set<BWAPI::Unit*>::iterator v = _units.begin(); v != _units.end(); v++)
+	{	
+		if((*v)->exists())
+		{
+			int distToEnemies = MathHelper::GetDistanceToNearestEnemy((*v)->getPosition());
+			if(distToEnemies < minimumDistToEnemies)
+			{
+				minimumDistToEnemies = distToEnemies;
+			}
+		}
+	}
 	for(std::set<BWAPI::Unit*>::iterator u = _units.begin(); u != _units.end(); u++)
 	{
-		if((*u)->exists())
+		
+		if((*u)->exists() && minimumDistToEnemies > 70)
 		{
+			BWAPI::Broodwar->printf("Turning on potential field");
 			_tactic.ExecuteTactic((*u),_units);
+		}
+		else if(LocationToMoveTo.x() != 1 && LocationToMoveTo.y() != 1)
+		{
+			if(
+				((*u)->getPosition().x() > (LocationToMoveTo.x()-50)) &&
+				((*u)->getPosition().x() < (LocationToMoveTo.x()+50)) &&
+				((*u)->getPosition().y() > (LocationToMoveTo.y()-50)) &&
+				((*u)->getPosition().y() < (LocationToMoveTo.y()+50))
+				)
+			{
+				BWAPI::Broodwar->printf("At location");
+				LocationToMoveTo = BWAPI::Position(1,1);
+			}
+			else
+			{
+				(*u)->move(LocationToMoveTo,false);
+			}
 		}
 	}
 }

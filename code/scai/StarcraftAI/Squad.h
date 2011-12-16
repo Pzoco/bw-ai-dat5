@@ -14,4 +14,5 @@ public:
 	int GetSize();
 	BWAPI::Position GetSquadCenter();
 	BWAPI::UnitType GetUnitType();
+	BWAPI::Position LocationToMoveTo;
 };
