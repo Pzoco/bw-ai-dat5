@@ -1,0 +1,49 @@
+
+%%Comparing the winning streak%%%
+\begin{centering}
+ \begin{tabular}{|c||c|c|c|c|c|c|}
+	\multicolumn{4}{c}{Winning streaks 1.1} \\
+	\hline
+	Damage taken &			 Damage given &		 Ally &		 Squad &		 Maximum distance &		 Cooldown & 		Edge \\
+	\hline
+	380& 				 		480&						2.39033e+006&1.40153e+006&-282631&			698463&			277493\\
+	392& 						480& 					2.39e+006&		1.40181e+006&-278968&			696251&			274540\\
+	400& 						300& 					2.39058e+006&1.4019e+006&	-273958&			698558&			279631\\
+	400& 						380& 					2.39196e+006&1.40196e+006&-268354&			705666&			293743\\
+	368& 						480& 					2.39249e+006&1.40228e+006&-264404&			708283&			296838\\
+	400& 						360& 					2.39315e+006&1.40233e+006&-260781&			711552&			301867\\
+	400& 						340& 					2.39447e+006&1.40238e+006&-256977&			719614&			312891\\
+	324& 						480&						2.39407e+006&1.40262e+006&-256418&			716551&			307314\\
+	\hline
+	\label{winning_streak_1.1}
+\end{tabular}
+\end{centering}
+The table \ref{winning_streak_1.1} shows some numbers when the agent have had a winning streak. All the values get saved after every iteration, and the last 5 values are the potential fields, and the first 2 values shows when the vultures have won a match. One can see that the damage given are very high and the ones with 480 in damage given is when the vultures have won over the 12 marines. The values are taken from iterations 214385 to 214392. By looking at the numbers in ally and squad we can see that the units like to stick to each other, in other words they like to team up. The reinforcement learning have changed the values and it have found out that sticking together is better than dealing with a bunch of marines on it's own. The maximum distance, which means the attractive level towards the marines, are very high in a negative value which makes them very attracted towards the marines and in other words very aggressive. The cooldown is a high positive value which means that when the vultures have fired they're weapons they use the potential field of cooldown, which means the get repulsed by the enemies when they're in a cooldown. 
+
+
+
+
+
+
+
+\begin{centering}
+ \begin{tabular}{|c||c|c|c|c|c|c|}
+	\multicolumn{4}{c}{Winning streaks 1.2} \\
+	\hline
+	Damage taken & 				Damage given & 			Ally & 			Squad & 			Maximum distance & 			Cooldown & 				Edge \\
+	\hline
+	368& 								480& 					4.09754e+006&	1.551e+006&		-423034&							341397&				-173826\\
+	400& 								320& 					4.09229e+006&	1.55017e+006&	-487204&							339150&				-196334\\
+	392& 								480& 					4.09461e+006&	1.55022e+006&	-405424&							342703&				-194759\\
+	400& 								320& 					4.09038e+006&	1.5499e+006&		-469782&							340807&				-193842\\
+	398& 								480& 					4.09328e+006&	1.5499e+006&		-400091&							344188&				-178773\\
+	386& 								480& 					4.09453e+006&	1.55029e+006&	-384631&							348976&				-172204\\
+	400&		 							340&						4.0933e+006&		1.55037e+006&	-416490&							348259&				-183012\\
+
+	\hline
+	\label{winning_streak_1.2}
+\end{tabular}
+\end{centering}
+The table \ref{winning_streak_1.2} also shows a winning streak but this time is in the later stages this is an out cut from 260284 to 260291 iterations to compare the numbers with the early stages in winning streak tests \ref{winning_streak_1.1}, than the later stages here in test \ref{winning_streak_1.2}. One can see that the numbers differs in many ways, ally is higher than it was in the previous test, but then the squad values doesn't differ that much from the early stages \ref{winning_streak_1.1}. The maximum distance is attracted towards the enemy which means they have an aggressive behaviour, and by looking at the values of the edges, the vultures are attracted to the cliffs and edges. The cooldown value is a positive number as it's supposed to be, because the vultures should attack and then withdraw until the cooldown has settled.
+
+%%Comparing the winning streak%%%
