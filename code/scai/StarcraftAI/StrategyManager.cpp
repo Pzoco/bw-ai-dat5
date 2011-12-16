@@ -52,7 +52,10 @@ bool StrategyManager::DecideToAttackOrNot()
 	if(EnemieBasePosision.x() != 1 && EnemieBasePosision.y() != 1)
 	{
 		int numberOfVultures = TacticsManager::GetInstance()->GetNumberOfUnits(BWAPI::UnitTypes::Terran_Vulture);
-
+		if(BWAPI::Broodwar->getFrameCount() % 250 == 0)
+		{
+			BWAPI::Broodwar->printf("Units = %d",numberOfVultures);
+		}
 		if(numberOfVultures >= 5)
 		{
 			return true;
