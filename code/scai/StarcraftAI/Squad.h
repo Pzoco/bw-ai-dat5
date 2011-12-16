@@ -8,11 +8,13 @@ public:
 	Squad();
 	Squad(std::set<BWAPI::Unit*> units,BaseTactic tactic);
 	Squad::Squad(BWAPI::Unit* unit,BaseTactic tactic);
+
 	void ExecuteTactics();
 	void AddUnit(BWAPI::Unit* unit);
 	void RemoveUnit(BWAPI::Unit* unit);
 	int GetSize();
 	BWAPI::Position GetSquadCenter();
 	BWAPI::UnitType GetUnitType();
+	void Squad::SetMoveLocation(BWAPI::Position pos);
 	BWAPI::Position LocationToMoveTo;
 };

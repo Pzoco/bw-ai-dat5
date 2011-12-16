@@ -112,7 +112,8 @@ void TacticsManager::MoveSquad(BWAPI::Position pos,BWAPI::UnitType type)
 	{
 		for each(Squad squad in squads[type])
 		{
-			squad.LocationToMoveTo = pos;
+			//BWAPI::Broodwar->printf("squad move to %d,%d",pos.x(),pos.y());
+			squad.SetMoveLocation(pos);
 		}
 	}		
 

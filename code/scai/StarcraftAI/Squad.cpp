@@ -10,7 +10,6 @@ BaseTactic _tactic;
 
 Squad::Squad()
 {
-	LocationToMoveTo = BWAPI::Position(1,1);
 }
 Squad::Squad(std::set<BWAPI::Unit*> units,BaseTactic tactic)
 {
@@ -40,6 +39,11 @@ void Squad::RemoveUnit(BWAPI::Unit* unit)
 }
 void Squad::ExecuteTactics()
 {
+	if(BWAPI::Broodwar->getFrameCount() % 200 == 0)
+	{
+			BWAPI::Broodwar->printf("target %d , %d",LocationToMoveTo.x(),LocationToMoveTo.y());
+				
+	}
 	int minimumDistToEnemies = 100000;	
 	for(std::set<BWAPI::Unit*>::iterator v = _units.begin(); v != _units.end(); v++)
 	{	
@@ -55,12 +59,13 @@ void Squad::ExecuteTactics()
 	for(std::set<BWAPI::Unit*>::iterator u = _units.begin(); u != _units.end(); u++)
 	{
 		
-		if((*u)->exists() && minimumDistToEnemies > 70)
+		if((*u)->exists() && minimumDistToEnemies > 70 && minimumDistToEnemies < 500)
 		{
 			BWAPI::Broodwar->printf("Turning on potential field");
 			_tactic.ExecuteTactic((*u),_units);
 		}
-		else if(LocationToMoveTo.x() != 1 && LocationToMoveTo.y() != 1)
+
+		if((*u)->exists() && !((LocationToMoveTo.x() == 1 && LocationToMoveTo.y() == 1) || (LocationToMoveTo.x() == 0 && LocationToMoveTo.y() == 0)))
 		{
 			if(
 				((*u)->getPosition().x() > (LocationToMoveTo.x()-50)) &&
@@ -74,10 +79,12 @@ void Squad::ExecuteTactics()
 			}
 			else
 			{
+				BWAPI::Broodwar->printf("move to %d , %d",LocationToMoveTo.x(),LocationToMoveTo.y());
 				(*u)->move(LocationToMoveTo,false);
 			}
 		}
 	}
+	
 }
 int Squad::GetSize()
 {
@@ -126,4 +133,9 @@ BWAPI::Position Squad::GetSquadCenter()
 	
 	return BWAPI::Position(x,y);
 
+}
+void Squad::SetMoveLocation(BWAPI::Position pos)
+{
+	LocationToMoveTo = pos;
+	//BWAPI::Broodwar->printf("squad move to %d,%d",pos.x(),pos.y());
 }
