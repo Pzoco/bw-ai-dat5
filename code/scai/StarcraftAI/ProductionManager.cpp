@@ -91,9 +91,9 @@ void ProductionManager::Update()
 	}
 	if(!_researchTasks.empty())
 	{
-		bool success = TryUpgradeTech(_upgradeTasks.front());
+		bool success = TryResearchTech(_researchTasks.front());
 		if(success)
-			_upgradeTasks.erase(_upgradeTasks.begin());
+			_researchTasks.erase(_researchTasks.begin());
 	}
 	
 	//Build scvs if this is the focus right now
@@ -123,7 +123,7 @@ bool ProductionManager::TryProduceUnit(UnitProductionTask* task)
 	//Check if we have enough supply
 	if((BWAPI::Broodwar->self()->supplyTotal()-BWAPI::Broodwar->self()->supplyUsed()) < task->unit.supplyRequired())
 		return false;
-	
+
 	//Check if we got the money
 	if(task->unit.mineralPrice() > BWAPI::Broodwar->self()->minerals() &&
 		task->unit.gasPrice() > BWAPI::Broodwar->self()->gas())
@@ -141,10 +141,11 @@ bool ProductionManager::TryProduceUnit(UnitProductionTask* task)
 			break;
 		}
 	}
+
 	//Trying to find a production facility that is capable of producing the unit
 	bool suitableProductionFacilityFound = false;
 	BWAPI::Unit* suitableBuilding;
-	for each(BWAPI::Unit* building in productionFacilities[task->unit])
+	for each(BWAPI::Unit* building in productionFacilities[task->unit.whatBuilds().first])
 	{
 		if(building->isIdle())
 		{
@@ -153,10 +154,15 @@ bool ProductionManager::TryProduceUnit(UnitProductionTask* task)
 			break;
 		}
 	}
-
 	if(allBuildingsFound && suitableProductionFacilityFound)
 	{
-		return suitableBuilding->train(task->unit);
+		task->number--;
+		suitableBuilding->train(task->unit);
+		if(task->number == 0)
+		{
+			return true;
+		}
+		return false;
 	}
 	return false;
 }
@@ -173,7 +179,13 @@ bool ProductionManager::TryConstructBuilding(ConstructionTask* task)
 			{
 				if(p->canIssueCommand(BWAPI::UnitCommand::buildAddon(p,task->building)))
 				{
-					return p->buildAddon(task->building);					
+					//BWAPI::Broodwar->printf("Trying to build addon");
+					p->buildAddon(task->building);
+					if(p->getAddon() == NULL)
+					{
+						return false;
+					}
+					return true;	
 				}
 			}
 		}

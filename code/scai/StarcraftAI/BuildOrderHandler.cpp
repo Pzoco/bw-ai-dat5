@@ -30,21 +30,8 @@ void BuildOrderHandler::InitiateBuildOrders()
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Factory,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Machine_Shop,ProductionEnums::Placement_MainBase,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Factory,1)));	
 	twoFactVultures->AddItem(new UpgradeItem(BWAPI::UpgradeTypes::Ion_Thrusters,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,1)));	
-	
-	//vultures
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,new Condition()));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,5,new Condition()));
+
 	_availableBuildOrders.push_back(twoFactVultures);
 }
 void BuildOrderHandler::SetCurrentBuildOrder()
@@ -108,7 +95,7 @@ void BuildOrderHandler::SaveAsTask(BuildOrderItem* item)
 	else if(item->GetType() == "UnitProductionItem")
 	{
 		UnitProductionItem* ui = dynamic_cast<UnitProductionItem*>(item);
-		unitProductionTasks.push_back(new UnitProductionTask(ui->unit));
+		unitProductionTasks.push_back(new UnitProductionTask(ui->unit,ui->number));
 	}
 	else if(item->GetType() == "ProductionFocusItem")
 	{

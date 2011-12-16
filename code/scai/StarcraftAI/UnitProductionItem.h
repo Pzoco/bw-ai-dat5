@@ -7,7 +7,8 @@ class UnitProductionItem: public BuildOrderItem
 {
 	public: 
 		BWAPI::UnitType unit;
-		UnitProductionItem(BWAPI::UnitType unitToBeBuild, Condition* conditionToBeFulfilled);
-		UnitProductionItem(BWAPI::UnitType unitToBeBuild,std::list<Condition*> conditionsToBeFulFilled);
+		int number;
+		UnitProductionItem(BWAPI::UnitType unitToBeBuild,int numberOfUnits, Condition* conditionToBeFulfilled);
+		UnitProductionItem(BWAPI::UnitType unitToBeBuild,int numberOfUnits,std::list<Condition*> conditionsToBeFulFilled);
 		std::string GetType();
 };
