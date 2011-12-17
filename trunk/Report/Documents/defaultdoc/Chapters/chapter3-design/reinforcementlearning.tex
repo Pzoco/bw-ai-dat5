@@ -26,8 +26,9 @@ In passive RL, the method of Direct Utility Estimation (DUE) follows the idea th
 
 %EXPLAIN T!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-$U^\pi(s) = R(s)+\gamma\sum_{s'}T(s,\pi(s),s') U^\pi(s')$\\
-
+\begin{equation}
+U^\pi(s) = R(s)+\gamma\sum_{s'}T(s,\pi(s),s') U^\pi(s')
+\end{equation}
 The problem with this technique is that it ignores the relationship between the states (they are not independent form each other), and it only learns at the end of a trial, therefore missing several opportunities for learning and converging very slowly\cite{rl}.
 
 \subsubsection{Adaptive Dynamic Programming}
@@ -40,7 +41,9 @@ The problem is it is impossible to calculate for large state spaces, specially i
 
 The combination of the previous two methods, \textit{using the observed transitions to adjust the values of the observed states so that they agree with the constraint equations}\cite[p767]{rl}, produces the following rule (to be applied every time a transition occurs form state $s$ to $s'$):\\
 
-$U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))$\\
+\begin{equation}
+U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))
+\end{equation}
 
 This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$) it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. \cite{rl} 
 
@@ -50,15 +53,15 @@ The second is the appearance of $\alpha$, also known as the learning rate parame
 
 All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is basically:s\cite{rl}
 
-\begin{center}
-$U(s) = max_a(Q(s,a))$
-\end{center}
+\begin{equation}
+U(s) = max_a(Q(s,a))
+\end{equation}
 
 Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule:\cite{rl} 
 
-\begin{center}
-$Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]$
-\end{center}
+\begin{equation}
+Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]
+\end{equation}
 
 Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}. It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent \cite[p776]{rl} . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
 
@@ -91,7 +94,9 @@ The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are
 
 After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
 
-$\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due)$ \\ 
+\begin{equation}
+\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due) 
+\end{equation}
 
 This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
 
@@ -102,7 +107,9 @@ Notice that there are forces that are dependant on the exact same variables, lik
 
 We use the updating rule or $\hat{Q}$-learning equation that evolves from the Q learning temporal difference formula, now taking into consideration the values of the function approximation:  \cite{rl} \\ 
  
-$f_i \leftarrow f_i + \alpha [ R(s) + \gamma(max\hat{Q}_f(a',s'))-\hat{Q}_f(a,s) ] \frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$ \\ 
+\begin{equation}
+f_i \leftarrow f_i + \alpha [ R(s) + \gamma(max\hat{Q}_f(a',s'))-\hat{Q}_f(a,s) ] \frac{\partial \hat{Q}_f(a,s)}{\partial f_i}
+\end{equation}
 
 \begin{flushleft}
 Where $f_i$ is each one of the coefficients in the Q-approximation. In the context of our  $\hat{Q}_f$ function, it would represent the forces: $f_{MDP}$, $f_{AU}$, $f_{EAC}$, $f_{S}$, $f_{CD}$. The exact same forces that represent each one of the potential fields.  
@@ -138,27 +145,37 @@ So we are left with the following updating rules for each of the coefficients/fo
 
 \begin{flushleft}
 Maximum Distance Positioning 
-$f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)$
+\begin{equation}
+f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)
+\end{equation}
 \end{flushleft} 
 
 \begin{flushleft}
-Ally Units  \\ 
-$f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2da - dua)$ 
+Ally Units
+\begin{equation}
+f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2da - dua)
+\end{equation}
 \end{flushleft} 
 
 \begin{flushleft}
 Edges and Cliffs
-$f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2dc - duc)$ 
+\begin{equation}
+f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2dc - duc)
+\end{equation}
 \end{flushleft} 
 
 \begin{flushleft}
-Squad  \\ 
-$f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2ds - dsv)$
+Squad 
+\begin{equation}
+f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2ds - dsv)
+\end{equation}
 \end{flushleft} 
 
 \begin{flushleft}
-Cooldown  \\ 
-$f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)$ 
+Cooldown
+\begin{equation}
+f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)
+\end{equation}
 \end{flushleft} 
 
 % \ref{mdp}
@@ -170,9 +187,10 @@ The only difference between this process and our approximation to Q-learning is 
 
 \subsubsection{Reward Function}
 
-We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes by. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is. \\ 
-
-$R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$ \\ 
+We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes by. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is.s
+\begin{equation}
+R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time
+\end{equation}
 
 We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
 
