@@ -1,4 +1,4 @@
-\section{Potential fields}
+\section{Potential Fields}
 	Potential fields can be used to control a computer AI through a dynamically updated environment. 
 	If one would program an AI, which should move from one point to another, one would most likely use a normal shortest path algorithms. 
 	The problem is, though, that if a lot of dynamic influences are affecting the route this calculation can be very complex. It could be 
@@ -26,16 +26,16 @@
 	\insertmarginfigure{height=3in}{Potentialfields/combined.png}
 		{Combined behavior\cite{pft}}{fig:combinedbehavior}{-3in}
 		
-	\subsection{Designing our potential field functions}		
+	\subsection{Designing our Potential Field Functions}		
 		The potential fields of our bot, will not be represented by a vector, but simply a number which indicates how attractive or repulsive a field is. 
-		This number is calculated by functions, which is either attractive and/or repulsive and is related to the obstacles in the game world. 
+		This number is calculated by functions, which is either attractive or repulsive and is related to the obstacles in the game world. 
 		
-		The reason we use numbers is we want to only calculate the potential on the tiles \footnote{A tile represents an 8px$\times8px$ square. This is the smallest area a units can stand on or move to.} immediately around the units, so the direction is given relative to the number at the current location. As seen in figure \ref{fig:vectorsAsNumbers}
+		The reason we can use numbers instead of vectors is because we only care about the potential on the tiles \footnote{A tile represents an 8px$\times8px$ square. This is the smallest area a units can stand on or move to.} immediately surrounding a unit, so the direction is given by just taking the higest number. As seen in figure \ref{fig:vectorsAsNumbers}.
 		\insertmarginfigure{height=1.5in}{Potentialfields/vectors.png}
-		{Vector direction relative to center}{fig:vectorsAsNumbers}{-3in}
+		{Vector direction given by numbers}{fig:vectorsAsNumbers}{-3in}
 		\\
 		
-		\subsubsection{Potential field basic structure}
+		\subsubsection{Potential Field Basic Structure}
 		Our functions will be described with the following math: \\
 		
 		Variables:\\
