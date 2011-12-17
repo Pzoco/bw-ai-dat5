@@ -3,15 +3,17 @@
 In this test we are using the values $\alpha$ 0.9 and $\gamma$ 0.2 and the agent has run 40182 iterations
 
 
-\textit{The figures showing in the test, can be watched full sized in the appendix \ref{appendix}} 
+\textit{The figures showing in the test, can be watched full sized in the appendix chapter \ref{appendix}} 
 
 %Damage given and taken
-\insertmarginfigure{height=3in}{learningrate/A9G2/damage.png}
+\insertmarginfigure{height=2in}{learningrate/A9G2/damage.png}
 			{Alpha 0.9 Gamma 0.2 Damage - Yellow: Damage given - Red: Damage taken}{fig:a9g2_damage}{-3in}
 
 %Units killed and units lost
-\insertmarginfigure{height=3in}{learningrate/A9G2/units_lost_and_killed.png}
+\insertmarginfigure{height=2in}{learningrate/A9G2/units_lost_and_killed.png}
 			{Alpha 0.9 Gamma 0.2 Lost and killed - Yellow: Enemies killed - Red: Vultures left}{fig:a9g2_lak}{-3in}
+			
+			
 In figure \ref{fig:a9g2_lak} the yellow graph is how many marines was killed, and when it peaks to the 12 mark, our agent have won a battle.
 
 
@@ -29,8 +31,8 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 		392,71 & 337,26 & 4,79 & 7,51 \\
 	\hline
 \end{tabular}
-\end{centering}
+\end{centering}\\
 %%%AVERAGE%%%
-
-Comparing the potential field data in winning streaks could tell us how the agent reacts when it wins. Damage taken and damage given are self-explanatory, but the rest are all values of the potential fields. Ally is how far away each of our own vultures can be from each other, a negative value mean repulsive and a positive value mean attractive. The squad value is similar to the ally value but the squad means the center point in the group of units. The maximum distance is the distance to an enemy, the value is only for the potential fields and not real distance to the enemies. Cooldown is when the vultures have fired they use the cooldown value if they should be attracted to the enemy or not and lastly the edges are how attractive or repulsed the vultures are to the edges, and just as before, negative values means repulse and positive values mean attractive. 
+\newpage
+By comparing the potential field data in winning streaks could tell us how the agent reacts when it wins. Damage taken and damage given are self-explanatory, but the rest are all values of the potential fields. Ally is how far away each of our own vultures can be from each other, a negative value mean repulsive and a positive value mean attractive. The squad value is similar to the ally value but the squad means the center point in the group of units. The maximum distance is the distance to an enemy, the value is only for the potential fields and not real distance to the enemies. Cooldown is when the vultures have fired they use the cooldown value if they should be attracted to the enemy or not and lastly the edges are how attractive or repulsed the vultures are to the edges, and just as before, negative values means repulse and positive values mean attractive. 
 \newpage
