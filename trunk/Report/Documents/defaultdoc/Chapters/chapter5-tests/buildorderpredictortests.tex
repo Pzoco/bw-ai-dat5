@@ -9,10 +9,12 @@ The build order predictor works fairly well, but still has some needed improveme
 
 \insertmarginfigure{height=3in}{BuildOrderPredictorTest/Predicting.png}
 					{Predicting one fact expand build upon seeing second command center}{fig:predicting}{-3in}
-	\subsection{Prediction of Threatlevel}
-		The prediction of the threatlevel is an expansion of the builder order prediction network, with a node called time and a node called threat level. 
-		When the bot wants to know the current threatlevel, evidence is put on the time and the current threatlevel be read. An example is shown below. 
-		Here the buildorder is predicted to be 3HatchMuta, which is first threatening later in the game. 
-	
-		\insertmarginfigure{height=3in}{BuildOrderPredictorTest/threatlevel.png}
-			{Predicting the current threatlevel}{fig:predicting}{-3in}
+	\subsection{Prediction of Threatlevel test}
+		In this test we wanted to see if the prediction network could analyze what he current threatlevel is based on what it sees and what the time is.
+		The bot scouts the opponent and sees 2 hatcherys, which it predicts is going to be a 3 Hatch Muta build. Because that build is effective later 
+		in the game the network predicts the current threatlevel to low. In the picture below (See \ref{fig:predicting}) this situation is shown. 
+		This test just showed that the network worked exactly as assumed.
+		\begin{figure}
+			\includegraphics[scale=1]{Figures/BayesianPictures/threatlevel.png}
+			\caption{Predicting the current threatlevel}\label{fig:predicting}
+		\end{figure}
