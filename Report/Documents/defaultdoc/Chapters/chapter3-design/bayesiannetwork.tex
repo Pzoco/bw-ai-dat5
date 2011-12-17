@@ -5,7 +5,7 @@ threatlevel is. The next subsection describes the network created for predicting
 
 
 
-\subsection{Prediction of enemy spawn position}			 
+\subsection{Prediction of Enemy Spawn Position}			 
 			
 The purpose of this Bayesian network is to find our opponent's spawning position. Some factors taken into account are our spawn position, enemy scouts, and time into account to help us predict this. We wanted to make this network usable on a variety of maps. Below is a visual representation of how each node is connected in the network.
 %Why do we represent time as almost none, early, middle, and late?
@@ -16,7 +16,7 @@ The purpose of this Bayesian network is to find our opponent's spawning position
 
 
 \subsubsection*{EnemySpawn}
-The correct state in this node is the value we are trying to discover. Ultimately, all of the evidence we collect, will be used to find this state. Most of the other variable have direct links from this node. Once we know the state of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other states.
+The correct state in this node is the value we are trying to discover. Ultimately, all of the evidence we collect, will be used to find this state. Most of the other nodes have direct links from this node. Once we know the state of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other states.
 
 \subsubsection*{OurSpawn}
 This node is a child of EnemySpawn. We can use the values in this node to determine where the enemy does not spawn. We simply say that the enemy cannot spawn where we spawn at. At the beginning of a match we know where we spawn and can instantly put evidence on the OurSpawn node. This instantly reduces the change for our opponent to be at any other spawning location to 33\%.
@@ -24,12 +24,12 @@ This node is a child of EnemySpawn. We can use the values in this node to determ
 \subsubsection*{EnemyNotAt(NE,SE,SW,NW)}
 These nodes are used to keep track of positions we know our opponent did not spawn. Since a node can only be in one state at a time, we made four nodes that can influence the probabilities in enemy spawn. Ways we would generally get these values could be our own scouts arriving at a position and not finding our opponent.
 
-\subsubsection*{WorkerScoutPosition} This is one of the most important variables. When we observe an enemy worker at a certain position we can influence our belief on our opponents spawn position. TimingSeen is a parent of this node. We use the information from this node to help our prediction. Just seeing an enemy at a certain position isn't enough. We need the time we see the enemy scout to help us form our beliefs. Whenever we obtain evidence on WorkerScoutPosition we will also always gather information on TimingSeen.
+\subsubsection*{WorkerScoutPosition} When we observe an enemy worker at a certain position on the map, we can influence our belief on our opponents spawn position. This is because the opponent's scout will take a certain amount of time to get to a certain position on the map. TimingSeen is a parent of this node. We use the information from this node to help our prediction. Just seeing an enemy at a certain position isn't enough. We need the time we see the enemy scout to help us form our beliefs. Whenever we obtain evidence on WorkerScoutPosition we will also always gather information on TimingSeen.
 
 \subsubsection*{TimingSeen} This node is used to help us use the information from WorkerScoutPosition. It has the values: Almost None, Early, Middle, and Late. These values are the times we may see the opponent's scout. Since the values for timing depend on both map size and map layout, we purposely make the values broad.
 
 
-\subsubsection*{OverlordDirection} This node is fairly simple and contributes a lot in predicting the spawn location. Since overlords are so slow, a player will be able to use the direction the overlord is coming from to predict the spawn location. By the time an overlord would have visited two bases we probably already know where the enemy's base is. This variable may seem really useful, but it only helps when fighting against zerg players. The overlord can take a while to get to even its first base, and by then we might have already needed to know where our opponent is. EnemySpawn is a parent of OverlordDirection. Once we know the direction the overlord is coming from we gain a lot of information on the enemy's spawn position.
+\subsubsection*{OverlordDirection} Since overlords are so slow, a player will be able to use the direction the overlord is coming from to predict the spawn location. By the time an overlord would have visited two bases we probably would have already known where the enemy's base is. This node only helps when fighting against Zerg players. EnemySpawn is a parent of OverlordDirection. Once we know the direction the overlord is coming from we gain a lot of information on the enemy's spawn position.
 
 \subsection{Build Order Prediction}
 This subsection describes the Bayesian networks that was created for predicting that buildorder the enemy is doing. There are three different networks, one each for every race that the bot can encounter: Terran versus Terran, Terran versus Protoss and Terran vs Zerg.
