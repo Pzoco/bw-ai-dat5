@@ -15,30 +15,34 @@ All the above part truly makes Starcraft Broodwar an interesting game to look at
 
 \section{Purpose}
 
-	The purpose of this project is to create a computer program that is able to play a full game of Starcraft Broodwar. But also showing the advantages of using a computer by making it due tasks that would be impossible for a human being. It shold be able, trough trials, learn from its mistakes and become better using machine intelligence theory. 
+	The purpose of this project is to create a computer program that is able to play a full game of Starcraft Broodwar. But also showing the advantages of using a computer by making it due tasks that would be impossible for a human being. It should be able, trough trials, learn from its mistakes and become better using machine intelligence theory. 
 
 
 \section{Problem Statement}
 	Our goals for this project is to:
 	\begin{itemize}
 		\item Create an intelligent bot for the game Starcraft Broodwar
-		\item Apply machine intelligence theory in the modeling of the bot
+		\item Apply Machine Intelligence theory in the modeling of the bot
 		\item Make a bot that can improve by playing Starcraft
 	\end{itemize}
 
 \section{Overview}
-	A short overview of the report where one can read what the different chapters contain
+	We will now give a brief overview of the different chapters of the report.
 
 \paragraph*{Chapter 2 - Analysis}
-Here we explain the basic rules of the game, what is important to obtain to win a match and how one can win over an opponent. We mention some different areas of the game one has to master to be good or even perfect to win, we also mention some different standard attack methods one can use to slow down the opponent. At last we analyze what kind of unit we want a computer to control.
-\paragraph*{Chapter 3 - Design}
-The design part is about different design methods one can use to control several units on a map, to avoid obstacles and still be drawn to the opponent. The last part is about the theory of agent learning what different kinds we have looked upon.
-\paragraph*{Chapter 4 - Implementation}
-This chapter is where the theory is being used in practice, and here we explain how we have implemented the potential fields, and how we have implemented the learning part of the agent.
-\paragraph*{Chapter 5 - Tests}
-This chapter have the purpose to test our bot. We do this by having three test where each test is run on two different maps. The first test is the case
-where the enemy attack the vultures without the vultures being controlled. This gives an idea of how strong the two forces are compared with each other. The next test is the improvements our bot will have by using potential fields. The last test is about our bots ability to learn by using reinforcement learning.
-\paragraph*{Chapter 6 - Conclusion}
-\paragraph*{Chapter 7 - Future Work}
-This chapter is where we will conclude the impact the machine intelligence have had on our bot and the results we have gathered from our bot.
+The analysis begins with an introduction to the basic rules for playing a game of Starcraft Broodwar. Then we go on to explain some of the most common Terran tactics, where we talk about the importance of information and the balance between macro and micro. Then we will take a look at what at how Machine Intelligence can be used to make a bot and what aspect of the game which can benefit the most from Machine Intelligence. The last thing in the analysis will be a analysis of the different units available for Terran and there strengths.
 
+\paragraph*{Chapter 3 - Design}
+In the design chapter we begin by describing the different criteria we have for our bot. Then we go on to explain how we designed the different managers we use for various tasks like building and scouting. Then we give an overview of what potential fields are, and how we are going to use them for movement. Afterwards we describe different kinds of agent learning and how we can use it to improve potential fields. At the end we talk about Bayesian networks and decision trees, and how we can use Bayesian networks to do predictions.
+
+\paragraph*{Chapter 4 - Implementation}
+In this chapter we begin by looking at how we implemented the Bayesian networks, and how we insert evidence on the networks. Then we talk about the implemented of the managers and explain the most important parts of the code. Then we look at potential fields how the differ from the design and they are implemented. At the end we look at how Q-Learning is implemented.
+
+\paragraph*{Chapter 5 - Tests}
+In chapter 5 we start by during a few basic test to compare against the potential fields. First how does the build in bot due against it self. Then how does the our potential field without any learning do against the build in bot. Then we look at how different alpha and gamma values effects the way our bot learn and how this effects its performance. After this we test the different Bayesian networks and how they do at prediction the enemies spawn, prediction the enemies build order and the enemies threat level.
+
+\paragraph*{Chapter 6 - Conclusion}
+In this chapter we conclude on this project.
+
+\paragraph*{Chapter 7 - Future Work}
+This chapter focus on different action we could take to improve our work if we had more time.
