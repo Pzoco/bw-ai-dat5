@@ -2,12 +2,13 @@
 
 \section{$ \hat{Q}$-Learning}
 
-In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the ReinforcementLearning class and then methods that calculate the value of the $\hat{Q}$ function and updating rules. \nolinebreak
+In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\nolinebreak
 
 \subsection{ReinforcementLearning Class}
-\subsubsection{Field Summary}
 
-Stuff
+This class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair, calculate the different values of the $\hat{Q}$ itself and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing).
+
+\subsubsection{Field Summary}
 
 \begin{centering}
  \begin{tabular}{|l|p {10cm}|}
@@ -34,31 +35,27 @@ Stuff
  	\hline
  	double const  &  $c5$\linebreak  Reward function's $C_5$ value, set to -0.025, coefficient for the frame count inside a game (time).\\
  	\hline
- 	double &  $liveBuffer$\linebreak  \\
+ 	double[ ] &  $liveBuffer$\linebreak  Array used for saving the different $\hat{Q}_f$ updating values, its purpose is to optimize the test d data saving (to files) to only a few occurrences throughout the game. \\
  	\hline
- 	int &  $liveCount$\linebreak  \\
+ 	int &  $liveCount$\linebreak  Counter for controlling the $liveBuffer$.\\
  	\hline
- 	struct Weights & \_$weights$\{double FORCEALLY, double FORCESQUAD, double FORCEMAXDIST, double FORCECOOLDOWN, double FORCEEDGE\}\linebreak  Stuff\\
+ 	struct Weights & \_$weights$\{double FORCEALLY, double FORCESQUAD, double FORCEMAXDIST, double FORCECOOLDOWN, double FORCEEDGE\}\linebreak  Struct used to save all the values of the $f_i$'s in the $\hat{Q}_f$ function throughout all the calculations in the game. \\
  	\hline
 \end{tabular}
 \end{centering}
-
-Stuff
 
 %____________________________________________________________________________________________________
 
 \subsubsection{Method Summary}
 
-Stuff
-
 \begin{centering}
  \begin{tabular}{|l|p {11cm}|}
 	
 	\hline
-	static double & \textbf{CalculateTheta(double theta, double reward, double currQ, double nextQ, double derivative)}\linebreak Returns the value of the updating rule for the current coefficient/weight ($f$) of the $\hat{Q}_f$ function.\\
+	static double & \textbf{CalculateTheta(double theta, double reward, double currQ, double nextQ, double derivative)}\linebreak Returns the value of the updating rule for the current coefficient $f_i$ of the $\hat{Q}_f$ function.\\
 	
 	\hline
-        static double & \textbf{CalculateReward(std::set$<$BWAPI::Unit*$>$squad)}\linebreak Returns the value of the reward function $R(s) = -180 numberOfUnits  -  1 healthLost  +   2 damageDealt  +   40 numberOfKills 	-  0.025 time$.\\
+        static double & \textbf{CalculateReward(std::set$<$BWAPI::Unit*$>$squad)}\linebreak Returns the value of the reward function $R(s) = C_1 numberOfUnits  +  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills 	+  C_5 time$.\\
      
      \hline
         static void & \textbf{LoadWeightsFromFile()}\linebreak Loads the weights ($f$) of the $\hat{Q}_f$ function into the \_\emph{weights} field.\\
@@ -116,7 +113,9 @@ Stuff
 \end{centering}
 
 
-Note that we assign values now to the coefficients of the reward function we designed (link to reward function in design!!!!!!!!!!!!!!!!!!!!!). This values  
+%Note that we assign values now to the coefficients of the reward function we designed (link to reward function in design!!!!!!!!!!!!!!!!!!!!!). This values  
 
 
-\subsubsection{$ \hat{Q}$ Method Detail}
+\subsubsection{Method Detail}
+
+
