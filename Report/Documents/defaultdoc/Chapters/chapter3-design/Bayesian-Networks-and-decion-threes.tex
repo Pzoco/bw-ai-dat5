@@ -1,5 +1,5 @@
 \section{Bayesian Networks and Decision Trees}
-In this section we are going to define Bayesian networks and decision threes. Then we are going to compare the two decision models and choose the best model our bot can use for scouting analysis.
+In this section we are going to explain and discuss Bayesian networks and decision trees. Then we are going to compare the two decision models and choose the best model our bot can use for scouting analysis.
 
 \subsection{Bayesian Networks}
 	Bayesian networks are simple graphical models where each probability for the variable is calculated. Therefore the Bayesian networks are used for calculating new probabilities whenever new information is gathered. Bayesian networks have a  set of variable that are connected with directed edges. Each variable in the Bayesian network must have a finite set of mutually exclusive states. By this we mean that we can only be in one state in the variable. To make sure that we can calculate a result the Bayesian network needs to be a acyclic directed graph. A variable needs a conditional probability table for each of it's parents. This means that the amount of calculations in a Bayesian networks depends on the number of variables and the edges that connects them.
@@ -7,5 +7,6 @@ In this section we are going to define Bayesian networks and decision threes. Th
 \subsection{Decision Trees}
 Decision trees are used to represent decision problems. A decision tree consists of three types of nodes: decision nodes, chance nodes and utility nodes. The link from a decision node to a chance node is called an action, and a link from a chance node to a decision node is called a state. The idea of the decision tree is to find the path that will give us the highest utility (reward), so to make a decision tree over a decision problem, every possible path of decisions have to be shown in the tree. This will give a tree that grows exponentially with the number of decision and chance variables, so given small decision problems will require big trees, if not reduced. 
 		
-%\subsection{Conclusion}
-%We decided use choose a Bayesian network solution for our problems. Since we do not know what kind of reward we would be getting for our utility function in a decision tree, It would be better to use a Bayesian network. This way we can just act on the most probable decision. Also decision networks increase in complexity way more than Bayesian networks when introducing more variables.
+\subsection{Choice of }
+We decided use choose a Bayesian network solution for our problems, because the decision trees grows exponentially with the number of variables and 
+Bayesian networks are easier to handle and manipulate.
