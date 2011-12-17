@@ -4,7 +4,7 @@ In this test we are using the values $\alpha$ 0.6 and $\gamma$ 0.4. In this test
 
 
 %Damage given and taken
-\insertmarginfigure{height=3in}{learningrate/A6G4/damage.png}
+\insertmarginfigure{height=2in}{learningrate/A6G4/damage.png}
 			{Alpha 0.6 gamma 0.4 Damage - Yellow: Damage given - Red: Damage taken}{fig:a6g4_damage}{-3in}
 
 In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $\gamma$ values the agents graph over it's performance.
@@ -12,12 +12,13 @@ In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $
 
 %Units killed and units lost
 
-\insertmarginfigure{height=3in}{learningrate/A6G4/units_lost_and_killed.png}{Alpha 0.6 Gamma 0.4 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a6g4_lak}{-3in}
+\insertmarginfigure{height=2in}{learningrate/A6G4/units_lost_and_killed.png}{Alpha 0.6 Gamma 0.4 Lost and killed - Yellow: Vultures left - Red: Marines killed}{fig:a6g4_lak}{-3in}
 
 
 
 %%%%%AVERAGE%%%%%
 \begin{centering}
+\begin{table}
  \begin{tabular}{|l|c|c|c|}
 	\multicolumn{4}{c}{Average results from test 1.2} \\
 	\hline
@@ -26,7 +27,9 @@ In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $
 		392,35 & 334,26 & 4,79 & 7,44 \\
 	\hline
 \end{tabular}
+\caption{Average numbers of A6G4}
 \label{test1.2}
+\end{table}
 \end{centering}
 %%%AVERAGE%%%
 
@@ -34,7 +37,7 @@ In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $
 
 
 
-Comparing the tests one can see that the agent needs several more iterations than it has right now, since it's not converging from just 40000 iterations. The next tests will be with around 100000 iterations and by that we can be more sure that it's near converging. The average values are almost the same, and what that tells us is that either it needs way more iterations or the small change in the values does not give a huge difference.
+Comparing the tests \ref{test1.1} and \ref{test1.2} one can see that the agent needs several more iterations than it has right now, since it's not converging from just 40000 iterations. The next tests will be with around 100000 iterations and by that we can be more sure that it's near converging. The average values are almost the same, and what that tells us is that either it needs way more iterations or the small change in the values does not give a huge difference.
 
 
 
@@ -45,11 +48,11 @@ Comparing the tests one can see that the agent needs several more iterations tha
 
 \newpage
 %%Comparing the winning streak%%%
-\begin{centering}
+\begin{table}
  \begin{tabular}{|c|c|c|c|c|c|c|}
 	\multicolumn{4}{c}{Winning streaks 1.1} \\
 	\hline
-	Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
+	Damage taken & Damage given & Ally & Squad & Maximum dist. & Cooldown & Edge \\
 	\hline
 	
 	252&		480&			910558&	444338&	-306553&			316093&	432800\\
@@ -73,8 +76,9 @@ Comparing the tests one can see that the agent needs several more iterations tha
 	306&		480&			911550&	444136&	-291521&			315663&	428999\\
 	\hline
 \end{tabular}
+\caption{Winning streak of A6G4}
 	\label{winning_streak_2.1}
-\end{centering}
+	\end{table}
 
 
 
@@ -83,10 +87,11 @@ Comparing the tests one can see that the agent needs several more iterations tha
 
 
 \begin{centering}
+\begin{table}
  \begin{tabular}{|c|c|c|c|c|c|c|}
 	\multicolumn{4}{c}{Winning streaks 1.2} \\
 	\hline
-	Damage taken & Damage given & Ally & Squad & Maximum distance & Cooldown & Edge \\
+	Damage taken & Damage given & Ally & Squad & Maximum dist. & Cooldown & Edge \\
 	\hline
 	400&		360&			5473.4&	 155163&	8397.16&		17550.4&	-82465.4\\
 	400&		300&			5362.89& 155163&	7869.75&		16687.6&	-82465.4\\
@@ -106,7 +111,9 @@ Comparing the tests one can see that the agent needs several more iterations tha
 	386&		480&			4703.64& 156124&	6465.99&		13310.4&	-82465.4\\
 	\hline
 \end{tabular}
+\caption{Winning streak of A6G4}
 	\label{winning_streak_2.2}
+	\end{table}
 \end{centering}
 
 %%Comparing the winning streak%%%
