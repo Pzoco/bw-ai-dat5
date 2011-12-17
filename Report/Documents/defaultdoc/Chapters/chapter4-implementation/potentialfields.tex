@@ -59,7 +59,8 @@ bool firstCalculation = true;
 		\item \_variables.ALLYDISTANCE\_CONSTANT - Is set to $50$ px.
 		\item \_variables.EDGESDISTANCE\_CONSTANT - Is set to $250$ px.
 	\end{itemize}
-		
+	
+	An important thing to note before we look at the individual function is a small change from the design. In the design we use negative forces in repulsive fields, but due to the reinforcement learning this has changed. The reinforcement learning will change the forces, and it will be able to make them both positive and negative. In other words the reinforcement learning will be able to change whether or not a potential field is attractive or repulsive. 
 		
 	\subsection{Squad center}	
 		\begin{Sourcecode}[caption=Squad center]
