@@ -1,9 +1,17 @@
 \chapter{Design}\label{design}
+	 In this chapter we will use the word agent for the bot, where a agent is a program is able to learn and chance itself.
 	In this chapter we are going to look at the designing of the bot. First we will take a look at the different managers for controling the units, production,
 	scouting and choose a strategy. Then you are going to explain potentialfields, to be able to microing the bot. Inorder to correct the bot and make
 	sure the bot will be able to learn, we will explain reinforcement learning. For the macro part we are going to use Bayesion Networks to be able to
-	detect the opponent's build order, predicting the opponent's start location and the threat level of the opponent based on the units the bot scout. In
-	this chapter we will use the word agent for the bot, where a agent is a program is able to learn and chance itself.
+	detect the opponent's build order, predicting the opponent's start location and the threat level of the opponent based on the units the bot scout.
+	The purpose of the bot is to be able to out micro humans in combat, to limit the scope we will only look at vultures. 
+	To do this it should but should be able to play a full Starcraft game. This implies the following:
+	\begin{itemize}
+		\item Construction the necessary buildings to produce vultures.
+		\item Construct a squad of vultures.
+		\item Scout and find the enemies base.
+		\item Move the squad to the enemies base and attack.
+	\end{itemize}
 	
 %	Potential fields are a vector based representation of an environment. Potential fields are commonly used in robotics to guide a robot trough environment, but it is also becoming more and more popular within computer games\ref{ptf_in_game}. Objects in this environment can change position and the field will adapt accordingly. 
 	\input{\ChapterDocsPath/chapter3-design/description}
