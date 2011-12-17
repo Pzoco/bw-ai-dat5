@@ -1,24 +1,122 @@
+\newpage
+
 \section{$ \hat{Q}$-Learning}
 
-In this section we'll address the implementation of the Reinforcement Learning Aproximation. First we'll explain the ReinforcementLearning class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. 
+In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the ReinforcementLearning class and then methods that calculate the value of the $\hat{Q}$ function and updating rules. \nolinebreak
 
 \subsection{ReinforcementLearning Class}
+\subsubsection{Field Summary}
 
-
+Stuff
 
 \begin{centering}
- \begin{tabular}{|l||c|c|c|}
-	\multicolumn{4}{c}{TITLE!!!} \\
+ \begin{tabular}{|l|p {10cm}|}
+ 	\hline
+ 	double const  &  $alpha$\linebreak  The $\alpha$ value of the $\hat{Q}_f$ function updating rules. \\
+ 	\hline
+ 	double const &  $gamma$ \linebreak The $\gamma$ value of the $\hat{Q}_f$ function updating rules. \\
+ 	\hline
+ 	double const  &  $startingEnemies$\linebreak  Number of enemy units (manual input).\\
+ 	\hline
+ 	double const  &  $startingEnemyMaxHealth$\linebreak  Maximum Enemy Health (manual input).\\
+ 	\hline
+ 	double const  &  $startingUnits$\linebreak  Number of units (manual input).\\
+ 	\hline
+ 	double const  &  $startingUnitMaxHealth$\linebreak  Maximum Health (manual input).\\
+ 	\hline
+ 	double const  &  $c1$\linebreak  Reward function's $C_1$ value, set to -180, coefficient for the number of units. \\
+ 	\hline
+ 	double const  &  $c2$\linebreak  Reward function's $C_2$ value, set to -1, coefficient for the amount of health lost.\\
+ 	\hline
+ 	double const  &  $c3$\linebreak  Reward function's $C_3$ value, set to 2, coefficient for the damage dealt. \\
+ 	\hline
+ 	double const  &  $c4$\linebreak  Reward function's $C_4$ value, set to 40, coefficient for the number of kills.\\
+ 	\hline
+ 	double const  &  $c5$\linebreak  Reward function's $C_5$ value, set to -0.025, coefficient for the frame count inside a game (time).\\
+ 	\hline
+ 	double &  $liveBuffer$\linebreak  \\
+ 	\hline
+ 	int &  $liveCount$\linebreak  \\
+ 	\hline
+ 	struct Weights & \_$weights$\{double FORCEALLY, double FORCESQUAD, double FORCEMAXDIST, double FORCECOOLDOWN, double FORCEEDGE\}\linebreak  Stuff\\
+ 	\hline
+\end{tabular}
+\end{centering}
+
+Stuff
+
+%____________________________________________________________________________________________________
+
+\subsubsection{Method Summary}
+
+Stuff
+
+\begin{centering}
+ \begin{tabular}{|l|p {11cm}|}
+	
 	\hline
-		Damage taken & Damage given & Units lost & Enemies killed\\
+	static double & \textbf{CalculateTheta(double theta, double reward, double currQ, double nextQ, double derivative)}\linebreak Returns the value of the updating rule for the current coefficient/weight ($f$) of the $\hat{Q}_f$ function.\\
+	
 	\hline
-		392,71 & 337,26 & 4,79 & 7,51 \\
+        static double & \textbf{CalculateReward(std::set$<$BWAPI::Unit*$>$squad)}\linebreak Returns the value of the reward function $R(s) = -180 numberOfUnits  -  1 healthLost  +   2 damageDealt  +   40 numberOfKills 	-  0.025 time$.\\
+     
+     \hline
+        static void & \textbf{LoadWeightsFromFile()}\linebreak Loads the weights ($f$) of the $\hat{Q}_f$ function into the \_\emph{weights} field.\\
+	
+	\hline
+        static void & \textbf{SaveCurrentWeightsToFile()}\linebreak Saves the last weights ($f$) of the $\hat{Q}_f$ function into the weight's file.\\
+   
+    \hline
+       static void & \textbf{WriteLiveValue(double value)}\linebreak Writes a value into the array $liveBuffer$ for future use in the calculations.\\
+	
+	\hline
+        static double* & \textbf{GetLiveBuffer()}\linebreak Returns the $liveBuffer$ array. \\
+	
+	\hline
+        static int & \textbf{GetLiveCount()}\linebreak Returns the $liveCount$ value that indicates how many numbers have been saved in the $liveBuffer$.\\
+        
+	\hline
+        static void & \textbf{ClearLiveBuffer()}\linebreak Clears the current values in the $liveBuffer$ and initializes $liveCount$ to 0.\\
+	
+	\hline
+        static void & \textbf{WriteToDataFiles()}\linebreak Saves game data into files for future analysis. It saves the game count, remaining health, remaining enemy health, remaining squad size, remaining number of enemies. It is only to be used at the end of each game.\\
+	
+	\hline
+        static double & \textbf{GetForceAlly()}\linebreak Returns the value of \_\emph{weights.FORCEALLY}.\\
+	
+	\hline
+        static double & \textbf{GetForceSquad()}\linebreak Returns the value of \_\emph{weights.FORCESQUAD}.\\
+	
+	\hline
+        static double & \textbf{GetForceMaxDist()}\linebreak Returns the value of \_\emph{weights.FORCEMAXDIST}.\\
+	
+	\hline
+        static double & \textbf{GetForceCooldown()}\linebreak Returns the value of \_\emph{weights.FORCECOOLDOWN}.\\
+	
+	\hline
+        static double & \textbf{GetForceEdge()}\linebreak Returns the value of \_\emph{weights.FORCEEDGE}.\\
+	
+	\hline
+        static void & \textbf{SetForceAlly(double ally)}\linebreak Sets the value of \_\emph{weights.FORCEALLY} to $ally$.\\
+	
+	\hline
+        static void & \textbf{SetForceSquad(double squad)}\linebreak Sets the value of \_\emph{weights.FORCESQUAD} to $squad$.\\
+	
+	\hline
+        static void & \textbf{SetForceMaxDist(double mde)}\linebreak Sets the value of \_\emph{weights.FORCEMAXDIST} to $mde$.\\
+	
+	\hline
+        static void & \textbf{SetForceCooldown(double cool)}\linebreak Sets the value of \_\emph{weights.FORCECOOLDOWN} to $cool$.\\
+	
+	\hline
+        static void & \textbf{SetForceEdge(double edge)}\linebreak Sets the value of \_\emph{weights.FORCEEDGE} to $edge$.\\
+	
 	\hline
 \end{tabular}
 \end{centering}
 
 
+Note that we assign values now to the coefficients of the reward function we designed (link to reward function in design!!!!!!!!!!!!!!!!!!!!!). This values  
 
 
-
-\subsubsection{$ \hat{Q}$ Methods}
+\subsubsection{$ \hat{Q}$ Method Detail}
