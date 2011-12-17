@@ -101,16 +101,18 @@ In section (LINK AGAIN) there are several different formulas for updating each c
 
 \subsubsection{Calling the Updating Rules}
 
+We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames, because trying to update for every single one created a lag on the game's performance. The optimization we created for updating while still preserving the game speed is the following: 
+
 \begin{Sourcecode}[caption=Calculations for the Updating Function Values]
-if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
-		
+(*@\lnote@*)if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
+		(*@\lnote@*)\\____________________________________________
 		double* liveBufferPointer = StarcraftAI::reinforcementLearning.GetLiveBuffer(); 
 		int liveCount = StarcraftAI::reinforcementLearning.GetLiveCount(); 
 		StarcraftAI::reinforcementLearning.ClearLiveBuffer(); 
-	
+		\\____________________________________________
 		double edge, cool, mde, squad, ally, currQ, nextQ, reward; 
-
-		for(int i=0; i<liveCount; i++){
+		
+		(*@\lnote@*)for(int i=0; i<liveCount; i++){
 			switch(i%8)
 				{
 				case 0:
@@ -136,12 +138,13 @@ if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
 					break; 
 				case 7:
 					reward = liveBufferPointer[i];
-
+					(*@\lnote@*)\\______________________________________
 					_thetas.edge = ReinforcementLearning::CalculateTheta(_thetas.edge,reward,currQ,nextQ,edge);
 					_thetas.cool = ReinforcementLearning::CalculateTheta(_thetas.cool,reward,currQ,nextQ,cool);
 					_thetas.mde = ReinforcementLearning::CalculateTheta(_thetas.mde,reward,currQ,nextQ,mde);
 					_thetas.squad = ReinforcementLearning::CalculateTheta(_thetas.squad,reward,currQ,nextQ,squad);
 					_thetas.ally = ReinforcementLearning::CalculateTheta(_thetas.ally,reward,currQ,nextQ,ally);
+					\\______________________________________
 					break;
 				default:
 					break; 
@@ -149,3 +152,5 @@ if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
 		}
 	}
 \end{Sourcecode}
+
+In the first place, we make this calculations every 25 frames as shown in \lnnum{1}, trying to simulate updating once a second. Then we use some of the methods int the $ReinforcementLearning$ class (indicated in section \lnnum{2}) to call all the values that were previously saved in the data buffer. This values include all the above explained derivatives and $\hat{Q}_f$ values. We separate the values, as shown in \lnnum{3} and then save them in variables for parameter passing to the updating function. Finally in section \lnnum{4} we use the $ReinforcementLearning::CalculateTheta$ method that corresponds to each of the weights and coefficients of the new $\hat{Q}_f$. 
