@@ -1,15 +1,53 @@
 #include "BuildingPlacementFinder.h"
 #include <BWAPI.h>
 #include "WorkerManager.h"
-
+using namespace BWAPI;
 BuildingPlacementFinder::BuildingPlacementFinder()
 {
-	
+	initialized =false;
 }
 
 
 BWAPI::TilePosition BuildingPlacementFinder::FindBuildLocation(BWAPI::UnitType buildingType, ProductionEnums::BuildingPlacement buildingPlacement)
 {
+	if(!initialized)
+	{
+		myBaseTile = Broodwar->self()->getStartLocation();
+		myBasePosition = Position(myBaseTile);
+		if( myBaseTile.x() >= Broodwar->mapWidth()/2  && myBaseTile.y() < Broodwar->mapWidth()/2)
+		{
+			myBaseEnum=InformationEnums::NE;
+		}
+		if( myBaseTile.x() >= Broodwar->mapWidth()/2  && myBaseTile.y() >= Broodwar->mapWidth()/2)
+		{
+			myBaseEnum=InformationEnums::SE;
+		}
+		if( myBaseTile.x() < Broodwar->mapWidth()/2  && myBaseTile.y() >= Broodwar->mapWidth()/2)
+		{
+			myBaseEnum=InformationEnums::SW;
+		}
+		if( myBaseTile.x() < Broodwar->mapWidth()/2  && myBaseTile.y() < Broodwar->mapWidth()/2)
+		{
+			myBaseEnum=InformationEnums::NW;
+		}
+
+		for(int i=0;i<BASE_TILES;i++)
+		{
+			for(int j=0;j<BASE_TILES;j++)
+			{
+
+			}
+		}
+		initialized =true;
+		Broodwar->printf("Building PLceament initialized");
+	}
+
+
+
+
+
+
+	
 	if(buildingType == BWAPI::UnitTypes::Terran_Refinery)
 	{
 		return GetClosestGasGeyser(BWAPI::Broodwar->self()->getStartLocation());
