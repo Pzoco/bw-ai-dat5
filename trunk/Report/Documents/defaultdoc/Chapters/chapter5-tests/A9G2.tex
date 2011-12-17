@@ -23,6 +23,7 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 
 %%%%%AVERAGE%%%%%
 \begin{centering}
+\begin{table}
  \begin{tabular}{|l|c|c|c|}
 	\multicolumn{4}{c}{Average results from test 1.1} \\
 	\hline
@@ -31,7 +32,10 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 		392,71 & 337,26 & 4,79 & 7,51 \\
 	\hline
 \end{tabular}
-\end{centering}\\
+\caption{Average numbers of A9G2}
+\label{test1.1}
+\end{table}
+\end{centering}
 %%%AVERAGE%%%
 \newpage
 By comparing the potential field data in winning streaks could tell us how the agent reacts when it wins. Damage taken and damage given are self-explanatory, but the rest are all values of the potential fields. Ally is how far away each of our own vultures can be from each other, a negative value mean repulsive and a positive value mean attractive. The squad value is similar to the ally value but the squad means the center point in the group of units. The maximum distance is the distance to an enemy, the value is only for the potential fields and not real distance to the enemies. Cooldown is when the vultures have fired they use the cooldown value if they should be attracted to the enemy or not and lastly the edges are how attractive or repulsed the vultures are to the edges, and just as before, negative values means repulse and positive values mean attractive. 
