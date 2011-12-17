@@ -6,20 +6,24 @@
 	by another manager. The following subsections will explain the different managers.
 	
 	\subsection*{Tactics Manager}
-		This manager is responsible managing our offensive units in and out of small scale combat.
+		This manager is responsible for managing our offensive units in and out of small scale combat. It manages the units by managing squads of different 
+		units.
 	\subsection*{Production Manager}
-		A manager which is responsible for producing the right units either according to a build order or what is needed
+		A manager which is responsible for producing units, buildings, upgrading tech and research tech. The manager will be able to 
+		know what to build by following build orders.
 	\subsection*{Scouting Manager}
-		The Scouting Manager keeps track of the opponent, where he spawns and how threatening he is.
+		The Scouting Manager keeps track of the opponent. It saves every enemy it have seen and is responsible for scouting the enemy's spawn position and 
+		what they are building.
 	\subsection*{Strategy Manager}
-		A manager which is responsible for taking the right high-level decisions based on the information we have.
+		A manager which is responsible for taking the right high-level decisions based on the information we have. These decisions can be like 
+		setting the Tactics Manager to attack the enemy or set the production manager to change build order.
 	\subsection*{Worker Manager}
-		This manager sets the workers to work either by mining minerals, constructing buildings or another decision.
+		This manager sets the workers to work at either mining minerals or gas, scouting, construction of buildings or another task.
 
 	\subsection{Managers in Game Scenario}
-		The game starts and the Production Manager starts following the build order which starts with producing of scvs. Every time a scv is created the 
-		Worker Manager sets the workers to a free mineral patch. The Scouting Manager sends out a scv for scouting the opponents base. The scout 
+		The game starts and the Production Manager starts following the build order which starts with producing of SCVs. Every time a SCV is created the 
+		Worker Manager sets the workers to a free mineral patch. The Scouting Manager sends out a SCV for scouting the opponents base. The scout 
 		finds the base and the Strategy Manager still predicts that the threat level is low. The Production Manager still follows the build order and now 
-		we got marines assigned to a Tactics Manager. The Scout Manager send out another scv, but this one is killed before reaching the base of the 
+		we got marines assigned to a Tactics Manager. The Scout Manager send out another SCV, but this one is killed before reaching the base of the 
 		opponent. The Strategy Manager sets the threat level to high and this makes the Production Manager stop producing workers and only offensive units. 
 		The opponent are doing an attack and the Tactics Manager is microing the units, which defeats the enemies.
