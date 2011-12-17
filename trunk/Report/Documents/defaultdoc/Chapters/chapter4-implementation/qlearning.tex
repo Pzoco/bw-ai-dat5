@@ -1,146 +1,40 @@
 \newpage
-
 \section{$ \hat{Q}$-Learning}
 
-In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then we go through all the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\nolinebreak
+In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then we go through all the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\\
 
-\subsection{ReinforcementLearning Class}
+The $ReinforcementLearning$ class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing). Further detail of the class implementation can be found on the appendix (REF!!!!!!!!). 
 
-This class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing).
+\subsection{$\hat{Q}_f$ Decision}
 
-\subsubsection{Field Summary}
+Throughout the game, the squad management uses the $\hat{Q}_f$ method \\
+$GetBestPositionBasedOnQPotential$ in order to select the next action. It starts with saving the value off all the derivatives ($\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$). This part is explained in detail in the implementation for every one of the potential fields. \\
 
-\begin{centering}
- \begin{tabular}{|l|p {10cm}|}
- 	\hline
- 	double const  &  $alpha$\linebreak  The $\alpha$ value of the $\hat{Q}_f$ function updating rules. \\
- 	\hline
- 	double const &  $gamma$ \linebreak The $\gamma$ value of the $\hat{Q}_f$ function updating rules. \\
- 	\hline
- 	double const  &  $startingEnemies$\linebreak  Number of enemy units (manual input).\\
- 	\hline
- 	double const  &  $startingEnemyMaxHealth$\linebreak  Maximum Enemy Health (manual input).\\
- 	\hline
- 	double const  &  $startingUnits$\linebreak  Number of units (manual input).\\
- 	\hline
- 	double const  &  $startingUnitMaxHealth$\linebreak  Maximum Health (manual input).\\
- 	\hline
- 	double const  &  $c1$\linebreak  Reward function's $C_1$ value, set to -180, coefficient for the number of units. \\
- 	\hline
- 	double const  &  $c2$\linebreak  Reward function's $C_2$ value, set to -1, coefficient for the amount of health lost.\\
- 	\hline
- 	double const  &  $c3$\linebreak  Reward function's $C_3$ value, set to 2, coefficient for the damage dealt. \\
- 	\hline
- 	double const  &  $c4$\linebreak  Reward function's $C_4$ value, set to 40, coefficient for the number of kills.\\
- 	\hline
- 	double const  &  $c5$\linebreak  Reward function's $C_5$ value, set to -0.025, coefficient for the frame count inside a game (time).\\
- 	\hline
- 	double[ ] &  $liveBuffer$\linebreak  Array used for saving the different $\hat{Q}_f$ updating values, its purpose is to optimize the test d data saving (to files) to only a few occurrences throughout the game. \\
- 	\hline
- 	int &  $liveCount$\linebreak  Counter for controlling the $liveBuffer$.\\
- 	\hline
- 	struct Weights & \_$weights$\{double FORCEALLY, double FORCESQUAD, double FORCEMAXDIST, double FORCECOOLDOWN, double FORCEEDGE\}\linebreak  Struct used to save all the values of the $f_i$'s in the $\hat{Q}_f$ function throughout all the calculations in the game. \\
- 	\hline
-\end{tabular}
-\end{centering}
+\begin{Sourcecode}[caption=Ally units]
+_parameters.dua = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
+int useAlly = 0;
+if(_parameters.da < _variables.ALLYDISTANCE_CONSTANT)
+	useAlly = 1;
 
-%____________________________________________________________________________________________________
-\pagebreak
-\subsubsection{Method Summary}
+ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - _parameters.dua)*useAlly;
+(*@\lnote@*)allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
+\end{Sourcecode}	
 
-The methods mention below cover the calculations for the updating functions and reward function mentioned in section LINK!!!!; along with all the methods necessary for data control between classes and file management between iterations of the game. 
+Every time a potential field is calculated we save the values that correspond to the derivative, in the code shown before for the Ally Units potential the derivative corresponds to the value of $allyQ$ in \lnnum{1}. We do the same thing to calculate the rest of the derivatives ($edgeQ$, $squadQ$, $coolQ$, $maxdistQ$). An finally just saving them for the future update calculations.\\ 
 
-
-\begin{centering}
- \begin{tabular}{|l|p {11cm}|}
-	
-	\hline
-	static double & \textbf{CalculateTheta(double theta, double reward, double currQ, double nextQ, double derivative)}\linebreak Returns the value of the updating rule for the current coefficient $f_i$ of the $\hat{Q}_f$ function.\\
-	
-	\hline
-        static double & \textbf{CalculateReward(std::set$<$BWAPI::Unit*$>$squad)}\linebreak Returns the value of the reward function $R(s) = C_1 numberOfUnits  +  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills 	+  C_5 time$.\\
-     
-     \hline
-        static void & \textbf{LoadWeightsFromFile()}\linebreak Loads the weights ($f$) of the $\hat{Q}_f$ function into the \_\emph{weights} field.\\
-	
-	\hline
-        static void & \textbf{SaveCurrentWeightsToFile()}\linebreak Saves the last weights ($f$) of the $\hat{Q}_f$ function into the weight's file.\\
-   
-    \hline
-       static void & \textbf{WriteLiveValue(double value)}\linebreak Writes a value into the array $liveBuffer$ for future use in the calculations.\\
-	
-	\hline
-        static double* & \textbf{GetLiveBuffer()}\linebreak Returns the $liveBuffer$ array. \\
-	
-	\hline
-        static int & \textbf{GetLiveCount()}\linebreak Returns the $liveCount$ value that indicates how many numbers have been saved in the $liveBuffer$.\\
-        
-	\hline
-        static void & \textbf{ClearLiveBuffer()}\linebreak Clears the current values in the $liveBuffer$ and initializes $liveCount$ to 0.\\
-	
-	\hline
-        static void & \textbf{WriteToDataFiles()}\linebreak Saves game data into files for future analysis. It saves the game count, remaining health, remaining enemy health, remaining squad size, remaining number of enemies. It is only to be used at the end of each game.\\
-	
-	\hline
-        static double & \textbf{GetForceAlly()}\linebreak Returns the value of \_\emph{weights.FORCEALLY}.\\
-	
-	\hline
-        static double & \textbf{GetForceSquad()}\linebreak Returns the value of \_\emph{weights.FORCESQUAD}.\\
-	
-	\hline
-        static double & \textbf{GetForceMaxDist()}\linebreak Returns the value of \_\emph{weights.FORCEMAXDIST}.\\
-	
-	\hline
-        static double & \textbf{GetForceCooldown()}\linebreak Returns the value of \_\emph{weights.FORCECOOLDOWN}.\\
-	
-	\hline
-        static double & \textbf{GetForceEdge()}\linebreak Returns the value of \_\emph{weights.FORCEEDGE}.\\
-	
-	\hline
-        static void & \textbf{SetForceAlly(double ally)}\linebreak Sets the value of \_\emph{weights.FORCEALLY} to $ally$.\\
-	
-	\hline
-        static void & \textbf{SetForceSquad(double squad)}\linebreak Sets the value of \_\emph{weights.FORCESQUAD} to $squad$.\\
-	
-	\hline
-        static void & \textbf{SetForceMaxDist(double mde)}\linebreak Sets the value of \_\emph{weights.FORCEMAXDIST} to $mde$.\\
-	
-	\hline
-        static void & \textbf{SetForceCooldown(double cool)}\linebreak Sets the value of \_\emph{weights.FORCECOOLDOWN} to $cool$.\\
-	
-	\hline
-        static void & \textbf{SetForceEdge(double edge)}\linebreak Sets the value of \_\emph{weights.FORCEEDGE} to $edge$.\\
-	
-	\hline
-\end{tabular}
-\end{centering}
-
-
-%Note that we assign values now to the coefficients of the reward function we designed (link to reward function in design!!!!!!!!!!!!!!!!!!!!!). This values  
-
-\pagebreak
-\subsubsection{Method Detail}
-
-\textit{CalculateTheta}\\
-
-This method simply applies the formula explained before in $\hat{Q}$ learning (LINNK!!!!!!). It corresponds to the updating rule for Q-learning function approximation considering temporal difference.\\
-
-\begin{Sourcecode}[caption=CalculateTheta Method]
-double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative)
-{
-	(*@\lnote@*)double newtheta = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
-	return newtheta;
-}
+\begin{Sourcecode}[caption=Saving the values of each derivative]
+		StarcraftAI::reinforcementLearning.WriteLiveValue(allyQ);
+		StarcraftAI::reinforcementLearning.WriteLiveValue(squadQ); 
+		StarcraftAI::reinforcementLearning.WriteLiveValue(maxdistQ);
+		StarcraftAI::reinforcementLearning.WriteLiveValue(coolQ);
+		StarcraftAI::reinforcementLearning.WriteLiveValue(edgeQ);
 \end{Sourcecode}
 
-In section (LINK AGAIN) there are several different formulas for updating each coefficient in the $\hat{Q}_f$ function, but those differences are external to this class. Therefore, the formula directly translated in \lnnum{1} is the general updating rule. The specific $\hat{Q}$ value, current coefficient and the rest of the parameters are calculated separately in the $StarcraftAI$ class because we need them in every frame trough the game. \\
+After saving all the derivatives values for the updating rules, continues with the calculations for the $\hat{Q}_f(a,s)$ as shown before in the potential fields section (LINK). Finally it calculates the value of $max\hat{Q}_f(a',s'))$. The code used for this calculation follows the same pattern explained for the $\hat{Q}_f(a,s)$ function, the only difference being that the center point the previously calculated $\hat{Q}_f(a,s)$.
 
-%____________________________________________________________________________________________
-\begin{flushleft}
-\textit{CalculateReward}
- \end{flushleft}
+\subsection{Reward Function}
  
- This method applies the formula also explained in section LINK!!! for calculating a reward. This method is to be used form the $StarcraftAI$ class since its also needed in various frames for calculating the parameters passed to the above method ($CalculateTheta$).\\
+\textit{CalculateReward Method}: This method applies the formula explained in section LINK!!! for calculating a reward. This method is called through several frames in the game to calculate the reward value needed for the update function methods.\\
 
 \begin{Sourcecode}[caption=CalculateReward Method]
 double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
@@ -183,7 +77,6 @@ double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 	(*@\lnote@*)return reward/1000;
 }
 \end{Sourcecode}
-
 This method begins with the initialization of all the values needed for the reward formula (contained in section \lnnum{1}). The values use some of the already indicated constants in the class fields (view the Field Summary of this section). \\
 
 In section \lnnum{2}, we obtain the array of all the enemy players ($enemies$) and create an array of saving all the enemy units ($enemyUnits$). Then we iterate through the enemy players and save each of their units in the $enemyUnits$ array also counting the $numberOfEnemies$. \\
@@ -192,5 +85,67 @@ In section \lnnum{3}, we iterate through the $squad$ (recieved as a parameter) t
 
 Then we use all the previous calculated values to evaluate the reward function in \lnnum{4}. Note that we already indicated in the Field Summary which constant value we used for each coefficient. We chose those specific values because they seem to reflect a reward/punishment value correspondent to what we want our agent to learn. Finally, also note that we use this reward value scaled, or reduced (as observed in \lnnum{5}), to impact the rate of change of the updating formulas and reduce it slightly. \\
 
+\subsection{Updating Rules}
 
-\subsection{StarcraftAI Class}
+\textit{CalculateTheta Method}: This method simply applies the formula explained before in $\hat{Q}$ learning (LINNK!!!!!!). It corresponds to the updating rule for Q-learning function approximation considering temporal difference.\\
+
+\begin{Sourcecode}[caption=CalculateTheta Method]
+double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative)
+{
+	(*@\lnote@*)double newtheta = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
+	return newtheta;
+}
+\end{Sourcecode}
+
+In section (LINK AGAIN) there are several different formulas for updating each coefficient in the $\hat{Q}_f$ function, but that distinction between updating rules is external to the $ReinforcementLearning$ class. Therefore, the formula directly translated in \lnnum{1} is the general updating rule. The specific $\hat{Q}$ value, current coefficient and the rest of the parameters are calculated separately because we need them in every frame trough the game. \\
+
+\subsubsection{Calling the Updating Rules}
+
+\begin{Sourcecode}[caption=Calculations for the Updating Function Values]
+if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
+		
+		double* liveBufferPointer = StarcraftAI::reinforcementLearning.GetLiveBuffer(); 
+		int liveCount = StarcraftAI::reinforcementLearning.GetLiveCount(); 
+		StarcraftAI::reinforcementLearning.ClearLiveBuffer(); 
+	
+		double edge, cool, mde, squad, ally, currQ, nextQ, reward; 
+
+		for(int i=0; i<liveCount; i++){
+			switch(i%8)
+				{
+				case 0:
+					ally = liveBufferPointer[i];
+					break; 
+				case 1:
+					squad = liveBufferPointer[i];
+					break; 
+				case 2:
+					mde = liveBufferPointer[i];;
+					break;
+				case 3:
+					cool = liveBufferPointer[i];
+					break; 
+				case 4:
+					edge = liveBufferPointer[i];
+					break; 
+				case 5:
+					currQ = liveBufferPointer[i];
+					break; 
+				case 6:
+					nextQ = liveBufferPointer[i];
+					break; 
+				case 7:
+					reward = liveBufferPointer[i];
+
+					_thetas.edge = ReinforcementLearning::CalculateTheta(_thetas.edge,reward,currQ,nextQ,edge);
+					_thetas.cool = ReinforcementLearning::CalculateTheta(_thetas.cool,reward,currQ,nextQ,cool);
+					_thetas.mde = ReinforcementLearning::CalculateTheta(_thetas.mde,reward,currQ,nextQ,mde);
+					_thetas.squad = ReinforcementLearning::CalculateTheta(_thetas.squad,reward,currQ,nextQ,squad);
+					_thetas.ally = ReinforcementLearning::CalculateTheta(_thetas.ally,reward,currQ,nextQ,ally);
+					break;
+				default:
+					break; 
+			}
+		}
+	}
+\end{Sourcecode}
