@@ -1,29 +1,5 @@
-%%Comparing the winning streak%%%
-\begin{centering}
-\begin{table}
 
- \begin{tabular}{|c|c|c|c|c|c|c|}
-	\multicolumn{4}{c}{A2G9 winning streak 1} \\
-	\hline
-	Damage taken & Damage given & Ally & Squad & Maximum dist. & Cooldown & Edge \\
-	\hline
-		398&480& 1.40801e+006&1.574e+006&-761798&281321&298668\\
-		362&480&1.40872e+006&1.57429e+006&-756848&287031&305837\\
-		400&480&1.4091e+006&1.57471e+006&-752924&288704&310040\\
-		400&420&1.40933e+006&1.57481e+006&-749240&288771&312032\\
-		400&360&1.40947e+006&1.57496e+006&-745253&289079&313754\\
-		400&400&1.40982e+006&1.57511e+006&-742978&290117&314484\\
-		400&440&1.40994e+006&1.57522e+006&-739405&290281&316040\\
-		368&480&1.41033e+006&1.57547e+006&-733273&293577&323478\\
-		282&480&1.4105e+006&1.57584e+006&-802858&293081&311030\\
-	\hline
-\end{tabular}
-
-	\label{winning_streak_1.1}
-	\caption{First winning streak of A2G9}
-\end{table}
-\end{centering}
-The table \ref{winning_streak_1.1} shows some numbers when the agent have had a winning streak. One can see that the damage given are very high and the ones with 480 in damage given is when the vultures have won over the 12 marines. The values have been saved from the agent in the iterations 39484 to 39502. By looking at the numbers in ally and squad we can see that the units like to stick to each other, in other words they like to team up. The reinforcement learning have changed the values and it have found out that sticking together is better than dealing with a bunch of marines on it's own. The maximum distance, which means the attractive level towards the marines, are very high in a negative value which makes them very attracted towards the marines and in other words very aggressive. 
+The table \ref{winning_streak_A2G9_1.1} shows some numbers when the agent have had a winning streak. One can see that the damage given are very high and the ones with 480 in damage given is when the vultures have won over the 12 marines. The values have been saved from the agent in the iterations 208280 to 208288. By looking at the numbers in ally and squad we can see that the units like to stick to each other, in other words they like to team up. The reinforcement learning have changed the values and it have found out that sticking together is better than dealing with a bunch of marines on its own. The maximum distance, which means the attractive level towards the marines, are very high in a negative value which makes them very attracted towards the marines and in other words very aggressive. 
 
 
 
@@ -31,25 +7,6 @@ The table \ref{winning_streak_1.1} shows some numbers when the agent have had a 
 
 
 
-\begin{centering}
-\begin{table}
- \begin{tabular}{|c|c|c|c|c|c|c|}
-	\multicolumn{4}{c}{A2G9 winning streak 2} \\
-	\hline
-	Damage taken & Damage given & Ally & Squad & Maximum dist. & Cooldown & Edge \\
-	\hline
-			374&480&894888&4.65666e+006&-1.94865e+006&12333.4&-96592.9\\
-			238&480&895250&4.65597e+006&-1.93662e+006&14373.5&-92902.4\\
-			400&300&893479&4.65594e+006&-1.99003e+006&12629.4&-114838\\
-			398&480&892553&4.65602e+006&-2.00792e+006&12309.4&-119357\\
-			400&280&892857&4.6556e+006&-1.99505e+006&12454.5&-116666\\
-			400&480&892257&4.6547e+006&-2.0309e+006&11716.2&-124105\\
-	\hline
-\end{tabular}
-	\label{winning_streak_1.2}
-	\caption{Second winning streak of A2G9}
-	\end{table}
-\end{centering}
-The table \ref{winning_streak_1.2} also shows a winning streak but this time is in the early stages this is only a cut out from 1580 to 1595 iterations to compare the numbers with the later stages in winning streak tests \ref{winning_streak_1.1}, than the early stages here in test \ref{winning_streak_1.2}. One can see that the numbers differs in many ways, ally is not that high as it was in the previous test, but then the squad values are high but still not as high as from the other test \ref{winning_streak_1.1}. The maximum distance is repulsed from the enemy, and by looking at the values of the edges the vultures are attracted to the cliffs and edges and repulsed by the marines. The cooldown is not that interesting to talk about it has the same drop in value as the other values.
+The table \ref{winning_streak_A2G9_1.2} also shows a winning streak but this time is in the early stages this is only a cut out from 40081 to 40086 iterations to compare the numbers with the later stages in winning streak tests \ref{winning_streak_A2G9_1.1}, than the early stages here in test \ref{winning_streak_A2G9_1.2}. One can see that the numbers differs in many ways, ally is not that high as it was in the previous test, but then the squad values are high but still not as high as from the other test \ref{winning_streak_1.1}. The maximum distance is repulsed from the enemy, and by looking at the values of the edges the vultures are attracted to the cliffs and edges and repulsed by the marines. The cooldown is not that interesting to talk about it has the same drop in value as the other values.
 
 %%Comparing the winning streak%%%
