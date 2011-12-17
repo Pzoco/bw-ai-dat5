@@ -6,13 +6,27 @@
 		The production manager is responsible for producing units, constructing buildings and researching tech. Every time a new production facility or 
 		a research facility is produced it will be saved here, so we are able to use them later. 
 		The tasks the production manager have to do are passed from a 
-		class called BuildOrderHandler, which is responsible for handling buildorders.
+		class called BuildOrderHandler, which is responsible for handling build orders.
 		\subsubsection*{BuildOrderHandler}
-			This class contains the buildorders the bot can use and passes the items as tasks for the production manager. A BuildOrder contains a list of 
-			BuildOrderItems, which all contains a thing that should be done and one or more conditions before this can be done. 
-			There are 3 types of conditions, SupplyCondition, ThreatLevelCondition and UnitProductionCondition. The different conditions that have 
-			to be fulfilled for the conditions are: A certain supply count have to be reached, a certain threatlevel have to be reached and a certain 
-			amount of units or buildings have to be present in the army. The following code snippet shows the main loop of the BuildOrderHandler. 
+			This class contains the build orders the bot can use and passes the items as tasks for the production manager. A BuildOrder contains a list of 
+			BuildOrderItems, which can every class that inherits from this class. The items the build order can store are:
+			\begin{itemize}
+				\item BuildingItem - Contains a building to be constructed
+				\item ProductionFocusItem - Contains a new Production Focus
+				\item ResearchItem - Contains a research tech that needs to be bought
+				\item UpgradeItem - Contains an upgrade that needs to be bought
+				\item ScoutItem - Sends a SCV to scout
+				\item UnitProductionItem - Contains a unit to be produced
+			\end{itemize}
+			In the constructor of each these items conditions can be put so the item first will get carried out when the condition is fulfilled.
+			The condition we have are: 
+			\begin{itemize}
+				\item SupplyCondition - Is fulfilled when the supply is reached
+				\item ThreatLevelCondition - Is fulfilled when the threatlevel is reached
+				\item UnitProductionCondition - Is fulfilled when the number of units or buildings reaches the number specified
+			\end{itemize}
+			The following code snippet shows the main loop of the BuildOrderHandler, which goes through the items in the build order and checks if the 
+			conditions are all fulfilled.
 			
 				\begin{Sourcecode}[caption=BuildOrderHandler main loop]
 		std::list<BuildOrderItem*> items = _currentBuildOrder->GetBuildOrderItems();
