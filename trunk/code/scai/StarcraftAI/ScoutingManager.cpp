@@ -11,7 +11,7 @@ ScoutingManager::ScoutingManager()
 	enemyBaseFound=false;
 	enemyScoutFound=false;
 	spawnPredictor=BayesianNetwork("C:\\SpawnPrediction.net");
-
+	
 	TilePosition position(Broodwar->self()->getStartLocation());
 	if(position.x()>=Broodwar->mapWidth()/2 && position.y()<Broodwar->mapWidth()/2)
 	{
