@@ -35,7 +35,7 @@
 		{Vector direction relative to center}{fig:vectorsAsNumbers}{-3in}
 		\\
 		
-		\subsubsection{Two examples of potential field functions}
+		\subsubsection{Potential field basic structure}
 		Our functions will be described with the following math: \\
 		
 		Variables:\\
@@ -47,7 +47,7 @@
 		\begin{displaymath}
 			%\begin{math}
 			Attractive = \begin{cases}
-					f * c & \text{if $d < s$}\\
+					f * c & \text{if $d > s$}\\
 					0 & \text{else}
 				\end{cases}		
 			%\end{math}
@@ -56,8 +56,8 @@
 		\begin{displaymath}
 			%\begin{math}
 			Repulsive = \begin{cases}
-					0 & \text{if $d > s$}\\
-					- f * c & \text{else}
+					- f * c & \text{if $d > s$}\\
+					0 & \text{else}
 				\end{cases}		
 			%\end{math}
 		\end{displaymath}

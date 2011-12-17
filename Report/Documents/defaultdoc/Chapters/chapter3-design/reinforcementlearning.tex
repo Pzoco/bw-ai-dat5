@@ -64,13 +64,13 @@ Q learning is a temporal difference learner that \textit{does not need a model f
 
 \section{Generalization of Q-Learning}	\label{qlearning}
 
-The choice of using reinforcement learning was based on the necessity to train our AI to improve while it plays. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
-
 Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. \textit{This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form} \cite[p777]{rl}. 
+
+The choice of using reinforcement learning was based on the necessity to train our AI to improve while it plays. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
 
 \subsection{Q-Learning Functions}
 
-The starcraft environment has several factors that could be considered important for defining a moment in time; units, time, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. 
+The starcraft environment has several factors that could be considered important for defining a moment in time; units, frames, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. 
 
 \textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off between the size of the hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good approximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}
 
@@ -89,7 +89,7 @@ The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are
 
 \subsubsection{Function Approximation}
 
-After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function basically takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
+After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
 
 $\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due)$ \\ 
 
@@ -174,7 +174,7 @@ We created a reward function that takes into consideration all the factors to gr
 
 $R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time$ \\ 
 
-We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 maximumTime$, and $maximumTime$ being the number of time frames for a manually defined limit (20-30 seconds). 
+We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
 
-\subsection{Q-Learning Conclusions}
-We have looked upon a few different learning methods and have decided that the approximation of q-learning is what fits the best to our agent, because starcraft would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.
+%\subsection{Q-Learning Conclusions}
+%We have looked upon a few different learning methods and have decided that the approximation of q-learning is what fits the best to our agent, because starcraft would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.
