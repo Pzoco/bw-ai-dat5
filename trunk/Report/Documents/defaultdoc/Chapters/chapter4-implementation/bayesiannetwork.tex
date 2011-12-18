@@ -1,5 +1,5 @@
 \section{Class BayesianNetwork}
-	For handling Bayesian networks we use the Hugin API (see reference \cite{hugin_api}) which can handle loading networks, inserting evidence, and do other manipulations of .net files. The way to insert evidence into the nodes can be a hard task because many steps are needed. To make it easier for classes to use the networks we wrote a class called BayesianNetwork.
+	For handling Bayesian networks we use the Hugin API (see reference \cite{hugin_api}) which can handle loading networks, inserting evidence, and do other manipulations of .net files. The way to insert evidence into the nodes can be a hard task because many steps are needed. To make it easier for classes to use the networks we wrote a class called BayesianNetwork.\\
 
 	When a class needs a Bayesian network it uses this class. The constructor takes a file name, which then loads the given 
 	Bayesian network. The class also contains methods for printing nodes, retracting evidence, and inserting of evidence, and getting the probability of a state. 

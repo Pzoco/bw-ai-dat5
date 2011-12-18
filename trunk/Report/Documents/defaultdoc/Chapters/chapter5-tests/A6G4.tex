@@ -3,8 +3,9 @@
 In this test we are using the following values in the table T5-4. Here we try with different values in the learning algorithm to see which ones would fit the best and which values make the agent learn or converge the fastest.
 
 
-\begin{centering}
 \begin{table}[H]
+\begin{centering}
+
  \begin{tabular}{|c|c|c|}
 	\hline
 		Alpha value ($\alpha$) & Gamma value ($\gamma$) & Iterations\\
@@ -14,8 +15,9 @@ In this test we are using the following values in the table T5-4. Here we try wi
 \end{tabular}
 \label{a6g4_table}
 \caption{Alpha and Gamma values for the learning algorithm}
-\end{table}
 \end{centering}
+
+\end{table}
 
 
 %Damage given and taken
@@ -32,8 +34,9 @@ In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $
 
 
 %%%%%AVERAGE%%%%%
-\begin{centering}
 \begin{table}
+\begin{centering}
+
  \begin{tabular}{|l|c|c|c|}
 	\multicolumn{4}{c}{Average results from test 1.2} \\
 	\hline
@@ -44,8 +47,9 @@ In figure \ref{fig:a6g4_damage} just as before but with different $\alpha$ and $
 \end{tabular}
 \caption{Average numbers of A6G4}
 \label{test1.2}
-\end{table}
 \end{centering}
+
+\end{table}
 %%%AVERAGE%%%
 
 Comparing the tests \ref{test1.1} and \ref{test1.2} one can see that the agent needs several more iterations than it has right now. Since it's not converging from just 40000 iterations. The next tests will be with around 100000 iterations. After that amount of time we can be more certain that it's near converging. The average values are almost the same which tells us that either it needs way more iterations or the small change in the values does not give a huge difference.
