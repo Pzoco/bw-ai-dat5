@@ -1,156 +1,218 @@
-\newpage
-\section{$ \hat{Q}$-Learning}
+\section{Agent Learning}\label{agent_learning}
+The purpose of agent learning is to be able to adjust each forces from the potential field, to help improve its performance, and learn how to fight efficiently.
+This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analysed to evaluate its relevance. \\
 
-In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then we go through all the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\\
+\subsection*{Neural Networks}
 
-The $ReinforcementLearning$ class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing). Further detail of the class implementation can be found on the appendix (REF!!!!!!!!). 
+Neural networks cover different learning methods that an agent can execute to approximate values or target functions. They are ideal for interpreting complex real world data and wide known for being one of the most effective learning methods. This methods can be used to teach behaviour patterns in a human-like way. This because neural networks are biologically based in how the brain obtains, stores and uses new information.
 
-\subsection{$\hat{Q}_f$ Decision}
+They model a very complex web of interconnected nodes that take large sets of numbers and reduces all the input into one single number for output. This network is constructed of several individual neurons. Each neuron takes 3 numbers as input and delivers one as an output. And with this principle, several input numbers are forwarded through all the interconnections (both expansions and simplifications) until one final choice or signal is produced. 
 
-Throughout the game, the squad management uses the $\hat{Q}_f$ method \\
-$GetBestPositionBasedOnQPotential$ in order to select the next action. It starts with saving the value off all the derivatives ($\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$). This part is explained in detail in the implementation for every one of the potential fields. \\
+We have chosen not to use a neural network, and the main reason is that neural networks are very slow. The complication with neural network is the number of calculations that are made for making every decision grows exponentially in time complexity. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A less analytic generalization method would be a better approach because it approximates the correct decision and doesn't have to compute the entire state-space in a game. 
 
-\begin{Sourcecode}[caption=Ally units]
-_parameters.dua = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
-int useAlly = 0;
-if(_parameters.da < _variables.ALLYDISTANCE_CONSTANT)
-	useAlly = 1;
+\subsection*{Reinforcement Learning}
 
-ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - _parameters.dua)*useAlly;
-(*@\lnote@*)allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
-\end{Sourcecode}	
+Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value that grades the result of any action. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. 
 
-Every time a potential field is calculated we save the values that correspond to the derivative, in the code shown before for the Ally Units potential the derivative corresponds to the value of $allyQ$ in \lnnum{1}. We do the same thing to calculate the rest of the derivatives ($edgeQ$, $squadQ$, $coolQ$, $maxdistQ$). An finally just saving them for the future update calculations.\\ 
+There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.
 
-\begin{Sourcecode}[caption=Saving the values of each derivative]
-		StarcraftAI::reinforcementLearning.WriteLiveValue(allyQ);
-		StarcraftAI::reinforcementLearning.WriteLiveValue(squadQ); 
-		StarcraftAI::reinforcementLearning.WriteLiveValue(maxdistQ);
-		StarcraftAI::reinforcementLearning.WriteLiveValue(coolQ);
-		StarcraftAI::reinforcementLearning.WriteLiveValue(edgeQ);
-\end{Sourcecode}
+\subsubsection{Markov Desicion Process} \label{mdp}
 
-After saving all the derivatives values for the updating rules, continues with the calculations for the $\hat{Q}_f(a,s)$ as shown before in the potential fields section (LINK). Finally it calculates the value of $max\hat{Q}_f(a',s'))$. The code used for this calculation follows the same pattern explained for the $\hat{Q}_f(a,s)$ function, the only difference being that the center point the previously calculated $\hat{Q}_f(a,s)$.
+With the intent of further expanding on the RL capabilities, we need a way to define the task of the agent. A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+1}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} 
 
-\subsection{Reward Function}
+With this we almost have enough information to build the problem structure of the agent. Then we need to consider a function that describes the  \emph{total cumulative reward} of a set of actions. It could be any function: discounted cumulative reward ($\sum^{\infty}_{i=0}\gamma^ir_{t+i}$), average reward($\lim_{h\to\infty}\frac{1}{h}\sum^{h}_{i=0}r_{t+i}$), finite horizon reward ($\sum^{h}_{i=0}r_{t+i}$). This reward function varies depending of what the agent needs to learn, the most common example is the discounted cumulative reward which is just the sum of all the rewards with a discount factor ($\gamma$) that progressively reduces the importance of past experiences. 
+
+Once we have the reward function, we can define the learning task of the agent. In passive RL it is to find a \emph{utility function} or how good a certain policy is. In active RL is to find a policy that maximizes the value of the reward function, in other words, finding the \emph{optimal policy}.\cite{ml_tom_mitchel}
+
+
+\subsubsection{Direct Utility Estimation \& Bellman Rules}
+
+In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. Then at the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It's basically a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy \cite{rl}:\\
+
+
+\begin{equation}
+U^\pi(s) = R(s)+\gamma\sum_{s'}T(s,\pi(s),s') U^\pi(s')
+\end{equation}
+The problem with this technique is that it ignores the relationship between the states (they are not independent form each other), and it only learns at the end of a trial, therefore missing several opportunities for learning and converging very slowly\cite{rl}.
+
+\subsubsection{Adaptive Dynamic Programming}
+
+Searching for a way of considering the constraints between states, we come across Adaptive Dynamic Programming (ADP). This is an agent that learns the transition model for an environment while solving the MDP. We call transition model the function that evaluates form the current state and action to the new state. In a fully observable environment, this means that you use a transition model and the observed rewards into the Bellman equations to calculate the utilities of a state. In simpler terms, it means that while learning each step (state-action pair) you keep track of the outcome and then save it into a table of probabilities. At the end you have a comprehensive probability table for all the transitions, in this way you know a reliable model for knowing what is going to happen with every state-action pair\cite{rl}.
+
+But we have to take into consideration all the possible states in a game. We call all the possible states that can be achieved by any action throughout the entire game the state space. The problem is it is impossible to calculate ADP tables for large state spaces, specially if you have to run several trials to exhaust every reasonable possibility for every transition. Therefore not usable for our agent. 
+
+\subsubsection{Temporal Difference Learning}
+
+The combination of the previous two methods, \textit{using the observed transitions to adjust the values of the observed states so that they agree with the constraint equations}\cite[p767]{rl}, produces the following rule (to be applied every time a transition occurs form state $s$ to $s'$):\\
+
+\begin{equation}
+U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))
+\end{equation}
+
+This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$) it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. \cite{rl} 
+
+The second is the appearance of $\alpha$, also known as the learning rate parameter; how much it learns from an specific trial. Normally the value of  $\alpha$ would be something like: $\frac{1}{1+numberOfVisits(s,a)}$ \cite[p382]{ml_tom_mitchel}. Which then decreases the magnitude of the update proportionally to how many times you visited a state-action pair. 
+
+\subsubsection{Q Learning}
+
+All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is basically:s\cite{rl}
+
+\begin{equation}
+U(s) = max_a(Q(s,a))
+\end{equation}
+
+Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule:\cite{rl} 
+
+\begin{equation}
+Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]
+\end{equation}
+
+Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}. It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent \cite[p776]{rl} . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
+
+\subsubsection{Generalization of Q-Learning}	
+
+Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. \textit{This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form} \cite[p777]{rl}. 
+
+The choice of using reinforcement learning was based on the necessity to train our AI to improve while it plays. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
+
+%______
+
+\textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off between the size of the hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good approximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}
+
+%_________
+
+We use the updating rule or $\hat{Q}$-learning equation that evolves from the Q learning temporal difference formula, now taking into consideration the values of the function approximation:  \cite{rl} \\ 
  
-\textit{CalculateReward Method}: This method applies the formula explained in section LINK!!! for calculating a reward. This method is called through several frames in the game to calculate the reward value needed for the update function methods.\\
+\begin{equation}
+f_i \leftarrow f_i + \alpha [ R(s) + \gamma(max\hat{Q}_f(a',s'))-\hat{Q}_f(a,s) ] \frac{\partial \hat{Q}_f(a,s)}{\partial f_i}
+\end{equation}
 
-\begin{Sourcecode}[caption=CalculateReward Method]
-double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
-{
-(*@\lnote@*)//_________________________________________________________	
-	double reward = 0.0;
-	double maxEnemieHealth = startingEnemies * startingEnemyMaxHealth;
-	double maxUnitHealth = startingUnits * startingUnitMaxHealth;
-	double enemyCurrentHealth = 0.0;
-	double currentUnitHealth = 0.0;
-	double numberOfEnemies = 0.0;
-	double squadSize = 0.0;
-(*@\lnote@*)//_________________________________________________________
-	std::set<BWAPI::Player*> enemies = BWAPI::Broodwar->enemies();	
-	std::set<BWAPI::Unit*> enemieUnits;
+\begin{flushleft}
+Where $f_i$ is each one of the coefficients in the Q-approximation. In the context of our  $\hat{Q}_f$ function, it would represent the forces: $f_{MDP}$, $f_{AU}$, $f_{EAC}$, $f_{S}$, $f_{CD}$. The exact same forces that represent each one of the potential fields.  
+\end{flushleft} 
 
-	for(std::set<BWAPI::Player*>::const_iterator i = enemies.begin(); i != enemies.end(); i++)
-	{
-		std::set<BWAPI::Unit*> tempUnits = (*i)->getUnits();
-		for(std::set<BWAPI::Unit*>::iterator j = tempUnits.begin(); j != tempUnits.end(); j++)
-		{
-			enemieUnits.insert((*j));
-			numberOfEnemies++;
-		}
-	}
-(*@\lnote@*)//_________________________________________________________
-	for(std::set<BWAPI::Unit*>::iterator j = squad.begin(); j != squad.end(); j++)
-	{
-		if((*j)->exists()) squadSize++;
-		currentUnitHealth += (double)(*j)->getHitPoints();
-	}
-(*@\lnote@*)//_________________________________________________________
-	for(std::set<BWAPI::Unit*>::iterator j = enemieUnits.begin(); j != enemieUnits.end(); j++)
-	{
-		enemyCurrentHealth += (double)(*j)->getHitPoints();
-	}	
-//_________________________________________________________
-	(*@\lnote@*)reward = c1 * (startingUnits - squadSize) + c2 * (maxUnitHealth-currentUnitHealth) + c3 * (maxEnemieHealth-enemyCurrentHealth) + c4*(startingEnemies-numberOfEnemies)+ c5*(BWAPI::Broodwar->getFrameCount());
-	
-	(*@\lnote@*)return reward/1000;
-}
-\end{Sourcecode}
-This method begins with the initialization of all the values needed for the reward formula (contained in section \lnnum{1}). The values use some of the already indicated constants in the class fields (view the Field Summary of this section). \\
+\begin{flushleft}
+$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimally) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
+\end{flushleft} 
 
-In section \lnnum{2}, we obtain the array of all the enemy players ($enemies$) and create an array of saving all the enemy units ($enemyUnits$). Then we iterate through the enemy players and save each of their units in the $enemyUnits$ array also counting the $numberOfEnemies$. \\
+\begin{flushleft}
+$\gamma$  - Is the discount factor, this determines the importance of the future rewards. Its a number, $0 < \gamma < 1$, the closest $\gamma$ gets to 1 the more it takes into account future rewards. A $\gamma$ value close to zero would maximize the immediate rewards. 
+\end{flushleft} 
 
-In section \lnnum{3}, we iterate through the $squad$ (recieved as a parameter) to count the $squadSize$ and accumulate the total $currentUnitHealth$. Similarly, in section \lnnum{4}, we iterate through the $enemieUnits$ to accumulate the total $currentEnemyHealth$.\\
+\begin{flushleft}
+$R(S)$ -  represents the reward function for the current state.
+\end{flushleft} 
 
-Then we use all the previous calculated values to evaluate the reward function in \lnnum{4}. Note that we already indicated in the Field Summary which constant value we used for each coefficient. We chose those specific values because they seem to reflect a reward/punishment value correspondent to what we want our agent to learn. Finally, also note that we use this reward value scaled, or reduced (as observed in \lnnum{5}), to impact the rate of change of the updating formulas and reduce it slightly. \\
+\begin{flushleft}
+$\hat{Q}_f(a,s)$ - Is the value of the $\hat{Q}_f$ function for the next position (one step ahead). The next position depends on the current state $s$ and the action $a$ performed by the agent from that state.
+\end{flushleft} 
 
-\subsection{Updating Rules}
+\begin{flushleft}
+$max(\hat{Q}_f(a',s'))$ - Is the highest possible $\hat{Q}_f$ value calculated from the next position (two steps ahead). The highest possible option (for every $a'$) once the current state $s$ has performed an action $a$ and is in a new state $s' = \delta(a,s)$. 
+\end{flushleft} 
 
-\textit{CalculateTheta Method}: This method simply applies the formula explained before in $\hat{Q}$ learning (LINNK!!!!!!). It corresponds to the updating rule for Q-learning function approximation considering temporal difference.\\
+\begin{flushleft}
+$\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$  - Is the partial derivative of the $\hat{Q}_f$ function with respect to the current $f_i$, in other words the variables or factors that afect only that coefficient $f_i$. And in the case of our  linear $\hat{Q}_f$ function, always a constant representing some distances in a certain state. 
+\end{flushleft} 
 
-\begin{Sourcecode}[caption=CalculateTheta Method]
-double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative)
-{
-	(*@\lnote@*)double newtheta = theta + alpha * (reward + gamma * nextQ - currQ) * derivative;
-	return newtheta;
-}
-\end{Sourcecode}
+%______
 
-In section (LINK AGAIN) there are several different formulas for updating each coefficient in the $\hat{Q}_f$ function, but that distinction between updating rules is external to the $ReinforcementLearning$ class. Therefore, the formula directly translated in \lnnum{1} is the general updating rule. The specific $\hat{Q}$ value, current coefficient and the rest of the parameters are calculated separately because we need them in every frame trough the game. \\
+In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov decision process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
 
-\subsubsection{Calling the Updating Rules}
+\section{Application of Generalization of Q-Learning}	\label{qlearning}
 
-We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames, because trying to update for every single one created a lag on the game's performance. The optimization we created for updating while still preserving the game speed is the following: 
 
-\begin{Sourcecode}[caption=Calculations for the Updating Function Values]
-(*@\lnote@*)if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
-		(*@\lnote@*)\\____________________________________________
-		double* liveBufferPointer = StarcraftAI::reinforcementLearning.GetLiveBuffer(); 
-		int liveCount = StarcraftAI::reinforcementLearning.GetLiveCount(); 
-		StarcraftAI::reinforcementLearning.ClearLiveBuffer(); 
-		\\____________________________________________
-		double edge, cool, mde, squad, ally, currQ, nextQ, reward; 
-		
-		(*@\lnote@*)for(int i=0; i<liveCount; i++){
-			switch(i%8)
-				{
-				case 0:
-					ally = liveBufferPointer[i];
-					break; 
-				case 1:
-					squad = liveBufferPointer[i];
-					break; 
-				case 2:
-					mde = liveBufferPointer[i];;
-					break;
-				case 3:
-					cool = liveBufferPointer[i];
-					break; 
-				case 4:
-					edge = liveBufferPointer[i];
-					break; 
-				case 5:
-					currQ = liveBufferPointer[i];
-					break; 
-				case 6:
-					nextQ = liveBufferPointer[i];
-					break; 
-				case 7:
-					reward = liveBufferPointer[i];
-					(*@\lnote@*)\\______________________________________
-					_thetas.edge = ReinforcementLearning::CalculateTheta(_thetas.edge,reward,currQ,nextQ,edge);
-					_thetas.cool = ReinforcementLearning::CalculateTheta(_thetas.cool,reward,currQ,nextQ,cool);
-					_thetas.mde = ReinforcementLearning::CalculateTheta(_thetas.mde,reward,currQ,nextQ,mde);
-					_thetas.squad = ReinforcementLearning::CalculateTheta(_thetas.squad,reward,currQ,nextQ,squad);
-					_thetas.ally = ReinforcementLearning::CalculateTheta(_thetas.ally,reward,currQ,nextQ,ally);
-					\\______________________________________
-					break;
-				default:
-					break; 
-			}
-		}
-	}
-\end{Sourcecode}
 
-In the first place, we make this calculations every 25 frames as shown in \lnnum{1}, trying to simulate updating once a second. Then we use some of the methods int the $ReinforcementLearning$ class (indicated in section \lnnum{2}) to call all the values that were previously saved in the data buffer. This values include all the above explained derivatives and $\hat{Q}_f$ values. We separate the values, as shown in \lnnum{3} and then save them in variables for parameter passing to the updating function. Finally in section \lnnum{4} we use the $ReinforcementLearning::CalculateTheta$ method that corresponds to each of the weights and coefficients of the new $\hat{Q}_f$. 
+\subsection{Q-Learning Functions}
+
+The starcraft environment has several factors that could be considered important for defining a moment in time; units, frames, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. We have to also consider how long is the learning time. When a function approximation reaches the optimal values or closes around them can say it converged. 
+
+%__________
+
+We combine the generalization of Q-learning with the potential fields to obtain a reasonable model of the starcraft environment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
+
+\subsubsection{State - Hypothesis Space}
+
+We define a state in our environment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. \\
+\begin{displaymath}
+                       State = \begin{cases}
+                         da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
+                      \end{cases}
+\end{displaymath}\\
+
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+
+\subsubsection{Function Approximation}
+
+After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
+
+\begin{equation}
+\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due) 
+\end{equation}
+
+This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
+
+Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (REFERENCE!!!!). 
+
+
+\subsubsection{Updating Rules}
+
+\begin{flushleft}
+So we are left with the following updating rules for each of the coefficients/forces:
+\end{flushleft} 
+
+\begin{flushleft}
+Maximum Distance Positioning 
+\begin{equation}
+f_{MDP}  \leftarrow f_{MDP}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)
+\end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+Ally Units
+\begin{equation}
+f_{AU}  \leftarrow f_{AU} + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2da - dua)
+\end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+Edges and Cliffs
+\begin{equation}
+f_{EAC}  \leftarrow f_{EAC}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2dc - duc)
+\end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+Squad 
+\begin{equation}
+f_{S}  \leftarrow f_{S}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ] (2ds - dsv)
+\end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+Cooldown
+\begin{equation}
+f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\hat{Q}_{f} (a,s) ](2de - due)
+\end{equation}
+\end{flushleft} 
+
+% \ref{mdp}
+These updating rules should eventually converge to values that are very close to the optimal Q function, considering all the restrictions for convergence. 
+
+%_______________
+
+The only difference between this process and our approximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl} Then, the final result should be the perfect magnitude for the potential fields to guide every unit's movement.
+
+% Talk about the elements i the equetion, why do it look like this? what effect do the elements have(why we go one step into the future). 
+
+\subsubsection{Reward Function}
+
+We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes by. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is.s
+\begin{equation}
+R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time
+\end{equation}
+
+We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
+
+%\subsection{Q-Learning Conclusions}
+%We have looked upon a few different learning methods and have decided that the approximation of q-learning is what fits the best to our agent, because starcraft would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.
