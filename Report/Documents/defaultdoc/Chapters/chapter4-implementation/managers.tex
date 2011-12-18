@@ -2,7 +2,7 @@
 	A manager is responsible for controlling different sections of the bot. Sometimes they still have to pass tasks to each other. Each manager has 
 	a method called \textit{Update} which is called on each frame and is used for running their code.
 	\subsection{Production Manager}
-		The production manager is responsible for producing units, constructing buildings, and researching tech. Every time a new production facility or 
+		The production manager is responsible for producing units, constructing buildings, and researching technology. Every time a new production facility or 
 		 research facility is produced it will be saved here, so we are can use them later. 
 		The tasks that the production manager is responsible for are passed from a 
 		class called BuildOrderHandler.
@@ -12,12 +12,12 @@
 			\begin{itemize}
 				\item BuildingItem - Contains a building to be constructed
 				\item ProductionFocusItem - Contains a new Production Focus
-				\item ResearchItem - Contains a research teknologi that needs to be bought
+				\item ResearchItem - Contains a research technology that needs to be bought
 				\item UpgradeItem - Contains an upgrade that needs to be bought
 				\item ScoutItem - Sends an SCV to scout
 				\item UnitProductionItem - Contains a unit to be produced
 			\end{itemize}
-			In the constructor each these items conditions will be placed so the item first will get carried out when the condition is fulfilled.
+			In the constructor each these items conditions will be placed so the item first will get carried out when the conditions are fulfilled.
 			The conditions we have are: 
 			\begin{itemize}
 				\item SupplyCondition - Is fulfilled when the supply is reached
