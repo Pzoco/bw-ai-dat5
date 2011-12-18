@@ -1,7 +1,7 @@
 \section{Spawn Prediction Test}
-In these test we wanted to make sure our spawn predicting Bayesian network had the potential to accurately predict the enemy's spawn.
-\\
-We tested our bot first against itself. This was useful because we could check two sets of data for each game ran. By default without encountering an opponent's scout our SCV would go in order to bases NE, SE, SW, NW. Our hopes were that our scout would change direction upon encountering the opponent's scout. In our test we observed that our bot's belief on enemy base position would change when encounter the opponent scout. However, the new probabilities did not effect the bot's belief enough to change the current path. This is due to the fact that we manually entered the probability tables for the Bayesian network without knowing too well what the actual probabilities were. To get the bot to better predict the enemy spawn we would have to change the probabilities probably through machine learning. 
-\\
+In these test we wanted to make sure our spawn predicting Bayesian network had the potential to accurately predict the enemy's spawn.\\
+
+We tested our bot first against itself. This was useful because we could check two sets of data for each game ran. By default without encountering an opponent's scout our SCV would go in order to bases NE, SE, SW, NW. Our hopes were that our scout would change direction upon encountering the opponent's scout. In our test we observed that our bot's belief on enemy base position would change when encounter the opponent scout. However, the new probabilities did not effect the bot's belief enough to change the current path. This is due to the fact that we manually entered the probability tables for the Bayesian network without knowing too well what the actual probabilities were. To get the bot to better predict the enemy spawn we would have to change the probabilities probably through machine learning. \\
+
 We also did some test against our bot when a human played as the other player. This way we could manipulate the time and position that our bot would encounter the opponent scout. This test had similar outcomes as when our bot played against itself. This further supports our belief that this network has potential even if it does not current function perfectly.
 
