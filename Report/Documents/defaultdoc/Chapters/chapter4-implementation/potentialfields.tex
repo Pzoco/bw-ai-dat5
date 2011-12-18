@@ -1,4 +1,3 @@
-
 \section{Implementing Potential Fields}
 	In this section we are going to take a look at the implementation of the potential field. First we will look at the main loop and the general structure. Then we move on to each part of the potential field itself.
 	
@@ -157,10 +156,10 @@ edgeQ += (2*_parameters.dc-_parameters.duc)*useEdge;
     In \lnnum{1} we use the function \textit{MathHelper::GetDistanceBetweenPositions} to get the distance between the nearest unwalkable position and the current tile. To get the nearest unwalkable position we use the built in function \textit{BWTA::getNearestUnwalkablePosition} which takes as input a position and then find the nearest unwalkable position. \\
 
 	
-	
 	Normally \textit{dc} from \lnnum{2} would be calculated in the initialization, but because \\ \textit{BWTA::getNearestUnwalkablePosition} should depend on the current tile we have to recalculate it for each tile. The reason is that for each tile the nearest unwalkable position can differ, and we need to use the same unwalkable position in the calculation of the center tile. If we didn't do this, there could be cases where 
 	we took the wrong tiles into consideration. An example could be a corner, where some tile would depend on one side, and other tiles on the other side. 
 	The \textit{Edges and cliffs} can be seen in figure \ref{fig:EC}
 
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/EdgesAndCliffs.png}
 			{Repulsion from cliffs}{fig:EC}{-3in}
+
