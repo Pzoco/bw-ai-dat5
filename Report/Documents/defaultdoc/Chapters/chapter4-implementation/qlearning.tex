@@ -102,7 +102,7 @@ In section (LINK AGAIN) there are several different formulas for updating each c
 \subsubsection{Calling the Updating Rules}
 
 We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames. Trying to update for every single one created a lag on the game's performance. The optimization we created for updating while still preserving the game speed is the following: 
-
+\pagebreak
 \begin{Sourcecode}[caption=Calculations for the Updating Function Values]
 (*@\lnote@*)if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
 		(*@\lnote@*)\\____________________________________________
@@ -152,5 +152,5 @@ We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function e
 		}
 	}
 \end{Sourcecode}
-
+\pagebreak
 In the first place, we make this calculations every 25 frames as shown in \lnnum{1}, trying to simulate updating once a second. Then we use some of the methods in the $ReinforcementLearning$ class (indicated in section \lnnum{2}) to call all the values that were previously saved in the data buffer. This values includes all the above explained derivatives and $\hat{Q}_f$ values. We separate the values, as shown in \lnnum{3} and then save them in variables for parameter passing to the updating function. Finally in section \lnnum{4} we use the $ReinforcementLearning::CalculateTheta$ method that corresponds to each of the weights and coefficients of the new $\hat{Q}_f$. 
