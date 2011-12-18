@@ -1,6 +1,7 @@
 \section{Agent Learning}\label{agent_learning}
+The purpose of agent learning is to be able to adjust each forces from the potential field, to help improve its performance, and learn how to fight efficiently.\\
 
-This section addresses various different learning techniques and methods that could be used in the AI agent. The purpose of the agent's learning is to be able to adjust the forces from the potential fields, help improve its performance, and learn how to fight efficiently. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analysed to evaluate its relevance. \\
+This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analysed to evaluate its relevance. \\
 
 \subsection*{Neural Networks}
 Neural networks cover different learning methods that an agent can execute to approximate values or target functions. They are ideal for interpreting complex real world data and wide known for being one of the most effective learning methods. This methods can be used to teach behaviour patterns in a human-like way. This because neural networks are biologically based in how the brain obtains, stores and uses new information.\\
@@ -17,7 +18,7 @@ We have chosen not to use a neural network, and the main reason is that neural n
 Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value that grades the result of any action. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. \\
 
 
-There are different RL techniques that depend on the amount of information we have available for learning. This information is anything that can be found in a state of the environment, its basically any situation that the agent could face. The different techniques can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
+There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
 
 
 \subsubsection{Markov Desicion Process} \label{mdp}
@@ -105,7 +106,7 @@ Where $f_i$ is each one of the coefficients in the Q-approximation.
 \end{flushleft} 
 
 \begin{flushleft}
-$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (see section \ref{TDE}) would (optimally) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
+$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimally) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
 \end{flushleft} 
 
 \begin{flushleft}
@@ -128,8 +129,8 @@ $max(\hat{Q}_f(a',s'))$ - Is the highest possible $\hat{Q}_f$ value calculated f
 $\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$  - Is the partial derivative of the $\hat{Q}_f$ function with respect to the current $f_i$, in other words the variables or factors that afect only that coefficient $f_i$. And in the case of our  linear $\hat{Q}_f$ function, always a constant representing some distances in a certain state. 
 \end{flushleft} 
 
-\subsubsection{Convergence in Generalization of Q-Learning}
-\label{CGQ}
+\subsubsection{Convergence in Aproximation of Q-Learning}
+
 In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov decision process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
 
 The only difference between this process and the approximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl}
@@ -153,7 +154,7 @@ We define a state in our environment as a combination of the most important fact
                       \end{cases}
 \end{displaymath}\\
 
-The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (see section \ref{cha3_variables}). 
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
 
 \subsubsection{Function Approximation}
 
@@ -165,7 +166,7 @@ After defining a state in the game we created a linear function approximation to
 
 This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
 
-Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (see section \ref{rlMethods}). 
+Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (REFERENCE!!!!). 
 
 \subsubsection{Updating Rules}
 
@@ -216,7 +217,7 @@ We created a reward function that takes into consideration all the factors to gr
 R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time
 \end{equation}
 
-We ensure that the reward complies with the convergence restrictions for Q learning(see section \ref{CGQ}). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
+We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
 
 %\subsection{Q-Learning Conclusions}
 %We have looked upon a few different learning methods and have decided that the approximation of q-learning is what fits the best to our agent, because starcraft would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.
