@@ -76,7 +76,7 @@ double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
 	(*@\lnote@*)return reward/1000;
 }
 \end{Sourcecode}
-This method begins with the initialization of all the values needed for the reward formula (contained in section \lnnum{1}). The values use some of the already indicated constants in the class fields (view the Field Summary of this section). \\
+This method begins with the initialization of all the values needed for the reward formula (contained in section \lnnum{1}). The values use some of the already indicated constants in the class fields (view the Field Summary here \ref{app:field}). \\
 
 In section \lnnum{2}, we obtain the array of all the enemy players ($enemies$) and create an array of saving all the enemy units ($enemyUnits$). Then we iterate through the enemy players and save each of their units in the $enemyUnits$ array also counting the $numberOfEnemies$. \\
 
@@ -86,7 +86,7 @@ Then we use all the previous calculated values to evaluate the reward function i
 
 \subsection{Updating Rules}
 
-\textit{CalculateTheta Method}: This method simply applies the formula explained before in $\hat{Q}$ learning \ref{rleq}. It corresponds to the updating rule for Q-learning function approximation considering temporal difference.\\
+\textit{CalculateTheta Method}: This method simply applies the formula explained before in $\hat{Q}$ learning (see reference \ref{rleq}). It corresponds to the updating rule for Q-learning function approximation considering temporal difference.\\
 
 \begin{Sourcecode}[caption=CalculateTheta Method]
 double ReinforcementLearning::CalculateTheta(double theta, double reward,double currQ, double nextQ, double derivative)

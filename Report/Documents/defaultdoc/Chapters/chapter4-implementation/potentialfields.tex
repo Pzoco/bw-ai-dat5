@@ -1,4 +1,4 @@
-\section{Implementing Potential Fields}
+\section{Implementing Potential Fields}\label{section:IMF}
 	In this section we are going to take a look at the implementation of the potential field. First we will look at the main loop and the general structure. Then we move on to each part of the potential field itself.
 	
 	\subsection{General Structure}
@@ -79,9 +79,7 @@ int useSquad = 0;
 		Afterwards we calculate the potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. \textit{\_variables.FORCESQUAD} is learned by the reinforcement learning in section \ref{section:reinforcement}. 
 		Unlike in the design we multiply useSquad on the end. This is to make it zero if we do not want to use potential field which would make the entire calculation become zero. This is way to control that the use of the potential field is not only used in \textit{Squad center} but also in all the other potential fields. \\
 		
-		\textit{squadQ} in \lnnum{4} and likewise will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement}.
-		
-		The \textit{Squad center} implemented and running can be seen in figure \ref{fig:SCA}.
+		\textit{squadQ} in \lnnum{4} and likewise will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement}. The \textit{Squad center} implemented and running can be seen in figure \ref{fig:SCA}.
 \insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
 			{Squad center}{fig:SCA}{-3in}
 			
@@ -123,7 +121,7 @@ coolQ += correctedDistance*toCool;
 	\textit{Weapon cool down} looks a lot like \textit{Maximum distance positioning} and does almost the same thing. The only difference is when they are applied. An example of \textit{Weapon cool down} can be found in figure \ref{fig:WCD}.
 	
 	\insertmarginfigure{height=1.5in}{PotentialfieldsImplementation/Weaponscooldown.png}
-		{Repulsion from Weapons cool down}{fig:WCD}{-3in}
+		{Repulsion from Weapons Cooldown}{fig:WCD}{-3in}
 
 	\subsection{Ally Units}
 		\begin{Sourcecode}[caption=Ally units]

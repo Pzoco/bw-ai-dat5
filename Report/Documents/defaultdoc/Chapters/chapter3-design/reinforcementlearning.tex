@@ -18,34 +18,29 @@ We have chosen not to use a neural networks. The main reason is that neural netw
 Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value that grades the result of any action. On a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. \\
 
 
-There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. The learning part of the algorithm is only in charge of finding the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
+There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} (see reference \cite[p764]{rl}) This implies that the environment is fully observable and the agent knows the future impact of its actions. The learning part of the algorithm is only in charge of finding the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take}  (see reference \cite[p771]{rl}). So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
 
 
 \subsubsection{Markov Desicion Process} \label{mdp}
 
-With the intent of further expanding on the RL capabilities, we need a way to define the task of the agent. A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+1}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.}\cite[p370]{ml_tom_mitchel} \\
+With the intent of further expanding on the RL capabilities, we need a way to define the task of the agent. A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+1}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.} (see reference \cite[p370]{ml_tom_mitchel}) \\
 
 
 With this we almost have enough information to build the problem structure of the agent. We need to consider a function that describes the  \emph{total cumulative reward} of a set of actions. It could be any function: discounted cumulative reward ($\sum^{\infty}_{i=0}\gamma^ir_{t+i}$), average reward($\lim_{h\to\infty}\frac{1}{h}\sum^{h}_{i=0}r_{t+i}$), finite horizon reward ($\sum^{h}_{i=0}r_{t+i}$). This reward function varies depending on what the agent needs to learn. The most common example is the discounted cumulative reward which is just the sum of all the rewards with a discount factor ($\gamma$) that progressively reduces the importance of past experiences. \\
 
 
-Once we have the reward function, we can define the learning task of the agent. In passive RL it is to find a \emph{utility function} or how good a certain policy is. In active RL is to find a policy that maximizes the value of the reward function, in other words, finding the \emph{optimal policy}.\cite{ml_tom_mitchel}\\
+Once we have the reward function, we can define the learning task of the agent. In passive RL it is to find a \emph{utility function} or how good a certain policy is. In active RL is to find a policy that maximizes the value of the reward function, in other words, finding the \emph{optimal policy}.(see reference \cite{ml_tom_mitchel})\\
 
 
 
 \subsubsection{Direct Utility Estimation \& Bellman Rules}
 
-In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. At the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It is basically a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy \cite{rl}:\\
-
-
-\begin{equation}
-U^\pi(s) = R(s)+\gamma\sum_{s'}T(s,\pi(s),s') U^\pi(s')
-\end{equation}
-The problem with this technique is that it ignores the relationship between the states (they are not independent from each other), and it only learns at the end of a trial, therefore missing several opportunities for learning and converging very slowly\cite{rl}.
+In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. At the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It is basically a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy  (see reference \cite{rl})
+The problem with this technique is that it ignores the relationship between the states (they are not independent from each other), and it only learns at the end of a trial, therefore missing several opportunities for learning and converging very slowly (see reference \cite{rl}).
 
 \subsubsection{Adaptive Dynamic Programming}
 
-Searching for a way of considering the constraints between states, we come across Adaptive Dynamic Programming (ADP). This is an agent that learns the transition model for an environment while solving the MDP. We call transition model the function that evaluates form the current state and action to the new state. In a fully observable environment, this means that you use a transition model and the observed rewards into the Bellman equations to calculate the utilities of a state. In simpler terms, it means that while learning each step (state-action pair) you keep track of the outcome and then save it into a table of probabilities. At the end you have a comprehensive probability table for all the transitions, in this way you know a reliable model for knowing what is going to happen with every state-action pair\cite{rl}.\\
+Searching for a way of considering the constraints between states, we come across Adaptive Dynamic Programming (ADP). This is an agent that learns the transition model for an environment while solving the MDP. We call transition model the function that evaluates form the current state and action to the new state. In a fully observable environment, this means that you use a transition model and the observed rewards into the Bellman equations to calculate the utilities of a state. In simpler terms, it means that while learning each step (state-action pair) you keep track of the outcome and then save it into a table of probabilities. At the end you have a comprehensive probability table for all the transitions, in this way you know a reliable model for knowing what is going to happen with every state-action pair  (see reference \cite{rl}).\\
 
 
 But we have to take into consideration all the possible states in a game. We call all the possible states that can be achieved by any action throughout the entire game the state space. The problem is it is impossible to calculate ADP tables for large state spaces, specially if you have to run several trials to exhaust every reasonable possibility for every transition. Therefore not usable for our agent. \\
@@ -53,32 +48,32 @@ But we have to take into consideration all the possible states in a game. We cal
 
 \subsubsection{Temporal Difference Learning} \label{TDE}
 
-The combination of the previous two methods, \textit{using the observed transitions to adjust the values of the observed states so that they agree with the constraint equations}\cite[p767]{rl}, produces the following rule (to be applied every time a transition occurs form state $s$ to $s'$):\\
+The combination of the previous two methods, \textit{using the observed transitions to adjust the values of the observed states so that they agree with the constraint equations}(see reference \cite[p767]{rl}), produces the following rule (to be applied every time a transition occurs form state $s$ to $s'$):\\
 
 \begin{equation}
 U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))
 \end{equation}
 
-This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$), it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. \cite{rl} \\
+This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$), it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. (see reference \cite{rl}) \\
 
-The second is the appearance of $\alpha$, also known as the learning rate parameter; how much it learns from an specific trial. Normally the value of  $\alpha$ would be something like: $\frac{1}{1+numberOfVisits(s,a)}$ \cite[p382]{ml_tom_mitchel}. Which then decreases the magnitude of the update proportionally to how many times you visited a state-action pair.\\
+The second is the appearance of $\alpha$, also known as the learning rate parameter; how much it learns from an specific trial. Normally the value of  $\alpha$ would be something like: $\frac{1}{1+numberOfVisits(s,a)}$  (see reference \cite[p382]{ml_tom_mitchel}). Which then decreases the magnitude of the update proportionally to how many times you visited a state-action pair.\\
  
 
 \subsubsection{Q Learning}
 
-All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is:s\cite{rl}
+All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is:s (see reference \cite{rl})
 
 \begin{equation}
 U(s) = max_a(Q(s,a))
 \end{equation}
 
-Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule:\cite{rl} 
+Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule:  (see reference \cite{rl}) 
 
 \begin{equation}
 Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]
 \end{equation}
 
-Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}. It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent \cite[p776]{rl} . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
+Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection} (see reference \cite[p775]{rl}). It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent  (see reference \cite[p776]{rl}) . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
 
 \subsubsection{Generalization of Q-Learning}	\label{generalization}
 
@@ -87,7 +82,7 @@ The choice of using reinforcement learning was based on the necessity to train o
 
 Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones.\\
 
-\textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off between the size of the hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good approximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}\\
+\textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off between the size of the hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good approximation can be found, but also means the convergence is likely to be delayed.} (see reference \cite[p778]{rl})\\
 
 When a function approximation reaches the optimal values or closes around them can say it converged. The option of choosing linear function would ensure that the convergence is not excessively delayed. For example, if there is a function approximation in the following form:\\
 
@@ -95,7 +90,7 @@ When a function approximation reaches the optimal values or closes around them c
 \hat{Q}(x,y) = f_0 + f_2 x + f_3 y
 \end{equation}
 
-We can use the updating rule or $\hat{Q}$-learning equation that evolves from the Q learning temporal difference formula, now taking into consideration the values of the function approximation:  \cite{rl} \\ 
+We can use the updating rule or $\hat{Q}$-learning equation that evolves from the Q learning temporal difference formula, now taking into consideration the values of the function approximation:   (see reference \cite{rl}) \\ 
  
 \begin{equation}
 f_i \leftarrow f_i + \alpha [ R(s) + \gamma(max\hat{Q}_f(a',s'))-\hat{Q}_f(a,s) ] \frac{\partial \hat{Q}_f(a,s)}{\partial f_i}
@@ -106,7 +101,7 @@ Where $f_i$ is each one of the coefficients in the Q-approximation.
 \end{flushleft} 
 
 \begin{flushleft}
-$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimally) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
+$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation  (see reference \ref{TDE}) would (optimally) decrease according to how many times a state is visited  (see reference \cite{rl}). Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
 \end{flushleft} 
 
 \begin{flushleft}
@@ -129,11 +124,12 @@ $max(\hat{Q}_f(a',s'))$ - Is the highest possible $\hat{Q}_f$ value calculated f
 $\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$  - Is the partial derivative of the $\hat{Q}_f$ function with respect to the current $f_i$, in other words the variables or factors that afect only that coefficient $f_i$. And in the case of our  linear $\hat{Q}_f$ function, always a constant representing some distances in a certain state. 
 \end{flushleft} 
 
-\subsubsection{Convergence in Aproximation of Q-Learning}
+\subsubsection{Convergence in Aproximation of Q-Learning}\label{convergence}
 
-In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov decision process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
+In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov decision process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.}  (see reference \cite[p377]{ml_tom_mitchel}) \\
 
-The only difference between this process and the approximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl}
+
+The only difference between this process and the approximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. } (see reference \cite[p779]{rl})
 
 
 
@@ -154,7 +150,7 @@ We define a state in our environment as a combination of the most important fact
                       \end{cases}
 \end{displaymath}\\
 
-The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation  (see reference \ref{cha3_variables}).
 
 \subsubsection{Function Approximation}
 
@@ -165,7 +161,7 @@ After defining a state in the game we created a linear function approximation to
 \end{equation}
 \label{rleq}
 
-This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
+This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).\\
 
 Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (see section \ref{rlMethods}). 
 
@@ -214,12 +210,12 @@ These updating rules should eventually converge to values that are very close to
 
 \subsubsection{Reward Function} \label{reward}
 
-We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes by. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is.s
+We created a reward function that takes into consideration all the factors to grade the performance of the agent. The reward function gives positive points for keeping the highest number of units alive, negative points for loosing health, positive points for both killing or damaging the enemies, and a negative reward for every time frame in the game that goes by. This way we ensure that the agent wants to attack the enemy while protecting its units; but not prioritizing protecting the units. We control that the agent chooses attacking over hiding or running away by making the reward proportional to how short the match is.
 \begin{equation}
 R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time
 \end{equation}
 
-We ensure that the reward complies with the convergence restrictions for Q learning(LINK TO CONVERGENCE RESTRICTIONS!!!). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
+We ensure that the reward complies with the convergence restrictions for Q learning  (see reference \ref{convergence}). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
 
 %\subsection{Q-Learning Conclusions}
 %We have looked upon a few different learning methods and have decided that the approximation of q-learning is what fits the best to our agent, because starcraft would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.

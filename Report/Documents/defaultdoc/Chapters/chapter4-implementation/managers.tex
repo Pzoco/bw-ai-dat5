@@ -55,7 +55,7 @@
 			item to a Task and save it so the ProductionManager can retrieve the Task. The difference between a BuildOrderItem and a Task is that the 
 			item is stripped of all information except the information that is important in producing the task. 
 			
-		\subsubsection*{Retrieving and executing tasks}
+		\subsubsection*{Retrieving and Executing Tasks}
 			The ProductionManager contains methods for retrieving tasks from the BuildOrderHandler. There is a method for each type of task it can 
 			produce. When it has retrieved all the tasks it tries to see if it can execute it right away. 
 			If we can afford to do the task it will be passed on to the appropriate method for execution. These 
@@ -75,7 +75,7 @@
 		SCVs and is given a state. An SCV can be in one the following states: Constructing, BeingBuild, MiningGas, MiningMinerals, Defending, Evading, or Nothing. When 
 		the SCV is completed from the Command Center it will get the state Nothing. The Update method will then determine what the SCV should do. Usually 
 		the SCV will be set to mine minerals, so it gets the state MiningMinerals. 
-		\subsubsection*{Efficient mining}
+		\subsubsection*{Efficient Mining}
 			To ensure that the bot will get the most minerals in relation to how many SCVs it has, we have implemented a way to mine more efficiently by choosing the right mineral or refinery to mine from. The following code snippet is from the method SendToMineral, which sends a single SCV
 			to a mineral patch.
 			
@@ -109,7 +109,7 @@
 			When the best mineral patch is found it is noted\lnnum{2} that an additional SCV is working on that mineral patch- After this we save the 
 			mineral to the SCV and sends the SCV to mine the mineral patch by right clicking it.
 			
-		\subsubsection*{Constructing buildings}
+		\subsubsection*{Constructing Buildings}
 			Below is the code that the Production Manager calls when it has a ConstructionTask that needs to be executed. The method is called 
 			ConstructBuilding and has the parameters of type UnitType and BuildingPlacement, where BuildingPlacement 
 			is an enum that can have the values MainBase or MainChokepoint.
@@ -147,7 +147,7 @@
 		This manager was supposed to be responsible for making high level decisions for the bot, but we have not finished the manager completely. We have made the necessary analysis needed to make these prediction. By using the class BuildOrderPredictor we are able to retrieve the most 
 		probable build order and threat level.
 		
-		\subsubsection{Build Order Predictor class}
+		\subsubsection{Build Order Predictor Class}
 			This class uses a Bayesian network to analyze what build order the enemy is currently doing. This is related to the current threat level which
 			the strategy manager retrieves. \\
 			
