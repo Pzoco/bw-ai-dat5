@@ -7,8 +7,7 @@
 	The method for inserting evidence will be explained beneath.
 	\subsection*{Inserting evidence}
 		\begin{Sourcecode}[caption=EnterEvidence method]
-void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName)
-{
+void BayesianNetwork::EnterEvidence(std::string nodeName,std::string stateName){
 domain->uncompile();
 NodeList nodes = domain->getNodes();
 for (NodeList::const_iterator it = nodes.begin(); it != nodes.end(); ++it)
