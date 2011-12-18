@@ -1,6 +1,6 @@
 %%%% TEST WITH A9 G2 %%%%
 \subsection*{Learning Rate Test 1.1}
-In this test we are using the following values in the table \ref{a9g2_table} for the reinforcement learning, iterations means every time the agent has played a game on our test map.
+In this test we are using the following values in the table \ref{a9g2_table} for the reinforcement learning. Iterations occur every time the agent has played a game on our test map.
 
 \begin{centering}
 \begin{table}[H]
@@ -28,12 +28,12 @@ In this test we are using the following values in the table \ref{a9g2_table} for
 			{Alpha 0.9 Gamma 0.2 Lost and killed - Yellow: Enemies killed - Red: Vultures left (Can be seen fullsized here \ref{fig:app_a9g2_lak})}{fig:a9g2_lak}{-3in}
 			
 			
-In figure \ref{fig:a9g2_lak} the yellow graph is how many marines was killed, and when it peaks to the 12 mark, our agent have won a battle.
+In figure \ref{fig:a9g2_lak} the blue graph is how many marines were killed. When it peaks to the 12 mark our agent has won a battle.
 
 
 
 
-In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow graph) the agent have killed all of the opponent as we have hoped for. The red graph is damage taken, if it's on 400 all the 5 vultures have died and the agent have had a lost.
+In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (blue graph) the agent has killed all of the opponents like we had hoped for. The red graph is damage taken. If it's on 400 all the 5 vultures have died, and the agent has had a lost.
 
 %%%%%AVERAGE%%%%%
 \begin{centering}
@@ -52,5 +52,5 @@ In figure \ref{fig:a9g2_damage} one can see every time the y-axis peaks (yellow 
 \end{centering}
 %%%AVERAGE%%%
 \newpage
-By comparing the potential field data in winning streaks could tell us how the agent reacts when it wins. Damage taken and damage given are self-explanatory, but the rest are all values of the potential fields. Ally is how far away each of our own vultures can be from each other, a negative value mean repulsive and a positive value mean attractive. The squad value is similar to the ally value but the squad means the center point in the group of units. The maximum distance is the distance to an enemy, the value is only for the potential fields and not real distance to the enemies. Cooldown is when the vultures have fired they use the cooldown value if they should be attracted to the enemy or not and lastly the edges are how attractive or repulsed the vultures are to the edges, and just as before, negative values means repulse and positive values mean attractive. 
+Comparing the potential field data with winning streaks could tell us how the agent reacts when it wins. Damage taken and damage given are self-explanatory, but the rest are all values of the potential fields. Ally is how far away each of our own vultures can be from each other. A negative value means repulsive and a positive value means attractive. The squad value is similar to the ally value but the squad means the center point in the group of units. The maximum distance is the distance to an enemy. The value is only for the potential fields and not real distance to the enemies. Cooldown is when the vultures have fired. They use the cooldown value if they should be attracted to the enemy or not. Finally the edges are how attractive or repulsive the vultures are to the edges. Just like before, negative values mean repulsive and positive values mean attractive. 
 \newpage
