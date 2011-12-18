@@ -31,7 +31,8 @@ These nodes are used to keep track of positions we know our opponent did not spa
 \subsection{Build Order Prediction}
 	This subsection describes the Bayesian networks that was created for predicting that build order the enemy is doing. 
 	The networks have some similarities between them. There are three different networks, one each for every race that the bot can encounter: 
-	Terran versus Terran, Terran versus Protoss and Terran vs Zerg. 
+	Terran versus Terran, Terran versus Protoss and Terran vs Zerg.  \\
+	
 	They all have a node called BuildChosen, which is the node containing the beliefs for what the enemy's build order is. 
 	The other nodes are buildings (Except an upgrade node in the Terran vs Protoss network) all with the states Seen and NotSeen, 
 	though Seen is only used when presenting evidence, because the bot will never be able to prove that the enemy building does not exist. 
