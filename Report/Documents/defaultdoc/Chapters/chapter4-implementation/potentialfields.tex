@@ -122,7 +122,7 @@ coolQ += correctedDistance*toCool;
 \end{Sourcecode}	
 	\textit{Weapon cool down} looks a lot like \textit{Maximum distance positioning} and does almost the same thing. The only difference is when they are applied. An example of \textit{Weapon cool down} can be found in figure \ref{fig:WCD}.
 	
-	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Weaponscooldown.png}
+	\insertmarginfigure{height=1.5in}{PotentialfieldsImplementation/Weaponscooldown.png}
 		{Repulsion from Weapons cool down}{fig:WCD}{-3in}
 
 	\subsection{Ally Units}
@@ -137,9 +137,10 @@ allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
 \end{Sourcecode}	
 	In \textit{Ally units} at \lnnum{1} we use a function called \textit{MathHelper::GetDistanceToNearestAlly} which takes as input a tile position and the id of the current unit. We need the unit id because the function iterates trough all our units, and we want to avoid calculating the distance to the current unit. If we did not use the unit id we would always get the distance from the current unit to itself because the distance would always be less than the distance to other units. \textit{Ally units} can be seen in figure \ref{fig:AU}.
 	
-		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Allyunits.png}
+		\insertmarginfigure{height=1.5in}{PotentialfieldsImplementation/Allyunits.png}
 			{Repulsion of ally units}{fig:AU}{-3in}
 
+		\pagebreak
 	\subsection{Edges and Cliffs (Repulsive)}
 	\begin{Sourcecode}[caption=Edges and cliffs]
 (*@\lnote@*)_parameters.duc= (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),pos);
