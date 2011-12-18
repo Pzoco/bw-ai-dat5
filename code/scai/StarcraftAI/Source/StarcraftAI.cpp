@@ -32,7 +32,7 @@ void StarcraftAI::onStart()
 	//Broodwar->enableFlag(Flag::CompleteMapInformation);
 	Broodwar->enableFlag(Flag::UserInput);
 	reinforcementLearning.LoadWeightsFromFile();
-	//scoutingManager.AnalyzeMap();*/
+	ScoutingManager::GetInstance()->AnalyzeMap();
 }
 
 void StarcraftAI::onEnd(bool isWinner)
@@ -124,7 +124,7 @@ void StarcraftAI::onUnitDestroy(BWAPI::Unit* unit)
 		{
 			TacticsManager::GetInstance()->UnitKilled(unit);
 		}
-		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV )
+		else if(unit->getType() == BWAPI::UnitTypes::Terran_SCV)
 		{
 			WorkerManager::GetInstance()->ScvKilled(unit);
 		}
