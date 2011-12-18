@@ -72,7 +72,6 @@ void ProductionManager::Update()
 	if(!_constructionTasks.empty())
 	{
 		ConstructionTask* firstInLine = _constructionTasks.front();
-		//BWAPI::Broodwar->printf("First construction task is building %s",firstInLine->building.getName().c_str());
 		bool success = TryConstructBuilding(firstInLine);
 		if(success)
 			_constructionTasks.erase(_constructionTasks.begin());

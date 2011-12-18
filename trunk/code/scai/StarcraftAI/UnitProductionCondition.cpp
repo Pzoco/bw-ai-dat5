@@ -9,7 +9,6 @@ UnitProductionCondition::UnitProductionCondition(BWAPI::UnitType unitTypeToGet,i
 }
 bool UnitProductionCondition::IsFulfilled()
 {
-	
 	if(number==UnitHelper::GetNumberOfUnitType(unitType))
 	{
 		return true;
