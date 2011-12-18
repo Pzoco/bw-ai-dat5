@@ -1,7 +1,7 @@
-\section{Implementing potential fields}
+\section{Implementing Potential Fields}
 	In this section we are going to take a look at the implementation of the potential field. First we will look at the main loop and the general structure. Then move on to each part of the potential field it self.
 	
-	\subsection{General structure}
+	\subsection{General Structure}
 	The potential field is calculated for individual units. These units belongs to a squad, when we calculate the potential field we also pass a reference to the squad, called \textit{mySquad}, because it is needed to calculate \textit{Squad center} and \textit{Ally potential}.
 
 \begin{Sourcecode}[caption=Main loop]	
@@ -62,7 +62,7 @@ bool firstCalculation = true;
 	
 	An important thing to note before we look at the individual function is a small change from the design. In the design we use negative forces in repulsive fields, but due to the reinforcement learning this has changed. The reinforcement learning will change the forces, and it will be able to make them both positive and negative. In other words the reinforcement learning will be able to change whether or not a potential field is attractive or repulsive. 
 		
-	\subsection{Squad center}	
+	\subsection{Squad Center}	
 		\begin{Sourcecode}[caption=Squad center]
 (*@\lnote@*)_parameters.dsv = pos.getApproxDistance(_parameters.squadPos);	
 int useSquad = 0;
@@ -85,7 +85,7 @@ int useSquad = 0;
 \insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
 			{Squad center}{fig:SCA}{-3in}
 			
-	\subsection{Maximum distance positioning}
+	\subsection{Maximum Distance Positioning}
 		\begin{Sourcecode}[caption=Maximum distance]
 (*@\lnote@*)int distanceToEnemyFromUnit = _parameters.de;
 (*@\lnote@*)_parameters.due = MathHelper::GetDistanceToNearestEnemy(pos);
@@ -111,7 +111,7 @@ maxdistQ += (double)(correctedDistance)*(double)useMaxDist;
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/MaximumDistance.png}
 			{Maximum distance positioning}{fig:MDP}{-3in}
 
-	\subsection{Weapon cool down}
+	\subsection{Weapon Cool Down}
 		\begin{Sourcecode}[caption=Weapon cool down]
 int toCool = 1;
 if(_parameters.wr)
@@ -125,7 +125,7 @@ coolQ += correctedDistance*toCool;
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Weaponscooldown.png}
 		{Repulsion from Weapons cool down}{fig:WCD}{-3in}
 
-	\subsection{Ally units}
+	\subsection{Ally Units}
 		\begin{Sourcecode}[caption=Ally units]
 (*@\lnote@*)_parameters.dua = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
 int useAlly = 0;
@@ -140,7 +140,7 @@ allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
 		\insertmarginfigure{height=2in}{PotentialfieldsImplementation/Allyunits.png}
 			{Repulsion of ally units}{fig:AU}{-3in}
 
-	\subsection{Edges and cliffs (Repulsive)}
+	\subsection{Edges and Cliffs (Repulsive)}
 	\begin{Sourcecode}[caption=Edges and cliffs]
 (*@\lnote@*)_parameters.duc= (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),pos);
 (*@\lnote@*)_parameters.dc = (int)MathHelper::GetDistanceBetweenPositions(BWTA::getNearestUnwalkablePosition(pos),_unit->getPosition());
