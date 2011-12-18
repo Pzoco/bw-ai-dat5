@@ -64,13 +64,31 @@ void KillProcess(DWORD pid)
 
 	CloseHandle(processHandle);
 }
+void doAReboot()
+{
+	cout << "REBOOTING!" << endl;
+	std::ofstream file;
+	try
+	{
+		time_t t = time(0);
+		file.open("C:/lastReboot.txt");
+		file << t <<"\n";
+		file.close();
+		
+	}
+	catch(char *c)
+	{
+		std::cout << "File could not be opened -" << c << "\n";
+	}
 
+	system("shutdown -r -f");
+
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	while(true)
 	{
-
 		time_t now; 
 		time(&now); 
 		unsigned int uiNow = static_cast <unsigned int> (now); 
@@ -83,7 +101,27 @@ int _tmain(int argc, _TCHAR* argv[])
 		file.close(); 
 	
 		long int diff = (uiNow - timeFromFile);
-		if(diff > 15)
+
+
+		std::ifstream file2("C:/lastReboot.txt"); 
+		std::string line2; 
+		long int timeFromRebbotFile;
+		std::getline(file2,line2);
+		timeFromRebbotFile = atol(line2.c_str()); 
+		file2.close(); 
+
+		long int diff2 = (uiNow - timeFromRebbotFile);
+		cout << "last reboot " << timeFromRebbotFile <<  endl;
+		cout << "uiNow " << uiNow <<  endl;
+		cout << "diff2 " << diff2 <<  endl;
+		if(diff2 > 28800)
+		{
+			cout << "´should REBOOTING!" << endl;
+			doAReboot();
+		}
+
+
+		if(diff > 30)
 		{	
 			cout << "TimeOut: "<< diff << "sec." << endl;
 
@@ -97,13 +135,13 @@ int _tmain(int argc, _TCHAR* argv[])
 			KillProcess(pid2);
 			
 			//Starting Chaoslauncher
-			WinExec("C:\\Games\\StarCraft\\Chaoslauncher\\Chaoslauncher.exe",SW_SHOW);
+			WinExec("C:\\StarCraft\\Chaoslauncher\\Chaoslauncher.exe",SW_SHOW);
 
 			//Emulating keyboard to start starcraft
-			Sleep(4000);
+			Sleep(1000);
 			keybd_event(VkKeyScan('\n'),0,0,0);
 			// s e \n u up up up up up up \n \n \n
-			Sleep(4000);
+			Sleep(1000);
 			keybd_event(VkKeyScan('s'),0,0,0);
 			Sleep(1000);
 			keybd_event(VkKeyScan('e'),0,0,0);
@@ -122,7 +160,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 			
 		
-		Sleep(5000); //Message Sleep for X ms
+		Sleep(2000); //Message Sleep for X m
 	}
 	return 0;
 }
