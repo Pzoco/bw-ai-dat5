@@ -156,9 +156,9 @@ void ScoutingManager::EnemyBaseFound(BWAPI::TilePosition basePosition)
 		spawnPredictor.EnterEvidence("EnemySpawn","NW");
 	}
 	enemyBaseFound=true;
-	StrategyManager::GetInstance()->EnemieBasePosision = BWAPI::Position(basePosition);
-	//WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
-	//scoutingSCV = NULL;
+	enemyBasePosition = BWAPI::Position(basePosition);
+	WorkerManager::GetInstance()->ReturnSCV(scoutingSCV);
+	scoutingSCV = NULL;
 
 }
 void ScoutingManager::InsertWorkerEvidence(BWAPI::Unit *worker)
@@ -325,4 +325,9 @@ InformationEnums::Positions ScoutingManager::MostProbableEnemyPosition()
 	}
 
 	return position;
+}
+
+BWAPI::Position ScoutingManager::GetEnemyPosition()
+{
+	return enemyBasePosition;
 }

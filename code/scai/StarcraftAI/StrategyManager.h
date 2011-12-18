@@ -20,6 +20,5 @@ private:
 	InformationEnums::Matchup matchup;
 	static StrategyManager* strategyManager;
 	StrategyManager();
-	bool StrategyManager::DecideToAttackOrNot();
 
 };

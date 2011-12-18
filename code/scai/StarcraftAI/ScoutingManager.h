@@ -23,15 +23,14 @@ public:
 	void Update();
 	void Scout();
 	InformationEnums::Positions MostProbableEnemyPosition();
-	void InsertWorkerEvidence(BWAPI::Unit *worker);
-	void VisitBase(InformationEnums::Positions position,BWAPI::Unit* scv);
-	void EnemyBaseFound(BWAPI::TilePosition enemyBase);
 	void UnitFound(Unit* unit);
+	BWAPI::Position GetEnemyPosition();
 private:
 	Unit* scoutingSCV;
 	Position scoutingGoal;
 	BayesianNetwork spawnPredictor;
 	InformationEnums::Positions currentBest;
+	BWAPI::Position enemyBasePosition;
 	bool enemyBaseFound;
 	bool enemyScoutFound;
 	bool isScouting;
@@ -39,4 +38,7 @@ private:
 	std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> enemyUnits;
 	std::map<BWAPI::UnitType,std::list<BWAPI::Unit*>> enemyBuildings;
 	static ScoutingManager* scoutingManager;
+	void InsertWorkerEvidence(BWAPI::Unit *worker);
+	void VisitBase(InformationEnums::Positions position,BWAPI::Unit* scv);
+	void EnemyBaseFound(BWAPI::TilePosition enemyBase);
 };

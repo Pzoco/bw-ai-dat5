@@ -11,6 +11,7 @@
 #include "ProductionTask.h"
 #include "ResearchItem.h"
 #include "ScoutItem.h"
+#include "AttackItem.h"
 
 
 BuildOrderHandler::BuildOrderHandler(void)
@@ -38,6 +39,8 @@ void BuildOrderHandler::InitiateBuildOrders()
 	twoFactVultures->AddItem(new ResearchItem(BWAPI::TechTypes::Spider_Mines,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,2)));	
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(23)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(28)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(35)));
+	twoFactVultures->AddItem(new AttackItem(new UnitProductionCondition(BWAPI::UnitTypes::Terran_Vulture,6)));
 	_availableBuildOrders.push_back(twoFactVultures);
 }
 void BuildOrderHandler::SetCurrentBuildOrder()
@@ -112,6 +115,10 @@ void BuildOrderHandler::SaveAsTask(BuildOrderItem* item)
 	else if(item->GetType() == "ScoutItem")
 	{
 		ScoutingManager::GetInstance()->Scout();
+	}
+	else if(item->GetType() == "AttackItem")
+	{
+		TacticsManager::GetInstance()->MoveSquad(ScoutingManager::GetInstance()->GetEnemyPosition());
 	}
 
 }

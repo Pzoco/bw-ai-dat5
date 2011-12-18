@@ -40,7 +40,8 @@ void TacticsManager::Update()
 	{
 		for each(Squad squad in i->second)
 		{
-			squad.ExecuteTactics();
+			if(squad.GetSize() >0)
+				squad.ExecuteTactics();
 		}
 	}
 }

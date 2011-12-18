@@ -34,32 +34,10 @@ void StrategyManager::Update()
 		buildOrderPredictor->InitializePredictionNetwork(matchup);
 		StrategyManager::initialized = true;
 	}
-	
-	if(DecideToAttackOrNot())
-	{
-		TacticsManager::GetInstance()->MoveSquad(EnemieBasePosision);
-	}
-	//TacticsManager::GetInstance();
 }
 
 
 void StrategyManager::NewEnemyFound(BWAPI::Unit* unit)
 {
 	buildOrderPredictor->UpdatePredictionNetwork(unit->getType());
-}
-bool StrategyManager::DecideToAttackOrNot()
-{
-	if(EnemieBasePosision.x() != 1 && EnemieBasePosision.y() != 1)
-	{
-		int numberOfVultures = TacticsManager::GetInstance()->GetNumberOfUnits(BWAPI::UnitTypes::Terran_Vulture);
-		if(numberOfVultures < 4)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	return false;
 }
