@@ -22,5 +22,9 @@ private:
 	InformationEnums::Positions myBaseEnum;
 	static const int BASE_TILES = 30;
 	bool initialized;
-	
+	bool OverlapInBuildingPlacement(BWAPI::UnitType type1, BWAPI::UnitType type2);
+	void SaveBarracksPositions();
+	void SaveFactoriesPositions();
+	void SaveSupplyDepotPositions();
+	std::map<BWAPI::UnitType,std::list<BWAPI::TilePosition>> buildingPositions;
 };

@@ -4,7 +4,6 @@
 
 class ProductionFocusItem:public BuildOrderItem
 {
-	std::list <Condition*> conditions;
 	public:
 		ProductionEnums::ProductionFocus productionFocus;
 		ProductionFocusItem(ProductionEnums::ProductionFocus productionFocusToBeFulfilled,Condition* conditionToBeFulfilled);
