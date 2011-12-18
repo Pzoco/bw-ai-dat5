@@ -8,15 +8,19 @@ The bot did successfully predict the build orders. When the bot's SCV first scou
 The build order predictor works fairly well, but still has some needed improvements. First off there could be a build order we have not included in the Bayesian network. If the bot encountered an unknown build it would treat it as one of the builds in the network and may not act in a responsible way. Another problem is if we do not collect any information on the enemy at all. The bot's scout could get killed before getting any information on the enemy base. This would give us the belief that there is an equal chance for all of the different builds so the bot may not act correctly.
 
 	\begin{figure}[H]
+		\begin{center}
 		\includegraphics[scale=0.7]{Figures/BuildOrderPredictorTest/Predicting.png}
 		\caption{Predicting one fact expand build upon seeing second command center}\label{fig:predicting}
+		\end{center}
 	\end{figure}
 	\subsection{Prediction of Threatlevel test}
 		In this test we wanted to see if the prediction network could analyze what he current threatlevel is based on what it sees and what the time is.
-		The bot scouts the opponent and sees 2 hatcherys, which it predicts is going to be a 3 Hatch Muta build. Because that build is effective later 
+		The bot scouts the opponent and sees 2 hatcheries, which it predicts is going to be a 3 Hatch Muta build. Because that build is effective later 
 		in the game the network predicts the current threatlevel to low. In the picture below (See \ref{fig:predicting}) this situation is shown. 
 		This test just showed that the network worked exactly as assumed.
 		\begin{figure}[H]
+			\begin{center}
 			\includegraphics[scale=0.7]{Figures/BuildOrderPredictorTest/threatlevel.png}
 			\caption{Predicting the current threatlevel}\label{fig:threatlevel}
+			\end{center}
 		\end{figure}
