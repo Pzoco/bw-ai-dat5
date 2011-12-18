@@ -105,7 +105,7 @@ Where $f_i$ is each one of the coefficients in the Q-approximation.
 \end{flushleft} 
 
 \begin{flushleft}
-$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (LINK TO TDE!!!!!) would (optimally) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
+$\alpha$  - Is the learning rate. As mentioned before it means how much you modify the value of the coefficient $f_i$ to fit the current example or situation, it learns from each visit to every state. Its a number, $0 < \alpha < 1$, that in a normal temporal difference equation (see section \ref{TDE}) would (optimally) decrease according to how many times a state is visited \cite{rl}. Since every one of our states is visited infinitely many times, the value $\alpha$ can be a fixed number that we modify manually. The higher the value, the more you learn from every specific case.
 \end{flushleft} 
 
 \begin{flushleft}
@@ -153,7 +153,7 @@ We define a state in our environment as a combination of the most important fact
                       \end{cases}
 \end{displaymath}\\
 
-The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (see section \ref{cha3_variables}). 
 
 \subsubsection{Function Approximation}
 
@@ -165,7 +165,7 @@ After defining a state in the game we created a linear function approximation to
 
 This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
 
-Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (REFERENCE!!!!). 
+Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (see section \ref{rlMethods}). 
 
 \subsubsection{Updating Rules}
 
