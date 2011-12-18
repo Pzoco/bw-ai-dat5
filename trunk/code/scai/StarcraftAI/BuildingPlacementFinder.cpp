@@ -12,6 +12,7 @@ BWAPI::TilePosition BuildingPlacementFinder::FindBuildLocation(BWAPI::UnitType b
 {
 	if(!initialized)
 	{
+		SaveSupplyDepotPositions();
 		SaveBarracksPositions();
 		SaveFactoriesPositions();
 		myBaseTile = Broodwar->self()->getStartLocation();
@@ -156,7 +157,8 @@ BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePos
 	{
 		//if we can build here, return this tile position
 		if (x >= 0 && x < BWAPI::Broodwar->mapWidth() && y >= 0 && y < BWAPI::Broodwar->mapHeight())
-			if (this->canBuildHereWithSpace(BWAPI::TilePosition(x, y), type, buildDist))
+			if (this->canBuildHereWithSpace(BWAPI::TilePosition(x, y), type, buildDist) &&
+				!BuildingOverlapOthers(BWAPI::TilePosition(x, y),type))
 			{
 				return BWAPI::TilePosition(x, y);
 			}
@@ -240,7 +242,9 @@ void BuildingPlacementFinder::SaveBarracksPositions()
 					buildingPositions[barracks].push_back(TilePosition(x,y+barracks.tileHeight()));
 					buildingPositions[barracks].push_back(TilePosition(x+barracks.tileWidth(),y));
 					buildingPositions[barracks].push_back(TilePosition(x+barracks.tileWidth(),y+barracks.tileHeight()));
-					break;
+					if(OverlapInBuildingPlacement(UnitTypes::Terran_Supply_Depot,barracks))
+						break;
+					buildingPositions[barracks].clear();
 				}
 
 				//otherwise, move to another position
@@ -300,9 +304,68 @@ void BuildingPlacementFinder::SaveFactoriesPositions()
 					buildingPositions[factory].push_front(TilePosition(x,y+factory.tileHeight()));
 					buildingPositions[factory].push_front(TilePosition(x-factory.tileWidth(),y));
 					buildingPositions[factory].push_front(TilePosition(x-factory.tileWidth(),y+factory.tileHeight()));
-					if(!OverlapInBuildingPlacement(UnitTypes::Terran_Barracks,factory))
+					if(OverlapInBuildingPlacement(UnitTypes::Terran_Barracks,factory))
 						break;
 					buildingPositions[factory].clear();
+				}
+
+				//otherwise, move to another position
+				x = x + dx;
+				y = y + dy;
+				//count how many steps we take in this direction
+				j++;
+				if (j == length) //if we've reached the end, its time to turn
+				{
+					//reset step counter
+					j = 0;
+
+					//Spiral out. Keep going.
+					if (!first)
+						length++; //increment step counter if needed
+
+					//first=true for every other turn so we spiral out at the right rate
+					first =! first;
+
+					//turn counter clockwise 90 degrees:
+					if (dx == 0)
+					{
+						dx = dy;
+						dy = 0;
+					}
+					else
+					{
+						dy = -dx;
+						dx = 0;
+					}
+				}
+				//Spiral out. Keep going.
+	}
+}
+void BuildingPlacementFinder::SaveSupplyDepotPositions()
+{
+	//returns a valid build location near the specified tile position.
+	//searches outward in a spiral.
+	int x      = BWAPI::Broodwar->self()->getStartLocation().x();
+	int y      = BWAPI::Broodwar->self()->getStartLocation().y();
+	int length = 1;
+	int j      = 0;
+	bool first = true;
+	int dx     = 0;
+	int dy     = 1;
+	BWAPI::UnitType supply = BWAPI::UnitTypes::Terran_Supply_Depot;
+	while (length < BWAPI::Broodwar->mapWidth()) //We'll ride the spiral to the end
+	{
+		//if we can build here, return this tile position
+		if (x >= 0 && x < BWAPI::Broodwar->mapWidth() && y >= 0 && y < BWAPI::Broodwar->mapHeight())
+			if (this->canBuildHereWithSpace(BWAPI::TilePosition(x, y), supply, buildDistance))
+				if(canBuildHere(BWAPI::TilePosition(x,y+supply.tileHeight()),supply) &&
+					canBuildHere(BWAPI::TilePosition(x+supply.tileWidth(),y),supply) && 
+					canBuildHere(BWAPI::TilePosition(x+supply.tileWidth(),y+supply.tileHeight()),supply))
+				{
+					buildingPositions[supply].push_back(TilePosition(x,y));
+					buildingPositions[supply].push_back(TilePosition(x,y+supply.tileHeight()));
+					buildingPositions[supply].push_back(TilePosition(x+supply.tileWidth(),y));
+					buildingPositions[supply].push_back(TilePosition(x+supply.tileWidth(),y+supply.tileHeight()));
 				}
 
 				//otherwise, move to another position
@@ -350,6 +413,7 @@ bool BuildingPlacementFinder::OverlapInBuildingPlacement(BWAPI::UnitType type1, 
 					if((x<pos1.x()+type1.tileWidth() && x>pos1.x()) ||
 						(y<pos1.y()+type1.tileHeight() && y>pos1.y()))
 					{
+						BWAPI::Broodwar->printf("Overlap");
 						return true;
 					}	
 				}
@@ -371,6 +435,7 @@ bool BuildingPlacementFinder::BuildingOverlapOthers(TilePosition position2, BWAP
 					if((x<pos1.x()+(*i).first.tileWidth() && x>pos1.x()) ||
 						(y<pos1.y()+(*i).first.tileHeight() && y>pos1.y()))
 					{
+						BWAPI::Broodwar->printf("Overlap");
 						return true;
 					}	
 				}
