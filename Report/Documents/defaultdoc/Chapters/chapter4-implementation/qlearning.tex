@@ -7,7 +7,7 @@ The $ReinforcementLearning$ class contains all the variables and processes neces
 \subsection{$\hat{Q}_f$ Decision} \label{rlMethods}
 
 Throughout the game, the squad management uses the $\hat{Q}_f$ method \\
-$GetBestPositionBasedOnQPotential$ in order to select the next action. It starts with saving the value off all the derivatives ($\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$). This part is explained in detail in the implementation for every one of the potential fields. \\
+$GetBestPositionBasedOnQPotential$ in order to select the next action. It starts with saving the value off all the derivatives ($\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$). This part is explained in detail in the implementation for every one of the Potential fields. \\
 
 \begin{Sourcecode}[caption=Ally units]
 _parameters.dua = MathHelper::GetDistanceToNearestAlly(pos,_unit->getID());
@@ -19,7 +19,7 @@ ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - _parameters.dua
 (*@\lnote@*)allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
 \end{Sourcecode}	
 
-Every time a potential field is calculated we save the values that correspond to the derivative. In the code shown before for the Ally Units potential the derivative corresponds to the value of $allyQ$ in \lnnum{1}. We do the same thing to calculate the rest of the derivatives ($edgeQ$, $squadQ$, $coolQ$, $maxdistQ$). Finally just saving them for the future update calculations.\\ 
+Every time a Potential field is calculated we save the values that correspond to the derivative. In the code shown before for the Ally Units Potential the derivative corresponds to the value of $allyQ$ in \lnnum{1}. We do the same thing to calculate the rest of the derivatives ($edgeQ$, $squadQ$, $coolQ$, $maxdistQ$). Finally just saving them for the future update calculations.\\ 
 
 \begin{Sourcecode}[caption=Saving the values of each derivative]
 		StarcraftAI::reinforcementLearning.WriteLiveValue(allyQ);
@@ -29,7 +29,7 @@ Every time a potential field is calculated we save the values that correspond to
 		StarcraftAI::reinforcementLearning.WriteLiveValue(edgeQ);
 \end{Sourcecode}
 
-After saving all the derivatives values for the updating rules, continues with the calculations for the $\hat{Q}_f(a,s)$ as shown before in the potential fields section \ref{section:IMF}. Finally it calculates the value of $max\hat{Q}_f(a',s'))$. The code used for this calculation follows the same pattern explained for the $\hat{Q}_f(a,s)$ function, the only difference being that the center point the previously calculated $\hat{Q}_f(a,s)$.
+After saving all the derivatives values for the updating rules, continues with the calculations for the $\hat{Q}_f(a,s)$ as shown before in the Potential fields section \ref{section:IMF}. Finally it calculates the value of $max\hat{Q}_f(a',s'))$. The code used for this calculation follows the same pattern explained for the $\hat{Q}_f(a,s)$ function, the only difference being that the center point the previously calculated $\hat{Q}_f(a,s)$.
 
 \subsection{Reward Function}
  
@@ -82,7 +82,7 @@ In section \lnnum{2}, we obtain the array of all the enemy players ($enemies$) a
 
 In section \lnnum{3}, we iterate through the $squad$ (received as a parameter) to count the $squadSize$ and accumulate the total $currentUnitHealth$. Similarly, in section \lnnum{4}, we iterate through the $enemieUnits$ to accumulate the total $currentEnemyHealth$.\\
 
-Then we use all the previous calculated values to evaluate the reward function in \lnnum{4}. Note that we already indicated in the Field Summary which constant value we used for each coefficient. We chose those specific values because they seem to reflect a reward/punishment value correspondent to what we want our agent to learn. Finally, also note that we use this reward value scaled, or reduced (as observed in \lnnum{5}), to impact the rate of change of the updating formulas and reduce it slightly. \\
+Then we use all the previous calculated values to evaluate the reward function in \lnnum{4}. Note that we already indicated in the Field Summary which constant value we used for each coefficient. We choose those specific values because they seem to reflect a reward/punishment value correspondent to what we want our agent to learn. Finally, also note that we use this reward value scaled, or reduced (as observed in \lnnum{5}), to impact the rate of change of the updating formulas and reduce it slightly. \\
 
 \subsection{Updating Rules}
 
@@ -100,7 +100,7 @@ In section \ref{rleq_update} there are several different formulas for updating e
 
 \subsubsection{Calling the Updating Rules}
 
-We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames. Trying to update for every single one created a lag in the performance of the game. The optimization we created for updating while still preserving the game speed is the following: 
+We choose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames. Trying to update for every single one created a lag in the performance of the game. The optimization we created for updating while still preserving the game speed is the following: 
 \pagebreak
 \begin{Sourcecode}[caption=Calculations for the Updating Function Values]
 (*@\lnote@*)if(BWAPI::Broodwar->getFrameCount() % 25 == 0){

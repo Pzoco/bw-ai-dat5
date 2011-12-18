@@ -1,5 +1,5 @@
 \section{Build Order Prediction Test}
-These test are meant to show the ability of our Build Order Bayesian Network to successfully predict an opponent's build order.
+These test are meant to show the ability of our Build Order Bayesian network to successfully predict an opponent's build order.
 During these tests we had a human player play against our bot. The human player would play using a specific build order that the bot should be able to predict. Once the bot scouted, it would use the information obtained from the buildings seen and print out the build order. We keep a list of all of the enemy buildings we have seen. Once we see a new building we add to our list and update our Bayesian network.\\
 \\
 The bot did successfully predict the build orders. When the bot's SCV first scouts and only sees a few of the buildings to support a particular build order, it will increase the probability for some of the builds. For example, when the scout was inside the enemy base, the probability that the build was a one factory expand build and a two factory pressure build both increased to about 50\% with the one factory expand being slightly favoured. Once the scout was able to see the second command center the probability of a one factory expand increased to 100\% as shown in \ref{fig:predicting}. 

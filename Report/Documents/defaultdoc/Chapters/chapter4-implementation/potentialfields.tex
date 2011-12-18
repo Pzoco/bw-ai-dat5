@@ -1,8 +1,8 @@
 \section{Implementing Potential Fields}\label{section:IMF}
-	In this section we are going to take a look at the implementation of the potential field. First we will look at the main loop and the general structure. Then we move on to each part of the potential field itself.
+	In this section we are going to take a look at the implementation of the Potential field. First we will look at the main loop and the general structure. Then we move on to each part of the Potential field itself.
 	
 	\subsection{General Structure}
-	The potential field is calculated for individual units, these units belong to a squad. When we calculate the potential field we also pass a reference to the squad called \textit{mySquad} because it is needed to calculate \textit{Squad center} and \textit{Ally potential}.
+	The Potential field is calculated for individual units, these units belong to a squad. When we calculate the Potential field we also pass a reference to the squad called \textit{mySquad} because it is needed to calculate \textit{Squad center} and \textit{Ally Potential}.
 \pagebreak
 \begin{Sourcecode}[caption=Main loop]	
 (*@\lnote@*)BaseTactic::InitializeParameters(mySquad);
@@ -26,7 +26,7 @@ bool firstCalculation = true;
 		higestQfound = currentQ;
 		bestQPosistion = position;
 	}
-	//used to print the potential around the unit
+	//used to print the Potential around the unit
 	Broodwar->drawTextMap(position.x(),position.y(),"%d",(int)currentQ); 
 }
 (*@\lnote@*)if(centerQ == higestQfound)
@@ -44,23 +44,23 @@ bool firstCalculation = true;
 		\item bool wr - A boolean denoting whether or not the weapons are ready to fire.
 		\item BWAPI::Position squadPos - The center of the squad.
 	\end{itemize}
-	They are all used in the calculation of the potential field later in this section.	
+	They are all used in the calculation of the Potential field later in this section.	
 	
-    Next we need to find the tiles we want to calculate the potential for. This is done using the \textit{MathHelper::GetSurroundingPositions}  function in \lnnum{2}. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjacent tiles. From this we calculate all tiles around the unit and and them to a list. \\
+    Next we need to find the tiles we want to calculate the Potential for. This is done using the \textit{MathHelper::GetSurroundingPositions}  function in \lnnum{2}. This function takes two parameters, the tile the unit is currently on and the distance to the center of the adjacent tiles. From this we calculate all tiles around the unit and and them to a list. \\
 
-    Now in \lnnum{3} we calculate the potential for the center tile. This is used in \lnnum{6} to compare it to the best potential found. If they are equal we choose the center tile. This is a rare case and mostly only occurs when all the potential fields are zero. In that case we do not want to move. If we did not choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile. \\
+    Now in \lnnum{3} we calculate the Potential for the center tile. This is used in \lnnum{6} to compare it to the best Potential found. If they are equal we choose the center tile. This is a rare case and mostly only occurs when all the Potential fields are zero. In that case we do not want to move. If we did not choose to make \textit{bestQPosistion} the \textit{centerPosition} and returned any other tile, the unit would move to this tile. \\
     
     In \lnnum{4} we have the main loop. This loop iterates trough all the tiles around our unit and selects the highest one. There is one special case in \lnnum{5} which is the first calculation. In this calculation we always select it as the current best option. This is done so we have something to compare with rather than just set it to an arbitrary tile and number. \\
 	
 	    
-	In the calculation of the potential field we use three different constants listed below. These constants are initialized to a parameter we found by trial and error.
+	In the calculation of the Potential field we use three different constants listed below. These constants are initialized to a parameter we found by trial and error.
 	\begin{itemize}
 		\item \_variables.SQUADDISTANCE\_CONSTANT - Is set to $150$ px.
 		\item \_variables.ALLYDISTANCE\_CONSTANT - Is set to $50$ px.
 		\item \_variables.EDGESDISTANCE\_CONSTANT - Is set to $250$ px.
 	\end{itemize}
 	
-	An important thing to note before we look at the individual function is a small change from the design. In the design we use negative forces in repulsive fields, but due to the reinforcement learning this has changed. The reinforcement learning will change the forces, and it will be able to make them both positive and negative. In other words the reinforcement learning will be able to change whether or not a potential field is attractive or repulsive. 
+	An important thing to note before we look at the individual function is a small change from the design. In the design we use negative forces in repulsive fields, but due to the reinforcement learning this has changed. The reinforcement learning will change the forces, and it will be able to make them both positive and negative. In other words the reinforcement learning will be able to change whether or not a Potential field is attractive or repulsive. 
 		
 	\subsection{Squad Center}	
 		\begin{Sourcecode}[caption=Squad center]
@@ -72,12 +72,12 @@ int useSquad = 0;
 (*@\lnote@*)squad += ((double)_variables.FORCESQUAD * (2*(double)_parameters.ds-(double)_parameters.dsv))*useSquad;
 (*@\lnote@*)squadQ += (2*(double)_parameters.ds-(double)_parameters.dsv)*useSquad;
 \end{Sourcecode}
-		In \lnnum{1} we calculate \textit{dsv} by using the build in function getApproxDistance which returns the distance between two tiles as an integer. \textit{pos} is the current tile we want to calculate the potential for and \textit{squadPos} is the tile in the center of the squad. \\
+		In \lnnum{1} we calculate \textit{dsv} by using the build in function getApproxDistance which returns the distance between two tiles as an integer. \textit{pos} is the current tile we want to calculate the Potential for and \textit{squadPos} is the tile in the center of the squad. \\
 		
-		Then in \lnnum{2} we check weather or not to use the \textit{Squad center} which depends on the distance from the unit, know as \textit{ds}, to the center of the squad. This is used to handle the two cases found in the design of the potential field. \\
+		Then in \lnnum{2} we check weather or not to use the \textit{Squad center} which depends on the distance from the unit, know as \textit{ds}, to the center of the squad. This is used to handle the two cases found in the design of the Potential field. \\
 		
-		Afterwards we calculate the potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. \textit{\_variables.FORCESQUAD} is learned by the reinforcement learning in section \ref{section:reinforcement}. 
-		Unlike in the design we multiply useSquad on the end. This is to make it zero if we do not want to use potential field which would make the entire calculation become zero. This is way to control that the use of the potential field is not only used in \textit{Squad center} but also in all the other potential fields. \\
+		Afterwards we calculate the Potential in \lnnum{3} where \textit{\_variables.FORCESQUAD} is $f_{S}$. \textit{\_variables.FORCESQUAD} is learned by the reinforcement learning in section \ref{section:reinforcement}. 
+		Unlike in the design we multiply useSquad on the end. This is to make it zero if we do not want to use Potential field which would make the entire calculation become zero. This is way to control that the use of the Potential field is not only used in \textit{Squad center} but also in all the other Potential fields. \\
 		
 		\textit{squadQ} in \lnnum{4} and likewise will be explained in the implementation of reinforcement learning in section \ref{section:reinforcement}. The \textit{Squad center} implemented and running can be seen in figure \ref{fig:SCA}.
 \insertmarginfigure{height=2in}{PotentialfieldsImplementation/Squadcenter.png}
@@ -99,18 +99,18 @@ maxdistQ += (double)(correctedDistance)*(double)useMaxDist;
 	
 	In \textit{Maximum distance positioning} we start by calculating \textit{de} and \textit{due}in \lnnum{1} \lnnum{2}. These are used to calculate $(2*de - due)$ in \lnnum{3}, known in the code as \textit{correctedDistance}. \\
 	
-	\textit{correctedDistance} is being calculated even if we do not use \textit{Maximum distance positioning} because it is also used in \textit{Weapon cool down}. \\
+	\textit{correctedDistance} is being calculated even if we do not use \textit{Maximum distance positioning} because it is also used in \textit{Weapon cooldown}. \\
 	
 	In \lnnum{1} and \lnnum{2} we make use of \textit{MathHelper::GetDistanceToNearestEnemy} which is a function that takes a tile as input and then iterates trough all visible enemies. Then it calculates the distance to the nearest enemy and returns it.
 	
-	The last thing to do is calculate the potential which is done in \lnnum{4}. The \textit{Maximum distance positioning} implemented and running can be seen in figure \ref{fig:MDP}. \\
+	The last thing to do is calculate the Potential which is done in \lnnum{4}. The \textit{Maximum distance positioning} implemented and running can be seen in figure \ref{fig:MDP}. \\
 
 	
 	\insertmarginfigure{height=2in}{PotentialfieldsImplementation/MaximumDistance.png}
 			{Maximum distance positioning}{fig:MDP}{-3in}
 
-	\subsection{Weapon Cool Down}
-		\begin{Sourcecode}[caption=Weapon cool down]
+	\subsection{Weapon Cooldown}
+		\begin{Sourcecode}[caption=Weapon cooldown]
 int toCool = 1;
 if(_parameters.wr)
 	toCool = 0;
@@ -118,7 +118,7 @@ if(_parameters.wr)
 cool += _variables.FORCECOOLDOWN*correctedDistance*toCool;
 coolQ += correctedDistance*toCool;
 \end{Sourcecode}	
-	\textit{Weapon cool down} looks a lot like \textit{Maximum distance positioning} and does almost the same thing. The only difference is when they are applied. An example of \textit{Weapon cool down} can be found in figure \ref{fig:WCD}.
+	\textit{Weapon cooldown} looks a lot like \textit{Maximum distance positioning} and does almost the same thing. The only difference is when they are applied. An example of \textit{Weapon cooldown} can be found in figure \ref{fig:WCD}.
 	
 	\insertmarginfigure{height=1.5in}{PotentialfieldsImplementation/Weaponscooldown.png}
 		{Repulsion from Weapons Cooldown}{fig:WCD}{-3in}

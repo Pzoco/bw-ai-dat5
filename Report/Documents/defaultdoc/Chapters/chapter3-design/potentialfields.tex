@@ -4,9 +4,9 @@
 	The problem is that if there are a lot of dynamic influences that effects the route, this calculation becomes very complex. It could be 
 	enemies that should be avoided or other dynamic influences. \\
 	
-	This is why potential fields are good for such a problem. They work by generating either attractive or repulsive fields of vectors $v=(m \times d)$. 
+	This is why Potential fields are good for such a problem. They work by generating either attractive or repulsive fields of vectors $v=(m \times d)$. 
 	Where $m$ is the magnitude and $d$ is the direction. 
-	If we create an attractive potential field the point will be surrounded by vectors pointing toward this point, 
+	If we create an attractive Potential field the point will be surrounded by vectors pointing toward this point, 
 	as seen in figure \ref{fig:seekbehavior}. 
 	The bot will be attracted towards this point. The magnitude determines how attractive the field will be. The direction shows in which way the bot will move. This is called an Attractive behaviour 
 		
@@ -40,10 +40,10 @@
 		
 	
 	\subsection{Designing our Potential Field Functions}		
-		The potential fields in our bot will reduce the vectors into constant values that represent their importance or magnitude. We arrange the vector to fit linear values that indicate how attractive or repulsive a field is. 
+		The Potential fields in our bot will reduce the vectors into constant values that represent their importance or magnitude. We arrange the vector to fit linear values that indicate how attractive or repulsive a field is. 
 		This number is calculated by functions, which is either attractive or repulsive and are related to the obstacles in the game world. 
 		
-		The reason we can use numbers instead of vectors is because we only care about the potential on the tiles 
+		The reason we can use numbers instead of vectors is because we only care about the Potential on the tiles 
 		\footnote{A tile represents an $8px \times 8px$ square. 
 		This is the smallest area units can stand on or move to.} 
 		immediately surrounding a unit, so the direction is given by just taking the highest number. As seen in figure \ref{fig:vectorsAsNumbers}.
@@ -56,7 +56,7 @@
 		
 		Variables:\\
 		$f =$ force\\
-		$s =$ size of the potential field\\
+		$s =$ size of the Potential field\\
 		$c =$ constant\\
 		$d =$ distance\\
 		
