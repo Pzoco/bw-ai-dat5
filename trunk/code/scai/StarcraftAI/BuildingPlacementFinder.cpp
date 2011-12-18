@@ -13,6 +13,7 @@ BWAPI::TilePosition BuildingPlacementFinder::FindBuildLocation(BWAPI::UnitType b
 	if(!initialized)
 	{
 		SaveBarracksPositions();
+		SaveFactoriesPositions();
 		myBaseTile = Broodwar->self()->getStartLocation();
 		myBasePosition = Position(myBaseTile);
 		if( myBaseTile.x() >= Broodwar->mapWidth()/2  && myBaseTile.y() < Broodwar->mapWidth()/2)
@@ -32,13 +33,6 @@ BWAPI::TilePosition BuildingPlacementFinder::FindBuildLocation(BWAPI::UnitType b
 			myBaseEnum=InformationEnums::NW;
 		}
 
-		for(int i=0;i<BASE_TILES;i++)
-		{
-			for(int j=0;j<BASE_TILES;j++)
-			{
-
-			}
-		}
 		initialized =true;
 		//Broodwar->printf("Building Placement initialized");
 	}
@@ -66,7 +60,7 @@ BWAPI::TilePosition BuildingPlacementFinder::FindBuildLocation(BWAPI::UnitType b
 	return BWAPI::TilePositions::None;
 }
 
-bool BuildingPlacementFinder::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType type) const
+bool BuildingPlacementFinder::canBuildHere(BWAPI::TilePosition position, BWAPI::UnitType type)
 {
 	//returns true if we can build this type of unit here. Takes into account reserved tiles.
 	if (!BWAPI::Broodwar->canBuildHere(NULL, position, type))
@@ -77,12 +71,12 @@ bool BuildingPlacementFinder::canBuildHere(BWAPI::TilePosition position, BWAPI::
 	//        return false;
 	return true;
 }
-bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type) const
+bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type)
 {
 	return canBuildHereWithSpace(position,type,this->buildDistance);
 }
 
-bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist) const
+bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist)
 {
 	//returns true if we can build this type of unit here with the specified amount of space.
 	//space value is stored in this->buildDistance.
@@ -142,12 +136,12 @@ bool BuildingPlacementFinder::canBuildHereWithSpace(BWAPI::TilePosition position
 	return true;
 }
 
-BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type) const
+BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type)
 {
 	return getBuildLocationNear(position, type,this->buildDistance);
 }
 
-BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist) const
+BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePosition position, BWAPI::UnitType type, int buildDist)
 {
 	//returns a valid build location near the specified tile position.
 	//searches outward in a spiral.
@@ -163,7 +157,9 @@ BWAPI::TilePosition BuildingPlacementFinder::getBuildLocationNear(BWAPI::TilePos
 		//if we can build here, return this tile position
 		if (x >= 0 && x < BWAPI::Broodwar->mapWidth() && y >= 0 && y < BWAPI::Broodwar->mapHeight())
 			if (this->canBuildHereWithSpace(BWAPI::TilePosition(x, y), type, buildDist))
+			{
 				return BWAPI::TilePosition(x, y);
+			}
 
 		//otherwise, move to another position
 		x = x + dx;
@@ -300,11 +296,11 @@ void BuildingPlacementFinder::SaveFactoriesPositions()
 					canBuildHere(BWAPI::TilePosition(x-factory.tileWidth(),y),factory) && 
 					canBuildHere(BWAPI::TilePosition(x-factory.tileWidth(),y+factory.tileHeight()),factory))
 				{
-					buildingPositions[factory].push_back(TilePosition(x,y));
-					buildingPositions[factory].push_back(TilePosition(x,y+factory.tileHeight()));
-					buildingPositions[factory].push_back(TilePosition(x-factory.tileWidth(),y));
-					buildingPositions[factory].push_back(TilePosition(x-factory.tileWidth(),y+factory.tileHeight()));
-					if(!OverlapInBuildingPlacement(factory,UnitTypes::Terran_Barracks))
+					buildingPositions[factory].push_front(TilePosition(x,y));
+					buildingPositions[factory].push_front(TilePosition(x,y+factory.tileHeight()));
+					buildingPositions[factory].push_front(TilePosition(x-factory.tileWidth(),y));
+					buildingPositions[factory].push_front(TilePosition(x-factory.tileWidth(),y+factory.tileHeight()));
+					if(!OverlapInBuildingPlacement(UnitTypes::Terran_Barracks,factory))
 						break;
 					buildingPositions[factory].clear();
 				}
@@ -353,6 +349,27 @@ bool BuildingPlacementFinder::OverlapInBuildingPlacement(BWAPI::UnitType type1, 
 				{
 					if((x<pos1.x()+type1.tileWidth() && x>pos1.x()) ||
 						(y<pos1.y()+type1.tileHeight() && y>pos1.y()))
+					{
+						return true;
+					}	
+				}
+			}
+		}
+	}
+	return false;
+}
+bool BuildingPlacementFinder::BuildingOverlapOthers(TilePosition position2, BWAPI::UnitType type2)
+{
+	for(std::map<UnitType,std::list<TilePosition>>::iterator i = buildingPositions.begin();i!=buildingPositions.end();i++)
+	{
+		for each(TilePosition pos1 in buildingPositions[(*i).first])
+		{
+			for(int x=0;x<position2.x()+type2.tileWidth();x++)
+			{
+				for(int y=0;y<position2.y()+type2.tileHeight();y++)
+				{
+					if((x<pos1.x()+(*i).first.tileWidth() && x>pos1.x()) ||
+						(y<pos1.y()+(*i).first.tileHeight() && y>pos1.y()))
 					{
 						return true;
 					}	

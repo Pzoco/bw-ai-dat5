@@ -25,13 +25,19 @@ void BuildOrderHandler::InitiateBuildOrders()
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(8)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Barracks,ProductionEnums::Placement_MainBase,new SupplyCondition(11)));
 	twoFactVultures->AddItem(new ScoutItem(new SupplyCondition(11)));
-	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Refinery,ProductionEnums::Placement_MainBase,new SupplyCondition(12)));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Marine,1,new SupplyCondition(11)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Refinery,ProductionEnums::Placement_MainBase,new SupplyCondition(11)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
 	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Factory,ProductionEnums::Placement_MainBase,new SupplyCondition(15)));
-	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Machine_Shop,ProductionEnums::Placement_MainBase,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Factory,1)));	
-	twoFactVultures->AddItem(new UpgradeItem(BWAPI::UpgradeTypes::Ion_Thrusters,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,1)));	
-	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,5,new Condition()));
-	twoFactVultures->AddItem(new ProductionFocusItem(ProductionEnums::Focus_CombatUnits,new SupplyCondition(16)));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,1,new Condition()));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Machine_Shop,ProductionEnums::Placement_MainBase,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Vulture,1)));
+	twoFactVultures->AddItem(new UnitProductionItem(BWAPI::UnitTypes::Terran_Vulture,6,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Factory,1)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Factory,ProductionEnums::Placement_MainBase,new SupplyCondition(18)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Machine_Shop,ProductionEnums::Placement_MainBase,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Factory,2)));	
+	twoFactVultures->AddItem(new UpgradeItem(BWAPI::UpgradeTypes::Ion_Thrusters,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,2)));	
+	twoFactVultures->AddItem(new ResearchItem(BWAPI::TechTypes::Spider_Mines,new UnitProductionCondition(BWAPI::UnitTypes::Terran_Machine_Shop,2)));	
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(23)));
+	twoFactVultures->AddItem(new BuildingItem(BWAPI::UnitTypes::Terran_Supply_Depot,ProductionEnums::Placement_MainBase,new SupplyCondition(28)));
 	_availableBuildOrders.push_back(twoFactVultures);
 }
 void BuildOrderHandler::SetCurrentBuildOrder()
