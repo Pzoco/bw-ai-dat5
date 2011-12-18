@@ -1,31 +1,31 @@
 
 \section{Managers}
-	A manager is responsible for different areas in the controlling of the bot, though some times they have to pass tasks to each other. Each manager has 
-	a method called Update which will be called on each frame, used for running their code.
+	A manager is responsible for controlling different sections of the bot. Sometimes they still have to pass tasks to each other. Each manager has 
+	a method called Update which is called on each frame and is used for running their code.
 	\subsection{Production Manager}
-		The production manager is responsible for producing units, constructing buildings and researching tech. Every time a new production facility or 
-		a research facility is produced it will be saved here, so we are able to use them later. 
-		The tasks the production manager have to do are passed from a 
-		class called BuildOrderHandler, which is responsible for handling build orders.
+		The production manager is responsible for producing units, constructing buildings, and researching tech. Every time a new production facility or 
+		 research facility is produced it will be saved here, so we are can use them later. 
+		The tasks that the production manager is responsible for are passed from a 
+		class called BuildOrderHandler.
 		\subsubsection*{BuildOrderHandler}
 			This class contains the build orders the bot can use and passes the items as tasks for the production manager. A BuildOrder contains a list of 
-			BuildOrderItems, which can every class that inherits from this class. The items the build order can store are:
+			BuildOrderItems which every class that inherits from this class can use. The items the build order can store are:
 			\begin{itemize}
 				\item BuildingItem - Contains a building to be constructed
 				\item ProductionFocusItem - Contains a new Production Focus
 				\item ResearchItem - Contains a research tech that needs to be bought
 				\item UpgradeItem - Contains an upgrade that needs to be bought
-				\item ScoutItem - Sends a SCV to scout
+				\item ScoutItem - Sends an SCV to scout
 				\item UnitProductionItem - Contains a unit to be produced
 			\end{itemize}
-			In the constructor of each these items conditions can be put so the item first will get carried out when the condition is fulfilled.
-			The condition we have are: 
+			In the constructor each these items conditions will be placed so the item first will get carried out when the condition is fulfilled.
+			The conditions we have are: 
 			\begin{itemize}
 				\item SupplyCondition - Is fulfilled when the supply is reached
 				\item ThreatLevelCondition - Is fulfilled when the threatlevel is reached
 				\item UnitProductionCondition - Is fulfilled when the number of units or buildings reaches the number specified
 			\end{itemize}
-			The following code snippet shows the main loop of the BuildOrderHandler, which goes through the items in the build order and checks if the 
+			The following code snippet shows the main loop of the BuildOrderHandler which goes through the items in the build order and checks if the 
 			conditions are all fulfilled.
 			
 				\begin{Sourcecode}[caption=BuildOrderHandler main loop]
@@ -50,18 +50,18 @@
 			}
 		}	
 				\end{Sourcecode}
-			This loop gets the BuildOrderItems in the current buildorder and in the loop at \lnnum{1} we check if all the conditions of the item was 
-			fulfilled. Each condition object inherit from the class Condition, where they inherit it's method called IsFulfilled. Each condition that 
-			overrides the method have then specified when the given condition will be fulfilled. If all the conditions were fulfilled, we convert the 
-			item to a Task and saves it so the ProductionManager can retrieve the Task. The difference between a BuildOrderItem and a Task is that the 
-			item is stripped of all information except for the information that is important in producing the task. 
+			This loop grabs the BuildOrderItems in the current buildorder and in the loop at \lnnum{1} we check if all the conditions of the item were 
+			fulfilled. Each condition object inherits from the class Condition where they inherit a method called IsFulfilled. Each condition that 
+			overrides the method has to specify when the given condition will be fulfilled. If all the conditions were fulfilled, we convert the 
+			item to a Task and save it so the ProductionManager can retrieve the Task. The difference between a BuildOrderItem and a Task is that the 
+			item is stripped of all information except the information that is important in producing the task. 
 			
 		\subsubsection*{Retrieving and executing tasks}
 			The ProductionManager contains methods for retrieving tasks from the BuildOrderHandler. There is a method for each type of task it can 
-			produce. When it has retrieved all the tasks it tries to see if it can execute it right now. 
-			If we can afford to do the task it will be passed on to the appropriate method for executing the task. These 
-			methods are called TryProduceUnit, TryConstructBuilding, TryUpgradeTech and TryResearchTech. There is a method for both upgrades and 
-			researching because the BWAPI makes a distinction between these two types, which we do not normally do. The methods all follow the same basic 
+			produce. When it has retrieved all the tasks it tries to see if it can execute it right away. 
+			If we can afford to do the task it will be passed on to the appropriate method for execution. These 
+			methods are called TryProduceUnit, TryConstructBuilding, TryUpgradeTech, and TryResearchTech. There is a method for both upgrades and 
+			researching because the BWAPI makes a distinction between these two types. The methods all follow the same basic 
 			pattern.
 			\begin{itemize}
 				\item Check if we can afford the task
@@ -69,16 +69,15 @@
 				\item If both succeed the task will be executed
 			\end{itemize}
 			The only method that does not follow this pattern is the method TryConstructBuilding. The reason for this is that the ProductionManager is not 
-			able to construct a building without a scv. Because of this we pass this task on to the WorkerManager that will try to construct the building.
+			able to construct a building without an SCV. Because of this we pass this task on to the WorkerManager that will try to construct the building.
 			
 	\subsection{WorkerManager}
-		This manager manages the scvs the bot owns and is also responsible for constructing buildings. When a scv is created it is saved to a list of 
-		scvs and is getting a state. A scv can the following states: Constructing, BeingBuild, MiningGas, MiningMinerals, Defending, Evading, Nothing. When 
-		the scv is completed from the Command Center it will get the state Nothing, then the Update method will determine what the scv should do, usually 
-		it will be set to mine minerals, so it gets the state MiningMinerals. 
+		This manager controls the SCVs the bot owns and is responsible for constructing buildings. When an SCV is created it is saved to a list of 
+		SCVs and is given a state. An SCV can be in one the following states: Constructing, BeingBuild, MiningGas, MiningMinerals, Defending, Evading, or Nothing. When 
+		the SCV is completed from the Command Center it will get the state Nothing. The Update method will then determine what the SCV should do. Usually 
+		the SCV will be set to mine minerals, so it gets the state MiningMinerals. 
 		\subsubsection*{Efficient mining}
-			To ensure that the bot will get the most minerals in relation to how many scvs it has we have implemented a way to ensure a more efficient 
-			way of choosing the mineral patch or refinery to mine. The following code snippet is from the method SendToMineral, which sends a single scv 
+			To ensure that the bot will get the most minerals in relation to how many SCVs it has, we have implemented a way to mine more efficiently by choosing the right mineral or refinery to mine from. The following code snippet is from the method SendToMineral, which sends a single SCV
 			to a mineral patch.
 			
 				\begin{Sourcecode}[caption=SendToMineral method]
@@ -105,15 +104,15 @@
 	_scvResourceGoals[scv]=bestMineral;
 	scv->rightClick(bestMineral);
 				\end{Sourcecode}
-			Each mineral patch and refinery are mapped to an int which represents how many scvs are using this patch or refinery. To find the best mineral 
-			patch every mineral patch we are mining from is iterated through \lnnum{1}, and check if there are less scvs than the preceding mineral patch. 
-			The distance to this mineral patch is also saved, because there might be a mineral patch which have as few scvs on the patch, but is closer. 
-			When the best mineral patch is found it is noted\lnnum{2}that an additional scv is working on that mineral patch- After this we save the 
-			mineral to the scv and sends the scv to mine the mineral patch by rightclicking it.
+			Each mineral patch and refinery are mapped to an int which represents how many SCVs are using this patch or refinery. To find the best mineral 
+			patch every mineral patch we are mining from is iterated through \lnnum{1} and checked if there are less SCVs than the preceding mineral patch. 
+			The distance to this mineral patch is also saved because there might be a mineral patch which has as few SCVs on the patch but is closer. 
+			When the best mineral patch is found it is noted\lnnum{2} that an additional SCV is working on that mineral patch- After this we save the 
+			mineral to the SCV and sends the SCV to mine the mineral patch by right clicking it.
 			
 		\subsubsection*{Constructing buildings}
-			Below is the code that the Production Manager calls when it has a ConstructionTask that need to be executed. The method is called 
-			ConstructBuilding and have the parameters of type UnitType and BuildingPlacement, where BuildingPlacement 
+			Below is the code that the Production Manager calls when it has a ConstructionTask that needs to be executed. The method is called 
+			ConstructBuilding and has the parameters of type UnitType and BuildingPlacement, where BuildingPlacement 
 			is an enum that can have the values MainBase or MainChokepoint.
 			\begin{Sourcecode}[caption=ConstructBuilding method]		
 	(*@\lnote@*)BWAPI::TilePosition position = finder.FindBuildLocation(buildingType,placement);
@@ -129,12 +128,12 @@
 	scv->build(position,buildingType);
 			\end{Sourcecode}
 			
-			To find a location for the building to be built we use an instance of the class BuildingPlacementFinder called finder (see \lnnum{1}), 
-			which can find a suitable location for a building to be constructed in relation to the enum specified. After this we find a scv for the 
-			task \lnnum{2}, by using the method GetAvailableScvNearPosition, which gets the nearest scv, which is not carring minerals, mining gas or 
-			constructing. With the position and a scv the building can now be constructed. The state of the scv is changed to Constructing \lnnum{3} and 
-			we save the building information such that we are able to try again if it failed constructing the building. \lnnum{4} is a type containing 
-			a map between a position and a building type. After this the scv tries to 
+			To find a location to place a building we use an instance of the class BuildingPlacementFinder called finder (see \lnnum{1}).
+			This class can find a suitable location for a building to be constructed in relation to the enum specified. After this we find an SCV for the 
+			task \lnnum{2} by using the method GetAvailableScvNearPosition which gets the nearest scv that is not carrying minerals, mining gas, or 
+			constructing buildings. With the position and an SCV the building can now be constructed. The state of the SCV is changed to Constructing \lnnum{3}, and 
+			we save the building information, so we are able to try again if it fails in constructing the building. \lnnum{4} is a type containing 
+			a map between a position and a building type. After this the SCV tries to 
 			construct the building.
 	\subsection{Scouting Manager}
 		The scouting manager is used to find the opponents base and obtain information on what the opponent is doing. 
@@ -145,19 +144,18 @@
 		Once the scout finally finds the opponent's base, it gathers information on which 
 		buildings the opponent has in order to help predict the build order.
 	\subsection{Strategy Manager}
-		This manager was supposed to be responsible for making high level decisions for the bot, but we have not finished the manager completely. Though 
-		we have made the necessary analyzing needed to make these prediction. By using the class BuildOrderPredictor we are able to retrieve the most 
-		probable buildorder and threatlevel.
+		This manager was supposed to be responsible for making high level decisions for the bot, but we have not finished the manager completely. We have made the necessary analysis needed to make these prediction. By using the class BuildOrderPredictor we are able to retrieve the most 
+		probable build order and threat level.
 		
 		\subsubsection{Build Order Predictor class}
-			This class uses a Bayesian network to analyze what buildorder the enemy is currently doing, which is related to the current threatlevel, which
+			This class uses a Bayesian network to analyze what build order the enemy is currently doing. This is related to the current threat level which
 			the strategy manager retrieves. \\
 			
-			The class is instantiated by loading the proper prediction network in relation to the matchup and saving the matchup as a variable. 
-			The class have a public method for updating the prediction network, which then calls the proper method for updating the proper network related 
-			to the current matchup. The nodes in the Bayesian network have similar names such that the conversion from the unittype to the node name can be 
-			done more easily. When a enemy unit is scouted the strategy manager passes this to the BuildOrderPredictor, which then tries to put evidence 
-			on the right node. Such a conversion can be seen below.
+			The class is instantiated by loading the proper prediction network in relation to the match up and saving the match up as a variable. 
+			The class have a public method for updating the prediction network which then calls the proper method for updating the correct network related 
+			to the current match up. The nodes in the Bayesian network have similar names, so that the conversion from the unit type to the node name can be 
+			done more easily. When an enemy unit is scouted the strategy manager passes this to the BuildOrderPredictor which then tries to put evidence 
+			on the correct node. Such a conversion can be seen below.
 			\begin{Sourcecode}[caption=Conversion from unit type to node name]		
 	if((building == BWAPI::UnitTypes::Terran_Academy || 
 			building == BWAPI::UnitTypes::Terran_Starport ||
@@ -176,12 +174,12 @@
 		predictionNetwork.PrintMostProbableState("BuildChosen");
 	}
 			\end{Sourcecode}
-			 The code removes Terran string and the whitespaces and saves it to a string. The number of buildings of the type is converted to a string too. 
-			 Then the evidence is entered and prints the most probable buildorder.
+			 The code removes Terran string and the white spaces and saves it to a string. The number of buildings of the type is converted to a string too. 
+			 Then the evidence is entered and prints the most probable build order.
 	\subsection{Tactics Manager}
 		The TacticsManager is responsible for managing the offensive units the bot owns. When units of the same type are near each other they are saved 
-		to a Squad object. The TacticsManager executes all the tactics of the Squad objects in it's Update method. This tactic that the squads execute 
-		are the Reinforcement Learning and Potential fields, which will be explained in the next sections.
+		to a Squad object. The TacticsManager executes all the tactics of the Squad objects in it's Update method. This tactic that the squad executes 
+		are from the Reinforcement Learning and Potential fields which will be explained in the next sections.
 		
 			
 		
