@@ -23,7 +23,7 @@ This node is a child of EnemySpawn. We can use the values in this node to determ
 \subsubsection*{EnemyNotAt(NE,SE,SW,NW)}
 These nodes are used to keep track of positions we know our opponent did not spawn. Since a node can only be in one state at a time, we made four nodes that can influence the probabilities in enemy spawn. Ways we would generally get these values could be our own scouts arriving at a position and not finding our opponent.
 
-\subsubsection*{WorkerScoutPosition} When we observe an enemy worker at a certain position on the map, we can influence our belief on our opponents spawn position. This is because the opponent's scout will take a certain amount of time to get to a certain position on the map. TimingSeen is a parent of this node. We use the information from this node to help our prediction. Just seeing an enemy at a certain position isn't enough. We need the time we see the enemy scout to help us form our beliefs. Whenever we obtain evidence on WorkerScoutPosition we will also always gather information on TimingSeen.
+\subsubsection*{WorkerScoutPosition} When we observe an enemy worker at a certain position on the map, we can influence our belief on our opponents spawn position. This is because the opponent's scout will take a certain amount of time to get to a certain position on the map. TimingSeen is a parent of this node. We use the information from this node to help our prediction. Just seeing an enemy at a certain position is not enough. We need the time we see the enemy scout to help us form our beliefs. Whenever we obtain evidence on WorkerScoutPosition we will also always gather information on TimingSeen.
 
 \subsubsection*{TimingSeen} This node is used to help us use the information from WorkerScoutPosition. It has the values: Almost None, Early, Middle, and Late. These values are the times we may see the opponent's scout. Since the values for timing depends on both map size and map layout, we purposely made the values broad.
 
@@ -33,10 +33,10 @@ These nodes are used to keep track of positions we know our opponent did not spa
 \subsection{Build Order Prediction}
 	This subsection describes the Bayesian networks that was created for predicting that build order the enemy is doing. 
 	The networks have some similarities between them. There are three different networks, one each for every race that the bot can encounter: 
-	Terran versus Terran, Terran versus Protoss and Terran vs Zerg.  \\
+	Terran versus Terran, Terran versus Protoss and Terran versus Zerg.  \\
 	
 	They all have a node called BuildChosen, which is the node containing the beliefs for what the enemy's build order is. 
-	The other nodes are buildings (Except an upgrade node in the Terran vs Protoss network) all with the states Seen and NotSeen, 
+	The other nodes are buildings (Except an upgrade node in the Terran versus Protoss network) all with the states Seen and NotSeen, 
 	though Seen is only used when presenting evidence, because the bot will never be able to prove that the enemy building does not exist. 
 	These states determines if we have scouted the building. 
 	The order in which the buildings come in is modelled with arrows going from the nodes representing the buildings needed to the node 
@@ -65,7 +65,7 @@ These nodes are used to keep track of positions we know our opponent did not spa
 	\label{fig:tvpnetwork}
 \end{figure}	
 
-\subsubsection{Terran vs Zerg}
+\subsubsection{Terran versus Zerg}
 	This network will try to predict the following buildorders: 2 Hatch Muta, 3 Hatch Muta, 3 Hatch Lurker and Early Pool Rush, 
 	where Early Pool Rush is a 4pool or 5pool. The nodes have names as in the Terran network, where a node name ends on how many of that type is scouted. 
 	E.g Hatchery3 means that the bot have scouted 3 hatcheries.
@@ -84,7 +84,7 @@ These nodes are used to keep track of positions we know our opponent did not spa
 	6-8 minutes and 9-11 minutes. By presenting evidence as before and on the time node the current threatlevel can be read.
 \begin{figure}[H]
 	\includegraphics[scale=1]{Figures/BayesianPictures/threatlevel.png}
-	\caption{ThreatLevel for the Terran vs Terran matchup}
+	\caption{ThreatLevel for the Terran versus Terran matchup}
 	\label{fig:threatlevel}
 \end{figure}	
 

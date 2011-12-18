@@ -21,7 +21,7 @@ Reinforcement learning (RL) is a method used to build models or functions that l
 There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} (see reference \cite[p764]{rl}) This implies that the environment is fully observable and the agent knows the future impact of its actions. The learning part of the algorithm is only in charge of finding the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take}  (see reference \cite[p771]{rl}). So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
 
 
-\subsubsection{Markov Desicion Process} \label{mdp}
+\subsubsection{Markov Decision Process} \label{mdp}
 
 With the intent of further expanding on the RL capabilities, we need a way to define the task of the agent. A general formulation of the problem starts based on Markov Decision Processes: \textit{In a Markov Decision Process (MDP) the agent can perceive a set $S$ of distinct states of its environment and has a set $A$ of actions that it can perform. At each discrete time step $t$, the agent senses the current state $s_t$, chooses a current action $a_t$, and performs it. The environment responds by giving the agent a reward $r_t = r(s_t,a_t)$ and by producing the succeeding state $s_{t+1}= \delta (s_t,a_t)$. Here the functions $\delta$ and $r$ are part of the environment and are not necessarily known to the agent. In an MDP, the functions $\delta (s_t,a_t)$ and $r(s_t,a_t)$ depend only on the current state and action, and not on earlier states or actions.} (see reference \cite[p370]{ml_tom_mitchel}) \\
 
@@ -54,26 +54,26 @@ The combination of the previous two methods, \textit{using the observed transiti
 U^\pi(s) = U^\pi(s) + \alpha(R(s)+\gamma U^\pi(s') -  U^\pi(s))
 \end{equation}
 
-This update rule (temporal-difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$), it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. (see reference \cite{rl}) \\
+This update rule (temporal difference equation) uses the difference in utilities between succesive states. It shifts or updates the estimates towards the ideal equation. There are several things to notice here. The first is that since it updates with the next state ($s'$), it might seem like it adapts too much to every trial, but in reality this update rule is applied several times, therefore producing an average and isolating rare cases. (see reference \cite{rl}) \\
 
 The second is the appearance of $\alpha$, also known as the learning rate parameter; how much it learns from an specific trial. Normally the value of  $\alpha$ would be something like: $\frac{1}{1+numberOfVisits(s,a)}$  (see reference \cite[p382]{ml_tom_mitchel}). Which then decreases the magnitude of the update proportionally to how many times you visited a state-action pair.\\
  
 
-\subsubsection{Q Learning}
+\subsubsection{Q-learning}
 
-All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is:s (see reference \cite{rl})
+All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q-learning this utility function is:s (see reference \cite{rl})
 
 \begin{equation}
 U(s) = max_a(Q(s,a))
 \end{equation}
 
-Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q Learning we have the following updating rule:  (see reference \cite{rl}) 
+Where $Q(s,a)$ represents the value of making and action $a$ in a state $s$. And if we use the temporal difference approach for Q-learning we have the following updating rule:  (see reference \cite{rl}) 
 
 \begin{equation}
 Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]
 \end{equation}
 
-Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection} (see reference \cite[p775]{rl}). It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent  (see reference \cite[p776]{rl}) . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
+Q-learning is a temporal difference learner that \textit{does not need a model for either learning or action selection} (see reference \cite[p775]{rl}). It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent  (see reference \cite[p776]{rl}) . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
 
 \subsubsection{Generalization of Q-Learning}	\label{generalization}
 
@@ -90,7 +90,7 @@ When a function approximation reaches the optimal values or closes around them c
 \hat{Q}(x,y) = f_0 + f_2 x + f_3 y
 \end{equation}
 
-We can use the updating rule or $\hat{Q}$-learning equation that evolves from the Q learning temporal difference formula, now taking into consideration the values of the function approximation:   (see reference \cite{rl}) \\ 
+We can use the updating rule or $\hat{Q}$-learning equation that evolves from the Q-learning temporal difference formula, now taking into consideration the values of the function approximation:   (see reference \cite{rl}) \\ 
  
 \begin{equation}
 f_i \leftarrow f_i + \alpha [ R(s) + \gamma(max\hat{Q}_f(a',s'))-\hat{Q}_f(a,s) ] \frac{\partial \hat{Q}_f(a,s)}{\partial f_i}
@@ -135,11 +135,11 @@ The only difference between this process and the approximation to Q-learning is 
 
 \section{Application of Generalization of Q-Learning}	\label{qlearning}
 
-The starcraft environment has several factors that could be considered important for defining a moment in time; units, frames, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. We have to also consider how long is the learning time. 
+The Starcraft Broodwar environment has several factors that could be considered important for defining a moment in time; units, frames, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. We have to also consider how long is the learning time. 
 
 \subsection{Q-Learning Functions}
 
-We combine the generalization of Q-learning with the potential fields to obtain a reasonable model of the starcraft environment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
+We combine the generalization of Q-learning with the potential fields to obtain a reasonable model of the Starcraft Broodwar environment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
 
 \subsubsection{State - Hypothesis Space}
 
@@ -215,7 +215,7 @@ We created a reward function that takes into consideration all the factors to gr
 R(s) = C_1 numberOfUnits  -  C_2 healthLost  +   C_3 damageDealt  +   C_4 numberOfKills -  C_5 time
 \end{equation}
 
-We ensure that the reward complies with the convergence restrictions for Q learning  (see reference \ref{convergence}). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
+We ensure that the reward complies with the convergence restrictions for Q-learning  (see reference \ref{convergence}). The reward function is bound, $R(s) <= C$. The upper bound of the constant C defined by $C = C_1 startingNumberOfUnits  +   C_3 maximumDamageDealt  +   C_4 maximumNumberOfKills$. The lower bound defined by $C = -  C_2 maximumHealthLost -  C_5 frameCount$. 
 
 %\subsection{Q-Learning Conclusions}
-%We have looked upon a few different learning methods and have decided that the approximation of q-learning is what fits the best to our agent, because starcraft would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.
+%We have looked upon a few different learning methods and have decided that the approximation of Q-learning is what fits the best to our agent, because Starcraft Broodwar would have a very large statespace, and if decided to use one of the other learning methods the computational time would be to long and cumbersome or maybe even impossible, so we have chosen to use an approximation and the agent should be able to converge to the right utility function. The reward function forces the agent to attack and it forces it to be quick, because the reward function takes time into account, and gets a lower reward depending on the time used to attack and deal damage to the opponent.
