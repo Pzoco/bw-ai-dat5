@@ -2,6 +2,7 @@
 \subsubsection{Field Summary}
 
 \begin{centering}
+\begin{table}
  \begin{tabular}{|l|p {10cm}|}
  	\hline
  	double const  &  $alpha$\linebreak  The $\alpha$ value of the $\hat{Q}_f$ function updating rules. \\
@@ -16,15 +17,15 @@
  	\hline
  	double const  &  $startingUnitMaxHealth$\linebreak  Maximum Health (manual input).\\
  	\hline
- 	double const  &  $c1$\linebreak  Reward function's $C_1$ value, set to -180, coefficient for the number of units. \\
+ 	double const  &  $c1$\linebreak the $C_1$ value of the reward function, set to -180, coefficient for the number of units. \\
  	\hline
- 	double const  &  $c2$\linebreak  Reward function's $C_2$ value, set to -1, coefficient for the amount of health lost.\\
+ 	double const  &  $c2$\linebreak  the $C_2$ value of the reward function, set to -1, coefficient for the amount of health lost.\\
  	\hline
- 	double const  &  $c3$\linebreak  Reward function's $C_3$ value, set to 2, coefficient for the damage dealt. \\
+ 	double const  &  $c3$\linebreak  the $C_3$ value of the reward function, set to 2, coefficient for the damage dealt. \\
  	\hline
- 	double const  &  $c4$\linebreak  Reward function's $C_4$ value, set to 40, coefficient for the number of kills.\\
+ 	double const  &  $c4$\linebreak  the $C_4$ value of the reward function, set to 40, coefficient for the number of kills.\\
  	\hline
- 	double const  &  $c5$\linebreak  Reward function's $C_5$ value, set to -0.025, coefficient for the frame count inside a game (time).\\
+ 	double const  &  $c5$\linebreak  the $C_5$ value of the reward function, set to -0.025, coefficient for the frame count inside a game (time).\\
  	\hline
  	double[ ] &  $liveBuffer$\linebreak  Array used for saving the different $\hat{Q}_f$ updating values, its purpose is to optimize the test d data saving (to files) to only a few occurrences throughout the game. \\
  	\hline
@@ -33,6 +34,7 @@
  	struct Weights & \_$weights$\{double FORCEALLY, double FORCESQUAD, double FORCEMAXDIST, double FORCECOOLDOWN, double FORCEEDGE\}\linebreak  Struct used to save all the values of the $f_i$'s in the $\hat{Q}_f$ function throughout all the calculations in the game. \\
  	\hline
 \end{tabular}
+\end{table}
 \end{centering}
 
 %____________________________________________________________________________________________________
@@ -43,6 +45,7 @@ The methods mention below cover the calculations for the updating functions and 
 
 
 \begin{centering}
+\begin{table}
  \begin{tabular}{|l|p {11cm}|}
 	
 	\hline
@@ -104,4 +107,5 @@ The methods mention below cover the calculations for the updating functions and 
 	
 	\hline
 \end{tabular}
+\end{table}
 \end{centering}
