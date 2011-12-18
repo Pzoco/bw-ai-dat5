@@ -6,20 +6,22 @@
 	by another manager. The following subsections will explain the different managers.
 	
 	\subsection*{Tactics Manager}
-		This manager is responsible for managing our offensive units in and out of small scale combat. It manages the units by controlling squads of different 
-		units.
+		This manager is responsible for managing our offensive units in and out of small scale combat. 
+		It manages the units by controlling squads of different units.
 	\subsection*{Production Manager}
 		This manager is responsible for producing units, constructing buildings, upgrading tech and researching tech. The manager will be able to 
 		know what to build by following build orders.
 	\subsection*{Scouting Manager}
-		The Scouting Manager keeps track of the opponent. It saves every enemy it has seen and is responsible for scouting the enemy's spawn position. It also keeps track of which buildings the enemy has produced.
+		The Scouting Manager keeps track of the opponent. 
+		It saves every enemy it has seen and is responsible for scouting the enemy's spawn position. 
+		It also keeps track of which buildings the enemy has produced.
 	\subsection*{Strategy Manager}
 		The Strategy Manager is responsible for making high-level decisions based on the information we have. These decisions include
 		setting the Tactics Manager to attack the enemy or setting the Production Manager to change build order.
 	\subsection*{Worker Manager}
 		The Worker manager sets the workers to mine minerals,mine gas, scout, construct buildings and perform other tasks.
-
 	\subsection{Managers in Game Scenario}
+		
 		The game starts and the Production Manager begins following the build order which produces SCVs. Every time an SCV is created the 
 		Worker Manager sets the worker to a free mineral patch. The Scouting Manager sends out an SCV to the opponent's base. The scout 
 		finds the base and the Strategy Manager still predicts that the threat level is low. The Production Manager keeps following the build order, and now 
