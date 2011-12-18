@@ -3,6 +3,7 @@
 #include <BWTA.h>
 #include "BaseTactic.h"
 #include "MathHelper.h"
+#include "TacticsManager.h"
 
 std::set<BWAPI::Unit*> _units;
 BWAPI::UnitType _unitType;
@@ -39,6 +40,18 @@ void Squad::RemoveUnit(BWAPI::Unit* unit)
 }
 void Squad::ExecuteTactics()
 {
+	int numberOfUnits = 0;
+	for(std::set<BWAPI::Unit*>::const_iterator u = _units.begin(); u != _units.end(); u++)
+	{
+		if((*u)->exists())
+		{
+			numberOfUnits++;
+		}
+	}
+
+	BWAPI::Position LocationToMoveTo = TacticsManager::GetInstance()->attackPos;
+
+
 	if(BWAPI::Broodwar->getFrameCount() % 200 == 0)
 	{
 			BWAPI::Broodwar->printf("target %d , %d",LocationToMoveTo.x(),LocationToMoveTo.y());
@@ -65,7 +78,7 @@ void Squad::ExecuteTactics()
 			_tactic.ExecuteTactic((*u),_units);
 		}
 
-		if((*u)->exists() && !((LocationToMoveTo.x() == 1 && LocationToMoveTo.y() == 1) || (LocationToMoveTo.x() == 0 && LocationToMoveTo.y() == 0)))
+		if((*u)->exists() && !((LocationToMoveTo.x() == 1 && LocationToMoveTo.y() == 1) || (LocationToMoveTo.x() == 0 && LocationToMoveTo.y() == 0)) && (numberOfUnits > 4))
 		{
 			if(
 				((*u)->getPosition().x() > (LocationToMoveTo.x()-50)) &&
@@ -75,7 +88,7 @@ void Squad::ExecuteTactics()
 				)
 			{
 				BWAPI::Broodwar->printf("At location");
-				LocationToMoveTo = BWAPI::Position(1,1);
+				//LocationToMoveTo = BWAPI::Position(1,1);
 			}
 			else
 			{
@@ -133,9 +146,4 @@ BWAPI::Position Squad::GetSquadCenter()
 	
 	return BWAPI::Position(x,y);
 
-}
-void Squad::SetMoveLocation(BWAPI::Position pos)
-{
-	LocationToMoveTo = pos;
-	//BWAPI::Broodwar->printf("squad move to %d,%d",pos.x(),pos.y());
 }

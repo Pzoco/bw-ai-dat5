@@ -106,15 +106,7 @@ int TacticsManager::GetNumberOfUnits(BWAPI::UnitType type)
 	}
 	return 0;
 }
-void TacticsManager::MoveSquad(BWAPI::Position pos,BWAPI::UnitType type)
+void TacticsManager::MoveSquad(BWAPI::Position pos)
 {
-	if(UnitHelper::IsOffensiveType(type))
-	{
-		for each(Squad squad in squads[type])
-		{
-			//BWAPI::Broodwar->printf("squad move to %d,%d",pos.x(),pos.y());
-			squad.SetMoveLocation(pos);
-		}
-	}		
-
+	attackPos = pos;
 }
