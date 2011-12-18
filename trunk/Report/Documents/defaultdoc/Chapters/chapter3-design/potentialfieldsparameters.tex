@@ -1,6 +1,6 @@
 \section{Functions for the Potential Fields}
-	This section contains the functions, which will be used to calculate the potential of a field. Here is introduced some variables that 
-	is going to be used in the functions.
+	This section contains the functions which will be used to calculate the potential of a field. Here is introduced some variables that 
+	are going to be used in the functions.
 	
 	\label{cha3_variables}
 	Variables:\\
@@ -19,16 +19,16 @@
 	
 	
 	
-	Where $f_c$ and $c$ is specific to each part of potential field, and named after each e.g. $f_{S}$ for force for the squad and $c_{squadSize}$ for the size of the squad. A negative force will result in a repusive potential field, and a positive force will yield a attractive potential field.\\
+	Where $f_c$ and $c$ are specific to each part of potential field and named after each e.g. $f_{S}$ for force for the squad and $c_{squadSize}$ for the size of the squad. A negative force will result in a repusive potential field, and a positive force will yield a attractive potential field.\\
 	
 	\insertmarginfigure{height=3in}{Potentialfields/CorrectedDistance.pdf}
 		    {Correcting the distance}{fig:cdist}{-3in}
 			
-	The calculation $(2ds - dsv)$, found in section \ref{SCA_label}, and other calculation with the same structure, is used to invert the distances. This calculates is needed because a lot of the potential fields depend on distance. But normaly when calculating the distance from one unit to another, the distance closer to the other unit would be smaller, and the distance further a way would be bigger. But because the highest number in a potential field is the most attractive one, we sometimes need to make the closest distance the most attractive one, and that is what $(2ds - dsv)$ does. An example can be seen in figure \ref{fig:cdist}
+	The calculation $(2ds - dsv)$, found in section \ref{SCA_label} and other calculations with the same structure, are used to invert the distances. This calculation is needed because a lot of the potential fields depend on distance. But normaly when calculating the distance from one unit to another, the distance closer to the other unit would be smaller, and the distance further away would be larger. Because the highest number in a potential field is the most attractive one, we sometimes need to make the closest distance the most attractive one which is what $(2ds - dsv)$ does. An example can be seen in figure \ref{fig:cdist}
 	
 	\subsection{Squad Center (Attractive)}
 		\label{SCA_label}A vulture is more likely to survive if it sticks together with its squad. 
-		It will both give a better damage output and also spread out the damage taken.
+		It will both give a better damage output and also spread out damage taken.
 		\begin{displaymath}
 			SquadCenter  = \begin{cases}
 					0 & \text{if } ds < c_{squadSize} \\
@@ -37,8 +37,8 @@
 		\end{displaymath}
 		
 		\begin{description}
-			\item[First case] Handles then the units are within the desired squad size. In that case we don't need to attract the units more towards the squad center.
-			\item[Second case] The unit are outside the desired squad size, in that case we need to attract it towards the squad center.
+			\item[First case] The units are within the desired squad size. In that case we don't need to attract the units more towards the squad center.
+			\item[Second case] The unit is outside the desired squad size. In that case we need to attract it towards the squad center.
 		\end{description}
 	\subsection{Maximum Distance Positioning (Attractive)}
 		The vultures have to utilize the their range, so they will be attracted to the position which gives them the maximum distance to the enemies.
@@ -49,8 +49,8 @@
 				\end{cases}		
 		\end{displaymath}
 		\begin{description}
-			\item[First case] Handle the case there we want to get closer to the enemies because we are not within shooting range.
-			\item[Second case] The unit is within range and don't need to get closer. One could argue that we need a third case to handle if we are getting to close, but this is handled by \textit{Weapon cool down}.
+			\item[First case] We want to get closer to the enemies because we are not within shooting range.
+			\item[Second case] The unit is within range and doesn't need to get closer. One could argue that we need a third case to handle if we are getting to close, but this is handled by \textit{Weapon cool down}.
 		\end{description}
 	\subsection{Ally Units (Repulsive)}
 We do not want all of the vultures to clump completely together during a match. This can lead them vulnerable to splash damage attacks. If we keep the vulture spread out a reasonable distance the splash damage will not have any effect.
@@ -61,11 +61,11 @@ We do not want all of the vultures to clump completely together during a match. 
 				\end{cases}		
 		\end{displaymath}
 	\begin{description}	
-		\item[First case] handles when the unit is fare enough away from the enemies to not sustain splash damage, so we don't need to get further away.
-		\item[Secound case] is active when the units are to close and we need them to move away from each other.
+		\item[First case] The unit is far enough away from the enemies to not sustain splash damage, so we don't need to get any further away.
+		\item[Secound case] Active when the units are too close, and we need them to move away from each other.
 	\end{description}
 	\subsection{Weapon Cooldown (Repulsive)}
-A vulture can not do any damage right after it shoots. This is because in there is a certain amount of time in between each shot. Right after a vulture shoots we want it to move out of the battle until it can fire again. This way each vulture will be less vulnerable to taking damage when it cannot give any damage.
+A vulture cannot do any damage right after it shoots. This is because in there is a certain amount of time in between each shot. Right after a vulture shoots we want to move it out of the battle until it can fire again. This way each vulture will be less vulnerable to taking damage when it cannot give any damage.
 		\begin{displaymath}
 			WeaponCoolDown = \begin{cases}
 					0 & \text{if } wr\\
@@ -74,7 +74,7 @@ A vulture can not do any damage right after it shoots. This is because in there 
 		\end{displaymath}
 
 	\begin{description}	
-		\item[First case] For when the weapons are on cool down, in which case nothing happens. 
+		\item[First case] The weapons are not on cool down, so nothing happens. 
 		\item[Second case] The weapons are on cool down, and we need to flee.        
     \end{description}	
 	\subsection{Edges and Cliffs (Repulsive)}
@@ -86,7 +86,7 @@ A vulture can not do any damage right after it shoots. This is because in there 
 				\end{cases}		
 		\end{displaymath}
 	\begin{description}	
-		\item[First case] We are to close the edges and need to move away.  
+		\item[First case] We are too close the edges and need to move away.  
 		\item[Second case] Nothing happens. 
     \end{description}
      
