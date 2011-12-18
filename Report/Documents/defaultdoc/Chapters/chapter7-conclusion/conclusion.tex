@@ -1,19 +1,12 @@
 In this chapter of the report we summarize the work done, and how well the goals of the project were fulfilled. \\
 
-In this project we wanted to create an intelligent bot for Starcraft Broodwar. The bot can make intelligent decisions using potential fields, which 
-were trained by reinforcement learning. The bot is intelligent in another way because it can predict what the enemy is doing by using Bayesian networks. 
-So in these two cases the bot can act intelligently, but how intelligent is it compared to a human player? The Bayesian networks that are implemented are 
-very simple, which means that the bot only will be able to recognize a small set of build orders. Even if these networks were made more complex there 
-will always be build orders which will not get recognized. So for it to be able to recognize the most known build orders seems sufficient. 
+In this project we wanted to create an intelligent bot for Starcraft Broodwar. The bot can act intelligent in two ways. First the bot can make intelligent decisions using potential fields, which were trained by reinforcement learning. The second part of bot is intelligent in another way  it can predict what the enemy is doing by using Bayesian networks. 
+So in these two cases the bot can act intelligently, but how intelligent is it compared to a human player? The Bayesian networks that are implemented are very simple, which means that the bot only will be able to recognize a small set of build orders. Even if these networks were made more complex there will always be build orders which will not get recognized. So for it is to be able to recognize the most known build orders seems sufficient. The potential field preformed decent, they were able to kill more marines then tee best Starcraft Broodwar player from our group.
+
 Another goal was to apply machine intelligence theory in the modelling of the bot. This goal is fulfilled, as mentioned above we have used both 
 Bayesian networks and Reinforcement learning in the modelling of the bot.\\
 
 The third goal of the problem statement was to make a bot which could improve by playing Starcraft. 
-Reinforcement learning makes the bot able to improve when microing, but the Bayesian networks are not improved by playing. All the probabilities for the Bayesian networks are entered manually and are gotten from looking at replays with professional Starcraft players playing. The numbers might be unrealistic, 
-but as we showed in the test of these networks, it was able to predict the right build order and threatlevel.
+Reinforcement learning makes the bot able to improve when microing, but the Bayesian networks are not improved by playing. All the probabilities for the Bayesian networks are entered manually and are gotten from looking at replays with professional Starcraft players playing. The numbers might be unrealistic, but as we showed in the test of these networks, it was able to predict the right build order and threatlevel. But it would be improved using datamining from replays.
 
-We also described that we wanted to make a full bot, a bot that is able to play a normal game versus another player. The bot is not completely able to 
-do this, because some more work needs to be done on the Strategy Manager and the class for placing buildings. The Strategy Manager can not control the 
-other managers as we intended to and the class for placing buildings is placing the buildings in bad places. The potential fields only work for the 
-training maps right now and not for the normal maps, because it has not been trained to move in environments where there are buildings and other units that 
-can block the unit. 
+We also described that we wanted to make a full bot, a bot that is able to play a normal game versus another player. The bot able to do this in theory but for it to preform well, some more work needs to be done on the Strategy Manager and the class for placing buildings. The Strategy Manager can not control the other managers as we intended to and the class for placing buildings is placing the buildings in bad places. The potential fields only work well for the training maps right now and not for the normal maps, because it has not been trained to move in environments where there are buildings and other units that can block the units, and make it preform badly. If all the managers was working to there full intend we would be able to train the reinforcement learning in real games.
