@@ -8,9 +8,11 @@ The purpose of this Bayesian network is to find our opponent's spawning position
 %Why do we represent time as almost none, early, middle, and late?
 %actual time for these times - refrace.
 
-\insertmarginfigure{height=3in}{BayesianPictures/SpawnPrediction.png}
-			{A graph of the nodes in the Spawn Prediction Bayesian network}{fig:predicting}{-3in}
-
+\begin{figure}[H]
+	\includegraphics{Figures/BayesianPictures/SpawnPrediction.png}
+	\caption{A graph of the nodes in the Spawn Prediction Bayesian network}
+	\label{fig:predicting}
+\end{figure}
 
 \subsubsection*{EnemySpawn}
 The correct state in this node is the value we are trying to discover. Ultimately, all of the evidence we collect, will be used to find this state. Most of the other nodes have direct links from this node. Once we know the state of this, we are satisfied and do not need to use the network to infer more information because we do not care about predicting any of the other states.
@@ -45,35 +47,46 @@ These nodes are used to keep track of positions we know our opponent did not spa
 	This network will try to predict the following buildorders: Proxy Rush, 2 Factory Vulture Pressure, 1 Factory Expand, 1 Starport Wraith and Stim Rush. 
 	The numbers in the node names are how many of the given unit the enemy have, e.g. Barracks2 means the second barracks the bot scouts. 
 	
-\insertmarginfigure{height=3in}{BayesianPictures/tvt.png}
-			{Terran versus Terran prediction network}{fig:tvtnetwork}{-3in}	
-			
+\begin{figure}[H]
+	\includegraphics{Figures/BayesianPictures/tvt.png}
+	\caption{Terran versus Terran prediction network}
+	\label{fig:tvtnetwork}
+\end{figure}			
 \subsubsection{Terran versus Protoss}
 	This network is bigger than the other two prediction networks. Instead of having only having a node for BuildChosen it has a node for the opening 
 	used. The reason for this is that Protoss is very versatile race and the different openings affect when the build order hits and what kind of build 
 	the player is more likely to use. After the opening is determined all the nodes affecting the openings are not updated any more. The build orders 
 	the network can predict is : 2 Base Carrier, 2 Base Carrier and 2 Base Arbiter. The openings the bot can predict is: One Gate Tech, Two Gate Range, 
 	Nexus First and Two Gate Zealot Rush.
-\insertmarginfigure{height=2in}{BayesianPictures/tvp.png}
-			{Terran versus Protoss prediction network}{fig:tvpnetwork}{-3in}
-%NEED figure
+
+\begin{figure}[H]
+	\includegraphics[scale=0.8]{Figures/BayesianPictures/tvp.png}
+	\caption{Terran versus Protoss prediction network}
+	\label{fig:tvpnetwork}
+\end{figure}	
 
 \subsubsection{Terran vs Zerg}
 	This network will try to predict the following buildorders: 2 Hatch Muta, 3 Hatch Muta, 3 Hatch Lurker and Early Pool Rush, 
 	where Early Pool Rush is a 4pool or 5pool. The nodes have names as in the Terran network, where a node name ends on how many of that type is scouted. 
 	E.g Hatchery3 means that the bot have scouted 3 hatcheries.
-\insertmarginfigure{height=3in}{BayesianPictures/tvz.png}
-			{Terran versus Zerg prediction network}{fig:tvznetwork}{-3in}
-			
+
+\begin{figure}[H]
+	\includegraphics[scale=1]{Figures/BayesianPictures/tvz.png}
+	\caption{Terran versus Zerg prediction network}
+	\label{fig:tvznetwork}
+\end{figure}	
+		
 			
 \subsection{ThreatLevel Prediction}
 	This prediction is closely related to the prediction of the build order the enemy is doing. A build order have a certain time where it is effective 
 	or where it hits. So determine what the current threatlevel is two nodes have to be added to each of the build order prediction networks, 
 	ThreatLevel and Time. ThreatLevel have the states Low, Medium and High, and to make the network simple it only has three states for time: 0-5 minutes, 
 	6-8 minutes and 9-11 minutes. By presenting evidence as before and on the time node the current threatlevel can be read.
-\insertmarginfigure{height=3in}{BayesianPictures/threatlevel.png}
-			{ThreatLevel for the Terran vs Terran matchup}{fig:threatlevel}{-3in}
-
+\begin{figure}[H]
+	\includegraphics[scale=1]{Figures/BayesianPictures/threatlevel.png}
+	\caption{ThreatLevel for the Terran vs Terran matchup}
+	\label{fig:threatlevel}
+\end{figure}	
 
 
 
