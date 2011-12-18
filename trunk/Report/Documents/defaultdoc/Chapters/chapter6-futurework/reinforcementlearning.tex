@@ -1,10 +1,17 @@
 \section{Future Work on Reinforcement Learning}
-
 %%%Comments for reinforcement learning
 %
 %Different reward values - so it might be more greedy and maybe defeat the enemy even faster
-%We could even use different learning algorithms, maybe even an approximation of the NN (http://www.stat.yale.edu/~arb4/publications_files/neural%20net%20approximation.pdf)
+%We could even use different learning algorithms, maybe even an approximation of the NN %(http://www.stat.yale.edu/~arb4/publications_files/neural%20net%20approximation.pdf)
 %Taking way more things to 'consideration' e.g cliffs, edges, spawn locations, build orders (basicly everything in that game that generates a number)
 %It could be cool to make it learn a common path, so it could use the bombs it can place all over the map :)
 %We could use Fuzzy logic aswell http://en.wikipedia.org/wiki/Fuzzy_logic
 %Ofcourse - run it until it converges - and here a super-computer would be nice!
+
+If we had more time to work on this project there are quite a few thing we would like to try out. First of all we would like to consider different rewards function, to see how that would impact the learning. Right now we only consider the same five variables in the reward function, mainly the total health of the squad and squad sizes. But we would considerer the percentage of health of each unit, to make it try to distribute the damage more. Or just something as simple as trying with our current reward function but with different numbers. 
+
+In the potential fields we only consider distances, and all calculations are done for one unit at a time. We would look at during the calculations for the entire group at ones. To make them do what is collective best for the group. And instead of just considering distances we would consider the health of a unit, so that units on low health will be more defence then units with full health.
+
+Another thing to look at would be the enemies race or even the type of units we fight. Right now we use the same forces no matter who or what we fight. But it would most likely preform better if we learned different set of numbers of each different kind of unit.
+
+The last thing we would like to do is keep the bot running until all the forces has converged.
