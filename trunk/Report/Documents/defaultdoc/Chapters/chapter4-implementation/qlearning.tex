@@ -1,9 +1,9 @@
 \newpage
 \section{$ \hat{Q}$-Learning}
-
+\label{section:reinforcement}
 In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then we go through all the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\\
 
-The $ReinforcementLearning$ class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing). Further detail of the class implementation can be found on the appendix (REF!!!!!!!!). 
+The $ReinforcementLearning$ class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing). Further detail of the class implementation can be found on the appendix section \ref{section:RLFS}. 
 
 \subsection{$\hat{Q}_f$ Decision}
 
@@ -30,11 +30,11 @@ Every time a potential field is calculated we save the values that correspond to
 		StarcraftAI::reinforcementLearning.WriteLiveValue(edgeQ);
 \end{Sourcecode}
 
-After saving all the derivatives values for the updating rules, continues with the calculations for the $\hat{Q}_f(a,s)$ as shown before in the potential fields section (LINK). Finally it calculates the value of $max\hat{Q}_f(a',s'))$. The code used for this calculation follows the same pattern explained for the $\hat{Q}_f(a,s)$ function, the only difference being that the center point the previously calculated $\hat{Q}_f(a,s)$.
+After saving all the derivatives values for the updating rules, continues with the calculations for the $\hat{Q}_f(a,s)$ as shown before in the potential fields section \ref{section:IMF}. Finally it calculates the value of $max\hat{Q}_f(a',s'))$. The code used for this calculation follows the same pattern explained for the $\hat{Q}_f(a,s)$ function, the only difference being that the center point the previously calculated $\hat{Q}_f(a,s)$.
 
 \subsection{Reward Function}
  
-\textit{CalculateReward Method}: This method applies the formula explained in section LINK!!! for calculating a reward. This method is called through several frames in the game to calculate the reward value needed for the update function methods.\\
+\textit{CalculateReward Method}: This method applies the formula explained in section \ref{reward} for calculating a reward. This method is called through several frames in the game to calculate the reward value needed for the update function methods.\\
 
 \begin{Sourcecode}[caption=CalculateReward Method]
 double ReinforcementLearning::CalculateReward(std::set<BWAPI::Unit*> squad)
