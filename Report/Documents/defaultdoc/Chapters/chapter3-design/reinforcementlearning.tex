@@ -18,7 +18,7 @@ We have chosen not to use a neural network, and the main reason is that neural n
 Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value that grades the result of any action. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. \\
 
 
-There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
+There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.\\
 
 
 \subsubsection{Markov Desicion Process} \label{mdp}
@@ -35,7 +35,7 @@ Once we have the reward function, we can define the learning task of the agent. 
 
 \subsubsection{Direct Utility Estimation \& Bellman Rules}
 
-In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. Then at the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It's basically a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy \cite{rl}:\\
+In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. Then at the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It is a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy \cite{rl}:\\
 
 
 \begin{equation}
@@ -66,7 +66,7 @@ The second is the appearance of $\alpha$, also known as the learning rate parame
 
 \subsubsection{Q Learning}
 
-All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is basically:s\cite{rl}
+All the previous methods have been explained considering there is a fixed policy that determines the behaviour of the agent. Now the task shifts to active reinforcement learning because we need our agent to decide which action to take in each state-action pair. We need an active temporal difference learner (that learns the utility function $U$). In Q learning this utility function is:s\cite{rl}
 
 \begin{equation}
 U(s) = max_a(Q(s,a))
@@ -147,7 +147,7 @@ We combine the generalization of Q-learning with the potential fields to obtain 
 
 \subsubsection{State - Hypothesis Space}
 
-We define a state in our environment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. \\
+We define a state in our environment as a combination of the most important factors that interact with the agent and the game. It consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. \\
 \begin{displaymath}
                        State = \begin{cases}
                          da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
