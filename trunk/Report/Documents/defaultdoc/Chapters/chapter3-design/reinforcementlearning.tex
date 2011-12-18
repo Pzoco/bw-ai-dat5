@@ -163,6 +163,7 @@ After defining a state in the game we created a linear function approximation to
 \begin{equation}
 \hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due) 
 \end{equation}
+\label{rleq}
 
 This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
 
@@ -172,6 +173,7 @@ Notice that there are forces that are dependant on the exact same variables, lik
 
 Then we apply the updating rules (equation 3.6) mentioned for the $\hat{Q}$ learning. In the context of our  $\hat{Q}_f$ function, it would represent the forces: $f_{MDP}$, $f_{AU}$, $f_{EAC}$, $f_{S}$, $f_{CD}$. The exact same forces that represent each one of the potential fields. So we are left with the following updating rules for each of the coefficients/forces:
 
+\label{rleq_update}
 \begin{flushleft}
 Maximum Distance Positioning 
 \begin{equation}
