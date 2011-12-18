@@ -1,6 +1,6 @@
 \section{Bot Managers}
 	\label{design::managers}
-	The managers for the bot are used to control different parts of the bot. The part which is connected to the microing of units will use 
+	The managers for the bot are used to control different parts of the bot. The part which is connected to the micromanaging of units will use 
 	reinforcement learning and potential fields. The part which manages scouting information will use Bayesian networks. 
 	The purpose for these managers are to separate parts of the game as much as possible. They should only use the other managers when a task needs to be handled 
 	by another manager. The following subsections will explain the different managers.
@@ -9,7 +9,7 @@
 		This manager is responsible for managing our offensive units in and out of small scale combat. 
 		It manages the units by controlling squads of different units.
 	\subsection*{Production Manager}
-		This manager is responsible for producing units, constructing buildings, upgrading tech and researching tech. The manager will be able to 
+		This manager is responsible for producing units, constructing buildings, upgrading technology and researching technology. The manager will be able to 
 		know what to build by following build orders.
 	\subsection*{Scouting Manager}
 		The Scouting Manager keeps track of the opponent. 
@@ -19,7 +19,7 @@
 		The Strategy Manager is responsible for making high-level decisions based on the information we have. These decisions include
 		setting the Tactics Manager to attack the enemy or setting the Production Manager to change build order.
 	\subsection*{Worker Manager}
-		The Worker manager sets the workers to mine minerals,mine gas, scout, construct buildings and perform other tasks.
+		The Worker Manager sets the workers to mine minerals, mine gas, scout, construct buildings and perform other tasks.
 	\subsection{Managers in Game Scenario}
 		
 		The game starts and the Production Manager begins following the build order which produces SCVs. Every time an SCV is created the 
