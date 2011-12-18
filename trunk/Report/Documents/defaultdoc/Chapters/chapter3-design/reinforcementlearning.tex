@@ -3,27 +3,15 @@ The purpose of agent learning is to be able to adjust each forces from the poten
 This section addresses various different learning techniques and methods that could be used in the AI agent. There will be a brief explanation of the the two options we considered. First, the neural network section will contain a basic overview of how it works, followed by the examination of its usability in our project. Then the reinforcement learning section will come across some of the different reinforcement learning techniques;  each one explained briefly and analysed to evaluate its relevance. \\
 
 \subsection*{Neural Networks}
-
 Neural networks cover different learning methods that an agent can execute to approximate values or target functions. They are ideal for interpreting complex real world data and wide known for being one of the most effective learning methods. This methods can be used to teach behaviour patterns in a human-like way. This because neural networks are biologically based in how the brain obtains, stores and uses new information.
 
 They model a very complex web of interconnected nodes that take large sets of numbers and reduces all the input into one single number for output. This network is constructed of several individual neurons. Each neuron takes 3 numbers as input and delivers one as an output. And with this principle, several input numbers are forwarded through all the interconnections (both expansions and simplifications) until one final choice or signal is produced. 
 
-We have chosen not to use a neural network, and the main reason is that neural networks are very slow. The complication with neural network is the number of calculations that are made for making every decision grows exponentially in time complexity. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A less analytic generalization method would be a better approach because it approximates the states and doesn't have to compute the entire state-space in a game. 
+We have chosen not to use a neural network, and the main reason is that neural networks are very slow. The complication with neural network is the number of calculations that are made for making every decision grows exponentially in time complexity. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A less analytic generalization method would be a better approach because it approximates the correct decision and doesn't have to compute the entire state-space in a game. 
 
 \subsection*{Reinforcement Learning}
 
-Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. Before we dive into the theory necessary to understand this model, we'll briefly explain the terminology used through this section. 
-
-Convergence
-Transition model
-Policy
-State space
-
-
-
-The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value
-
-In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. 
+Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value that grades the result of any action. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. 
 
 There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.
 
@@ -40,7 +28,6 @@ Once we have the reward function, we can define the learning task of the agent. 
 
 In passive RL, the method of Direct Utility Estimation (DUE) follows the idea that the utility of a state is the expected total reward from that state into the future. Then at the end of a trial, the RL algorithm for DUE will trace back through all the observed rewards and calculate the estimated utility for every state. It's basically a process of inductive learning that observes a set of data that is completely known. The formula for calculating the utility values follows the Bellman equations for a fixed policy \cite{rl}:\\
 
-%EXPLAIN T!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 \begin{equation}
 U^\pi(s) = R(s)+\gamma\sum_{s'}T(s,\pi(s),s') U^\pi(s')
@@ -49,9 +36,9 @@ The problem with this technique is that it ignores the relationship between the 
 
 \subsubsection{Adaptive Dynamic Programming}
 
-Searching for a way of considering the constraints between states, we come across Adaptive Dynamic Programming. This is an agent that learns the transition model for an environment while solving the MDP. In a fully observable environment, this means that you use a transition model and the observed rewards into the Bellman equations to calculate the utilities of a state. In simpler terms, it means that while learning each step (state-action pair) you keep track of the outcome and then save it into a table of probabilities. At the end you have a comprehensive probability table for all the transitions, in this way you know a reliable model for knowing what is going to happen with every state-action pair\cite{rl}.
+Searching for a way of considering the constraints between states, we come across Adaptive Dynamic Programming (ADP). This is an agent that learns the transition model for an environment while solving the MDP. We call transition model the function that evaluates form the current state and action to the new state. In a fully observable environment, this means that you use a transition model and the observed rewards into the Bellman equations to calculate the utilities of a state. In simpler terms, it means that while learning each step (state-action pair) you keep track of the outcome and then save it into a table of probabilities. At the end you have a comprehensive probability table for all the transitions, in this way you know a reliable model for knowing what is going to happen with every state-action pair\cite{rl}.
 
-The problem is it is impossible to calculate for large state spaces, specially if you have to run several trials to exhaust every reasonable possibility for every transition. Therefore not usable for our agent. 
+But we have to take into consideration all the possible states in a game. We call all the possible states that can be achieved by any action throughout the entire game the state space. The problem is it is impossible to calculate ADP tables for large state spaces, specially if you have to run several trials to exhaust every reasonable possibility for every transition. Therefore not usable for our agent. 
 
 \subsubsection{Temporal Difference Learning}
 
@@ -81,45 +68,17 @@ Q(a,s) \leftarrow  Q(a,s)  + \alpha [R(s) + \gamma max_{a'}(Q(s',a')) - Q(a,s)]
 
 Q learning is a temporal difference learner that \textit{does not need a model for either learning or action selection}\cite[p775]{rl}. It simply executes the updating rule every time and action $a$ is executed in a state $s$ that leads to an state $s'$. The only restriction we have left is that the algorithm for exploration for this Q-learning temporal difference agent is the same as in the ADP agent \cite[p776]{rl} . That means that it keeps track of every movement and saves the statistics in a table. It easily learns and saves the \emph{optimal policy} for small state spaces, but it is impossible to keep track for larger ones. 
 
-\section{Generalization of Q-Learning}	\label{qlearning}
+\subsubsection{Generalization of Q-Learning}	
 
 Generalization in reinforcement learning takes into consideration huge state spaces by representing them as function approximations. This function reduces the complexity of mapping all the states considerably and allows the learning agent to generalize from the visited states to the non-visited ones. \textit{This function is viewed as approximate because it might not be the case that the true utility or Q-function can be represented in the chosen form} \cite[p777]{rl}. 
 
 The choice of using reinforcement learning was based on the necessity to train our AI to improve while it plays. Since our environment covers a lot of different factors and variables, we decided to use a form of active reinforcement learning that simplifies the complexity and size of all the different states. 
 
-\subsection{Q-Learning Functions}
-
-The starcraft environment has several factors that could be considered important for defining a moment in time; units, frames, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. 
+%______
 
 \textit{There is the problem that there could fail to be any function in the chosen hypothesis space that approximates the true utility function sufficiently well. As in all inductive learning there is a trade-off between the size of the hypothesis space and the time it takes to learn the function. A larger hypothesis space increases the likelihood that a good approximation can be found, but also means the convergence is likely to be delayed.}\cite[p778]{rl}
 
-We combine the generalization of Q-learning with the potential fields to obtain a reasonable model of the starcraft environment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
-
-\subsubsection{State - Hypothesis Space}
-
-We define a state in our environment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. \\
-\begin{displaymath}
-                       State = \begin{cases}
-                         da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
-                      \end{cases}
-\end{displaymath}\\
-
-The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
-
-\subsubsection{Function Approximation}
-
-After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
-
-\begin{equation}
-\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due) 
-\end{equation}
-
-This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
-
-Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (REFERENCE!!!!). 
-
-
-\subsubsection{Updating Rules}
+%_________
 
 We use the updating rule or $\hat{Q}$-learning equation that evolves from the Q learning temporal difference formula, now taking into consideration the values of the function approximation:  \cite{rl} \\ 
  
@@ -154,6 +113,48 @@ $max(\hat{Q}_f(a',s'))$ - Is the highest possible $\hat{Q}_f$ value calculated f
 \begin{flushleft}
 $\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$  - Is the partial derivative of the $\hat{Q}_f$ function with respect to the current $f_i$, in other words the variables or factors that afect only that coefficient $f_i$. And in the case of our  linear $\hat{Q}_f$ function, always a constant representing some distances in a certain state. 
 \end{flushleft} 
+
+%______
+
+In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov decision process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
+
+\section{Application of Generalization of Q-Learning}	\label{qlearning}
+
+
+
+\subsection{Q-Learning Functions}
+
+The starcraft environment has several factors that could be considered important for defining a moment in time; units, frames, enemies, distances, map elements etc. Since formulating a model considering all the factors made the function too complex, we focused on the factors that could model the environment as closely as possible without increasing the size and computability time of each calculation. We have to also consider how long is the learning time. When a function approximation reaches the optimal values or closes around them can say it converged. 
+
+%__________
+
+We combine the generalization of Q-learning with the potential fields to obtain a reasonable model of the starcraft environment. We do this by transforming all the potential fields (per unit) into a simplified version of the Q function used by the agent. The first thing we needed to specify was a representation of all the data relevant for a specific time or frame, our hypothesis space. 
+
+\subsubsection{State - Hypothesis Space}
+
+We define a state in our environment as a combination of the most important factors that interact with the agent and the game. Basically, it consists of all the distances used in the potential fields plus the numbers required to calculate a comprehensive reward function. \\
+\begin{displaymath}
+                       State = \begin{cases}
+                         da \\  dua \\  ds \\  dsv \\ de \\ due \\ dc \\ duc \\ wr \\ sr \\ numberOfUnits \\ healthLost \\ damageDealt \\ numberOfKills \\ time
+                      \end{cases}
+\end{displaymath}\\
+
+The variables numberOfUnits, healthLost, damageDealt, numberOfKills and time are variables accessible through the entire game, therefore used as part of our reward function. The description the rest of the factors or distances is the same as mentioned before in the potential field's documentation (MISSING REFERENCE!!!!!!!!!!!!!). 
+
+\subsubsection{Function Approximation}
+
+After defining a state in the game we created a linear function approximation to ensure convergence of each value. The function takes all the forces that determine the magnitude of the potential field vectors as coefficients or weights in the $\hat{Q}$ function. \\ 
+
+\begin{equation}
+\hat{Q}_f = f_{MDP} (2de - due) + f_{AU} (2da - dua) + f_{EAC} (2dc - duc) + f_{S}  (2ds - dsv) + f_{CD} (2de - due) 
+\end{equation}
+
+This function is not a thorough model of the true utility function, but it covers all the factors that affect the movement of a unit. Since every unit is controlled independently with this movement model/function, it covers the purpose of using the computer's capabilities of controlling each unit's movement separately and optimally (micro).
+
+Notice that there are forces that are dependant on the exact same variables, like Cooldown and Maximum Distance Positioning. This coefficients vary in magnitude because they are updated and calculated under different circumstances and throughout different moments in the game. This is furthered explained in the implementation documentation (REFERENCE!!!!). 
+
+
+\subsubsection{Updating Rules}
 
 \begin{flushleft}
 So we are left with the following updating rules for each of the coefficients/forces:
@@ -195,7 +196,9 @@ f_{CD}  \leftarrow f_{CD}  + \alpha [ R(s) + \gamma (max(\hat{Q}_{f} (a',s')))-\
 \end{flushleft} 
 
 % \ref{mdp}
-These updating rules should eventually converge to values that are very close to the optimal Q function, considering all the restrictions for convergence. In a normal Q-learning process the rules are the following: \textit{First, we must assume the system is a deterministic markov decision process. Second, we must assume the immediate reward values are bounded; that is, there exists some positive constant $c$ such that for all states $s$ and actions $a$, $r(s,a) < c$. Third, we assume the agent selects actions in such a fashion that it visits every possible state-action pair infinitely often.} \cite[p377]{ml_tom_mitchel} 
+These updating rules should eventually converge to values that are very close to the optimal Q function, considering all the restrictions for convergence. 
+
+%_______________
 
 The only difference between this process and our approximation to Q-learning is the generalization of unvisited states. But this generalization is also guaranteed: \textit{These update rules can be shown to converge to the closest possible approximation to the true function when the function approximator is linear in the parameters. }\cite[p779]{rl} Then, the final result should be the perfect magnitude for the potential fields to guide every unit's movement.
 
