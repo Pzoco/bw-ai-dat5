@@ -1,6 +1,5 @@
 \section{Class BayesianNetwork}
-	For handling Bayesian networks we use the Hugin API which can handle loading networks, inserting evidence, and do other manipulations of .net files. To actually 
-	insert evidence a lot of steps are needed. To make it easier for classes to use the networks we wrote a class called BayesianNetwork.
+	For handling Bayesian networks we use the Hugin API (see reference \cite{hugin_api}) which can handle loading networks, inserting evidence, and do other manipulations of .net files. The way to insert evidence into the nodes can be a hard task because many steps are needed. To make it easier for classes to use the networks we wrote a class called BayesianNetwork.
 
 	When a class needs a Bayesian network it uses this class. The constructor takes a file name, which then loads the given 
 	Bayesian network. The class also contains methods for printing nodes, retracting evidence, and inserting of evidence, and getting the probability of a state. 
@@ -27,5 +26,5 @@ domain->propagate(H_EQUILIBRIUM_SUM, H_MODE_NORMAL);
 		\end{Sourcecode}
 		The method starts by uncompiling which is needed to manipulate nodes. After this it loops through all the nodes until it finds the specified 
 		node. At \lnnum{1} the node is converted to a DiscreteChanceNode because evidence cannot be presented to a normal node. The reason for this 
-		is that there are many types which inherit from the Node class which does not all use evidence. The index of the wanted state is	retrieved and the state is selected at \lnnum{2} which is the same at presenting evidence at the state. After the evidence is presented, the 
+		is that there are many types which inherit from the Node class which does not all use evidence. The index of the wanted state is retrieved and the state is selected at \lnnum{2} which is the same at presenting evidence at the state. After the evidence is presented, the 
 		domain is then compiled and propagated. The propagate function calculates the new probabilities for the states in the network.
