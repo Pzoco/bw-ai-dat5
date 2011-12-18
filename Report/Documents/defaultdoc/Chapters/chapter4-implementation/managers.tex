@@ -27,7 +27,7 @@
 			\end{itemize}
 			The following code snippet shows the main loop of the BuildOrderHandler which goes through the items in the build order and checks if the 
 			conditions are all fulfilled.
-			
+			\pagebreak
 				\begin{Sourcecode}[caption=BuildOrderHandler main loop]
 		std::list<BuildOrderItem*> items = _currentBuildOrder->GetBuildOrderItems();
 		(*@\lnote@*)for(std::list<BuildOrderItem*>::iterator item = items.begin();item!=items.end();++item)
@@ -114,6 +114,7 @@
 			Below is the code that the Production Manager calls when it has a ConstructionTask that needs to be executed. The method is called 
 			ConstructBuilding and has the parameters of type UnitType and BuildingPlacement, where BuildingPlacement 
 			is an enum that can have the values MainBase or MainChokepoint.
+			\pagebreak
 			\begin{Sourcecode}[caption=ConstructBuilding method]		
 	(*@\lnote@*)BWAPI::TilePosition position = finder.FindBuildLocation(buildingType,placement);
 
