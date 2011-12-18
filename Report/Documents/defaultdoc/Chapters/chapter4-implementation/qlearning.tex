@@ -1,7 +1,7 @@
 \newpage
 \section{$ \hat{Q}$-Learning}
 \label{section:reinforcement}
-In this section we'll address the implementation of the Reinforcement Learning Approximation. First we'll explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then we go through all the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\\
+In this section we will address the implementation of the Reinforcement Learning Approximation. First we will explain the $ReinforcementLearning$ class and the methods that calculate the value of the $\hat{Q}$ function and updating rules. Then we go through all the necessary calculations made throughout the game to create the data needed in order to use this class and save the relevant information for testing.\\
 
 The $ReinforcementLearning$ class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing). Further detail of the class implementation can be found on the appendix section \ref{section:RLFS}. 
 
@@ -20,7 +20,7 @@ ally += (double)_variables.FORCEALLY*(double)(2*_parameters.da - _parameters.dua
 (*@\lnote@*)allyQ += (double)(2*_parameters.da - _parameters.dua)*useAlly;
 \end{Sourcecode}	
 
-Every time a potential field is calculated we save the values that correspond to the derivative, in the code shown before for the Ally Units potential the derivative corresponds to the value of $allyQ$ in \lnnum{1}. We do the same thing to calculate the rest of the derivatives ($edgeQ$, $squadQ$, $coolQ$, $maxdistQ$). An finally just saving them for the future update calculations.\\ 
+Every time a potential field is calculated we save the values that correspond to the derivative. In the code shown before for the Ally Units potential the derivative corresponds to the value of $allyQ$ in \lnnum{1}. We do the same thing to calculate the rest of the derivatives ($edgeQ$, $squadQ$, $coolQ$, $maxdistQ$). And finally just saving them for the future update calculations.\\ 
 
 \begin{Sourcecode}[caption=Saving the values of each derivative]
 		StarcraftAI::reinforcementLearning.WriteLiveValue(allyQ);
@@ -97,11 +97,11 @@ double ReinforcementLearning::CalculateTheta(double theta, double reward,double 
 }
 \end{Sourcecode}
 
-In section (LINK AGAIN) there are several different formulas for updating each coefficient in the $\hat{Q}_f$ function, but that distinction between updating rules is external to the $ReinforcementLearning$ class. Therefore, the formula directly translated in \lnnum{1} is the general updating rule. The specific $\hat{Q}$ value, current coefficient and the rest of the parameters are calculated separately because we need them in every frame trough the game. \\
+In section (LINK AGAIN) there are several different formulas for updating each coefficient in the $\hat{Q}_f$ function, but that distinction between updating rules is external to the $ReinforcementLearning$ class. Therefore, the formula directly translated in \lnnum{1} is the general updating rule. The specific $\hat{Q}$ value, current coefficient and the rest of the parameters are calculated separately because we need them in every frame throughout the game. \\
 
 \subsubsection{Calling the Updating Rules}
 
-We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames, because trying to update for every single one created a lag on the game's performance. The optimization we created for updating while still preserving the game speed is the following: 
+We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function every $n$ frames. Trying to update for every single one created a lag on the game's performance. The optimization we created for updating while still preserving the game speed is the following: 
 
 \begin{Sourcecode}[caption=Calculations for the Updating Function Values]
 (*@\lnote@*)if(BWAPI::Broodwar->getFrameCount() % 25 == 0){
@@ -153,4 +153,4 @@ We chose to calculate new weights or coefficients for the $\hat{Q}_f$ function e
 	}
 \end{Sourcecode}
 
-In the first place, we make this calculations every 25 frames as shown in \lnnum{1}, trying to simulate updating once a second. Then we use some of the methods int the $ReinforcementLearning$ class (indicated in section \lnnum{2}) to call all the values that were previously saved in the data buffer. This values include all the above explained derivatives and $\hat{Q}_f$ values. We separate the values, as shown in \lnnum{3} and then save them in variables for parameter passing to the updating function. Finally in section \lnnum{4} we use the $ReinforcementLearning::CalculateTheta$ method that corresponds to each of the weights and coefficients of the new $\hat{Q}_f$. 
+In the first place, we make this calculations every 25 frames as shown in \lnnum{1}, trying to simulate updating once a second. Then we use some of the methods in the $ReinforcementLearning$ class (indicated in section \lnnum{2}) to call all the values that were previously saved in the data buffer. This values includes all the above explained derivatives and $\hat{Q}_f$ values. We separate the values, as shown in \lnnum{3} and then save them in variables for parameter passing to the updating function. Finally in section \lnnum{4} we use the $ReinforcementLearning::CalculateTheta$ method that corresponds to each of the weights and coefficients of the new $\hat{Q}_f$. 
