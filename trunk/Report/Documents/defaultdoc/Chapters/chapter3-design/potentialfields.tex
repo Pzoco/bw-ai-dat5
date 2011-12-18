@@ -1,15 +1,14 @@
 \section{Potential Fields}
-	Potential fields can be used to control a computer AI through a dynamically updated environment. 
-	If one would program an AI, which should move from one point to another, one would most likely use a normal shortest path algorithms. 
-	The problem is, though, that if a lot of dynamic influences are affecting the route this calculation can be very complex. It could be 
+	Potential fields can be used to move a computer AI through a dynamically updated environment. 
+	If one would program an AI which should move from one point to another, one would most likely use a normal shortest path algorithms. 
+	The problem is that if there are a lot of dynamic influences effect the route, this calculation becomes very complex. It could be 
 	enemies that should be avoided or other dynamic influences. \\
 	
-	That is why potential field are good for such a problem. It works by generating either attractive or repulsive fields of vectors $v=(m\times d )$. 
+	This is why potential fields are good for such a problem. They work by generating either attractive or repulsive fields of vectors $v=(m\times d )$. 
 	Where $m$ is the magnitude and $d$ is the direction. 
-	If we create an attractive potential field the point will be surrounded with vectors pointing toward this point, 
+	If we create an attractive potential field the point will be surrounded by vectors pointing toward this point, 
 	as seen in figure \ref{fig:seekbehavior}. 
-	The bot will be attracted towards this point, the magnitude determines how attracted it will be and the direction, 
-	just shows in which way the bot is directed. This is called a Attractive behaviour 
+	The bot will be attracted towards this point. The magnitude determines how attractive the field will be. The direction shows in which way the bot is will move. This is called a Attractive behaviour 
 		
 	\begin{figure}[H]
 		\begin{center}
@@ -19,7 +18,7 @@
 	\end{figure}
 	
 	Likewise if we assume there is only a single obstacles in the area (a unit we do not want to attack) it would generate a repulsive field around it, 
-	see figure \ref{fig:avoidbehavior}. This is called the Repulsive behaviour because it causes our own units to try and move away from it.
+	see figure \ref{fig:avoidbehavior}. This is called a repulsive behaviour because it causes our own units to try and avoid it.
 
 		
 	\begin{figure}[H]
@@ -29,7 +28,7 @@
 		\end{center}
 	\end{figure}
 		
-	These two kind of behaviours can then be combined to make a map that can tell our unit 
+	These two kinds of behaviours can be combined to make a map that can tell our unit 
 	how to move around enemy units and reach a specific target as seen in figure \ref{fig:combinedbehavior}.
 			
 	\begin{figure}[H]
@@ -41,7 +40,7 @@
 		
 	
 	\subsection{Designing our Potential Field Functions}		
-		The potential fields of our bot, will not be represented by a vector, but simply a number which indicates how attractive or repulsive a field is. 
+		The potential fields in our bot will reduce the vectors into constant values that represent their importance or magnitude. We arrange the vector to fit linear values that indicate how attractive or repulsive a field is. 
 		This number is calculated by functions, which is either attractive or repulsive and is related to the obstacles in the game world. 
 		
 		The reason we can use numbers instead of vectors is because we only care about the potential on the tiles 
