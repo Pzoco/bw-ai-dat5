@@ -37,7 +37,7 @@ void StrategyManager::Update()
 	
 	if(DecideToAttackOrNot())
 	{
-		TacticsManager::GetInstance()->MoveSquad(EnemieBasePosision,BWAPI::UnitTypes::Terran_Vulture);
+		TacticsManager::GetInstance()->MoveSquad(EnemieBasePosision);
 	}
 	//TacticsManager::GetInstance();
 }
