@@ -59,6 +59,7 @@ node TrustInPrediction
     label = "";
     position = (294 225);
     states = ("Trust" "DontTrust");
+    HR_NodeSize = "(110, 40)";
     HR_LinkControlPoints = "";
     HR_LinkMode = "[InformationGained:0][TimeSinceScout:0]";
     HR_Group = "0";
@@ -72,6 +73,7 @@ node InformationGained
     label = "";
     position = (214 100);
     states = ("0" "1" "2" "3");
+    HR_NodeSize = "(120, 40)";
     HR_LinkControlPoints = "";
     HR_LinkMode = "";
     HR_State_0 = "";
@@ -87,6 +89,7 @@ node AttackPrediction
     label = "";
     position = (416 220);
     states = ("Yes" "No");
+    HR_NodeSize = "(100, 40)";
     HR_LinkControlPoints = "";
     HR_LinkMode = "";
     HR_Group = "0";
@@ -100,6 +103,7 @@ node TimeSinceScout
     label = "";
     position = (359 99);
     states = ("<1min" "1min" "2min" "3min");
+    HR_NodeSize = "(100, 40)";
     HR_LinkControlPoints = "";
     HR_LinkMode = "";
     HR_State_3 = "";
