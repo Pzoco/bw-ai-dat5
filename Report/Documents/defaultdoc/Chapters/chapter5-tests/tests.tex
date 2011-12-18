@@ -1,9 +1,9 @@
 
 In this chapter we will look at a few different tests.
-First we will test the build in AI against it self, so we have a base to compare our bot against. Then we will make a test using the potential field without any learning and with the same number for all the forces. Afterwords we will use reinforcement learning to try to improve our results, we will try and change the alpha and gamma to change the way our bot learns to see the difference. Afterwords we will test the Bayesian networks to see how well they preform.
+First we will test the built in AI against itself, so we have a base to compare our bot against. Then we will make a test using the potential field without any learning and a test with the same number for all the forces. Afterwords we will use reinforcement learning to try to improve our results. We will try and change the alpha and gamma to change the way our bot learns to see the difference. Afterwords we will test the Bayesian networks to see how well they perform.
 
 \section{Test Without Reinforcement Learning and Potential Fields} % VvsZ without RL and PF
-In this test the two forces are just attacking each other without any use of potential fields or reinforcement learning, this is without any micromanagement control. This means the vultures are losing in both maps, which they should so we can prove that if a unit is being controlled rightly a win is possible. Below is a list of the results from the test in the two maps.\\
+In this test the two forces are just attacking each other without any use of potential fields or reinforcement learning. This test is without any micromanagement control. This means the vultures are losing in both maps. They should lose so we can prove that if a unit is being controlled correctly victory is possible. Below is a list of the results from the test in the two maps.\\
 
 \begin{centering}
 \begin{table}
@@ -40,10 +40,10 @@ In this test the two forces are just attacking each other without any use of pot
 \end{table}
 \end{centering}
 
-After this first test we know how weak the player with the vultures are compared to the opponent.
+After this first test we know how weak the player with the vultures is compared to the opponent.
 \newpage
 \section{Test using the potential fields but not reinforcement learning} %map is VvsZNew - with use of PF and NOT RL
-This is the first test where we test our bot with only potential fields fighting the built-in bot. There is no reinforcement learning used in this test, in other words this means that the reinforcement learning weights are all set to a constant value.\\
+This is the first test where our bot uses only potential fields  to fight the built-in bot. There is no reinforcement learning used in this test. In other words this means that the reinforcement learning weights are all set to a constant value.\\
 
 \begin{centering}
 \begin{table}
@@ -62,7 +62,7 @@ This is the first test where we test our bot with only potential fields fighting
 \end{table}
 \end{centering}
 
-Out bot get this impressive result by not overextending itself and thereby only be in sight of a few zerglings. This forced some zerglings out of the group and made them a easy target. This test went better as expected that it took out some zerglings at a time and won the match with 5 vultures with full health.\\
+Our bot got this impressive result by not overextending itself and thereby only be in sight of a few zerglings. This forced some zerglings out of the group and made them an easy target. This test went better than expected because it took out a few zerglings at a time and won the match with 5 vultures with full health.\\
 
 \begin{centering}
 \begin{table}
@@ -82,8 +82,8 @@ Out bot get this impressive result by not overextending itself and thereby only 
 \end{centering}
 
 
-The result from this test wasn't as good as one would expect. The result of the vultures moving back and forth should be way better then static movement. But the fact is that the vultures only killed one more marine. The reason why this is the case is that the vultures couldn't use the same attack pattern as effective as with the zerglings, because the marines range attack sometimes dealt damage to the vultures. So the vultures is getting to close before attacking.
-We see from this test that potential fields in itself is not enough, if we like to win or have less loss then the opponent. In the next test we will test if there is an improvement by using reinforcement learning on the bot, and since the vultures did well against zerglings the tests will be changed to only be vultures against 12 marines. If they should learn with more marines the vultures will learn that it's okay to run away and only attack when the cooldown is 0, and this is not the right way to defeat the opponent.
+The result from this test wasn't as good as one would expect. The result of the vultures moving back and forth should be way better than static movement. But the fact is that the vultures only killed one more marine. The reason why this is the case is that the vultures couldn't use the same attack pattern as effectively as with the zerglings because the marines range attack sometimes dealt damage to the vultures. So the vultures get to close before attacking.
+We see from this test that potential fields in itself are not enough. If we would like to win or have less of a loss than the opponent. In the next test we will test if there is an improvement by using reinforcement learning on the bot. Since the vultures did well against zerglings the tests will be changed to only be vultures against 12 marines. If they should learn with more marines the vultures will learn that it's okay to run away and only attack when the cooldown is 0, and this is not the right way to defeat the opponent.
 
 
 
