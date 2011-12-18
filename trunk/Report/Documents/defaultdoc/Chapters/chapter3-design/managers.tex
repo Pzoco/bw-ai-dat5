@@ -1,29 +1,28 @@
 \section{Bot Managers}
 	\label{design::managers}
-	The managers of the bot are meant to control different parts of the bot. The part which is connected to microing of units will be we using the 
-	reinforcement learning and potential fields and the part which manages scouting information will using the Bayesian networks. 
-	The idea of these managers are that they are separated as much as possible and only using the other managers when a task is needed to be handled 
+	The managers for the bot are used to control different parts of the bot. The part which is connected to the microing of units will use 
+	reinforcement learning and potential fields. The part which manages scouting information will use Bayesian networks. 
+	The purpose for these managers are to separate parts of the game as much as possible. They should only use the other managers when a task needs to be handled 
 	by another manager. The following subsections will explain the different managers.
 	
 	\subsection*{Tactics Manager}
-		This manager is responsible for managing our offensive units in and out of small scale combat. It manages the units by managing squads of different 
+		This manager is responsible for managing our offensive units in and out of small scale combat. It manages the units by controlling squads of different 
 		units.
 	\subsection*{Production Manager}
-		A manager which is responsible for producing units, buildings, upgrading tech and research tech. The manager will be able to 
+		This manager is responsible for producing units, constructing buildings, upgrading tech and researching tech. The manager will be able to 
 		know what to build by following build orders.
 	\subsection*{Scouting Manager}
-		The Scouting Manager keeps track of the opponent. It saves every enemy it have seen and is responsible for scouting the enemy's spawn position and 
-		what they are building.
+		The Scouting Manager keeps track of the opponent. It saves every enemy it has seen and is responsible for scouting the enemy's spawn position. It also keeps track of which buildings the enemy has produced.
 	\subsection*{Strategy Manager}
-		A manager which is responsible for taking the right high-level decisions based on the information we have. These decisions can be like 
-		setting the Tactics Manager to attack the enemy or set the production manager to change build order.
+		The Strategy Manager is responsible for making high-level decisions based on the information we have. These decisions include
+		setting the Tactics Manager to attack the enemy or setting the Production Manager to change build order.
 	\subsection*{Worker Manager}
-		This manager sets the workers to work at either mining minerals or gas, scouting, construction of buildings or another task.
+		The Worker manager sets the workers to mine minerals,mine gas, scout, construct buildings and perform other tasks.
 
 	\subsection{Managers in Game Scenario}
-		The game starts and the Production Manager starts following the build order which starts with producing of SCVs. Every time a SCV is created the 
-		Worker Manager sets the workers to a free mineral patch. The Scouting Manager sends out a SCV for scouting the opponents base. The scout 
-		finds the base and the Strategy Manager still predicts that the threat level is low. The Production Manager still follows the build order and now 
-		we got marines assigned to a Tactics Manager. The Scout Manager send out another SCV, but this one is killed before reaching the base of the 
-		opponent. The Strategy Manager sets the threat level to high and this makes the Production Manager stop producing workers and only offensive units. 
-		The opponent are doing an attack and the Tactics Manager is microing the units, which defeats the enemies.
+		The game starts and the Production Manager begins following the build order which produces SCVs. Every time an SCV is created the 
+		Worker Manager sets the worker to a free mineral patch. The Scouting Manager sends out an SCV to the opponent's base. The scout 
+		finds the base and the Strategy Manager still predicts that the threat level is low. The Production Manager keeps following the build order, and now 
+		we have marines assigned to a Tactics Manager. The Scout Manager sends out another SCV, but this one is killed before reaching the base of the 
+		opponent. The Strategy Manager sets the threat level to high and makes the Production Manager stop producing workers. The production manager will then start producing only offensive units. 
+		The opponent does the attack, and the Tactics Manager micromanages the units which defeats the enemies.
