@@ -11,7 +11,19 @@ They model a very complex web of interconnected nodes that take large sets of nu
 We have chosen not to use a neural network, and the main reason is that neural networks are very slow. The complication with neural network is the number of calculations that are made for making every decision grows exponentially in time complexity. In a real-time-strategy game where we can have around 50.000 states, the computation time will take too long and the input will be way to high since every minute it has to compute approximately 50.000 states. A less analytic generalization method would be a better approach because it approximates the states and doesn't have to compute the entire state-space in a game. 
 
 \subsection*{Reinforcement Learning}
-Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. 
+
+Reinforcement learning (RL) is a method used to build models or functions that learn from experiences and examples. Before we dive into the theory necessary to understand this model, we'll briefly explain the terminology used through this section. 
+
+Convergence
+Transition model
+Policy
+State space
+
+
+
+The basic idea is that for every action in an environment, there is a reward or some feedback that reinforces all actions that have a bigger reward. We consider a reward a numerical value
+
+In a larger scale, the task of reinforcement learning in this report is the process to discover the optimal path; the series of actions that accomplish the best possible total reward at the end of the process. This reward depends entirely on the agent's policy, better defined as the strategy it follows for accomplishing something. 
 
 There are different RL techniques that depend on the amount of information we have available for learning. They can be classified into passive and active RL methods. \textit{In passive RL the agents policy is fixed and the task is to learn the utilities of each state.} \cite[p764]{rl} This implies that the environment is fully observable and the agent knows the future impact of its actions. Then the learning part of the algorithm is only in charge of learning the best strategy for the already defined probabilities. \textit{The active reinforcement learning does not have a fixed policy to begin with, and the agent must decide what actions to take} \cite[p771]{rl}. So the agent basically explores considering that it can't look ahead for more than a move or predict the effects of its actions in the future.
 
