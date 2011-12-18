@@ -5,7 +5,7 @@ In this section we'll address the implementation of the Reinforcement Learning A
 
 The $ReinforcementLearning$ class contains all the variables and processes necessary to calculate all the formulas of the $\hat{Q} learning$. It is used throughout the game to update each coefficient of the $\hat{Q}_f$ function, calculate the reward for each state-action pair and saving all the necessary data to continue the calculations in the next iteration of the game (also for saving a data log with all the numbers for further analysis and testing). Further detail of the class implementation can be found on the appendix section \ref{section:RLFS}. 
 
-\subsection{$\hat{Q}_f$ Decision}
+\subsection{$\hat{Q}_f$ Decision} \label{rlMethods}
 
 Throughout the game, the squad management uses the $\hat{Q}_f$ method \\
 $GetBestPositionBasedOnQPotential$ in order to select the next action. It starts with saving the value off all the derivatives ($\frac{\partial \hat{Q}_f(a,s)}{\partial f_i}$). This part is explained in detail in the implementation for every one of the potential fields. \\
