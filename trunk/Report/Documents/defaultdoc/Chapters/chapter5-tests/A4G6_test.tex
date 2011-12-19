@@ -1,1 +1,11 @@
 %here goes the final converging test of the A4G6 - only the text ofc! - and ref to the picture at F8-10
+
+\section{Convergence Analysis}
+
+As mentioned before, we considered than a lower $\alpha$ value and a higher $\gamma$ value would deliver better results in the training for the Reinforcement learning agent. Therefore we prioritized the training of two particular combinations of them: $\alpha= 0.4$ - $\gamma = 0.6$ and $\alpha= 0.2$ - $\gamma = 0.9$. We ran a couple hundred thousand game iterations in each one of this training values. The results obtained from this training show various trends the weights follow throughout the entire learning process. We considered important to analyze this behaviour to show the training results for our agent. \\
+
+\subsection*{Convergence for $\alpha= 0.4$ and $\gamma = 0.6$}
+
+As shown in figure \ref{fig:app_a4g6_test}, the weights followed a consistent learning pattern throughout most of the iterations. The first thing the agent learns is that maintaining the squad tightly together (high values of Ally and Squad weights), running form the enemy (low MaxDist weight) and running towards the edges (high Edge weight) delivers the best result (higher number of kills and less damage). But, since we made our reward function punish the agent for taking a long time to destroy the enemy, the weights always adapt trying to make the units more aggressive (it can be observed in the changing values of the MaxDist weight). 
+
+It goes back and forth between running and attacking up front until it finally stabilizes in very high values of Ally and Squad (staying together), almost identical values of Cooldown and MaxDist (attack with the same strenght that you run away when the weapons are down) and not having a very strong opinion about the Edge (this weight is the closest to 0 and varies arround it). We definitely need to keep running training sessions for this values to converge fully but we believe the agent is reaching a point 
